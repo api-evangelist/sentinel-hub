@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/LandsatTierFilteringWithRt",
+  "title": "LandsatTierFilteringWithRt",
+  "type": "object",
+  "properties": {
+    "tiers": {
+      "type": "string",
+      "default": "ALL_TIERS",
+      "enum": [
+        "TIER_1",
+        "TIER_1_AND_RT",
+        "ALL_TIERS"
+      ]
+    }
+  }
+}

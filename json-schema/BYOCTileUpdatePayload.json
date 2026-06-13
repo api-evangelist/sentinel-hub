@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BYOCTileUpdatePayload",
+  "title": "BYOCTileUpdatePayload",
+  "type": "object",
+  "properties": {
+    "coverGeometry": {
+      "description": "The geometry as GeoJSON, which outlines the area that has data. If it isn't specified, it is automatically set to the tile bounding box.\n",
+      "$ref": "#/components/schemas/Geometry"
+    },
+    "sensingTime": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The sensing time of the tile in ISO 8601 but without sub-millisecond precision."
+    }
+  }
+}

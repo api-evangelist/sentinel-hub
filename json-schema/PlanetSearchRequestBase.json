@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/PlanetSearchRequestBase",
+  "title": "PlanetSearchRequestBase",
+  "deprecated": true,
+  "type": "object",
+  "required": [
+    "provider"
+  ],
+  "properties": {
+    "provider": {
+      "description": "Specify this value to use data provider Planet.",
+      "type": "string",
+      "enum": [
+        "PLANET"
+      ]
+    },
+    "planetApiKey": {
+      "description": "Your Planet API key. Get one from Planet https://www.planet.com.\nIt is required unless you purchased your Planet data plan through Sentinel Hub,\nin which case it is optional and will filter search results based on the permissions of the key.\n",
+      "type": "string"
+    }
+  }
+}

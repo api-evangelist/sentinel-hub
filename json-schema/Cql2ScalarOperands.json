@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/Cql2ScalarOperands",
+  "title": "scalarOperands",
+  "type": "array",
+  "minItems": 2,
+  "maxItems": 2,
+  "items": {
+    "$ref": "#/components/schemas/Cql2ScalarExpression"
+  }
+}

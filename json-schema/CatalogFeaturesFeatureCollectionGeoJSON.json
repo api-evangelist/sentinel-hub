@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogFeaturesFeatureCollectionGeoJSON",
+  "title": "featureCollectionGeoJSON",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/CatalogFeatureCollectionGeoJSON"
+    },
+    {
+      "type": "object",
+      "required": [
+        "features"
+      ],
+      "properties": {
+        "features": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/CatalogItem"
+          }
+        },
+        "links": {
+          "$ref": "#/components/schemas/CatalogLinks"
+        },
+        "timeStamp": {
+          "$ref": "#/components/schemas/CatalogFeaturesTimeStamp"
+        },
+        "numberReturned": {
+          "$ref": "#/components/schemas/CatalogFeaturesNumberReturned"
+        }
+      }
+    }
+  ]
+}

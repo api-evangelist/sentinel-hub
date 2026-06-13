@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/S1Dataset",
+  "title": "sentinel-1-grd",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/BaseDataset"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "dataFilter": {
+          "$ref": "#/components/schemas/S1Filtering"
+        },
+        "processing": {
+          "$ref": "#/components/schemas/S1Processing"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "sentinel-1-grd"
+          ]
+        }
+      }
+    }
+  ]
+}

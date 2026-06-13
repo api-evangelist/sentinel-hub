@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogFeatureGeoJSON",
+  "title": "featureGeoJSON",
+  "type": "object",
+  "required": [
+    "type",
+    "geometry",
+    "properties"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "Feature"
+      ]
+    },
+    "geometry": {
+      "$ref": "#/components/schemas/CatalogGeometryGeoJSON"
+    },
+    "properties": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  }
+}

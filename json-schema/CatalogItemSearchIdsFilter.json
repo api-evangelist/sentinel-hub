@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogItemSearchIdsFilter",
+  "title": "idsFilter",
+  "type": "object",
+  "description": "Only returns items that match the array of given ids",
+  "properties": {
+    "ids": {
+      "$ref": "#/components/schemas/CatalogItemSearchIds"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ObjectStorageInfo",
+  "title": "ObjectStorageInfo",
+  "type": "object",
+  "required": [
+    "s3"
+  ],
+  "properties": {
+    "s3": {
+      "$ref": "#/components/schemas/S3BucketInfo"
+    }
+  }
+}

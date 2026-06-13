@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BaseDatasetProcessing",
+  "title": "BaseDatasetProcessing",
+  "type": "object",
+  "properties": {
+    "upsampling": {
+      "description": "The interpolation used when the requested\nresolution is higher than the source resolution.\n",
+      "type": "string",
+      "enum": [
+        "NEAREST",
+        "BILINEAR",
+        "BICUBIC"
+      ],
+      "default": "NEAREST"
+    },
+    "downsampling": {
+      "description": "The interpolation used when the requested\nresolution is lower than the source resolution.\n",
+      "type": "string",
+      "enum": [
+        "NEAREST",
+        "BILINEAR",
+        "BICUBIC"
+      ],
+      "default": "NEAREST"
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/PlanetNativeSearchQuery",
+  "title": "PlanetNativeSearchQuery",
+  "deprecated": true,
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/PlanetSearchRequestBase"
+    },
+    {
+      "type": "object",
+      "example": {
+        "provider": "PLANET",
+        "item_types": [
+          "PSScene"
+        ],
+        "filter": {
+          "type": "AndFilter",
+          "config": [
+            {
+              "type": "GeometryFilter",
+              "field_name": "geometry",
+              "config": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      15.786,
+                      46.7008
+                    ],
+                    [
+                      15.786,
+                      46.7234
+                    ],
+                    [
+                      15.8473,
+                      46.7234
+                    ],
+                    [
+                      15.8473,
+                      46.7008
+                    ],
+                    [
+                      15.786,
+                      46.7008
+                    ]
+                  ]
+                ]
+              }
+            },
+            {
+              "type": "DateRangeFilter",
+              "field_name": "acquired",
+              "config": {
+                "gte": "2019-04-27T00:00:00.000Z",
+                "lte": "2019-04-30T00:00:00.000Z"
+              }
+            },
+            {
+              "type": "RangeFilter",
+              "field_name": "cloud_cover",
+              "config": {
+                "lte": 0.3
+              }
+            }
+          ]
+        }
+      },
+      "additionalProperties": {
+        "externalDocs": {
+          "description": "Fields from Request body of Planet Quick search.",
+          "url": "https://developers.planet.com/docs/apis/data/reference/#tag/Item-Search/operation/QuickSearch"
+        }
+      }
+    }
+  ]
+}

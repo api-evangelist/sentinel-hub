@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/MaxarSearchResults",
+  "title": "MaxarSearchResults",
+  "properties": {
+    "features": {
+      "type": "array",
+      "description": "Search results as returned by MAXAR search.\nNote thate MAXAR search does not support paging. Thus, the `count` and `viewtoken` query parameters are ignored and a plain list of results is returned.\n"
+    }
+  }
+}

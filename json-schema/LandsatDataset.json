@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/LandsatDataset",
+  "title": "LandsatDataset",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/BaseDataset"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "dataFilter": {
+          "$ref": "#/components/schemas/LandsatFiltering"
+        },
+        "processing": {
+          "$ref": "#/components/schemas/BaseDatasetProcessing"
+        }
+      }
+    }
+  ]
+}

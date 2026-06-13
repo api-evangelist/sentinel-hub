@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BatchV2ProcessInput",
+  "title": "BatchV2ProcessInput",
+  "oneOf": [
+    {
+      "$ref": "#/components/schemas/BatchV2GeoPackageInput"
+    },
+    {
+      "$ref": "#/components/schemas/BatchV2TilingGridInput"
+    }
+  ]
+}

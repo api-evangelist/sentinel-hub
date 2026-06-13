@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/PlanetOrderRequest",
+  "title": "PlanetOrderRequest",
+  "deprecated": true,
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/Order"
+    },
+    {
+      "type": "object",
+      "required": [
+        "input"
+      ],
+      "properties": {
+        "input": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/PlanetOrderRequestBase"
+            },
+            {
+              "$ref": "#/components/schemas/PlanetSearchQuery"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "description": "To order specific Planet items, list their IDs in itemIds field. Otherwise, provide search criteria in the dataFilter field to order all items matching the criteria. Omitting both will order all items within the specified bounds.\n\nIn both cases, at most 500 items can be ordered at once, i.e. orders listing too many item IDs will fail, as will search-based orders that match too many items. Instead of larger search-based orders we recommend to use <a href=\"#tag/dataimport_subscription\">subscriptions</a>.\n",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "harmonizeTo"
+                    ],
+                    "properties": {
+                      "harmonizeTo": {
+                        "type": "string",
+                        "enum": [
+                          "NONE",
+                          "Sentinel-2"
+                        ],
+                        "description": "Sensing instrument whose values the data should be harmonized to. Supported values:\n* `NONE` to disable harmonization,\n* `Sentinel-2` only for *PSScene* item type and surface reflectance product bundles,\n",
+                        "externalDocs": {
+                          "description": "Details on PlanetScope instruments",
+                          "url": "https://developers.planet.com/docs/data/sensors/"
+                        }
+                      },
+                      "itemIds": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 250,
+                        "description": "List of itemIds to order, if dataFilter is not provided. The itemId list is typically obtained from a previous search request.\n",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

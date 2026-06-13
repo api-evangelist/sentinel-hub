@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BatchV2ProcessTask",
+  "title": "BatchV2ProcessTask",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Unique identifier of the request",
+      "type": "string",
+      "format": "uuid"
+    },
+    "request": {
+      "$ref": "#/components/schemas/BatchV2ProcessRequest"
+    },
+    "domainAccountId": {
+      "description": "Account that submitted the request (Deprecated. It is equal to projectId)",
+      "type": "string",
+      "format": "uuid"
+    },
+    "projectId": {
+      "description": "Project for which the request was submitted",
+      "type": "string",
+      "format": "uuid"
+    },
+    "workspaceId": {
+      "description": "Workspace for which the request was submitted",
+      "type": "string",
+      "format": "uuid"
+    },
+    "status": {
+      "description": "Current processing status of the request",
+      "type": "string",
+      "enum": [
+        "CREATED",
+        "ANALYSING",
+        "ANALYSIS_DONE",
+        "PROCESSING",
+        "DONE",
+        "FAILED",
+        "STOPPED"
+      ]
+    },
+    "error": {
+      "description": "Error description for requests that were submitted but failed during analysis or processing",
+      "type": "string"
+    },
+    "userAction": {
+      "description": "Last user action on the request",
+      "type": "string",
+      "enum": [
+        "NONE",
+        "ANALYSE",
+        "START",
+        "STOP"
+      ]
+    },
+    "userActionUpdated": {
+      "description": "Time of last user action update in ISO 8601",
+      "type": "string",
+      "format": "date-time"
+    },
+    "created": {
+      "description": "Creation time of the request in ISO 8601",
+      "type": "string",
+      "format": "date-time"
+    },
+    "completionPercentage": {
+      "type": "number"
+    },
+    "lastUpdated": {
+      "description": "Last updated time of the request in ISO 8601",
+      "type": "string",
+      "format": "date-time"
+    },
+    "costPU": {
+      "type": "number"
+    },
+    "stoppedStatusReason": {
+      "description": "Description of why job status is STOPPED",
+      "type": "string",
+      "enum": [
+        "OUT_OF_PU",
+        "USER_ACTION",
+        "UNHEALTHY"
+      ]
+    }
+  }
+}

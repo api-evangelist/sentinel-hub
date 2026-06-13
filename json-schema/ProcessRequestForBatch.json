@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ProcessRequestForBatch",
+  "title": "ProcessRequestForBatch",
+  "type": "object",
+  "description": "Batch processing equivalent of the <a href=\"#operation/process\">Process request</a>.",
+  "required": [
+    "evalscript",
+    "input"
+  ],
+  "properties": {
+    "input": {
+      "$ref": "#/components/schemas/ProcessRequestInput"
+    },
+    "output": {
+      "$ref": "#/components/schemas/ProcessRequestOutputForBatch"
+    },
+    "evalscript": {
+      "description": "Your evalscript. For details, click\n<a href=\"https://docs.planet.com/develop/evalscripts/\" target=\"_blank\">here</a>.\n",
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogCatalog",
+  "title": "catalog",
+  "type": "object",
+  "required": [
+    "stac_version",
+    "type",
+    "id",
+    "description",
+    "links"
+  ],
+  "properties": {
+    "stac_version": {
+      "$ref": "#/components/schemas/CatalogStacVersion"
+    },
+    "stac_extensions": {
+      "$ref": "#/components/schemas/CatalogStacExtensions"
+    },
+    "type": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "links": {
+      "$ref": "#/components/schemas/CatalogLinks"
+    }
+  }
+}

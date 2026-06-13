@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogItemSearchFilterFilterLang",
+  "title": "filter-lang",
+  "description": "The CQL2 filter encoding that the 'filter' value uses.\n",
+  "type": "string",
+  "enum": [
+    "cql2-text",
+    "cql2-json"
+  ]
+}

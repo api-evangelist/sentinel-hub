@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BatchV2TilingGridDescriptorProperties",
+  "title": "BatchV2TilingGridDescriptorProperties",
+  "type": "object",
+  "properties": {
+    "tileWidth": {
+      "description": "Width of each output tile, in units used by the grid",
+      "type": "number",
+      "format": "double"
+    },
+    "tileHeight": {
+      "description": "Height of each output tile, in units used by the grid",
+      "type": "number",
+      "format": "double"
+    },
+    "resolutions": {
+      "description": "List of supported resolutions, in units used by the grid",
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "number",
+        "description": "List of supported resolutions, in units used by the grid",
+        "format": "double"
+      }
+    },
+    "unit": {
+      "description": "Units used by the grid",
+      "type": "string",
+      "enum": [
+        "METRE",
+        "DEGREE"
+      ]
+    }
+  }
+}

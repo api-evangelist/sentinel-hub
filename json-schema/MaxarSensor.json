@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/MaxarSensor",
+  "title": "MaxarSensor",
+  "description": "If specified, limits search results to a single sensor (satellite).\nResults are also filtered to include only sensors that support the requested `productBands`. Thus, if a sensor that does not support all bands is specified, no results will be returned.\n",
+  "type": "string",
+  "enum": [
+    "WV01",
+    "WV02",
+    "WV03",
+    "WV04",
+    "GE01"
+  ]
+}

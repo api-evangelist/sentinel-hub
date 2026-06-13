@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/AsyncProcessRequestOutput",
+  "title": "AsyncProcessRequestOutput",
+  "type": "object",
+  "required": [
+    "delivery"
+  ],
+  "properties": {
+    "width": {
+      "description": "The request image width. Must be an integer between 1 and 10000.\n<br />*Only one pair of parameters \"width\"/\"height\" or \"resx\"/\"resy\" must\nbe set at the same time.*\n",
+      "type": "integer",
+      "format": "int32",
+      "minimum": 1,
+      "maximum": 10000,
+      "example": 512
+    },
+    "height": {
+      "description": "The request image height. Must be an integer between 1 and 10000.\n<br />*Only one pair of parameters \"width\"/\"height\" or \"resx\"/\"resy\" must\nbe set at the same time.*\n",
+      "type": "integer",
+      "format": "int32",
+      "minimum": 1,
+      "maximum": 10000,
+      "example": 512
+    },
+    "resx": {
+      "description": "Spatial resolution of the request image in a horizontal direction.\nIts units are defined by the CRS given in \"input.bounds.properties.crs\"\nparameter. <br />*Only one pair of parameters \"width\"/\"height\" or \"resx\"/\"resy\"\nmust be set at the same time.*\n",
+      "type": "number",
+      "format": "double"
+    },
+    "resy": {
+      "description": "Spatial resolution of the request image in a vertical direction.\nIts units are defined by the CRS given in \"input.bounds.properties.crs\"\nparameter. <br />*Only one pair of parameters \"width\"/\"height\" or \"resx\"/\"resy\"\nmust be set at the same time.*\n",
+      "type": "number",
+      "format": "double"
+    },
+    "responses": {
+      "type": "array",
+      "description": "Response object(s). <br/>\n",
+      "items": {
+        "$ref": "#/components/schemas/ProcessRequestOutputResponse"
+      }
+    },
+    "delivery": {
+      "$ref": "#/components/schemas/AsyncProcessOutputDeliveryV2"
+    }
+  }
+}

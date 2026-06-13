@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ZarrGetSingleArrayResponse",
+  "title": "ZarrGetSingleArrayResponse",
+  "type": "object",
+  "properties": {
+    "data": {
+      "$ref": "#/components/schemas/ZarrArray"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/OrderDelivery",
+  "title": "OrderDelivery",
+  "oneOf": [
+    {
+      "$ref": "#/components/schemas/OrderPlanetDelivery"
+    },
+    {
+      "$ref": "#/components/schemas/OrderMaxarDelivery"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BYOCCollection",
+  "title": "BYOCCollection",
+  "required": [
+    "name",
+    "s3Bucket"
+  ],
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "readOnly": true
+    },
+    "accountId": {
+      "type": "string",
+      "format": "uuid",
+      "readOnly": true
+    },
+    "name": {
+      "type": "string"
+    },
+    "s3Bucket": {
+      "type": "string"
+    },
+    "isConfigured": {
+      "description": "It's set to true, if the collection has bands.",
+      "type": "boolean"
+    },
+    "created": {
+      "description": "The date when the collection was created. Older collections don't have it.",
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "readOnly": true
+    },
+    "noData": {
+      "type": "number"
+    },
+    "requiresMetadataUpdate": {
+      "description": "Flag if the metadata, found under additionalData, needs to be updated after a tile is added or removed.\nMetadata is updated in a few minutes.\n",
+      "type": "boolean",
+      "readOnly": true
+    },
+    "additionalData": {
+      "$ref": "#/components/schemas/BYOCCollectionAdditionalData"
+    }
+  }
+}

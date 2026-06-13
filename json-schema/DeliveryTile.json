@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/DeliveryTile",
+  "title": "DeliveryTile",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Tile ID",
+      "type": "string",
+      "format": "uuid"
+    },
+    "deliveryId": {
+      "description": "Tile ID",
+      "type": "string",
+      "format": "uuid"
+    },
+    "status": {
+      "$ref": "#/components/schemas/TileStatus"
+    }
+  }
+}

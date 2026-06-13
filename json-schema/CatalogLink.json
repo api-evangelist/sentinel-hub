@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogLink",
+  "title": "Link",
+  "type": "object",
+  "required": [
+    "href",
+    "rel"
+  ],
+  "properties": {
+    "href": {
+      "type": "string",
+      "format": "uri",
+      "description": "The location of the resource"
+    },
+    "rel": {
+      "type": "string",
+      "description": "Relation type of the link"
+    },
+    "type": {
+      "type": "string",
+      "description": "The media type of the resource"
+    },
+    "title": {
+      "type": "string",
+      "description": "Title of the resource"
+    },
+    "method": {
+      "type": "string",
+      "enum": [
+        "GET",
+        "POST"
+      ],
+      "default": "GET",
+      "description": "Specifies the HTTP method that the resource expects"
+    },
+    "headers": {
+      "type": "object",
+      "description": "Object key values pairs they map to headers",
+      "example": {
+        "Accept": "application/json"
+      }
+    },
+    "body": {
+      "type": "object",
+      "description": "For POST requests, the resource can specify the HTTP body as a JSON object."
+    },
+    "merge": {
+      "type": "boolean",
+      "default": false,
+      "description": "This is only valid when the server is responding to POST request.\n\nIf merge is true, the client is expected to merge the body value\ninto the current request body before following the link.\nThis avoids passing large post bodies back and forth when following\nlinks, particularly for navigating pages through the `POST /search`\nendpoint.\n\nNOTE: To support form encoding it is expected that a client be able\nto merge in the key value pairs specified as JSON\n`{\"next\": \"token\"}` will become `&next=token`."
+    }
+  }
+}

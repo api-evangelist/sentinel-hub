@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/S3SlstrProcessing",
+  "title": "S3SlstrProcessing",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/BaseDatasetProcessing"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "view": {
+          "description": "The satellite view.",
+          "type": "string",
+          "enum": [
+            "NADIR",
+            "OBLIQUE"
+          ],
+          "default": "NADIR"
+        }
+      }
+    }
+  ]
+}

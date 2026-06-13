@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BatchStatisticalRequestAggregation",
+  "title": "BatchStatisticalRequestAggregation",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/StatisticalRequestAggregationWithoutEvalscript"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "evalscript": {
+          "description": "Your evalscript. For details, click\n<a href=\"https://docs.planet.com/develop/evalscripts/\" target=\"_blank\">here</a>.\nThe evalscript will be executed once for each time interval defined by `timeRange` and `aggregationInterval`.\n\nEither this or `evalscriptReference` parameter is required.\n",
+          "type": "string"
+        },
+        "evalscriptReference": {
+          "description": "Reference to your evalscript stored in an object storage. For details, click\n<a href=\"https://docs.planet.com/develop/evalscripts/\" target=\"_blank\">here</a>.\n\nEither this or `evalscript` parameter is required.\n",
+          "$ref": "#/components/schemas/ObjectStorageInfoV2"
+        }
+      }
+    }
+  ]
+}

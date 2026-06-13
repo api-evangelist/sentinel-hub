@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BatchStatisticsTaskStatusDto",
+  "title": "BatchStatisticsTaskStatusDto",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "UUID of the submitted request.",
+      "format": "uuid",
+      "type": "string"
+    },
+    "status": {
+      "description": "Current processing status of the request. Must NOT be specified when creating new requests",
+      "type": "string",
+      "enum": [
+        "CREATED",
+        "ANALYSING",
+        "ANALYSIS_DONE",
+        "PROCESSING",
+        "DONE",
+        "FAILED",
+        "STOPPED",
+        "PARTIAL"
+      ]
+    },
+    "error": {
+      "description": "Description of error in case the request failed.",
+      "type": "string"
+    },
+    "completionPercentage": {
+      "type": "number"
+    },
+    "lastUpdated": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "costPu": {
+      "type": "number",
+      "description": "Cost of the request in processing units"
+    },
+    "created": {
+      "description": "Creation time of the request",
+      "type": "string",
+      "format": "date-time"
+    },
+    "stoppedStatusReason": {
+      "description": "The reason for request having status STOPPED.",
+      "type": "string",
+      "enum": [
+        "OUT_OF_PU",
+        "USER_ACTION"
+      ]
+    }
+  }
+}

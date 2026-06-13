@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/StatisticalRequest",
+  "title": "StatisticalRequest",
+  "required": [
+    "input",
+    "aggregation"
+  ],
+  "type": "object",
+  "properties": {
+    "input": {
+      "$ref": "#/components/schemas/ProcessRequestInput"
+    },
+    "aggregation": {
+      "$ref": "#/components/schemas/StatisticalRequestAggregation"
+    },
+    "calculations": {
+      "$ref": "#/components/schemas/StatisticalRequestCalculations"
+    }
+  }
+}

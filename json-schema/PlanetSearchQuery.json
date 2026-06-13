@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/PlanetSearchQuery",
+  "title": "PlanetSearchQuery",
+  "deprecated": true,
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/PlanetSearchRequestBase"
+    },
+    {
+      "$ref": "#/components/schemas/SearchQueryBase"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "itemType",
+              "productBundle"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "catalog"
+                ],
+                "default": "catalog",
+                "description": "Use `catalog` for PlanetScope and SkySat data.\n"
+              },
+              "itemType": {
+                "type": "string",
+                "enum": [
+                  "PSScene",
+                  "SkySatCollect"
+                ],
+                "description": "The item type of data to search for or order:\n* Use [PSScene](https://developers.planet.com/docs/data/psscene/) to order PlanetScope data.\n[PSScene4Band](https://developers.planet.com/docs/data/psscene4band/) is deprecated and cannot be ordered since November 1st 2022.\n* Use [SkySatCollect](https://developers.planet.com/docs/data/skysatcollect/) to order SkySat archive data.\n",
+                "externalDocs": {
+                  "description": "Item Types Documentation",
+                  "url": "https://developers.planet.com/docs/apis/data/items-assets/#item-types"
+                }
+              },
+              "productBundle": {
+                "type": "string",
+                "enum": [
+                  "analytic_udm2",
+                  "analytic_sr_udm2",
+                  "analytic_8b_udm2",
+                  "analytic_8b_sr_udm2",
+                  "analytic",
+                  "analytic_sr",
+                  "panchromatic"
+                ],
+                "description": "When ordering, selects the product bundle (that is, the group of assets) to order.\n\nWhen searching, limits search to products available as the specified product bundle.\n\nSupported values depend on item type:\n* for `PSScene`, the product bundles containing \"*udm2*\" are supported,\n* for `SkySatCollect`, `analytic_udm2`, `analytic_sr_udm2` and `panchromatic` are supported.\n\nOther values used by Planet but not listed here are not supported.\n",
+                "externalDocs": {
+                  "description": "Product Bundles Reference",
+                  "url": "https://developers.planet.com/apis/orders/product-bundles-reference/"
+                }
+              },
+              "dataFilter": {
+                "type": "object",
+                "properties": {
+                  "nativeFilter": {
+                    "type": "object",
+                    "description": "Planet Data API search filters",
+                    "externalDocs": {
+                      "description": "Link to the Planet documentation page about search filters.",
+                      "url": "https://developers.planet.com/docs/data/searches-filtering/#search-filters"
+                    },
+                    "example": {
+                      "type": "RangeFilter",
+                      "field_name": "snow_ice_percent",
+                      "config": {
+                        "gte": 10
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

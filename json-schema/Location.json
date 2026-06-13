@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/Location",
+  "title": "Location",
+  "type": "object",
+  "properties": {
+    "@id": {
+      "type": "string",
+      "format": "uri"
+    },
+    "id": {
+      "description": "Sentinel Hub deployment location identifier",
+      "type": "string"
+    },
+    "url": {
+      "description": "Endpoint url",
+      "type": "string"
+    },
+    "wmsUrl": {
+      "description": "WMS Service url",
+      "type": "string"
+    },
+    "processUrl": {
+      "description": "Process API url",
+      "type": "string"
+    },
+    "catalogUrl": {
+      "description": "Catalog API url",
+      "type": "string"
+    }
+  }
+}

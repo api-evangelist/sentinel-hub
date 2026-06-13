@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/S3BucketInfo",
+  "title": "S3BucketInfo",
+  "type": "object",
+  "required": [
+    "url"
+  ],
+  "properties": {
+    "url": {
+      "type": "string",
+      "description": "A URL pointing to an S3 bucket or an object in an S3 bucket. It can contain prefixes, e.g. `s3://my-personal-bucket/some-folder` or `s3://my-personal-bucket/some-folder/some-file.gpkg`."
+    },
+    "iamRoleARN": {
+      "type": "string",
+      "description": "IAM role ARN, which allows programmatic access to the S3 bucket specified in the `url` field using the recommended assume IAM role flow."
+    },
+    "accessKey": {
+      "type": "string",
+      "description": "AWS access key, which allows programmatic access to the S3 bucket specified in the `url` field."
+    },
+    "secretAccessKey": {
+      "type": "string",
+      "description": "AWS secret access key which must correspond to the AWS access key."
+    },
+    "region": {
+      "type": "string",
+      "description": "The region where the S3 bucket is located. If omitted, the region of the deployment that the request is submitted to is assumed."
+    }
+  }
+}

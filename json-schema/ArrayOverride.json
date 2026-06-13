@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ArrayOverride",
+  "title": "ArrayOverride",
+  "type": "object",
+  "description": "Values for the particular output Zarr array. The array names are equal to the identifiers of the outputs/responses of the `processRequest`.\n",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/ArrayParameters"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "customAttributes": {
+          "description": "User-defined metadata to append to the array's `.zattrs` file.\nFor example, to include information on array's content and units, you could set this field to\n`{\"long_name\": \"Chlorophyll-a concentration\", \"units\": \"milligram m-3\"}`\n\n**Note**: the field \"_ARRAY_DIMENSIONS\" is added to the array attributes by default.\nListing this field in `customAttributes` will override its default value.\n",
+          "type": "object"
+        }
+      }
+    }
+  ]
+}

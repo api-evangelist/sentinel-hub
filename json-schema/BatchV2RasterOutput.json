@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BatchV2RasterOutput",
+  "title": "RasterOutput",
+  "type": "object",
+  "required": [
+    "delivery",
+    "group",
+    "type"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "raster"
+      ]
+    },
+    "delivery": {
+      "description": "Path or path template specifying where batch processing results shall be stored. Supported formats: <ul>\n  <li>a valid Amazon S3 URL, e.g. `s3://some-bucket/some/folder`.<br/>\n    A subdirectory will be created for this batch request, named after the request ID, and will contain further subdirectories with the output tiles.\n    This is equivalent to the template `s3://some-bucket/some/folder/<requestId>/<tileName>/<outputId>.<format>`.\n  </li>\n  <li>a templated Amazon S3 URL, e.g. `s3://some-bucket/some/folder/<tileName>.tif`.\n    Templating allows custom organization of the output files.\n    Templates can contain the following placeholders, which are replaced by respective actual values when writing results:\n    <ul>\n      <li> `<requestId>` - the ID of your batch request,</li>\n      <li> `<tileName>` - the name (string ID) of the tile within the used tiling grid,</li>\n      <li> `<outputId>` - the output (raster) identifier (e.g. `default`),</li>\n      <li> `<format>` - the filename extension of the output's format (e.g. `tiff`).</li>\n    </ul>\n    The template must contain `<tileName>` in order to ensure unique output files.\n    In case of multiple outputs, the template must also contain `<outputId>`.\n  </li>\n</ul> The request will fail if files already exist.\n",
+      "$ref": "#/components/schemas/ObjectStorageInfoV2"
+    },
+    "overwrite": {
+      "description": "If `true`, the request will **never** fail if files already exist. Instead, any existing files will be overwritten, except if `skipExisting` is `true` and **all** outputs for a tile exist.\n",
+      "default": false,
+      "type": "boolean"
+    },
+    "skipExisting": {
+      "description": "If `true`, any tiles for which **all** outputs already exist will be skipped. Tiles for which only **some** of the outputs exist will either be *fully overwritten* (if `overwrite` is `true`) or will cause the whole request to fail.\n",
+      "default": false,
+      "type": "boolean"
+    },
+    "cogOutput": {
+      "description": "If `true`, the results will be written as COG (cloud optimized GeoTIFFs). All outputs must use the TIFF format and **cannot** use `sampleType` INT8. We also suggest setting the evalscript output object `nodataValue` (<a href=\"https://docs.planet.com/develop/evalscripts/functions/#output-object-properties\" target=\"_blank\">more details</a>) for correct overview generation.",
+      "default": false,
+      "type": "boolean"
+    },
+    "cogParameters": {
+      "$ref": "#/components/schemas/BatchV2CogParameters"
+    },
+    "createCollection": {
+      "description": "If `true`, the results will be written as BYOC tiles into a BYOC collection. When `collectionId` is not provided, a new collection will be created. Make sure the `cogOutput` = true  and that the output format is a `image/tiff`. The data will still be stored into users S3 bucket and linked as BYOC tiles. Make sure to allow full access to Sentinel Hub from the bucket in order for BYOC to be able to read the data (<a href=\"https://docs.planet.com/develop/apis/batch-processing/#mandatory-aws-s3-bucket-settings\" target=\"_blank\">more details</a>).",
+      "default": false,
+      "type": "boolean"
+    },
+    "collectionId": {
+      "description": "Id of an existing BYOC collection into which the processing results will be ingested.",
+      "type": "string"
+    }
+  }
+}

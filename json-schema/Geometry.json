@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/Geometry",
+  "title": "Geometry",
+  "description": "The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the \"bounds.properties.crs\" parameter. A GeoJsonObject.",
+  "type": "object",
+  "oneOf": [
+    {
+      "$ref": "#/components/schemas/Polygon"
+    },
+    {
+      "$ref": "#/components/schemas/MultiPolygon"
+    }
+  ],
+  "example": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          14.000701904296873,
+          46.23685258143992
+        ],
+        [
+          13.822174072265625,
+          46.09037664604301
+        ],
+        [
+          14.113311767578125,
+          45.85080395917834
+        ],
+        [
+          14.55963134765625,
+          46.038922598236
+        ],
+        [
+          14.441528320312498,
+          46.28717293114449
+        ],
+        [
+          14.17236328125,
+          46.29191774991382
+        ],
+        [
+          14.000701904296873,
+          46.23685258143992
+        ]
+      ]
+    ]
+  }
+}

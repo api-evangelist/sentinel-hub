@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogProviders",
+  "title": "providers",
+  "type": "array",
+  "description": "A list of providers, which may include all organizations capturing or processing the data or the hosting provider. Providers should be listed in chronological order with the most recent provider being the last element of the list.",
+  "items": {
+    "type": "object",
+    "title": "Provider",
+    "required": [
+      "name"
+    ],
+    "properties": {
+      "name": {
+        "description": "The name of the organization or the individual.",
+        "type": "string"
+      },
+      "description": {
+        "description": "Multi-line description to add further provider information such as processing details for processors and producers, hosting details for hosts or basic contact information.\n\n[CommonMark 0.29](http://commonmark.org/) syntax MAY be used for rich text representation.",
+        "type": "string"
+      },
+      "roles": {
+        "description": "Roles of the provider.\n\nThe provider's role(s) can be one or more of the following\nelements:\n\n* licensor: The organization that is licensing the dataset under\n  the license specified in the collection's license field.\n* producer: The producer of the data is the provider that\n  initially captured and processed the source data, e.g. ESA for\n  Sentinel-2 data.\n* processor: A processor is any provider who processed data to a\n  derived product.\n* host: The host is the actual provider offering the data on their\n  storage. There should be no more than one host, specified as last\n  element of the list.",
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "producer",
+            "licensor",
+            "processor",
+            "host"
+          ]
+        }
+      },
+      "url": {
+        "description": "Homepage on which the provider describes the dataset and publishes contact information.",
+        "type": "string",
+        "format": "url"
+      }
+    }
+  }
+}

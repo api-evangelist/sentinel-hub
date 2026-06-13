@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ProcessRequestOutputFormatZarr",
+  "title": "zarr/array",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/ProcessRequestOutputFormat"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "zarr/array"
+          ]
+        }
+      }
+    }
+  ]
+}

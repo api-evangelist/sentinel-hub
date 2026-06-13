@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/Subscription",
+  "title": "Subscription",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Subscription ID",
+      "type": "string",
+      "format": "uuid",
+      "readOnly": true
+    },
+    "name": {
+      "description": "Subscription name. It's also used as a name for a new BYOC collection, if no collection is given in collectionId field.",
+      "type": "string"
+    },
+    "accountId": {
+      "description": "Account ID",
+      "type": "string",
+      "format": "uuid",
+      "readOnly": true
+    },
+    "collectionId": {
+      "description": "BYOC collection ID. If given at subscription creation, the data is imported into referenced collection, which must be compatible with the data being subscribed - that is, must either be empty or contain the same bands as the data being subscribed.\n\nIf not given at subscription creation, a new BYOC collection is created when the subscription is confirmed and its ID is returned in the response from the `confirm` endpoint.\n",
+      "type": "string",
+      "format": "uuid"
+    },
+    "status": {
+      "$ref": "#/components/schemas/SubscriptionStatus"
+    },
+    "sqkm": {
+      "description": "Area of the subscriptions's `input.bounds` in km<sup>2</sup>",
+      "type": "number",
+      "readOnly": true
+    },
+    "input": {
+      "type": "object",
+      "description": "Specification of the subscribed data"
+    }
+  }
+}

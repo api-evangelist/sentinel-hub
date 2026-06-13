@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ProcessRequestInputBounds",
+  "title": "Bounds",
+  "description": "Defines the request bounds by specifying the bounding box and/or\ngeometry for the request. If both are specified it will generate an image\nfor the bounding box and render data contained within the geometry.\n",
+  "type": "object",
+  "properties": {
+    "bbox": {
+      "description": "The request bounding box. This and/or GEOMETRY must be specified.\nSpecify with a coordinate pair on two (opposite) vertices of the bounding\nbox rectangle. Coordinates need to be in easting,northing or longitude, latitude,\nin that order in the CRS defined in the \"bounds.properties.crs\" parameter.\n",
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "number",
+        "format": "double"
+      },
+      "example": [
+        13.822174072265625,
+        45.85080395917834,
+        14.55963134765625,
+        46.29191774991382
+      ]
+    },
+    "geometry": {
+      "$ref": "#/components/schemas/Geometry"
+    },
+    "properties": {
+      "$ref": "#/components/schemas/ProcessRequestInputBoundsProperties"
+    }
+  }
+}

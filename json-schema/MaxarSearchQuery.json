@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/MaxarSearchQuery",
+  "title": "MaxarSearchQuery",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/MaxarRequestBase"
+    },
+    {
+      "$ref": "#/components/schemas/SearchQueryBase"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "productBands"
+            ],
+            "properties": {
+              "productBands": {
+                "type": "string",
+                "description": "Band Bundle\n",
+                "enum": [
+                  "4BB"
+                ]
+              },
+              "dataFilter": {
+                "type": "object",
+                "properties": {
+                  "minOffNadir": {
+                    "$ref": "#/components/schemas/MaxarMinOffNadir"
+                  },
+                  "maxOffNadir": {
+                    "$ref": "#/components/schemas/MaxarMaxOffNadir"
+                  },
+                  "minSunElevation": {
+                    "$ref": "#/components/schemas/MaxarMinSunElevation"
+                  },
+                  "maxSunElevation": {
+                    "$ref": "#/components/schemas/MaxarMaxSunElevation"
+                  },
+                  "sensor": {
+                    "$ref": "#/components/schemas/MaxarSensor"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/S5PProcessing",
+  "title": "S5PProcessing",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/BaseDatasetProcessing"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "minQa": {
+          "description": "The minimum (inclusive) pixel quality to be displayed.\n\nFor NO2, default is 75.\n",
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 50
+        }
+      }
+    }
+  ]
+}

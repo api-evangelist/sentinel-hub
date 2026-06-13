@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BYOCFiltering",
+  "title": "BYOCFiltering",
+  "type": "object",
+  "properties": {
+    "timeRange": {
+      "$ref": "#/components/schemas/TimeRange"
+    },
+    "mosaickingOrder": {
+      "description": "The order in which tiles are overlapped from which the output result is mosaicked.",
+      "type": "string",
+      "enum": [
+        "mostRecent",
+        "leastRecent"
+      ],
+      "default": "mostRecent"
+    }
+  }
+}

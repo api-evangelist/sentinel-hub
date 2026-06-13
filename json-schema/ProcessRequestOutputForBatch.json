@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ProcessRequestOutputForBatch",
+  "title": "ProcessRequestOutputForBatch",
+  "type": "object",
+  "properties": {
+    "responses": {
+      "type": "array",
+      "description": "Response object.",
+      "items": {
+        "$ref": "#/components/schemas/ProcessRequestOutputBatchResponse"
+      }
+    }
+  }
+}

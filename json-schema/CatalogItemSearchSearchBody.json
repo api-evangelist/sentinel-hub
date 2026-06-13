@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogItemSearchSearchBody",
+  "title": "searchBody",
+  "description": "The search criteria",
+  "type": "object",
+  "required": [
+    "datetime",
+    "collections"
+  ],
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/CatalogItemSearchBboxFilter"
+    },
+    {
+      "$ref": "#/components/schemas/CatalogItemSearchDatetimeFilter"
+    },
+    {
+      "$ref": "#/components/schemas/CatalogItemSearchIntersectsFilter"
+    },
+    {
+      "$ref": "#/components/schemas/CatalogItemSearchCollectionsFilter"
+    },
+    {
+      "$ref": "#/components/schemas/CatalogItemSearchIdsFilter"
+    },
+    {
+      "$ref": "#/components/schemas/CatalogItemSearchLimitFilter"
+    }
+  ]
+}

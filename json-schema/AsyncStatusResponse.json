@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/AsyncStatusResponse",
+  "title": "AsyncStatusResponse",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "UUID of the submitted request",
+      "format": "UUID",
+      "type": "string"
+    },
+    "status": {
+      "description": "Status of the request",
+      "type": "string",
+      "enum": [
+        "RUNNING"
+      ]
+    }
+  }
+}

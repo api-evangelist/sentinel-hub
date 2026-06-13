@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ProcessRequestInputBoundsProperties",
+  "title": "BoundsProperties",
+  "type": "object",
+  "properties": {
+    "crs": {
+      "description": "The coordinate reference system of the coordinates. Must be\none of the values listed at https://docs.planet.com/develop/apis/processing/#crs-support.\nDefault CRS is WGS84, http://www.opengis.net/def/crs/OGC/1.3/CRS84.\n",
+      "type": "string",
+      "default": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
+    }
+  }
+}

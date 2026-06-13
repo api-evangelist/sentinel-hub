@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogAssets",
+  "title": "assets",
+  "type": "object",
+  "additionalProperties": {
+    "type": "object",
+    "required": [
+      "href"
+    ],
+    "properties": {
+      "href": {
+        "type": "string",
+        "format": "url",
+        "description": "Link to the asset object"
+      },
+      "title": {
+        "type": "string",
+        "description": "Displayed title",
+        "example": "Thumbnail"
+      },
+      "description": {
+        "type": "string",
+        "description": "Multi-line description to explain the asset.\n\n[CommonMark 0.29](http://commonmark.org/) syntax MAY be used for rich text representation.",
+        "example": "Small 256x256px PNG thumbnail for a preview."
+      },
+      "type": {
+        "type": "string",
+        "description": "Media type of the asset",
+        "example": "image/png"
+      },
+      "roles": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Purposes of the asset",
+        "example": [
+          "thumbnail"
+        ]
+      }
+    }
+  }
+}

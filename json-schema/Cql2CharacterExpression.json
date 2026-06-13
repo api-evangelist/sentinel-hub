@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/Cql2CharacterExpression",
+  "title": "characterExpression",
+  "oneOf": [
+    {
+      "type": "string"
+    },
+    {
+      "$ref": "#/components/schemas/Cql2PropertyRef"
+    }
+  ]
+}

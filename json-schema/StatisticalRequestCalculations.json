@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/StatisticalRequestCalculations",
+  "title": "StatisticalRequestCalculations",
+  "description": "Define which statistics and histogram to calculate.\nIt can be specified differently for each evalscript output.\nIf omitted only the basic statistic (min, max, mean, stDev) will be calculated.\n",
+  "type": "object",
+  "additionalProperties": {
+    "x-additionalPropertiesName": "output name",
+    "$ref": "#/components/schemas/CalculationDefinition"
+  }
+}

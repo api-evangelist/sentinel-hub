@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/S2Processing",
+  "title": "S2Processing",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/BaseDatasetProcessing"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "harmonizeValues": {
+          "description": "Harmonizes data values to be comparable with old processing baselines. See <a href=\"https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l1c/#harmonize-values\" target=\"_blank\">here</a> for details.\n",
+          "type": "boolean",
+          "default": true
+        }
+      }
+    }
+  ]
+}

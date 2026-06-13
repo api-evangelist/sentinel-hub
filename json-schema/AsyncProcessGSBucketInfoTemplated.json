@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/AsyncProcessGSBucketInfoTemplated",
+  "title": "AsyncProcessGSBucketInfoTemplated",
+  "type": "object",
+  "required": [
+    "url",
+    "credentials"
+  ],
+  "properties": {
+    "url": {
+      "type": "string",
+      "description": "A URL or URL template specifying where the results shall be accessed. Supported formats: <ul>\n  <li>a valid Google Cloud Storage URL, e.g. `gs://my-bucket/some-folder`.\n    A subdirectory will be created for this async process request, named after the request ID, and output files will be stored there.\n    This is equivalent to the template `gs://my-bucket/some-folder/<REQUEST_ID>/<OUTPUT>`.\n  </li>\n  <li>a templated Google Cloud Storage URL, e.g. `gs://my-bucket/some-folder/<OUTPUT>`.\n    Templating allows custom organization of the output files.\n    Templates can contain the following placeholders, which are replaced by respective actual values when writing results:\n    <ul>\n      <li> `<REQUEST_ID>` - the ID of your async process request,</li>\n      <li> `<OUTPUT>` - the output of the async request.</li>\n    </ul>\n    If the request is not templated `<REQUEST_ID>/<OUTPUT>` will be used as default.\n  </li>\n</ul>\n"
+    },
+    "credentials": {
+      "type": "string",
+      "description": "Base64-encoded service account credentials in JSON format."
+    }
+  }
+}

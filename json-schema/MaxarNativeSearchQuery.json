@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/MaxarNativeSearchQuery",
+  "title": "MaxarNativeSearchQuery",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/MaxarRequestBase"
+    },
+    {
+      "type": "object",
+      "example": {
+        "provider": "MAXAR",
+        "startDate": "2020-11-06T00:00:00.0Z",
+        "endDate": "2020-11-06T23:59:59.0Z",
+        "sensor": "WV03",
+        "aoiInGeoJson": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                15.81,
+                46.7
+              ],
+              [
+                15.84,
+                46.7
+              ],
+              [
+                15.84,
+                46.72
+              ],
+              [
+                15.81,
+                46.72
+              ],
+              [
+                15.81,
+                46.7
+              ]
+            ]
+          ],
+          "crs": {
+            "type": "name",
+            "properties": {
+              "name": "EPSG:4326"
+            }
+          }
+        }
+      },
+      "additionalProperties": {
+        "description": "Fields from request body of MAXAR search."
+      }
+    }
+  ]
+}

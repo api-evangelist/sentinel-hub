@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/AsyncProcessRequest",
+  "title": "AsyncProcessRequest",
+  "type": "object",
+  "required": [
+    "input",
+    "output"
+  ],
+  "properties": {
+    "input": {
+      "$ref": "#/components/schemas/ProcessRequestInput"
+    },
+    "output": {
+      "$ref": "#/components/schemas/AsyncProcessRequestOutput"
+    },
+    "evalscript": {
+      "description": "Your evalscript. For details, click\n<a href=\"https://docs.planet.com/develop/evalscripts/\" target=\"_blank\">here</a>.\n\nEither this or `evalscriptReference` parameter is required.\n",
+      "type": "string"
+    },
+    "evalscriptReference": {
+      "description": "Reference to your evalscript stored in an object storage. For details, click\n<a href=\"https://docs.planet.com/develop/evalscripts/\" target=\"_blank\">here</a>.\n\nEither this or `evalscript` parameter is required.\n",
+      "$ref": "#/components/schemas/ObjectStorageInfoV2"
+    }
+  }
+}

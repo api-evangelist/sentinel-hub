@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/DatasetType",
+  "title": "DatasetType",
+  "type": "string",
+  "enum": [
+    "sentinel-2-l1c",
+    "sentinel-2-l2a",
+    "landsat-8-l1c",
+    "landsat-ot-l1",
+    "landsat-ot-l2",
+    "landsat-tm-l1",
+    "landsat-tm-l2",
+    "dem",
+    "modis",
+    "sentinel-1-grd",
+    "s2gm",
+    "sentinel-3-olci",
+    "sentinel-3-slstr",
+    "sentinel-5p-l2",
+    "custom"
+  ]
+}

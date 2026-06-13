@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogCoreLandingPage",
+  "title": "CatalogCoreLandingPage",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/CatalogCatalog"
+    },
+    {
+      "$ref": "#/components/schemas/CatalogConformanceClasses"
+    }
+  ]
+}

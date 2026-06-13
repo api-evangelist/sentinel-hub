@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/StatisticsDefinition",
+  "title": "StatisticsDefinition",
+  "description": "Single band statistics definition. The name of the band (as key) for which a calculation of statistic is defined below. Each key must match with one of the band names `output.bands` specified in a `setup()` function in an evalscript (for this output) or be \"default\". If it is \"default\", the statistics specified below will be calculated for all bands of this output for which calculation of statistics is not explicitly defined.",
+  "type": "object",
+  "properties": {
+    "percentiles": {
+      "description": "Calculate percentiles.",
+      "type": "object",
+      "properties": {
+        "k": {
+          "description": "Percentiles definition as array of values between [0,1], [see this example](https://docs.planet.com/develop/apis/statistical/examples/#statistics-histogram-and-percentiles-for-one-single-band-output).\n",
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "double",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      }
+    }
+  }
+}

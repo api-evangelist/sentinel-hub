@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BatchProcessRequest",
+  "title": "BatchProcessRequest",
+  "required": [
+    "processRequest"
+  ],
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Identifier",
+      "type": "string",
+      "format": "uuid",
+      "readOnly": true
+    },
+    "accountId": {
+      "description": "Account that submitted the request",
+      "type": "string",
+      "format": "uuid",
+      "readOnly": true
+    },
+    "created": {
+      "description": "Creation time of the request in ISO 8601",
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "processRequest": {
+      "$ref": "#/components/schemas/ProcessRequestForBatch"
+    },
+    "tilingGridId": {
+      "description": "This parameter was moved to tilingGrid",
+      "type": "integer",
+      "format": "int64",
+      "deprecated": true
+    },
+    "tilingGrid": {
+      "$ref": "#/components/schemas/TilingGridSettings"
+    },
+    "resolution": {
+      "description": "This parameter was moved to tilingGrid.",
+      "type": "number",
+      "format": "double",
+      "deprecated": true
+    },
+    "output": {
+      "$ref": "#/components/schemas/BatchProcessOutput"
+    },
+    "bucketName": {
+      "description": "Simplified alternative for specifying where the results shall be written, where only the bucket name is specified. Specifying `some-bucket` as `bucketName` is equivalent to specifying `s3://some-bucket` as the `defaultTilePath` in `output`.\n",
+      "type": "string"
+    },
+    "zarrOutput": {
+      "$ref": "#/components/schemas/BatchZarrParameters"
+    },
+    "description": {
+      "description": "Optional description that can be used to keep track of requests",
+      "type": "string"
+    },
+    "valueEstimate": {
+      "description": "Estimated processing value (cost) of the request in [processing units](https://docs.planet.com/platform/processing-units/). The accuracy of the estimate depends on your request, as described in the [documentation](https://docs.sentinel-hub.com/api/latest/api/batch/#cost-estimate).\n",
+      "type": "number",
+      "format": "double",
+      "readOnly": true
+    },
+    "tileCount": {
+      "description": "Number of output tiles",
+      "type": "integer",
+      "format": "int32",
+      "readOnly": true
+    },
+    "tileWidthPx": {
+      "description": "Tile width in pixels",
+      "type": "integer",
+      "format": "int32",
+      "readOnly": true
+    },
+    "tileHeightPx": {
+      "description": "Tile height in pixels",
+      "type": "integer",
+      "format": "int32",
+      "readOnly": true
+    },
+    "userAction": {
+      "description": "Last user action on the request",
+      "type": "string",
+      "enum": [
+        "NONE",
+        "ANALYSE",
+        "START",
+        "CANCEL"
+      ],
+      "readOnly": true
+    },
+    "userActionUpdated": {
+      "description": "Time of last user action update in ISO 8601",
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "status": {
+      "description": "Current processing status of the request",
+      "type": "string",
+      "enum": [
+        "CREATED",
+        "ANALYSING",
+        "ANALYSIS_DONE",
+        "PROCESSING",
+        "DONE",
+        "PARTIAL",
+        "FAILED",
+        "CANCELED"
+      ],
+      "readOnly": true
+    },
+    "error": {
+      "description": "Error description for requests that were submitted but failed during analysis or processing",
+      "type": "string",
+      "readOnly": true
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/SubscriptionDeliveryBase",
+  "title": "SubscriptionDeliveryBase",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Delivery ID",
+      "type": "string",
+      "format": "uuid"
+    },
+    "status": {
+      "$ref": "#/components/schemas/DeliveryStatus"
+    },
+    "errorMessage": {
+      "description": "Error message if status = \"DELIVERY_FAILED\", \"NON_INGESTIBLE\" or \"IMPORT_FAILED\".",
+      "type": "string"
+    }
+  }
+}

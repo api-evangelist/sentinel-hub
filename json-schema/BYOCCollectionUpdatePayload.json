@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BYOCCollectionUpdatePayload",
+  "title": "BYOCCollectionUpdatePayload",
+  "type": "object",
+  "required": [
+    "name",
+    "s3Bucket"
+  ],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "s3Bucket": {
+      "description": "Can only be changed if the collection is empty.",
+      "type": "string"
+    },
+    "noData": {
+      "description": "If the value is not provided, the old one gets deleted.",
+      "type": "number"
+    },
+    "additionalData": {
+      "description": "If provided, overwrites the current bands property of the collection:\n- to rename band(s), provide the current value of the \"bands\" property with only the name(s) of one or more bands changed\n- to set noData value(s), provide the current value of the \"bands\" property with only the noData value(s) of one or more bands changed\n- to remove band(s), provide the current value of the \"bands\" property but leave out the band(s) you wish to remove\n- to remove all bands, you must first empty the collection, then provide \"additionalData\" without the \"bands\" property or with an empty \"bands\" property.\n\nKeep in mind that:\n- bands cannot be added nor their other properties (\"bitDepth\", \"bandIndex\", etc) changed once you add a tile.\n- once sample format is set you cannot change it, and tiles ingested from then on need be in the set sample format.\n\nIf \"additionalData\" is omitted, the bands will not be changed.\n",
+      "$ref": "#/components/schemas/BYOCCollectionAdditionalData"
+    }
+  }
+}

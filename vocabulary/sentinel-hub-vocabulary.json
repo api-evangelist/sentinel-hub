@@ -1,0 +1,1936 @@
+{
+  "vocabulary": [
+    {
+      "term": "process",
+      "type": "tag",
+      "label": "Process",
+      "description": "Make sure to use the appropriate <a href=\"https://docs.sentinel-hub.com/api/latest/data/\" target=\"_blank\">end-point for each of the datasets</a>, e.g. for Landsat, Sentinel-3, etc."
+    },
+    {
+      "term": "catalog_core",
+      "type": "tag",
+      "label": "Core",
+      "description": "This is an OpenAPI definition of the SpatioTemporal Asset Catalog API - Core specification. Any service that implements this endpoint to allow discovery of spatiotemporal assets can be considered a ST"
+    },
+    {
+      "term": "catalog_collections",
+      "type": "tag",
+      "label": "Collections",
+      "description": "This is an OpenAPI definition of the SpatioTemporal Asset Catalog API - Collections specification. This is a subset of the STAC API - Features specification."
+    },
+    {
+      "term": "catalog_features",
+      "type": "tag",
+      "label": "Features",
+      "description": "This is an OpenAPI definition of the SpatioTemporal Asset Catalog API - Features specification. This extends OGC API - Features - Part 1: Core."
+    },
+    {
+      "term": "catalog_item_search",
+      "type": "tag",
+      "label": "Item Search",
+      "description": "This is an OpenAPI definition of the SpatioTemporal Asset Catalog API - Item Search specification."
+    },
+    {
+      "term": "async_process",
+      "type": "tag",
+      "label": "Async Process",
+      "description": "**NOTE:** _Asynchronous Processing API is currently in beta release._\n"
+    },
+    {
+      "term": "batch_v2_process",
+      "type": "tag",
+      "label": "Process",
+      "description": ""
+    },
+    {
+      "term": "batch_v2_tiling_grid",
+      "type": "tag",
+      "label": "Tiling grid",
+      "description": ""
+    },
+    {
+      "term": "statistical",
+      "type": "tag",
+      "label": "Statistical",
+      "description": ""
+    },
+    {
+      "term": "batch_statistical",
+      "type": "tag",
+      "label": "Statistical",
+      "description": ""
+    },
+    {
+      "term": "byoc_collection",
+      "type": "tag",
+      "label": "Collection",
+      "description": ""
+    },
+    {
+      "term": "byoc_tile",
+      "type": "tag",
+      "label": "Tile",
+      "description": ""
+    },
+    {
+      "term": "zarr_collection",
+      "type": "tag",
+      "label": "Collection",
+      "description": ""
+    },
+    {
+      "term": "zarr_array",
+      "type": "tag",
+      "label": "Arrays",
+      "description": ""
+    },
+    {
+      "term": "dataimport_search",
+      "type": "tag",
+      "label": "Search",
+      "description": "TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use [Planet Item Search](https://docs.planet.com/develop/apis/data/reference/#tag/Item-Search) instead.\n"
+    },
+    {
+      "term": "dataimport_product",
+      "type": "tag",
+      "label": "Product",
+      "description": "TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use [Planet Data API](https://docs.planet.com/develop/apis/data/reference/) instead.\n"
+    },
+    {
+      "term": "dataimport_order",
+      "type": "tag",
+      "label": "Order",
+      "description": "TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use [Planet Orders API](https://docs.planet.com/develop/apis/orders/reference/) instead.\n"
+    },
+    {
+      "term": "dataimport_delivery",
+      "type": "tag",
+      "label": "Order delivery",
+      "description": "TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use [Planet Orders API](https://docs.planet.com/develop/apis/orders/reference/) instead.\n"
+    },
+    {
+      "term": "dataimport_tile_delivery",
+      "type": "tag",
+      "label": "Order delivery tile",
+      "description": "TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use the [BYOC API](https://docs.planet.com/develop/apis/byoc/reference/#tag/byoc_tile) instead to work wi"
+    },
+    {
+      "term": "dataimport_subscription",
+      "type": "tag",
+      "label": "Subscription",
+      "description": "TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use [Planet Subscriptions API](https://docs.planet.com/develop/apis/subscriptions/reference/) instead.\n"
+    },
+    {
+      "term": "dataimport_subscription_delivery",
+      "type": "tag",
+      "label": "Subscription delivery",
+      "description": "TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use [Planet Subscriptions API](https://docs.planet.com/develop/apis/subscriptions/reference/) instead.\n"
+    },
+    {
+      "term": "dataimport_subscription_tile_delivery",
+      "type": "tag",
+      "label": "Subscription delivery tile",
+      "description": "TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use the [BYOC API](https://docs.planet.com/develop/apis/byoc/reference/#tag/byoc_tile) instead to work wi"
+    },
+    {
+      "term": "dataimport_quota",
+      "type": "tag",
+      "label": "Quota",
+      "description": ""
+    },
+    {
+      "term": "metadata_location",
+      "type": "tag",
+      "label": "Location",
+      "description": ""
+    },
+    {
+      "term": "metadata_collection",
+      "type": "tag",
+      "label": "Collection",
+      "description": ""
+    },
+    {
+      "term": "Boom",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "RestErrorWrapper",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "DatasetType",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "sentinel-2-l1c",
+      "type": "enum",
+      "parentSchema": "DatasetType"
+    },
+    {
+      "term": "sentinel-2-l2a",
+      "type": "enum",
+      "parentSchema": "DatasetType"
+    },
+    {
+      "term": "landsat-8-l1c",
+      "type": "enum",
+      "parentSchema": "DatasetType"
+    },
+    {
+      "term": "landsat-ot-l1",
+      "type": "enum",
+      "parentSchema": "DatasetType"
+    },
+    {
+      "term": "landsat-ot-l2",
+      "type": "enum",
+      "parentSchema": "DatasetType"
+    },
+    {
+      "term": "landsat-tm-l1",
+      "type": "enum",
+      "parentSchema": "DatasetType"
+    },
+    {
+      "term": "landsat-tm-l2",
+      "type": "enum",
+      "parentSchema": "DatasetType"
+    },
+    {
+      "term": "dem",
+      "type": "enum",
+      "parentSchema": "DatasetType"
+    },
+    {
+      "term": "modis",
+      "type": "enum",
+      "parentSchema": "DatasetType"
+    },
+    {
+      "term": "sentinel-1-grd",
+      "type": "enum",
+      "parentSchema": "DatasetType"
+    },
+    {
+      "term": "s2gm",
+      "type": "enum",
+      "parentSchema": "DatasetType"
+    },
+    {
+      "term": "sentinel-3-olci",
+      "type": "enum",
+      "parentSchema": "DatasetType"
+    },
+    {
+      "term": "sentinel-3-slstr",
+      "type": "enum",
+      "parentSchema": "DatasetType"
+    },
+    {
+      "term": "sentinel-5p-l2",
+      "type": "enum",
+      "parentSchema": "DatasetType"
+    },
+    {
+      "term": "custom",
+      "type": "enum",
+      "parentSchema": "DatasetType"
+    },
+    {
+      "term": "Interpolator",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BILINEAR",
+      "type": "enum",
+      "parentSchema": "Interpolator"
+    },
+    {
+      "term": "BICUBIC",
+      "type": "enum",
+      "parentSchema": "Interpolator"
+    },
+    {
+      "term": "LANCZOS",
+      "type": "enum",
+      "parentSchema": "Interpolator"
+    },
+    {
+      "term": "BOX",
+      "type": "enum",
+      "parentSchema": "Interpolator"
+    },
+    {
+      "term": "NEAREST",
+      "type": "enum",
+      "parentSchema": "Interpolator"
+    },
+    {
+      "term": "BaseDataset",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "S2L1CDataset",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "S2L2ADataset",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "LandsatDataset",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "Ls8Dataset",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "L8L1Dataset",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "L8L2Dataset",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "LTML1Dataset",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "LTML2Dataset",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "LETML1Dataset",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "LETML2Dataset",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "LMSSL1Dataset",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ModisDataset",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "DEMDataset",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "S1Dataset",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "HLSDataset",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BYOCDataset",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "DateTimeInterval",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "Geometry",
+      "type": "schema",
+      "description": "The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the \"bounds.properties."
+    },
+    {
+      "term": "Polygon",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "MultiPolygon",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "View",
+      "type": "schema",
+      "description": "Links to paginate the resource"
+    },
+    {
+      "term": "ResourceReference",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ObjectStorageInfo",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "S3BucketInfo",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "GSBucketInfo",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ObjectStorageInfoV2",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BYOCFormat",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BYOCCollectionAdditionalData",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BatchProcessRequest",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "MultiPartBatchRequest",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ProcessRequestOutputBatchResponse",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "TilingGridSettings",
+      "type": "schema",
+      "description": "Tiling grid settings.\n"
+    },
+    {
+      "term": "BatchProcessOutput",
+      "type": "schema",
+      "description": "Specifies the tile output paths where the results shall be written. Required unless `bucketName` or `zarrOutput` is specified.\n"
+    },
+    {
+      "term": "BatchCogParameters",
+      "type": "schema",
+      "description": "Allows to specify COG creation parameters.\n\nWhen the output is a batch collection (that is, either *createCollection* is true or *collectionId* is provided),\nCOG customization is limited: only the *re"
+    },
+    {
+      "term": "BatchZarrParameters",
+      "type": "schema",
+      "description": "Specifies Zarr creation parameters.\n\nIf this parameter is specified, all outputs in processRequest **must** be of the type zarr/array\nand neither `bucketName` nor `output` can be specified.\nWith Zarr "
+    },
+    {
+      "term": "Group",
+      "type": "schema",
+      "description": "Zarr group level parameters"
+    },
+    {
+      "term": "ArrayParameters",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ArrayOverrides",
+      "type": "schema",
+      "description": "Overrides the values of `arrayParameters` for individual arrays."
+    },
+    {
+      "term": "ArrayOverride",
+      "type": "schema",
+      "description": "Values for the particular output Zarr array. The array names are equal to the identifiers of the outputs/responses of the `processRequest`.\n"
+    },
+    {
+      "term": "BatchTileOrigin",
+      "type": "schema",
+      "description": "Coordinates of the tile origin (lower left corner) in the tile's CRS."
+    },
+    {
+      "term": "TilingGridDescriptor",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "TilingGridDescriptorProperties",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ProcessRequestForBatch",
+      "type": "schema",
+      "description": "Batch processing equivalent of the <a href=\"#operation/process\">Process request</a>."
+    },
+    {
+      "term": "ProcessRequestOutputForBatch",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ProcessRequestInput",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ProcessRequestInputData",
+      "type": "schema",
+      "description": "The collections you wish to request, along with certain processing and filtering parameters.\nTo learn how to request and work with multiple collection, check the \"Data Fusion\" page in our documentatio"
+    },
+    {
+      "term": "ProcessRequestInputBounds",
+      "type": "schema",
+      "description": "Defines the request bounds by specifying the bounding box and/or\ngeometry for the request. If both are specified it will generate an image\nfor the bounding box and render data contained within the geo"
+    },
+    {
+      "term": "ProcessRequestInputBoundsProperties",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ProcessRequestOutput",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ProcessRequestOutputResponse",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ProcessRequestOutputFormat",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ProcessRequestOutputFormatJpeg",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ProcessRequestOutputFormatPng",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ProcessRequestOutputFormatTiff",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ProcessRequestOutputFormatJson",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ProcessRequestOutputFormatZarr",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BaseDatasetProcessing",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "S2Processing",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "DEMProcessing",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "S1Processing",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "S1ProcessingSpeckleFilterLEE",
+      "type": "schema",
+      "description": "The Lee speckle filter. Note that processing time rapidly increases as window size increases."
+    },
+    {
+      "term": "S1ProcessingSpeckleFilterNONE",
+      "type": "schema",
+      "description": "Does NO speckle filtering. Equivalent to not having speckleFilter defined."
+    },
+    {
+      "term": "S3SlstrProcessing",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "S5PProcessing",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "S2L2AFiltering",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "S2L1CFiltering",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "LandsatFiltering",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "LandsatTierFilteringWithRt",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "LandsatTierFilteringWithoutRt",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "HLSFiltering",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ModisFiltering",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "S1Filtering",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BYOCFiltering",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "DEMFiltering",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "TimeRange",
+      "type": "schema",
+      "description": "A time interval to filter data by acquisition date. It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. "
+    },
+    {
+      "term": "MaxCloudCoverage",
+      "type": "schema",
+      "description": "The maximum allowable cloud coverage in percent."
+    },
+    {
+      "term": "StatisticalRequest",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "MultiPartStatisticalRequest",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "Aggregation",
+      "type": "schema",
+      "description": "Specifies how given time range is split into time intervals.\n"
+    },
+    {
+      "term": "CalculationDefinition",
+      "type": "schema",
+      "description": "The name of the output (as key) for which a calculation of statistics and histogram are defined below. Each key must match with one of the `output.id` specified in a `setup()` function in an evalscrip"
+    },
+    {
+      "term": "HistogramDefinition",
+      "type": "schema",
+      "description": "The name of the band (as key) for which a histogram is defined below. Each key must match with one of the band names\n`output.bands` specified in a `setup()` function in an evalscript (for this output)"
+    },
+    {
+      "term": "StatisticsDefinition",
+      "type": "schema",
+      "description": "Single band statistics definition. The name of the band (as key) for which a calculation of statistic is defined below. Each key must match with one of the band names `output.bands` specified in a `se"
+    },
+    {
+      "term": "StatisticalRequestAggregationWithoutEvalscript",
+      "type": "schema",
+      "description": "Specifies how data is aggregated and processed before statistics is calculated. `timeRange` and `aggregationInterval` combined define sampling intervals in time dimension. Width/height or resx/resy co"
+    },
+    {
+      "term": "StatisticalDateTimeInterval",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "StatisticalRequestAggregation",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "StatisticalRequestCalculations",
+      "type": "schema",
+      "description": "Define which statistics and histogram to calculate.\nIt can be specified differently for each evalscript output.\nIf omitted only the basic statistic (min, max, mean, stDev) will be calculated.\n"
+    },
+    {
+      "term": "StatisticalResponse",
+      "type": "schema",
+      "description": "Statistics\n"
+    },
+    {
+      "term": "BandStatistics",
+      "type": "schema",
+      "description": "Per band statistics and histograms\n"
+    },
+    {
+      "term": "ProcessRequest",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "MultiPartProcessRequest",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogException",
+      "type": "schema",
+      "description": "Information about the exception: an error code plus an optional description."
+    },
+    {
+      "term": "CatalogConformanceClasses",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogCatalog",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogCollection",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogExtent",
+      "type": "schema",
+      "description": "The extent of the features in the collection. In the Core only spatial and temporal\nextents are specified. Extensions may add additional members to represent other\nextents, for example, thermal or pre"
+    },
+    {
+      "term": "CatalogLinks",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogLink",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogLicense",
+      "type": "schema",
+      "description": "License(s) of the data as a SPDX\n[License identifier](https://spdx.org/licenses/). Alternatively, use\n`proprietary` if the license is not on the SPDX license list or\n`various` if multiple licenses app"
+    },
+    {
+      "term": "CatalogProviders",
+      "type": "schema",
+      "description": "A list of providers, which may include all organizations capturing or processing the data or the hosting provider. Providers should be listed in chronological order with the most recent provider being"
+    },
+    {
+      "term": "CatalogBbox",
+      "type": "schema",
+      "description": "Only features that have a geometry that intersects the bounding box are\nselected. The bounding box is provided as four or six numbers,\ndepending on whether the coordinate reference system includes a\nv"
+    },
+    {
+      "term": "CatalogDatetime",
+      "type": "schema",
+      "description": "The searchable date and time of the assets, in UTC.\nIt is formatted according to [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).\n`null` is allowed, but requires `start_dateti"
+    },
+    {
+      "term": "CatalogStacVersion",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogStacExtensions",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogItem",
+      "type": "schema",
+      "description": "A GeoJSON Feature augmented with foreign members that contain values relevant to a STAC entity"
+    },
+    {
+      "term": "CatalogItemId",
+      "type": "schema",
+      "description": "Provider identifier, a unique ID."
+    },
+    {
+      "term": "CatalogItemType",
+      "type": "schema",
+      "description": "The GeoJSON type"
+    },
+    {
+      "term": "Feature",
+      "type": "enum",
+      "parentSchema": "CatalogItemType"
+    },
+    {
+      "term": "CatalogProperties",
+      "type": "schema",
+      "description": "provides the core metadata fields plus extensions"
+    },
+    {
+      "term": "CatalogAssets",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogGeometryGeoJSON",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogGeometrycollectionGeoJSON",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogLinestringGeoJSON",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogMultilinestringGeoJSON",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogMultipointGeoJSON",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogMultipolygonGeoJSON",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogPointGeoJSON",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogPolygonGeoJSON",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogFeatureCollectionGeoJSON",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogFeatureGeoJSON",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogCoreLandingPage",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogCollectionsCollections",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogFeaturesFeatureCollectionGeoJSON",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogFeaturesNumberReturned",
+      "type": "schema",
+      "description": "The number of features in the feature collection.\n\nA server may omit this information in a response, if the information\nabout the number of features is not known or difficult to compute.\n\nIf the value"
+    },
+    {
+      "term": "CatalogFeaturesTimeStamp",
+      "type": "schema",
+      "description": "This property indicates the time and date when the response was generated."
+    },
+    {
+      "term": "CatalogItemSearchFieldsSearchBody",
+      "type": "schema",
+      "description": "**Extension:** Fields\n\nDetermines the shape of the features in the response"
+    },
+    {
+      "term": "CatalogItemSearchFieldsFields",
+      "type": "schema",
+      "description": "The include and exclude members specify an array of\nproperty names that are either included or excluded\nfrom the result, respectively. If both include and\nexclude are specified, include takes preceden"
+    },
+    {
+      "term": "CatalogItemSearchContextItemCollection",
+      "type": "schema",
+      "description": "**Extension:** Context\n\nAugments lists of resources with the number of returned and matches resource and the given limit for the request."
+    },
+    {
+      "term": "CatalogItemSearchItemCollectionItemCollection",
+      "type": "schema",
+      "description": "A GeoJSON FeatureCollection augmented with foreign members that contain values relevant to a STAC entity"
+    },
+    {
+      "term": "Cql2BooleanExpression",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "Cql2AndExpression",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "Cql2NotExpression",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "Cql2ComparisonPredicate",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "Cql2BinaryComparisonPredicate",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "Cql2ScalarOperands",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "Cql2ScalarExpression",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "Cql2IsBetweenPredicate",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "Cql2IsBetweenOperands",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "Cql2NumericExpression",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "Cql2CharacterExpression",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "Cql2PropertyRef",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogItemSearchFilterSearchBody",
+      "type": "schema",
+      "description": "**Extension:** Filter\n\nA filter for properties in Items."
+    },
+    {
+      "term": "CatalogItemSearchFilterFilterCql2Text",
+      "type": "schema",
+      "description": "A CQL2 filter expression in the 'cql2-text' encoding.\n"
+    },
+    {
+      "term": "CatalogItemSearchFilterFilterCql2Json",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "CatalogItemSearchFilterFilterLang",
+      "type": "schema",
+      "description": "The CQL2 filter encoding that the 'filter' value uses.\n"
+    },
+    {
+      "term": "cql2-text",
+      "type": "enum",
+      "parentSchema": "CatalogItemSearchFilterFilterLang"
+    },
+    {
+      "term": "cql2-json",
+      "type": "enum",
+      "parentSchema": "CatalogItemSearchFilterFilterLang"
+    },
+    {
+      "term": "CatalogItemSearchFilterFilterCrs",
+      "type": "schema",
+      "description": "The coordinate reference system (CRS) used by spatial literals in the 'filter' value.  The only value that STAC APIs must\naccept is 'http://www.opengis.net/def/crs/OGC/1.3/CRS84'.\n"
+    },
+    {
+      "term": "CatalogItemSearchDistinctSearchBody",
+      "type": "schema",
+      "description": "**Extension:** Distinct\n\nReturn distinct values of specified property."
+    },
+    {
+      "term": "CatalogItemSearchDistinctDistinct",
+      "type": "schema",
+      "description": "Return distinct values of specified property.\n"
+    },
+    {
+      "term": "CatalogItemSearchSearchBody",
+      "type": "schema",
+      "description": "The search criteria"
+    },
+    {
+      "term": "CatalogItemSearchLimit",
+      "type": "schema",
+      "description": "The optional limit parameter limits the number of items that are presented in the response document.\n\nIf the limit parameter value is greater than advertised limit maximum, the server must return the\n"
+    },
+    {
+      "term": "CatalogItemSearchBboxFilter",
+      "type": "schema",
+      "description": "Only return items that intersect the provided bounding box."
+    },
+    {
+      "term": "CatalogItemSearchCollectionsArray",
+      "type": "schema",
+      "description": "Array of Collection IDs to include in the search for items.\nOnly Item objects in one of the provided collections will be searched."
+    },
+    {
+      "term": "CatalogItemSearchIds",
+      "type": "schema",
+      "description": "Array of Item ids to return."
+    },
+    {
+      "term": "CatalogItemSearchDatetimeFilter",
+      "type": "schema",
+      "description": "An object representing a date+time based filter."
+    },
+    {
+      "term": "CatalogItemSearchIntersectsFilter",
+      "type": "schema",
+      "description": "Only returns items that intersect with the provided polygon."
+    },
+    {
+      "term": "CatalogItemSearchLimitFilter",
+      "type": "schema",
+      "description": "Only returns maximum number of results (page size)"
+    },
+    {
+      "term": "CatalogItemSearchIdsFilter",
+      "type": "schema",
+      "description": "Only returns items that match the array of given ids"
+    },
+    {
+      "term": "CatalogItemSearchCollectionsFilter",
+      "type": "schema",
+      "description": "Only returns the collections specified"
+    },
+    {
+      "term": "CatalogItemSearchDatetimeInterval",
+      "type": "schema",
+      "description": "Either a date-time or an interval, open or closed. Date and time expressions\nadhere to RFC 3339. Open intervals are expressed using double-dots.\n\nExamples:\n\n* A date-time: \"2018-02-12T23:20:50Z\"\n* A c"
+    },
+    {
+      "term": "AsyncProcessRequest",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "AsyncProcessRequestOutput",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "AsyncStatusResponse",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "AsyncProcessOutputDelivery",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "AsyncProcessOutputDeliveryV2",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "AsyncProcessS3BucketInfoTemplated",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "AsyncProcessGSBucketInfoTemplated",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BatchV2ProcessRequest",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "MultiPartBatchV2Request",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BatchV2ProcessTask",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ProcessRequestOutputBatchV2Response",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BatchV2ProcessRequestUpdatePayload",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BatchV2TilingGridInput",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BatchV2ProcessOutput",
+      "type": "schema",
+      "description": "Parameters that will be used for all output arrays, except where overridden with `arrayOverrides`. Required unless `arrayOverrides` includes all required fields for all output arrays. All fields are s"
+    },
+    {
+      "term": "BatchV2ProcessInput",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BatchV2RasterOutput",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BatchV2CogParameters",
+      "type": "schema",
+      "description": "Allows to specify COG creation parameters.\n"
+    },
+    {
+      "term": "BatchV2ZarrOutput",
+      "type": "schema",
+      "description": "Specifies Zarr creation parameters.\n\nIf this parameter is specified, all outputs in processRequest **must**\nbe of the type zarr/array and `output` can not be specified.\nWith Zarr output **only** WGS84"
+    },
+    {
+      "term": "BatchV2ZarrOutputGroup",
+      "type": "schema",
+      "description": "Zarr group level parameters"
+    },
+    {
+      "term": "BatchV2ZarrOutputArrayParameters",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BatchV2ZarrOutputArrayOverrides",
+      "type": "schema",
+      "description": "Overrides the values of `arrayParameters` for individual arrays."
+    },
+    {
+      "term": "BatchV2ArrayOverride",
+      "type": "schema",
+      "description": "Values for the particular output Zarr array. The array names are equal to the identifiers of the outputs/responses of the `processRequest`.\n"
+    },
+    {
+      "term": "BatchV2TilingGridDescriptor",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BatchV2TilingGridDescriptorProperties",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BatchV2GeoPackageInput",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BatchV2GeoPackageFeatureDefaults",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ProcessRequestForBatchV2",
+      "type": "schema",
+      "description": "Batch processing equivalent of the <a href=\"#operation/process\">Process request</a>."
+    },
+    {
+      "term": "ProcessRequestOutputForBatchV2",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ProcessRequestInputForBatchV2",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ProcessRequestInputBoundsForBatchV2",
+      "type": "schema",
+      "description": "Defines the request bounds by specifying the bounding box and/or\ngeometry for the request. If both are specified it will generate an image\nfor the bounding box and render data contained within the geo"
+    },
+    {
+      "term": "BatchStatisticalRequest",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BatchStatisticalInput",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ObjectStorageOutputInfo",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ObjectStorageOutputInfoV2",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "S3BucketInfoTemplated",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "GSBucketInfoTemplated",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BatchStatisticalRequestAggregation",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BatchStatisticsTaskStatusDto",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BatchStatisticsTaskDto",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BYOCCollectionResponse",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BYOCCollectionsResponse",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BYOCCollection",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BYOCTilesResponse",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BYOCTileResponse",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BYOCTile",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BYOCTileStatus",
+      "type": "schema",
+      "description": "The status of the tile."
+    },
+    {
+      "term": "WAITING",
+      "type": "enum",
+      "parentSchema": "BYOCTileStatus"
+    },
+    {
+      "term": "QUEUED",
+      "type": "enum",
+      "parentSchema": "BYOCTileStatus"
+    },
+    {
+      "term": "INGESTING",
+      "type": "enum",
+      "parentSchema": "BYOCTileStatus"
+    },
+    {
+      "term": "INGESTED",
+      "type": "enum",
+      "parentSchema": "BYOCTileStatus"
+    },
+    {
+      "term": "FAILED",
+      "type": "enum",
+      "parentSchema": "BYOCTileStatus"
+    },
+    {
+      "term": "BYOCTileAdditionalData",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BYOCTileUpdatePayload",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BYOCCollectionUpdatePayload",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ZarrCollection",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ZarrCollectionAdditionalData",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ZarrSingleResponse",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ZarrQueryCollectionsResponse",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ZarrCollectionUpdatePayload",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ZarrArray",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ZArray",
+      "type": "schema",
+      "description": "A subset of the metadata as read from the array's `.zarray` file.\n"
+    },
+    {
+      "term": "ZarrQueryArraysResponse",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ZarrGetSingleArrayResponse",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ZAttrs",
+      "type": "schema",
+      "description": "Custom attributes as read from the `.zattrs` file."
+    },
+    {
+      "term": "QuotaTpdiCollectionId",
+      "type": "schema",
+      "description": "Collection ID"
+    },
+    {
+      "term": "MAXAR_WORLDVIEW",
+      "type": "enum",
+      "parentSchema": "QuotaTpdiCollectionId"
+    },
+    {
+      "term": "NativeSearchQuery",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "SearchQuery",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "SearchResults",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "SearchQueryBase",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "SearchResultBase",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "OrderRequest",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "Order",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "OrderStatus",
+      "type": "schema",
+      "description": "Order status"
+    },
+    {
+      "term": "CREATED",
+      "type": "enum",
+      "parentSchema": "OrderStatus"
+    },
+    {
+      "term": "CANCELLED",
+      "type": "enum",
+      "parentSchema": "OrderStatus"
+    },
+    {
+      "term": "RUNNING",
+      "type": "enum",
+      "parentSchema": "OrderStatus"
+    },
+    {
+      "term": "DONE",
+      "type": "enum",
+      "parentSchema": "OrderStatus"
+    },
+    {
+      "term": "PARTIAL",
+      "type": "enum",
+      "parentSchema": "OrderStatus"
+    },
+    {
+      "term": "SubscriptionRequest",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "Subscription",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "SubscriptionStatus",
+      "type": "schema",
+      "description": "Subscription status"
+    },
+    {
+      "term": "COMPLETED",
+      "type": "enum",
+      "parentSchema": "SubscriptionStatus"
+    },
+    {
+      "term": "OrderDelivery",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "SubscriptionDelivery",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "OrderDeliveryBase",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "SubscriptionDeliveryBase",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "DeliveryStatus",
+      "type": "schema",
+      "description": "Delivery status"
+    },
+    {
+      "term": "DELIVERED",
+      "type": "enum",
+      "parentSchema": "DeliveryStatus"
+    },
+    {
+      "term": "DELIVERY_FAILED",
+      "type": "enum",
+      "parentSchema": "DeliveryStatus"
+    },
+    {
+      "term": "PREPARING",
+      "type": "enum",
+      "parentSchema": "DeliveryStatus"
+    },
+    {
+      "term": "IMPORT_FAILED",
+      "type": "enum",
+      "parentSchema": "DeliveryStatus"
+    },
+    {
+      "term": "NON_INGESTIBLE",
+      "type": "enum",
+      "parentSchema": "DeliveryStatus"
+    },
+    {
+      "term": "DeliveryTile",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "TileStatus",
+      "type": "schema",
+      "description": "The status of the tile."
+    },
+    {
+      "term": "Quota",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "QuotaExceededError",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "DeliveryArchiveFormat",
+      "type": "schema",
+      "description": "One of supported archive formats. Currently only `zip` is supported."
+    },
+    {
+      "term": "zip",
+      "type": "enum",
+      "parentSchema": "DeliveryArchiveFormat"
+    },
+    {
+      "term": "DeliveryArchiveStatus",
+      "type": "schema",
+      "description": "Status of archive creation. Only archives with status `DONE` can be downloaded."
+    },
+    {
+      "term": "DeliveryArchive",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "PlanetSearchRequestBase",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "PlanetOrderRequestBase",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "PlanetNativeSearchQuery",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "PlanetSearchQuery",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "PlanetSearchResults",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "PlanetOrderRequest",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "PlanetSubscriptionRequest",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "PlanetSubscriptionDataSpec",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "PlanetSubscriptionDataFilterBase",
+      "type": "schema",
+      "description": "Selection criteria for the data the subscription should cover. At the minimum, `timeRange.from` must be included because subscriptions must have a start time.\n"
+    },
+    {
+      "term": "PSSceneDataSpec",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "PlanetaryVariableDataSpec",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "AnalysisReadyPlanetScopeDataSpec",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "PlanetDeliveryProvider",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "OrderPlanetDelivery",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "SubscriptionPlanetDelivery",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "MaxarRequestBase",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "MaxarDeliveryProvider",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "MaxarNativeSearchQuery",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "MaxarSearchQuery",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "MaxarMinOffNadir",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "MaxarMaxOffNadir",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "MaxarMinSunElevation",
+      "type": "schema",
+      "description": "The minimum allowable sun elevation in degrees"
+    },
+    {
+      "term": "MaxarMaxSunElevation",
+      "type": "schema",
+      "description": "The maximum allowable sun elevation in degrees"
+    },
+    {
+      "term": "MaxarSensor",
+      "type": "schema",
+      "description": "If specified, limits search results to a single sensor (satellite).\nResults are also filtered to include only sensors that support the requested `productBands`. Thus, if a sensor that does not support"
+    },
+    {
+      "term": "WV01",
+      "type": "enum",
+      "parentSchema": "MaxarSensor"
+    },
+    {
+      "term": "WV02",
+      "type": "enum",
+      "parentSchema": "MaxarSensor"
+    },
+    {
+      "term": "WV03",
+      "type": "enum",
+      "parentSchema": "MaxarSensor"
+    },
+    {
+      "term": "WV04",
+      "type": "enum",
+      "parentSchema": "MaxarSensor"
+    },
+    {
+      "term": "GE01",
+      "type": "enum",
+      "parentSchema": "MaxarSensor"
+    },
+    {
+      "term": "MaxarSearchResults",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "MaxarOrderRequest",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "OrderMaxarDelivery",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "Location",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BYOCCollectionMetadata",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BatchCollectionMetadata",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "ZarrCollectionMetadata",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "BandMetadata",
+      "type": "schema",
+      "description": "Band information"
+    },
+    {
+      "term": "CustomDatasetType",
+      "type": "schema",
+      "description": ""
+    },
+    {
+      "term": "SearchBeanSearch",
+      "type": "parameter",
+      "in": "query",
+      "description": "Optional search query. Either a single word to search for or multiple words separated by the `|` (or) and `&` (and) operators. If omitted, all items are returned."
+    },
+    {
+      "term": "SearchBeanCount",
+      "type": "parameter",
+      "in": "query",
+      "description": "Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.\nFor more records, use *viewtoken* to page through"
+    },
+    {
+      "term": "SearchBeanViewtoken",
+      "type": "parameter",
+      "in": "query",
+      "description": "When the total number of items is larger than *count*, the response contains *viewtoken*.\nThis *viewtoken* can be used in the next request to retrieve the next page of items.\n\nThe next page can be ret"
+    },
+    {
+      "term": "SearchBeanSort",
+      "type": "parameter",
+      "in": "query",
+      "description": "sort"
+    },
+    {
+      "term": "ByocCollectionId",
+      "type": "parameter",
+      "in": "path",
+      "description": ""
+    },
+    {
+      "term": "BatchRequestId",
+      "type": "parameter",
+      "in": "path",
+      "description": "Request ID"
+    },
+    {
+      "term": "CatalogCollectionsCollectionId",
+      "type": "parameter",
+      "in": "path",
+      "description": "local identifier of a collection"
+    },
+    {
+      "term": "CatalogFeaturesBbox",
+      "type": "parameter",
+      "in": "query",
+      "description": "Only features that have a geometry that intersects the bounding box are selected.\nThe bounding box is provided as four or six numbers, depending on whether the\ncoordinate reference system includes a v"
+    },
+    {
+      "term": "CatalogFeaturesCollectionId",
+      "type": "parameter",
+      "in": "path",
+      "description": "local identifier of a collection"
+    },
+    {
+      "term": "CatalogFeaturesDatetime",
+      "type": "parameter",
+      "in": "query",
+      "description": "Either a date-time or an interval, open or closed. Date and time expressions\nadhere to RFC 3339. Open intervals are expressed using double-dots.\n\nExamples:\n\n* A date-time: \"2018-02-12T23:20:50Z\"\n* A c"
+    },
+    {
+      "term": "CatalogFeaturesFeatureId",
+      "type": "parameter",
+      "in": "path",
+      "description": "local identifier of a feature"
+    },
+    {
+      "term": "CatalogFeaturesLimit",
+      "type": "parameter",
+      "in": "query",
+      "description": "The optional limit parameter recommends the number of items that should be present in the response document.\n\nIf the limit parameter value is greater than advertised limit maximum, the server must ret"
+    },
+    {
+      "term": "CatalogItemSearchFilterFilter",
+      "type": "parameter",
+      "in": "query",
+      "description": "**Extension:** Filter\n\nA CQL2 filter expression for filtering items."
+    },
+    {
+      "term": "CatalogItemSearchDatetime",
+      "type": "parameter",
+      "in": "query",
+      "description": "Either a date-time or an interval, open or closed. Date and time expressions\nadhere to RFC 3339. Open intervals are expressed using double-dots.\n\nExamples:\n\n* A date-time: \"2018-02-12T23:20:50Z\"\n* A c"
+    },
+    {
+      "term": "CatalogItemSearchBbox",
+      "type": "parameter",
+      "in": "query",
+      "description": "Only features that have a geometry that intersects the bounding box are selected.\nThe bounding box is provided as four or six numbers, depending on\nwhether the coordinate reference system includes a v"
+    },
+    {
+      "term": "CatalogItemSearchIntersects",
+      "type": "parameter",
+      "in": "query",
+      "description": "The optional intersects parameter filters the result Items in the same was as bbox, only with\na GeoJSON Geometry rather than a bbox."
+    },
+    {
+      "term": "AsyncProcessRequestId",
+      "type": "parameter",
+      "in": "path",
+      "description": "Request ID"
+    },
+    {
+      "term": "BatchV2TaskId",
+      "type": "parameter",
+      "in": "path",
+      "description": "Task ID"
+    },
+    {
+      "term": "BatchV2TilinggridsId",
+      "type": "parameter",
+      "in": "path",
+      "description": "Tilinggrids ID"
+    },
+    {
+      "term": "ByocTileId",
+      "type": "parameter",
+      "in": "path",
+      "description": ""
+    },
+    {
+      "term": "ByocFilePath",
+      "type": "parameter",
+      "in": "path",
+      "description": "Filename with path as returned by the \"List files of a tile\" endpoint."
+    },
+    {
+      "term": "OrderId",
+      "type": "parameter",
+      "in": "path",
+      "description": "Order ID"
+    },
+    {
+      "term": "SubscriptionId",
+      "type": "parameter",
+      "in": "path",
+      "description": "Subscription ID"
+    },
+    {
+      "term": "DeliveryId",
+      "type": "parameter",
+      "in": "path",
+      "description": "Delivery ID"
+    },
+    {
+      "term": "TileId",
+      "type": "parameter",
+      "in": "path",
+      "description": "Tile ID"
+    },
+    {
+      "term": "TpdiCollectionId",
+      "type": "parameter",
+      "in": "path",
+      "description": "Collection ID"
+    },
+    {
+      "term": "DeliveryFile",
+      "type": "parameter",
+      "in": "path",
+      "description": "File with full path as returned by the \"List delivery files\" endpoint."
+    }
+  ]
+}

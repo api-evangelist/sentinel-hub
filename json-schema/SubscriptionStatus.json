@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/SubscriptionStatus",
+  "title": "SubscriptionStatus",
+  "description": "Subscription status",
+  "type": "string",
+  "readOnly": true,
+  "enum": [
+    "CREATED",
+    "RUNNING",
+    "CANCELLED",
+    "COMPLETED",
+    "FAILED"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogItemSearchContextItemCollection",
+  "title": "itemCollection",
+  "type": "object",
+  "description": "**Extension:** Context\n\nAugments lists of resources with the number of returned and matches resource and the given limit for the request.",
+  "x-stac-api-fragment": "context",
+  "properties": {
+    "context": {
+      "type": "object",
+      "required": [
+        "returned"
+      ],
+      "properties": {
+        "next": {
+          "type": "integer",
+          "minimum": 0,
+          "example": 1
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 0,
+          "example": 1
+        },
+        "returned": {
+          "type": "integer",
+          "minimum": 0,
+          "example": 1
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ObjectStorageOutputInfoV2",
+  "title": "ObjectStorageOutputInfoV2",
+  "type": "object",
+  "oneOf": [
+    {
+      "title": "S3BucketInfoTemplated",
+      "required": [
+        "s3"
+      ],
+      "properties": {
+        "s3": {
+          "$ref": "#/components/schemas/S3BucketInfoTemplated"
+        }
+      }
+    },
+    {
+      "title": "GSBucketInfoTemplated",
+      "x-cdse-exclude": true,
+      "required": [
+        "gs"
+      ],
+      "properties": {
+        "gs": {
+          "$ref": "#/components/schemas/GSBucketInfoTemplated"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BYOCDataset",
+  "title": "BYOC / BATCH / ZARR",
+  "type": "object",
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "dataFilter": {
+          "$ref": "#/components/schemas/BYOCFiltering"
+        },
+        "processing": {
+          "$ref": "#/components/schemas/BaseDatasetProcessing"
+        },
+        "type": {
+          "type": "string",
+          "description": "For a BYOC collection, set to \"byoc-\\<collectionId\\>\", for example \"byoc-017aa0ae-33a6-45d3-8548-0f7d1041b40c\".\n\nFor a BATCH collection, set to \"batch-\\<collectionId\\>\", for example \"batch-9688cd56-6c70-4221-add8-a5821d0256a9\".\n\nFor a ZARR collection, set to \"zarr-\\<collectionId\\>\", for example \"zarr-e2c7baec-3dfa-4523-b125-e242bdb5dd7c\".\n"
+        }
+      }
+    },
+    {
+      "$ref": "#/components/schemas/BaseDataset"
+    }
+  ]
+}

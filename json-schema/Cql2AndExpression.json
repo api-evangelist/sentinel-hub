@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/Cql2AndExpression",
+  "title": "andExpression",
+  "type": "object",
+  "required": [
+    "op",
+    "args"
+  ],
+  "properties": {
+    "op": {
+      "type": "string",
+      "enum": [
+        "and"
+      ]
+    },
+    "args": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "$ref": "#/components/schemas/Cql2BooleanExpression"
+      }
+    }
+  }
+}

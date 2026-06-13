@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/TilingGridSettings",
+  "title": "TilingGridSettings",
+  "required": [
+    "id",
+    "resolution"
+  ],
+  "description": "Tiling grid settings.\n",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Id of one of the supported tiling grids",
+      "type": "integer",
+      "format": "int64"
+    },
+    "resolution": {
+      "description": "Output resolution in units of the tiling grid",
+      "type": "number",
+      "format": "double"
+    },
+    "bufferX": {
+      "description": "Will expand each output tile horizontally (on the left and the right) by number of pixels specified by this value. <br><br> <b>Example:</b> <br> If bufferX is 5, the output tile will be wider by 10 pixels. Coordinates of the tile are also moved accordingly by the number of pixels multiplied by resolution in each direction. However, the `tileWidthX` property returned by the API will **not** include the buffer.\n",
+      "type": "integer",
+      "format": "int16"
+    },
+    "bufferY": {
+      "description": "Will expand each output tile vertically (on the top and the bottom) by number of pixels specified by this value. See `bufferX` above for an example.\n",
+      "type": "integer",
+      "format": "int16"
+    }
+  }
+}

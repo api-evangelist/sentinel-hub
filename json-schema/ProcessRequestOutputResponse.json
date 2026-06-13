@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ProcessRequestOutputResponse",
+  "title": "ProcessRequestOutputResponse",
+  "type": "object",
+  "properties": {
+    "identifier": {
+      "type": "string",
+      "description": "Response's identifier is used to connect the results of an evalscript with the output file.\nEach response identifier value must either match one of the values in `setup()` -> `output.id` in the evalscript (see <a href=\"https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l1c/examples/#ndvi-image--and--value-multi-part-response-png-and-geotiff\" target=\"_blank\">example</a>)\nor be `userdata` (see <a href=\"https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l1c/examples/#true-color-and-metadata-multi-part-response-geotiff-and-json\" target=\"_blank\">example</a>).\n",
+      "enum": [
+        "<identifier>",
+        "userdata"
+      ]
+    },
+    "format": {
+      "description": "Format object (default is `image/png`).",
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/ProcessRequestOutputFormatPng"
+        },
+        {
+          "$ref": "#/components/schemas/ProcessRequestOutputFormatJpeg"
+        },
+        {
+          "$ref": "#/components/schemas/ProcessRequestOutputFormatTiff"
+        },
+        {
+          "$ref": "#/components/schemas/ProcessRequestOutputFormatJson"
+        }
+      ]
+    }
+  }
+}

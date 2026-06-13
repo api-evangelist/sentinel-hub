@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogItemSearchBboxFilter",
+  "title": "bboxFilter",
+  "type": "object",
+  "description": "Only return items that intersect the provided bounding box.",
+  "properties": {
+    "bbox": {
+      "$ref": "#/components/schemas/CatalogBbox"
+    }
+  }
+}

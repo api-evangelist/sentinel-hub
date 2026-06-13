@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogItemId",
+  "title": "itemId",
+  "type": "string",
+  "description": "Provider identifier, a unique ID."
+}

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BatchV2CogParameters",
+  "title": "BatchV2CogParameters",
+  "description": "Allows to specify COG creation parameters.\n",
+  "type": "object",
+  "properties": {
+    "overviewLevels": {
+      "description": "Corresponds to the *levels* parameter of [gdaladdo](https://gdal.org/programs/gdaladdo.html).",
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "overviewMinSize": {
+      "description": "Corresponds to the *minsize* parameter of [gdaladdo](https://gdal.org/programs/gdaladdo.html).\nDefault value minimum of blockxsize and blockysize\n",
+      "type": "integer"
+    },
+    "resamplingAlgorithm": {
+      "type": "string",
+      "enum": [
+        "nearest",
+        "average",
+        "gauss",
+        "cubic",
+        "cubicspline",
+        "lanczos",
+        "average_magphase",
+        "mode"
+      ],
+      "description": "Corresponds to the value of the *-r* parameter of [gdaladdo](https://gdal.org/programs/gdaladdo.html).",
+      "default": "average"
+    },
+    "blockxsize": {
+      "description": "Corresponds to the *BLOCKXSIZE* parameter of [GDAL GTiff raster driver](https://gdal.org/drivers/raster/gtiff.html).",
+      "type": "integer",
+      "default": 256
+    },
+    "blockysize": {
+      "description": "Corresponds to the *BLOCKYSIZE* parameter of [GDAL GTiff raster driver](https://gdal.org/drivers/raster/gtiff.html).",
+      "type": "integer",
+      "default": 256
+    },
+    "usePredictor": {
+      "description": "Whether predictor should be used for TIFF compression. If true, the predictor \"2\" will be passed to [GDAL GTiff raster driver](https://gdal.org/drivers/raster/gtiff.html) in case of integer output and \"3\" for FLOAT32 output. If false, the value \"1\" (no predictor) will be used.\n",
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

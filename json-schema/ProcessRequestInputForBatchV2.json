@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ProcessRequestInputForBatchV2",
+  "title": "Input",
+  "type": "object",
+  "required": [
+    "bounds",
+    "data"
+  ],
+  "properties": {
+    "bounds": {
+      "$ref": "#/components/schemas/ProcessRequestInputBoundsForBatchV2"
+    },
+    "data": {
+      "$ref": "#/components/schemas/ProcessRequestInputData"
+    }
+  }
+}

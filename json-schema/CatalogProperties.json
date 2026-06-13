@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogProperties",
+  "title": "properties",
+  "type": "object",
+  "required": [
+    "datetime"
+  ],
+  "description": "provides the core metadata fields plus extensions",
+  "properties": {
+    "datetime": {
+      "$ref": "#/components/schemas/CatalogDatetime"
+    }
+  },
+  "additionalProperties": {
+    "description": "Any additional properties added in via Item specification or extensions."
+  }
+}

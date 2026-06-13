@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BatchV2ZarrOutputGroup",
+  "title": "BatchV2ZarrOutputGroup",
+  "required": [
+    "zarr_format"
+  ],
+  "description": "Zarr group level parameters",
+  "properties": {
+    "zarr_format": {
+      "description": "Zarr format version. Currently only version 2 is supported.",
+      "example": 2,
+      "type": "integer"
+    },
+    "coordinates": {
+      "description": "Allows customization of certain output coordinate system parameters",
+      "properties": {
+        "origin": {
+          "type": "string",
+          "description": "Defines the origin of the output raster/sign of resolution:\n * `topLeft` (default): negative resolution along the Zarr y-axis, same as for TIFF output</li>\n * `bottomLeft`: positive resolution along the Zarr y-axis</li>\n\nThe resolution along the Zarr x-axis is always positive.\n",
+          "default": "topLeft",
+          "enum": [
+            "topLeft",
+            "bottomLeft"
+          ]
+        }
+      }
+    },
+    "customAttributes": {
+      "description": "User-defined metadata to store into the group's `.zattrs` file.\nFor example, to include a copyright notice in the ouptut Zarr, you could set this field to\n`{\"copyright\": \"My Company Ltd, 2023\"}`.\n\n**Note**: multiple fields are added to the group attributes by default, such as \"date_modified\"\nand the geospatial extent. Listing any such field in `customAttributes` will override its default value.\n",
+      "type": "object"
+    }
+  }
+}

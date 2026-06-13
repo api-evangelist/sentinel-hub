@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/SubscriptionPlanetDelivery",
+  "title": "SubscriptionPlanetDelivery",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/PlanetDeliveryProvider"
+    },
+    {
+      "$ref": "#/components/schemas/SubscriptionDeliveryBase"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "itemId": {
+          "description": "Planet's item ID for PlanetScope and SkySat deliveries.",
+          "type": "string"
+        }
+      }
+    }
+  ]
+}

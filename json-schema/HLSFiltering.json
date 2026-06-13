@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/HLSFiltering",
+  "title": "HLSFiltering",
+  "type": "object",
+  "properties": {
+    "timeRange": {
+      "$ref": "#/components/schemas/TimeRange"
+    },
+    "mosaickingOrder": {
+      "description": "The order in which tiles are overlapped from which the output result is mosaicked.",
+      "type": "string",
+      "enum": [
+        "mostRecent",
+        "leastRecent",
+        "leastCC"
+      ],
+      "default": "mostRecent"
+    },
+    "maxCloudCoverage": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/MaxCloudCoverage"
+        },
+        {
+          "default": 100
+        }
+      ]
+    },
+    "constellation": {
+      "type": "string",
+      "description": "The selected constellation. \"SENTINEL\" selects only Sentinel products, while \"LANDSAT\" selects only Landsat products.\n\nBy default, products of both constellations are selected.\n",
+      "enum": [
+        "SENTINEL",
+        "LANDSAT"
+      ]
+    }
+  }
+}

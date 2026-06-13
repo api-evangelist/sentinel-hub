@@ -1,0 +1,42 @@
+{
+  "operationId": "postCatalogItemSearch",
+  "method": "post",
+  "path": "/catalog/v1/search",
+  "exampleName": "default",
+  "requestBody": {
+    "collections": [
+      "sentinel-2-l2a"
+    ],
+    "bbox": [
+      13,
+      45,
+      14,
+      46
+    ],
+    "datetime": "2020-12-10T00:00:00Z/2020-12-30T00:00:00Z",
+    "fields": {
+      "include": [
+        "id",
+        "type",
+        "bbox",
+        "properties"
+      ],
+      "exclude": [
+        "geometry",
+        "links",
+        "assets"
+      ]
+    },
+    "filter": {
+      "op": ">",
+      "args": [
+        {
+          "property": "eo:cloud_cover"
+        },
+        90
+      ]
+    },
+    "filter-lang": "cql2-json",
+    "limit": 1
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/OrderRequest",
+  "title": "OrderRequest",
+  "oneOf": [
+    {
+      "$ref": "#/components/schemas/PlanetOrderRequest"
+    },
+    {
+      "$ref": "#/components/schemas/MaxarOrderRequest"
+    }
+  ]
+}

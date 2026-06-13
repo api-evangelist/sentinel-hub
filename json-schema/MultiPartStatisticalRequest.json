@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/MultiPartStatisticalRequest",
+  "title": "MultiPartStatisticalRequest",
+  "type": "object",
+  "properties": {
+    "request": {
+      "$ref": "#/components/schemas/StatisticalRequest"
+    },
+    "evalscript": {
+      "description": "Block of JavaScript code that will replace the evalscript property of the statistics request.\n",
+      "type": "string"
+    }
+  }
+}

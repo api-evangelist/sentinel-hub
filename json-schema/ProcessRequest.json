@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ProcessRequest",
+  "title": "ProcessRequest",
+  "type": "object",
+  "required": [
+    "evalscript",
+    "input"
+  ],
+  "properties": {
+    "input": {
+      "$ref": "#/components/schemas/ProcessRequestInput"
+    },
+    "output": {
+      "$ref": "#/components/schemas/ProcessRequestOutput"
+    },
+    "evalscript": {
+      "description": "Your evalscript. For details, click\n<a href=\"https://docs.planet.com/develop/evalscripts/\" target=\"_blank\">here</a>.\n",
+      "type": "string"
+    }
+  }
+}

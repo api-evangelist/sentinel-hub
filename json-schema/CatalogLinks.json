@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogLinks",
+  "title": "links",
+  "type": "array",
+  "items": {
+    "$ref": "#/components/schemas/CatalogLink"
+  }
+}

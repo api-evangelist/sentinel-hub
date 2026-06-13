@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BYOCTile",
+  "title": "BYOCTile",
+  "type": "object",
+  "required": [
+    "path"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "readOnly": true
+    },
+    "path": {
+      "description": "The path within the bucket where the files are. Can also use\nthe '(BAND)' placeholder when the file names contain more than just\nthe band name.\n",
+      "type": "string",
+      "pattern": "^([^/](/?[^/])*)?$",
+      "example": "folder/prefix_(BAND)"
+    },
+    "tileGeometry": {
+      "description": "The tile bounding box in the CRS of the tile.\nIt's automatically set to the union of all file bounding boxes.\n",
+      "readOnly": true,
+      "$ref": "#/components/schemas/Polygon"
+    },
+    "coverGeometry": {
+      "allOf": [
+        {
+          "description": "The geometry as GeoJSON which outlines the area that has data.\n\nIf it isn't specified, it is automatically set to the intersection of all file bounding boxes.\n\nYou may specify this in any CRS, however it will be converted to CRS84.\n\nAfter ingestion is complete, this stays in CRS84 on our system,\nhowever, for you convenience, we convert and return this in the CRS of the tile.\n"
+        },
+        {
+          "$ref": "#/components/schemas/Geometry"
+        }
+      ]
+    },
+    "sensingTime": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The sensing time of the tile in ISO 8601 but without sub-millisecond precision."
+    },
+    "status": {
+      "$ref": "#/components/schemas/BYOCTileStatus"
+    },
+    "additionalData": {
+      "$ref": "#/components/schemas/BYOCTileAdditionalData"
+    },
+    "created": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time when the tile was created in ISO 8601.",
+      "readOnly": true
+    }
+  }
+}

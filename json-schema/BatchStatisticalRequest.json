@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BatchStatisticalRequest",
+  "title": "BatchStatisticalRequest",
+  "type": "object",
+  "required": [
+    "input",
+    "aggregation",
+    "output"
+  ],
+  "properties": {
+    "input": {
+      "$ref": "#/components/schemas/BatchStatisticalInput"
+    },
+    "aggregation": {
+      "$ref": "#/components/schemas/BatchStatisticalRequestAggregation"
+    },
+    "calculations": {
+      "$ref": "#/components/schemas/StatisticalRequestCalculations"
+    },
+    "output": {
+      "description": "Storage location where the results shall be written.",
+      "$ref": "#/components/schemas/ObjectStorageOutputInfoV2"
+    }
+  }
+}

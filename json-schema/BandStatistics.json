@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BandStatistics",
+  "title": "BandStatistics",
+  "type": "object",
+  "description": "Per band statistics and histograms\n",
+  "properties": {
+    "histogram": {
+      "description": "Histogram",
+      "type": "object",
+      "properties": {
+        "overflow": {
+          "description": "Number of samples above `highEdge` value\n",
+          "type": "number",
+          "format": "integer"
+        },
+        "underflow": {
+          "description": "Number of samples below `lowEdge` value\n",
+          "type": "number",
+          "format": "integer"
+        },
+        "bins": {
+          "description": "Histogram bins\n",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "lowEdge": {
+                "description": "Bin's low edge (inclusive)",
+                "type": "number"
+              },
+              "highEdge": {
+                "description": "Bin's high edge (not inclusive unless last bin)",
+                "type": "number"
+              },
+              "count": {
+                "description": "number of samples that fall into the bin",
+                "type": "number",
+                "format": "integer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "stats": {
+      "type": "object",
+      "description": "Statistics",
+      "properties": {
+        "min": {
+          "description": "minimum value",
+          "type": "number"
+        },
+        "max": {
+          "description": "maximum value",
+          "type": "number"
+        },
+        "mean": {
+          "description": "mean value",
+          "type": "number"
+        },
+        "stDev": {
+          "description": "standard deviation",
+          "type": "number"
+        },
+        "sampleCount": {
+          "description": "total number of samples",
+          "type": "number",
+          "format": "integer"
+        },
+        "noDataCount": {
+          "description": "total number of samples without value",
+          "type": "number",
+          "format": "integer"
+        },
+        "percentiles": {
+          "description": "Percentile to percentile value map.\n",
+          "type": "object",
+          "additionalProperties": {
+            "x-additionalPropertiesName": "percentile [0,1]",
+            "type": "number",
+            "format": "double"
+          }
+        }
+      }
+    }
+  }
+}

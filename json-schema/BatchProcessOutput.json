@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BatchProcessOutput",
+  "title": "BatchProcessOutput",
+  "description": "Specifies the tile output paths where the results shall be written. Required unless `bucketName` or `zarrOutput` is specified.\n",
+  "type": "object",
+  "properties": {
+    "defaultTilePath": {
+      "description": "Path or path template specifying where batch processing results shall be stored. Supported formats: <ul>\n  <li>a valid Amazon S3 URL, e.g. `s3://some-bucket/some/folder`.<br/>\n    A subdirectory will be created for this batch request, named after the request ID, and will contain further subdirectories with the output tiles.\n    This is equivalent to the template `s3://some-bucket/some/folder/<requestId>/<tileName>/<outputId>.<format>`.\n  </li>\n  <li>a templated Amazon S3 URL, e.g. `s3://some-bucket/some/folder/<tileName>.tif`.\n    Templating allows custom organization of the output files.\n    Templates can contain the following placeholders, which are replaced by respective actual values when writing results:\n    <ul>\n      <li> `<requestId>` - the ID of your batch request,</li>\n      <li> `<tileName>` - the name (string ID) of the tile within the used tiling grid,</li>\n      <li> `<tileId>` - the numerical ID of the tile within the used tiling grid,</li>\n      <li> `<outputId>` - the output (raster) identifier (e.g. `default`),</li>\n      <li> `<format>` - the filename extension of the output's format (e.g. `tiff`).</li>\n    </ul>\n    The template must contain `<tileName>` or `<tileId>` in order to ensure unique output files.\n    In case of multiple outputs, the template must also contain `<outputId>`.\n  </li>\n</ul> The request will fail if files already exist.\n",
+      "type": "string"
+    },
+    "overwrite": {
+      "description": "If `true`, the request will **never** fail if files already exist. Instead, any existing files will be overwritten, except if `skipExisting` is `true` and **all** outputs for a tile exist.\n\n*Note:* checking for existing files can only be done if the task is estimated to output fewer than 5000 files, e.g. a task that produces 5 outputs per tile and is estimated to span over 1000 grid tiles is too big to check. Such big tasks must either: <ul>\n  <li> ensure that the output path is unique to the task by including `<taskId>` in `defaultTilePath` and all `tilePath`s,</li>\n  <li> ensure that the output path is unique by using a simple, non-templated `defaultTilePath`, or</li>\n  <li> suppress overwrite checks by setting `overwrite` to `true` and `skipExisting` to `false`.</li>\n<ul>\n",
+      "default": false,
+      "type": "boolean"
+    },
+    "skipExisting": {
+      "description": "If `true`, any tiles for which **all** outputs already exist will be skipped. Tiles for which only **some** of the outputs exist will either be *fully overwritten* (if `overwrite` is `true`) or will cause the whole request to fail.\n",
+      "default": false,
+      "type": "boolean"
+    },
+    "cogOutput": {
+      "description": "If `true`, the results will be written as COG (cloud optimized GeoTIFFs). All outputs must use the TIFF format and **cannot** use `sampleType` INT8. We also suggest setting the evalscript output object `nodataValue` (<a href=\"https://docs.planet.com/develop/evalscripts/functions/#output-object-properties\" target=\"_blank\">more details</a>) for correct overview generation.",
+      "default": false,
+      "type": "boolean"
+    },
+    "cogParameters": {
+      "$ref": "#/components/schemas/BatchCogParameters"
+    },
+    "createCollection": {
+      "description": "If `true`, the results will be written as COG (cloud optimized GeoTIFFs) and a collection will be automatically created. All outputs must be single-band and use the TIFF format. Only one of *createCollection* and *collectinId* may be specified. Requires `\"cogOutput\"=true`.\n",
+      "type": "boolean",
+      "default": false
+    },
+    "collectionId": {
+      "description": "If provided, the results will be written as COG (cloud optimized GeoTIFFs) and added to the existing collection with the specified identifier. All outputs must be single-band and use the TIFF format. The collection must exist and be compatible -- that is, must contain bands equivalent to the batch request's outputs with the same bit depths. Only one of *createCollection* and *collectinId* may be specified. Requires `\"cogOutput\"=true`.\n",
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null
+    }
+  }
+}

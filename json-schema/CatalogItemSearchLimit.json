@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogItemSearchLimit",
+  "title": "limit",
+  "type": "integer",
+  "minimum": 1,
+  "example": 10,
+  "default": 10,
+  "maximum": 100,
+  "description": "The optional limit parameter limits the number of items that are presented in the response document.\n\nIf the limit parameter value is greater than advertised limit maximum, the server must return the\nmaximum possible number of items, rather than responding with an error.\n\nOnly items are counted that are on the first level of the collection in the response document.\nNested objects contained within the explicitly requested items must not be counted.\n\nMinimum = 1. Maximum = 100. Default = 10."
+}

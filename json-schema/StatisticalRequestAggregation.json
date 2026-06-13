@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/StatisticalRequestAggregation",
+  "title": "StatisticalRequestAggregation",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/StatisticalRequestAggregationWithoutEvalscript"
+    },
+    {
+      "type": "object",
+      "required": [
+        "evalscript"
+      ],
+      "properties": {
+        "evalscript": {
+          "description": "Your evalscript. For details, click\n<a href=\"https://docs.planet.com/develop/evalscripts/\" target=\"_blank\">here</a>.\nThe evalscript will be executed once for each time interval defined by `timeRange` and `aggregationInterval`.\n",
+          "type": "string"
+        }
+      }
+    }
+  ]
+}

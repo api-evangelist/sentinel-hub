@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogCollectionsCollections",
+  "title": "collections",
+  "type": "object",
+  "required": [
+    "links",
+    "collections"
+  ],
+  "properties": {
+    "links": {
+      "$ref": "#/components/schemas/CatalogLinks"
+    },
+    "collections": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/CatalogCollection"
+      }
+    }
+  }
+}

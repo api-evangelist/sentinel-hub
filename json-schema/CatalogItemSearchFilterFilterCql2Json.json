@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogItemSearchFilterFilterCql2Json",
+  "title": "filter-cql2-json",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/Cql2BooleanExpression"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BatchV2GeoPackageFeatureDefaults",
+  "title": "GeoPackageFeatureDefaults",
+  "properties": {
+    "width": {
+      "type": "integer",
+      "format": "int32",
+      "minimum": 1,
+      "maximum": 3500,
+      "example": 512
+    },
+    "height": {
+      "type": "integer",
+      "format": "int32",
+      "minimum": 1,
+      "maximum": 3500,
+      "example": 512
+    },
+    "resolution": {
+      "type": "number",
+      "format": "double",
+      "exclusiveMinimum": 0
+    }
+  }
+}

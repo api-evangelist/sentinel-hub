@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BatchStatisticsTaskDto",
+  "title": "BatchStatisticsTaskDto",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/BatchStatisticsTaskStatusDto"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "request": {
+          "$ref": "#/components/schemas/BatchStatisticalRequest"
+        },
+        "userAction": {
+          "description": "Last user action on the request.",
+          "type": "string",
+          "enum": [
+            "NONE",
+            "ANALYSE",
+            "START",
+            "STOP"
+          ]
+        },
+        "userActionUpdated": {
+          "type": "string",
+          "description": "Date of the last user action on the request",
+          "format": "date-time"
+        },
+        "domainAccountId": {
+          "description": "Deprecated. It is equal to projectId",
+          "type": "string",
+          "format": "uuid"
+        },
+        "projectId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "workspaceId": {
+          "type": "string",
+          "format": "uuid"
+        }
+      }
+    }
+  ]
+}

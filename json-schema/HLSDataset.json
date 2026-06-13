@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/HLSDataset",
+  "title": "hls",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/BaseDataset"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "hls"
+          ]
+        },
+        "dataFilter": {
+          "$ref": "#/components/schemas/HLSFiltering"
+        },
+        "processing": {
+          "$ref": "#/components/schemas/BaseDatasetProcessing"
+        }
+      }
+    }
+  ]
+}

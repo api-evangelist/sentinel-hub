@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/StatisticalResponse",
+  "title": "StatisticalResponse",
+  "description": "Statistics\n",
+  "type": "object",
+  "properties": {
+    "status": {
+      "description": "Overall status of the request.\n",
+      "type": "string",
+      "enum": [
+        "OK",
+        "PARTIAL",
+        "FAILED"
+      ]
+    },
+    "geometryPixelCount": {
+      "description": "Number of pixels intersecting the request geometry.\n",
+      "type": "integer"
+    },
+    "data": {
+      "description": "Statistics for intervals, where data is available.\n",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "interval": {
+            "description": "Interval on which, there's actual data\n",
+            "$ref": "#/components/schemas/DateTimeInterval"
+          },
+          "outputs": {
+            "description": "Per output statistics.\nOutput names are defined in evalscript.\n",
+            "type": "object",
+            "additionalProperties": {
+              "x-additionalPropertiesName": "output name",
+              "type": "object",
+              "properties": {
+                "bands": {
+                  "description": "Per band statistics and histograms.\n",
+                  "type": "object",
+                  "additionalProperties": {
+                    "x-additionalPropertiesName": "band name",
+                    "$ref": "#/components/schemas/BandStatistics"
+                  }
+                }
+              }
+            }
+          },
+          "error": {
+            "description": "If an error occurs when calculating statistics for a given interval it is reported here.\n",
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "BAD_REQUEST",
+                  "EXECUTION_ERROR",
+                  "TIMEOUT"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

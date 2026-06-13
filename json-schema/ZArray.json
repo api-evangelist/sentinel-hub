@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ZArray",
+  "title": "ZArray",
+  "type": "object",
+  "description": "A subset of the metadata as read from the array's `.zarray` file.\n",
+  "externalDocs": {
+    "description": "Zarr storage specification version 2, Array metadata",
+    "url": "https://zarr-specs.readthedocs.io/en/latest/v2/v2.0.html#metadata"
+  }
+}

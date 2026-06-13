@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogLicense",
+  "title": "license",
+  "type": "string",
+  "description": "License(s) of the data as a SPDX\n[License identifier](https://spdx.org/licenses/). Alternatively, use\n`proprietary` if the license is not on the SPDX license list or\n`various` if multiple licenses apply. In these two cases links to the\nlicense texts SHOULD be added, see the `license` link relation type.\n\nNon-SPDX licenses SHOULD add a link to the license text with the\n`license` relation in the links section. The license text MUST NOT be\nprovided as a value of this field. If there is no public license URL\navailable, it is RECOMMENDED to host the license text and\nlink to it.",
+  "example": "Apache-2.0"
+}

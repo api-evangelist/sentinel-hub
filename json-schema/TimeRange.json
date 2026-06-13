@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/TimeRange",
+  "title": "TimeRange",
+  "type": "object",
+  "description": "A time interval to filter data by acquisition date. It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.",
+  "properties": {
+    "from": {
+      "description": "The start of a search interval.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "to": {
+      "description": "The end of a search interval.",
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "example": {
+    "from": "2018-10-01T00:00:00.000Z",
+    "to": "2018-11-01T00:00:00.000Z"
+  }
+}

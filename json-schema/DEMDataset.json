@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/DEMDataset",
+  "title": "dem",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/BaseDataset"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "dataFilter": {
+          "$ref": "#/components/schemas/DEMFiltering"
+        },
+        "processing": {
+          "$ref": "#/components/schemas/DEMProcessing"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "dem"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/MaxarOrderRequest",
+  "title": "MaxarOrderRequest",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/Order"
+    },
+    {
+      "type": "object",
+      "required": [
+        "input"
+      ],
+      "properties": {
+        "input": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/MaxarSearchQuery"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "description": "To order specific MAXAR products, list them in the `selectedImages` field. Otherwise, provide search criteria in the dataFilter field to order all items matching the criteria.\nIn both cases, at most 10 products can be ordered at once, i.e. orders listing too many product IDs will fail, as will search-based orders that match too many products.\nMinimum order of 5 km^2 applies to each product, i.e. if the intersection of order's bounds and products's bounds is smaller, the order will fail.\n",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "productKernel": {
+                        "type": "string",
+                        "default": "CC",
+                        "enum": [
+                          "CC",
+                          "NN",
+                          "MTF"
+                        ],
+                        "description": "Selects the resampling kernel to use: 4x4 cubic convolution (CC), nearest neighbour (NN), or the proprietary MTF kernel (MTF).\n"
+                      },
+                      "selectedImages": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 10,
+                        "description": "Only provide this field when ordering specific MAXAR products -- leave out when ordering via search criteria.\n",
+                        "items": {
+                          "type": "string",
+                          "description": "The ID of product (strip) to order"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CalculationDefinition",
+  "title": "CalculationDefinition",
+  "description": "The name of the output (as key) for which a calculation of statistics and histogram are defined below. Each key must match with one of the `output.id` specified in a `setup()` function in an evalscript or be \"default\". If it is \"default\", the specified statistics and histogram will be calculated for all outputs for which calculation of statistics is not explicitly defined.",
+  "type": "object",
+  "properties": {
+    "histograms": {
+      "description": "Histogram definitions. They can be specified differently for each band in this output.\n",
+      "type": "object",
+      "additionalProperties": {
+        "x-additionalPropertiesName": "band name",
+        "$ref": "#/components/schemas/HistogramDefinition"
+      }
+    },
+    "statistics": {
+      "description": "Statistics definitions. It can be specified differently for each band in this output.\n",
+      "type": "object",
+      "additionalProperties": {
+        "x-additionalPropertiesName": "band name",
+        "$ref": "#/components/schemas/StatisticsDefinition"
+      }
+    }
+  }
+}

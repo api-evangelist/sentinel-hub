@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BYOCCollectionsResponse",
+  "title": "BYOCCollectionsResponse",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/BYOCCollection"
+      }
+    },
+    "links": {
+      "$ref": "#/components/schemas/View"
+    }
+  }
+}

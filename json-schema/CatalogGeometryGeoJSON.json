@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogGeometryGeoJSON",
+  "title": "geometryGeoJSON",
+  "oneOf": [
+    {
+      "$ref": "#/components/schemas/CatalogPointGeoJSON"
+    },
+    {
+      "$ref": "#/components/schemas/CatalogMultipointGeoJSON"
+    },
+    {
+      "$ref": "#/components/schemas/CatalogLinestringGeoJSON"
+    },
+    {
+      "$ref": "#/components/schemas/CatalogMultilinestringGeoJSON"
+    },
+    {
+      "$ref": "#/components/schemas/CatalogPolygonGeoJSON"
+    },
+    {
+      "$ref": "#/components/schemas/CatalogMultipolygonGeoJSON"
+    },
+    {
+      "$ref": "#/components/schemas/CatalogGeometrycollectionGeoJSON"
+    }
+  ]
+}

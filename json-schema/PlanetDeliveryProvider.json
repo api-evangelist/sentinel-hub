@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/PlanetDeliveryProvider",
+  "title": "PlanetDeliveryProvider",
+  "deprecated": true,
+  "type": "object",
+  "properties": {
+    "provider": {
+      "description": "Provider of the delivery",
+      "type": "string",
+      "enum": [
+        "PLANET"
+      ]
+    }
+  }
+}

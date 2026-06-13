@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/L8L2Dataset",
+  "title": "landsat-ot-l2",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/LandsatDataset"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "landsat-ot-l2"
+          ]
+        },
+        "dataFilter": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/LandsatFiltering"
+            },
+            {
+              "$ref": "#/components/schemas/LandsatTierFilteringWithoutRt"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

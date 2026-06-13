@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ZarrCollection",
+  "title": "ZarrCollection",
+  "type": "object",
+  "format": "ZarrCollection",
+  "required": [
+    "name",
+    "s3Bucket",
+    "path",
+    "crs"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "readOnly": true
+    },
+    "accountId": {
+      "type": "string",
+      "format": "uuid",
+      "readOnly": true
+    },
+    "name": {
+      "type": "string"
+    },
+    "created": {
+      "description": "The date and time when the collection was created.",
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "s3Bucket": {
+      "type": "string",
+      "description": "The S3 bucket where the Zarr is stored."
+    },
+    "path": {
+      "type": "string",
+      "description": "The prefix within the bucket where the Zarr is stored. Must end with '/' but not start with it and must contain a Zarr group.\n"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "CREATED",
+        "INGESTING",
+        "INGESTED",
+        "FAILED"
+      ],
+      "description": "Only INGESTED collections can be used in Process API.",
+      "readOnly": true
+    },
+    "ingestionErrors": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Error message in case ingestion of the Zarr or any of its arrays failed.",
+      "readOnly": true
+    },
+    "crs": {
+      "type": "string",
+      "description": "Native CRS of the Zarr. See also [Sentinel Hub CRS support](https://docs.planet.com/develop/apis/processing/#crs-support).\n"
+    },
+    "envelope": {
+      "description": "The area of coverage of the ingested Zarr collection, defined in its native CRS.\n",
+      "type": [
+        "object",
+        "null"
+      ],
+      "readOnly": true,
+      "$ref": "#/components/schemas/Polygon"
+    },
+    "width": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "Width of the ingested Zarr collection in pixels.",
+      "readOnly": true
+    },
+    "height": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "Height of the ingested Zarr collection in pixels.",
+      "readOnly": true
+    },
+    "zattrs": {
+      "$ref": "#/components/schemas/ZAttrs"
+    },
+    "additionalData": {
+      "$ref": "#/components/schemas/ZarrCollectionAdditionalData"
+    }
+  }
+}

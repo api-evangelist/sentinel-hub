@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/DeliveryArchive",
+  "title": "DeliveryArchive",
+  "type": "object",
+  "properties": {
+    "deliveryId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "format": {
+      "$ref": "#/components/schemas/DeliveryArchiveFormat"
+    },
+    "requested": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Time of archiving request in ISO 8601"
+    },
+    "status": {
+      "$ref": "#/components/schemas/DeliveryArchiveStatus"
+    },
+    "size": {
+      "type": "integer",
+      "description": "Size of archive in bytes. Only provided for archives with status `DONE`."
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ZarrCollectionAdditionalData",
+  "title": "ZarrCollectionAdditionalData",
+  "type": "object",
+  "readOnly": true,
+  "properties": {
+    "bands": {
+      "type": "object",
+      "additionalProperties": {
+        "x-additionalPropertiesName": "band",
+        "$ref": "#/components/schemas/BYOCFormat"
+      }
+    },
+    "maxMetersPerPixel": {
+      "type": "number",
+      "readOnly": true,
+      "description": "How many meters per pixel can you request with Process/OGC/Batch requests for this collection.\n"
+    }
+  }
+}

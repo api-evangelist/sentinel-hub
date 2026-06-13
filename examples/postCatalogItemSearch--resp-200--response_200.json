@@ -1,0 +1,97 @@
+{
+  "operationId": "postCatalogItemSearch",
+  "method": "post",
+  "path": "/catalog/v1/search",
+  "statusCode": "200",
+  "exampleName": "response_200",
+  "response": {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "bbox": [
+          12.456873618680804,
+          44.138006014975964,
+          13.558241653952589,
+          45.144727105915536
+        ],
+        "id": "S2B_MSIL2A_20201229T101329_N0214_R022_T33TUK_20201229T115442",
+        "type": "Feature",
+        "properties": {
+          "proj:epsg": 32633,
+          "datetime": "2020-12-29T10:18:19Z",
+          "instruments": [
+            "msi"
+          ],
+          "constellation": "sentinel-2",
+          "proj:geometry": {
+            "crs": {
+              "type": "name",
+              "properties": {
+                "name": "urn:ogc:def:crs:EPSG::32633"
+              }
+            },
+            "coordinates": [
+              [
+                [
+                  [
+                    300000.99988415383,
+                    5000039.000148304
+                  ],
+                  [
+                    300000.99989785976,
+                    4890241.000124758
+                  ],
+                  [
+                    352314.4884079728,
+                    4890241.000125499
+                  ],
+                  [
+                    386653.8629171661,
+                    5000039.000149397
+                  ],
+                  [
+                    300000.99988415383,
+                    5000039.000148304
+                  ]
+                ]
+              ]
+            ],
+            "type": "MultiPolygon"
+          },
+          "eo:cloud_cover": 93.93,
+          "gsd": 10,
+          "proj:bbox": [
+            300000,
+            4890240,
+            409800,
+            5000040
+          ],
+          "platform": "sentinel-2b"
+        }
+      }
+    ],
+    "links": [
+      {
+        "href": "https://services.sentinel-hub.com/catalog/v1/search",
+        "rel": "self",
+        "type": "application/geo+json"
+      },
+      {
+        "href": "https://services.sentinel-hub.com/catalog/v1/search",
+        "rel": "next",
+        "type": "application/geo+json",
+        "title": "Next set of results",
+        "method": "POST",
+        "body": {
+          "next": 1
+        },
+        "merge": true
+      }
+    ],
+    "context": {
+      "next": 1,
+      "limit": 1,
+      "returned": 1
+    }
+  }
+}

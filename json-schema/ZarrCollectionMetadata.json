@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ZarrCollectionMetadata",
+  "title": "ZarrCollectionMetadata",
+  "type": "object",
+  "properties": {
+    "@id": {
+      "type": "string",
+      "format": "uri"
+    },
+    "id": {
+      "description": "Zarr Collection identifier",
+      "type": "string"
+    },
+    "location": {
+      "description": "Zarr Collection location",
+      "$ref": "#/components/schemas/Location"
+    },
+    "datasetType": {
+      "$ref": "#/components/schemas/CustomDatasetType"
+    },
+    "bands": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/BandMetadata"
+      }
+    }
+  }
+}

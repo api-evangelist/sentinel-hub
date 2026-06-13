@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/AnalysisReadyPlanetScopeDataSpec",
+  "title": "AnalysisReadyPlanetScopeDataSpec",
+  "deprecated": true,
+  "type": "object",
+  "required": [
+    "dataFilter",
+    "type",
+    "id"
+  ],
+  "properties": {
+    "dataFilter": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PlanetSubscriptionDataFilterBase"
+        }
+      ]
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "analysis_ready_ps"
+      ],
+      "description": "The Analysis Ready Type to subscribe to."
+    },
+    "id": {
+      "type": "string",
+      "enum": [
+        "PS_ARD_SR_DAILY"
+      ],
+      "description": "The ID of the Analysis Ready type to subscribe to.\n",
+      "externalDocs": {
+        "description": "Analysis Ready IDs",
+        "url": "https://developers.planet.com/docs/data/analysis-ready-ps/#available-ids"
+      }
+    }
+  }
+}

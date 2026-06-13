@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/QuotaExceededError",
+  "title": "QuotaExceededError",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/Boom"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "errors": {
+          "type": "object",
+          "properties": {
+            "availableQuota": {
+              "type": "number",
+              "description": "Currently available quota for the provider of the order"
+            },
+            "requiredQuota": {
+              "type": "number",
+              "description": "Quota that would be required for successful confirmation of the order"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

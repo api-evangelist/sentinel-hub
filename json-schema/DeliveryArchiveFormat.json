@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/DeliveryArchiveFormat",
+  "title": "DeliveryArchiveFormat",
+  "description": "One of supported archive formats. Currently only `zip` is supported.",
+  "type": "string",
+  "default": "zip",
+  "enum": [
+    "zip"
+  ]
+}

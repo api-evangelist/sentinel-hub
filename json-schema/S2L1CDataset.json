@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/S2L1CDataset",
+  "title": "sentinel-2-l1c",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/BaseDataset"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "dataFilter": {
+          "$ref": "#/components/schemas/S2L1CFiltering"
+        },
+        "processing": {
+          "$ref": "#/components/schemas/S2Processing"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "sentinel-2-l1c"
+          ]
+        }
+      }
+    }
+  ]
+}

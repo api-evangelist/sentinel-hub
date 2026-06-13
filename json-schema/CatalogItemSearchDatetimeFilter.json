@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogItemSearchDatetimeFilter",
+  "title": "datetimeFilter",
+  "description": "An object representing a date+time based filter.",
+  "type": "object",
+  "properties": {
+    "datetime": {
+      "$ref": "#/components/schemas/CatalogItemSearchDatetimeInterval"
+    }
+  }
+}

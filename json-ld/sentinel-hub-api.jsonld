@@ -1,0 +1,191 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "sh": "https://www.sentinel-hub.com/vocab#",
+    "dct": "http://purl.org/dc/terms/"
+  },
+  "@type": "WebAPI",
+  "@id": "https://www.sentinel-hub.com/",
+  "name": "API Reference",
+  "description": "Sentinel Hub by Sinergise is a cloud-based satellite imagery processing platform providing REST APIs for accessing, processing, and analysing data from Sentinel, Landsat, MODIS, and commercial satellite constellations.",
+  "version": "1.0.0",
+  "url": "https://www.sentinel-hub.com/",
+  "documentation": "https://docs.sentinel-hub.com/api/latest/",
+  "termsOfService": "https://www.sentinel-hub.com/tos/",
+  "provider": {
+    "@type": "Organization",
+    "name": "Sinergise",
+    "url": "https://www.sinergise.com/"
+  },
+  "availableChannel": [
+    {
+      "@type": "ServiceChannel",
+      "serviceUrl": "https://services.sentinel-hub.com"
+    }
+  ],
+  "keywords": [
+    "Satellite Imagery",
+    "Geospatial",
+    "Remote Sensing",
+    "Earth Observation",
+    "NDVI",
+    "Sentinel",
+    "Landsat",
+    "MODIS",
+    "OGC",
+    "STAC"
+  ],
+  "endpointDescription": [
+    {
+      "@type": "EntryPoint",
+      "name": "Process",
+      "description": "Make sure to use the appropriate <a href=\"https://docs.sentinel-hub.com/api/latest/data/\" target=\"_blank\">end-point for each of the datasets</a>, e.g. for Landsat, Sentinel-3, etc.",
+      "urlTemplate": "https://services.sentinel-hub.com#process"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Core",
+      "description": "This is an OpenAPI definition of the SpatioTemporal Asset Catalog API - Core specification. Any service that implements this endpoint to allow discovery of spatiotemporal assets can be considered a STAC API.\n\nMake sure to use the appropriate <a href=\"https://docs.sentinel-hub.com/api/latest/data/\" t",
+      "urlTemplate": "https://services.sentinel-hub.com#catalog_core"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Collections",
+      "description": "This is an OpenAPI definition of the SpatioTemporal Asset Catalog API - Collections specification. This is a subset of the STAC API - Features specification.",
+      "urlTemplate": "https://services.sentinel-hub.com#catalog_collections"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Features",
+      "description": "This is an OpenAPI definition of the SpatioTemporal Asset Catalog API - Features specification. This extends OGC API - Features - Part 1: Core.",
+      "urlTemplate": "https://services.sentinel-hub.com#catalog_features"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Item Search",
+      "description": "This is an OpenAPI definition of the SpatioTemporal Asset Catalog API - Item Search specification.",
+      "urlTemplate": "https://services.sentinel-hub.com#catalog_item_search"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Async Process",
+      "description": "**NOTE:** _Asynchronous Processing API is currently in beta release._\n",
+      "urlTemplate": "https://services.sentinel-hub.com#async_process"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Process",
+      "description": "",
+      "urlTemplate": "https://services.sentinel-hub.com#batch_v2_process"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Tiling grid",
+      "description": "",
+      "urlTemplate": "https://services.sentinel-hub.com#batch_v2_tiling_grid"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Statistical",
+      "description": "",
+      "urlTemplate": "https://services.sentinel-hub.com#statistical"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Statistical",
+      "description": "",
+      "urlTemplate": "https://services.sentinel-hub.com#batch_statistical"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Collection",
+      "description": "",
+      "urlTemplate": "https://services.sentinel-hub.com#byoc_collection"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Tile",
+      "description": "",
+      "urlTemplate": "https://services.sentinel-hub.com#byoc_tile"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Collection",
+      "description": "",
+      "urlTemplate": "https://services.sentinel-hub.com#zarr_collection"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Arrays",
+      "description": "",
+      "urlTemplate": "https://services.sentinel-hub.com#zarr_array"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Search",
+      "description": "TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use [Planet Item Search](https://docs.planet.com/develop/apis/data/reference/#tag/Item-Search) instead.\n",
+      "urlTemplate": "https://services.sentinel-hub.com#dataimport_search"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Product",
+      "description": "TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use [Planet Data API](https://docs.planet.com/develop/apis/data/reference/) instead.\n",
+      "urlTemplate": "https://services.sentinel-hub.com#dataimport_product"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Order",
+      "description": "TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use [Planet Orders API](https://docs.planet.com/develop/apis/orders/reference/) instead.\n",
+      "urlTemplate": "https://services.sentinel-hub.com#dataimport_order"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Order delivery",
+      "description": "TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use [Planet Orders API](https://docs.planet.com/develop/apis/orders/reference/) instead.\n",
+      "urlTemplate": "https://services.sentinel-hub.com#dataimport_delivery"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Order delivery tile",
+      "description": "TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use the [BYOC API](https://docs.planet.com/develop/apis/byoc/reference/#tag/byoc_tile) instead to work with tiles.\n",
+      "urlTemplate": "https://services.sentinel-hub.com#dataimport_tile_delivery"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Subscription",
+      "description": "TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use [Planet Subscriptions API](https://docs.planet.com/develop/apis/subscriptions/reference/) instead.\n",
+      "urlTemplate": "https://services.sentinel-hub.com#dataimport_subscription"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Subscription delivery",
+      "description": "TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use [Planet Subscriptions API](https://docs.planet.com/develop/apis/subscriptions/reference/) instead.\n",
+      "urlTemplate": "https://services.sentinel-hub.com#dataimport_subscription_delivery"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Subscription delivery tile",
+      "description": "TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use the [BYOC API](https://docs.planet.com/develop/apis/byoc/reference/#tag/byoc_tile) instead to work with tiles.\n",
+      "urlTemplate": "https://services.sentinel-hub.com#dataimport_subscription_tile_delivery"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Quota",
+      "description": "",
+      "urlTemplate": "https://services.sentinel-hub.com#dataimport_quota"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Location",
+      "description": "",
+      "urlTemplate": "https://services.sentinel-hub.com#metadata_location"
+    },
+    {
+      "@type": "EntryPoint",
+      "name": "Collection",
+      "description": "",
+      "urlTemplate": "https://services.sentinel-hub.com#metadata_collection"
+    }
+  ],
+  "numberOfEndpoints": 73
+}

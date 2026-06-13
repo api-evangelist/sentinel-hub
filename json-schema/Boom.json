@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/Boom",
+  "title": "Boom",
+  "type": "object",
+  "properties": {
+    "status": {
+      "description": "HTTP status code",
+      "type": "integer",
+      "format": "int32"
+    },
+    "reason": {
+      "description": "Reason for the error",
+      "type": "string"
+    },
+    "message": {
+      "description": "Friendly error message",
+      "type": "string"
+    },
+    "code": {
+      "description": "Code that uniquely identifies the error",
+      "type": "string",
+      "enum": [
+        "COMMON_BAD_PAYLOAD",
+        "COMMON_NOT_FOUND",
+        "COMMON_DATABASE_ERROR",
+        "COMMON_UNIQUE_KEY_VIOLATION",
+        "COMMON_INSUFFICIENT_PERMISSIONS",
+        "COMMON_SENTINEL_ACCOUNT_EXPIRED",
+        "COMMON_METHOD_NOT_ALLOWED",
+        "COMMON_UNSUPPORTED_MEDIA_TYPE",
+        "COMMON_ELASTICSEARCH_ERROR",
+        "COMMON_UNAUTHORIZED",
+        "COMMON_EXCEPTION",
+        "RATE_LIMIT_STORAGE_TIMEOUT",
+        "RATE_LIMIT_OVERLAPPING_POLICIES",
+        "RATE_LIMIT_EXCEEDED",
+        "RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY",
+        "DASHBOARD_PAYPAL_SALE_ERROR",
+        "DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR",
+        "DASHBOARD_INVALID_PAYPAL_RESPONSE",
+        "DASHBOARD_EXECUTE_SALE_ERROR",
+        "DASHBOARD_EXECUTE_AGREEMENT_ERROR",
+        "DASHBOARD_IPN_ERROR",
+        "DASHBOARD_ADYEN_SALE_ERROR",
+        "DASHBOARD_ADYEN_PAYMENT_CANCELLED",
+        "RENDERER_EXCEPTION",
+        "OAUTH_ERROR",
+        "EMAIL_OCTOPUS_ERROR"
+      ]
+    },
+    "errors": {
+      "description": "Additional information about the error (Optional)",
+      "type": "object"
+    }
+  }
+}

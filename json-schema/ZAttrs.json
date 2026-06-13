@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ZAttrs",
+  "title": "ZAttrs",
+  "type": [
+    "object",
+    "null"
+  ],
+  "description": "Custom attributes as read from the `.zattrs` file.",
+  "externalDocs": {
+    "description": "Zarr storage specification version 2, Attributes",
+    "url": "https://zarr-specs.readthedocs.io/en/latest/v2/v2.0.html#attributes"
+  },
+  "readOnly": true
+}

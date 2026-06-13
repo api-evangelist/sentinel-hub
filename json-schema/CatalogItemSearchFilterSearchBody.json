@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogItemSearchFilterSearchBody",
+  "title": "searchBody",
+  "type": "object",
+  "x-stac-api-fragment": "filter",
+  "description": "**Extension:** Filter\n\nA filter for properties in Items.",
+  "properties": {
+    "filter": {
+      "$ref": "#/components/schemas/CatalogItemSearchFilterFilterCql2Json"
+    },
+    "filter-lang": {
+      "$ref": "#/components/schemas/CatalogItemSearchFilterFilterLang"
+    },
+    "filter-crs": {
+      "$ref": "#/components/schemas/CatalogItemSearchFilterFilterCrs"
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/S1Processing",
+  "title": "S1Processing",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/BaseDatasetProcessing"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "speckleFilter": {
+          "type": "object",
+          "oneOf": [
+            {
+              "$ref": "#/components/schemas/S1ProcessingSpeckleFilterLEE"
+            },
+            {
+              "$ref": "#/components/schemas/S1ProcessingSpeckleFilterNONE"
+            }
+          ],
+          "discriminator": {
+            "propertyName": "type",
+            "mapping": {
+              "LEE": "#/components/schemas/S1ProcessingSpeckleFilterLEE",
+              "NONE": "#/components/schemas/S1ProcessingSpeckleFilterNONE"
+            }
+          }
+        },
+        "backCoeff": {
+          "type": "string",
+          "enum": [
+            "BETA0",
+            "SIGMA0_ELLIPSOID",
+            "GAMMA0_ELLIPSOID",
+            "GAMMA0_TERRAIN"
+          ],
+          "default": "GAMMA0_ELLIPSOID"
+        },
+        "orthorectify": {
+          "type": "boolean",
+          "default": false
+        },
+        "demInstance": {
+          "type": "string",
+          "enum": [
+            "MAPZEN",
+            "COPERNICUS",
+            "COPERNICUS_30",
+            "COPERNICUS_90"
+          ],
+          "default": "MAPZEN"
+        },
+        "radiometricTerrainOversampling": {
+          "type": "number",
+          "format": "double",
+          "minimum": 1,
+          "maximum": 4,
+          "default": 2
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ZarrArray",
+  "title": "ZarrArray",
+  "type": "object",
+  "format": "ZarrArray",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "s3Bucket": {
+      "type": "string"
+    },
+    "path": {
+      "type": "string"
+    },
+    "zarray": {
+      "$ref": "#/components/schemas/ZArray"
+    },
+    "zattrs": {
+      "$ref": "#/components/schemas/ZAttrs"
+    }
+  }
+}

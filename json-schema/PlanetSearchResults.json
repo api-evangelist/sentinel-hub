@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/PlanetSearchResults",
+  "title": "PlanetSearchResults",
+  "deprecated": true,
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/SearchResultBase"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "features": {
+          "type": "array",
+          "externalDocs": {
+            "description": "Search results as returned by Planet Quick search",
+            "url": "https://developers.planet.com/docs/apis/data/reference/#tag/Item-Search/operation/QuickSearch"
+          }
+        },
+        "<other fields>": {
+          "description": "Other fields returned by Planet Quick search may be included in the response."
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/OrderDeliveryBase",
+  "title": "OrderDeliveryBase",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Delivery ID",
+      "type": "string",
+      "format": "uuid"
+    },
+    "sqkm": {
+      "description": "Size of the delivery in km<sup>2</sup>.",
+      "type": "number"
+    },
+    "status": {
+      "$ref": "#/components/schemas/DeliveryStatus"
+    },
+    "errorMessage": {
+      "description": "Error message if status = \"DELIVERY_FAILED\", \"NON_INGESTIBLE\" or \"IMPORT_FAILED\".",
+      "type": "string"
+    }
+  }
+}

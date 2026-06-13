@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/S2L2ADataset",
+  "title": "sentinel-2-l2a",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/BaseDataset"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "dataFilter": {
+          "$ref": "#/components/schemas/S2L2AFiltering"
+        },
+        "processing": {
+          "$ref": "#/components/schemas/S2Processing"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "sentinel-2-l2a"
+          ]
+        }
+      }
+    }
+  ]
+}

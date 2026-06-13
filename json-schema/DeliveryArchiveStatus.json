@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/DeliveryArchiveStatus",
+  "title": "DeliveryArchiveStatus",
+  "description": "Status of archive creation. Only archives with status `DONE` can be downloaded.",
+  "type": "string",
+  "enum": [
+    "WAITING",
+    "PREPARING",
+    "DONE",
+    "FAILED"
+  ]
+}

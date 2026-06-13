@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/GSBucketInfo",
+  "title": "GSBucketInfo",
+  "type": "object",
+  "required": [
+    "url",
+    "credentials"
+  ],
+  "properties": {
+    "url": {
+      "type": "string",
+      "description": "A URL pointing to a Google Cloud Storage bucket or an object in a GCS bucket, e.g. `gs://my-bucket/some-folder` or `gs://my-bucket/some-folder/some-file.gpkg`."
+    },
+    "credentials": {
+      "type": "string",
+      "description": "Base64-encoded service account credentials in JSON format."
+    }
+  }
+}

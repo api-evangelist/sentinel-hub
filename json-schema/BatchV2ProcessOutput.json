@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BatchV2ProcessOutput",
+  "title": "BatchV2ProcessOutput",
+  "description": "Parameters that will be used for all output arrays, except where overridden with `arrayOverrides`. Required unless `arrayOverrides` includes all required fields for all output arrays. All fields are standard Zarr fields. Further information can be found on the link below.\n",
+  "oneOf": [
+    {
+      "$ref": "#/components/schemas/BatchV2RasterOutput"
+    },
+    {
+      "$ref": "#/components/schemas/BatchV2ZarrOutput"
+    }
+  ]
+}

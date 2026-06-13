@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogItemSearchFieldsSearchBody",
+  "title": "searchBody",
+  "type": "object",
+  "x-stac-api-fragment": "fields",
+  "description": "**Extension:** Fields\n\nDetermines the shape of the features in the response",
+  "properties": {
+    "fields": {
+      "$ref": "#/components/schemas/CatalogItemSearchFieldsFields"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogStacExtensions",
+  "title": "STAC extensions",
+  "type": "array",
+  "uniqueItems": true,
+  "items": {
+    "anyOf": [
+      {
+        "title": "Reference to a JSON Schema",
+        "type": "string",
+        "format": "uri"
+      },
+      {
+        "title": "Reference to a core extension",
+        "type": "string"
+      }
+    ]
+  }
+}

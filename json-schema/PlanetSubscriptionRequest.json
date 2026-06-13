@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/PlanetSubscriptionRequest",
+  "title": "PlanetSubscriptionRequest",
+  "deprecated": true,
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/Subscription"
+    },
+    {
+      "type": "object",
+      "required": [
+        "input"
+      ],
+      "properties": {
+        "input": {
+          "type": "object",
+          "required": [
+            "provider",
+            "bounds",
+            "data",
+            "planetApiKey"
+          ],
+          "properties": {
+            "provider": {
+              "description": "Specify this value to use data provider Planet.",
+              "type": "string",
+              "enum": [
+                "PLANET"
+              ]
+            },
+            "planetApiKey": {
+              "description": "Your Planet API key. Get one from Planet https://www.planet.com.",
+              "type": "string"
+            },
+            "bounds": {
+              "description": "Defines the bounds of the subscribed area by specifying a bounding box and/or a geometry.\nIf both are given, the subscription will use  the geometry and the bbox is ignored.\n",
+              "$ref": "#/components/schemas/ProcessRequestInputBounds"
+            },
+            "data": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 1,
+              "description": "Specification of the data to subscribe to.\n",
+              "items": {
+                "$ref": "#/components/schemas/PlanetSubscriptionDataSpec"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

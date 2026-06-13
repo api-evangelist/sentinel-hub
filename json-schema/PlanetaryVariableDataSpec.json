@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/PlanetaryVariableDataSpec",
+  "title": "PlanetaryVariableDataSpec",
+  "deprecated": true,
+  "type": "object",
+  "required": [
+    "dataFilter",
+    "type",
+    "id"
+  ],
+  "properties": {
+    "dataFilter": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PlanetSubscriptionDataFilterBase"
+        }
+      ]
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "soil_water_content",
+        "biomass_proxy",
+        "land_surface_temperature",
+        "forest_carbon_diligence_30m",
+        "forest_carbon_monitoring_3m"
+      ],
+      "description": "The Planetary Variable Type to subscribe to.",
+      "externalDocs": {
+        "description": "Plantery Variables types and IDs",
+        "url": "https://developers.planet.com/docs/subscriptions/pvs-subs/#planetary-variables-types-and-ids"
+      }
+    },
+    "id": {
+      "type": "string",
+      "enum": [
+        "SWC-AMSR2-C_V1.0_100",
+        "SWC-AMSR2-X_V1.0_100",
+        "SWC-SMAP-L_V1.0_100",
+        "SWC-AMSR2-C_V2.0_100",
+        "SWC-AMSR2-X_V2.0_100",
+        "SWC-SMAP-L_V2.0_100",
+        "SWC-AMSRE-C_V4.0_1000",
+        "SWC-AMSRE-X_V4.0_1000",
+        "SWC-AMSR2-C_V4.0_1000",
+        "SWC-AMSR2-X_V4.0_1000",
+        "SWC-SMAP-L_V4.0_1000",
+        "SWC-AMSRE-C_V5.0_1000",
+        "SWC-AMSRE-X_V5.0_1000",
+        "SWC-AMSR2-C_V5.0_1000",
+        "SWC-AMSR2-X_V5.0_1000",
+        "SWC-SMAP-L_V5.0_1000",
+        "BIOMASS-PROXY_V3.0_10",
+        "BIOMASS-PROXY_V4.0_10",
+        "LST-AMSR2_V1.0_100",
+        "LST-AMSRE_V1.0_1000",
+        "LST-AMSR2_V1.0_1000",
+        "CANOPY_HEIGHT_v1.1.0_30",
+        "CANOPY_COVER_v1.1.0_30",
+        "ABOVEGROUND_CARBON_DENSITY_v1.1.0_30",
+        "CANOPY_HEIGHT_v1.2.0_30",
+        "CANOPY_COVER_v1.2.0_30",
+        "ABOVEGROUND_CARBON_DENSITY_v1.2.0_30",
+        "CANOPY_HEIGHT_v1.0.0_3",
+        "CANOPY_COVER_v1.0.0_3",
+        "ABOVEGROUND_CARBON_DENSITY_v1.0.0_3"
+      ],
+      "description": "The ID of the Planetary Variable to subscribe to.\nNote that each `id` value is only allowed with one corresponding `type` value.\n",
+      "externalDocs": {
+        "description": "Allowed type/id combinations",
+        "url": "https://developers.planet.com/docs/subscriptions/pvs-subs/#planetary-variables-types-and-ids"
+      }
+    }
+  }
+}

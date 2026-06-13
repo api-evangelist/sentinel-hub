@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BYOCCollectionAdditionalData",
+  "title": "BYOCCollectionAdditionalData",
+  "type": "object",
+  "properties": {
+    "bands": {
+      "type": "object",
+      "description": "Limited to 100 bands.",
+      "additionalProperties": {
+        "x-additionalPropertiesName": "band",
+        "$ref": "#/components/schemas/BYOCFormat"
+      }
+    },
+    "maxMetersPerPixel": {
+      "type": "number",
+      "readOnly": true,
+      "description": "How much meters per pixel can you request with Process/OGC/Batch requests for this collection. The limit is internally increased to 500, if it's less than that.\n"
+    },
+    "extent": {
+      "description": "The collection extent in WGS84.",
+      "$ref": "#/components/schemas/Polygon",
+      "readOnly": true
+    },
+    "hasSensingTimes": {
+      "type": "string",
+      "enum": [
+        "YES",
+        "PARTIALLY",
+        "NO"
+      ],
+      "description": "Information if tiles have sensing time.",
+      "readOnly": true
+    },
+    "fromSensingTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The sensing time in ISO 8601 of the least recent tile.",
+      "readOnly": true
+    },
+    "toSensingTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The sensing time in ISO 8601 of the most recent tile.",
+      "readOnly": true
+    }
+  }
+}

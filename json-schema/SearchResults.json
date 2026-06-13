@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/SearchResults",
+  "title": "SearchResults",
+  "oneOf": [
+    {
+      "$ref": "#/components/schemas/PlanetSearchResults"
+    },
+    {
+      "$ref": "#/components/schemas/MaxarSearchResults"
+    }
+  ]
+}

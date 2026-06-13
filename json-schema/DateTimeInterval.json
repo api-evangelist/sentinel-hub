@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/DateTimeInterval",
+  "title": "DateTimeInterval",
+  "type": "object",
+  "properties": {
+    "from": {
+      "type": "string",
+      "description": "ISO-8601 time representing start of search interval, e.g. 2019-01-31T14:00:00+01:00",
+      "format": "date-time"
+    },
+    "to": {
+      "type": "string",
+      "description": "ISO-8601 time representing end of search interval, e.g. 2019-02-05T15:00:00+01:00.",
+      "format": "date-time"
+    }
+  }
+}

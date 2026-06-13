@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/Aggregation",
+  "title": "Aggregation",
+  "required": [
+    "of"
+  ],
+  "description": "Specifies how given time range is split into time intervals.\n",
+  "type": "object",
+  "properties": {
+    "of": {
+      "description": "Duration in ISO 8601 duration format, check [here](https://docs.planet.com/develop/apis/statistical/#split-the-requested-timerange-into-multiple-time-intervals) for more details.\n",
+      "type": "string"
+    },
+    "lastIntervalBehavior": {
+      "description": "This parameter specifies the behavior of the last interval if the given time range isn't divisible by the provided aggregation interval.\n * SKIP - skip the last interval  (default behavior)\n * SHORTEN - shortens the last interval so that it ends at the end of provided time range.\n * EXTEND - extends the last interval over the end of the provided time range so that all intervals are of equal duration\n",
+      "type": "string",
+      "enum": [
+        "SKIP",
+        "SHORTEN",
+        "EXTEND"
+      ]
+    }
+  }
+}

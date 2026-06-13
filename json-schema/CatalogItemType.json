@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogItemType",
+  "title": "itemType",
+  "type": "string",
+  "description": "The GeoJSON type",
+  "enum": [
+    "Feature"
+  ]
+}

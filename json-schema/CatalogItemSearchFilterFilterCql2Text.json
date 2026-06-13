@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogItemSearchFilterFilterCql2Text",
+  "title": "filter-cql2-text",
+  "description": "A CQL2 filter expression in the 'cql2-text' encoding.\n",
+  "type": "string"
+}

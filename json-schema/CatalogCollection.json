@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogCollection",
+  "title": "collection",
+  "type": "object",
+  "required": [
+    "stac_version",
+    "type",
+    "id",
+    "description",
+    "license",
+    "extent",
+    "links"
+  ],
+  "properties": {
+    "stac_version": {
+      "$ref": "#/components/schemas/CatalogStacVersion"
+    },
+    "stac_extensions": {
+      "$ref": "#/components/schemas/CatalogStacExtensions"
+    },
+    "type": {
+      "type": "string"
+    },
+    "id": {
+      "description": "identifier of the collection used, for example, in URIs",
+      "type": "string"
+    },
+    "title": {
+      "description": "human readable title of the collection",
+      "type": "string"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed multi-line description to fully explain the catalog or collection.\n[CommonMark 0.29](http://commonmark.org/) syntax MAY be used for rich text representation."
+    },
+    "keywords": {
+      "type": "array",
+      "description": "List of keywords describing the collection.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "license": {
+      "$ref": "#/components/schemas/CatalogLicense"
+    },
+    "extent": {
+      "$ref": "#/components/schemas/CatalogExtent"
+    },
+    "providers": {
+      "$ref": "#/components/schemas/CatalogProviders"
+    },
+    "links": {
+      "$ref": "#/components/schemas/CatalogLinks"
+    },
+    "summaries": {
+      "description": "Summaries are either a unique set of all available values *or*\nstatistics. Statistics by default only specify the range (minimum\nand maximum values), but can optionally be accompanied by additional\nstatistical values. The range can specify the potential range of\nvalues, but it is recommended to be as precise as possible. The set\nof values must contain at least one element and it is strongly\nrecommended to list all values. It is recommended to list as many\nproperties as reasonable so that consumers get a full overview of\nthe Collection. Properties that are covered by the Collection\nspecification (e.g. `providers` and `license`) may not be repeated\nin the summaries.",
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "array",
+            "title": "Set of values",
+            "items": {
+              "description": "A value of any type."
+            }
+          },
+          {
+            "type": "object",
+            "title": "Statistics",
+            "description": "By default, only ranges with a minimum and a maximum value can\nbe specified. Ranges can be specified for ordinal values only,\nwhich means they need to have a rank order. Therefore, ranges\ncan only be specified for numbers and some special types of\nstrings. Examples: grades (A to F), dates or times.\nImplementors are free to add other derived statistical values\nto the object, for example `mean` or `stddev`.",
+            "required": [
+              "min",
+              "max"
+            ],
+            "properties": {
+              "min": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "max": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

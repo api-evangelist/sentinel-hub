@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/HistogramDefinition",
+  "title": "HistogramDefinition",
+  "description": "The name of the band (as key) for which a histogram is defined below. Each key must match with one of the band names\n`output.bands` specified in a `setup()` function in an evalscript (for this output) or be \"default\". If it is \"default\",\nthe histogram specified below will be returned for all bands of this output for which histogram is not explicitly defined.\n\nEach band's histogram may be defined by providing one of the following properties:\n  * `binWidth`\n  * `nBins`\n  * exact bins provided by `bins` array\n\n[This example](https://docs.planet.com/develop/apis/statistical/examples/#multiple-outputs-with-different-datamasks-multi-band-output-with-custom-bands-names-and-different-histogram-types)\nshows how to specify histograms using different parameters.\n\nHistograms can be calculated using float or integer math. Providing `lowEdge` and `highEdge` or `binWidth` or\nelements of the `bins` array as integer numbers will select integer math, otherwise float will be used.\nOutput type of the band's output (specified in `output.sampleType` in the `setup()` function in the evalscript)\nmust match the respective histogram math.\n\nIf `lowEdge` and `highEdge` are not explicitly provided, min and max values are used, respectively.\n",
+  "type": "object",
+  "properties": {
+    "nBins": {
+      "description": "Number of bins in the histogram.\n",
+      "type": "number"
+    },
+    "binWidth": {
+      "description": "Bin width.\n",
+      "type": "number"
+    },
+    "lowEdge": {
+      "description": "Values lower to this will not be included in any of the histogram's bins.\n",
+      "type": "number"
+    },
+    "highEdge": {
+      "description": "Values higher to this will not be included in any of the histogram's bins.\n",
+      "type": "number"
+    },
+    "bins": {
+      "description": "Explicitly defined bins.\nArray [v1,v2,v3,v4] will define the following bins:\n[v1,v2), [v2,v3), [v3,v4]\n",
+      "type": "array",
+      "items": {
+        "type": "number",
+        "minItems": 2
+      }
+    }
+  }
+}

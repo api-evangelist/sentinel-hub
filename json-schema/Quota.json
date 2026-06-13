@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/Quota",
+  "title": "Quota",
+  "type": "object",
+  "properties": {
+    "collectionId": {
+      "$ref": "#/components/schemas/QuotaTpdiCollectionId"
+    },
+    "quotaSqkm": {
+      "type": "number",
+      "description": "This is total purchased quota. Available quota is quotaSqkm - quotaUsed.",
+      "readOnly": true
+    },
+    "quotaUsed": {
+      "type": "number",
+      "description": "Quota used in square kilometers.",
+      "readOnly": true
+    }
+  }
+}

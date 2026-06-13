@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/StatisticalRequestAggregationWithoutEvalscript",
+  "title": "StatisticalRequestAggregationWithoutEvalscript",
+  "required": [
+    "timeRange",
+    "aggregationInterval"
+  ],
+  "description": "Specifies how data is aggregated and processed before statistics is calculated. `timeRange` and `aggregationInterval` combined define sampling intervals in time dimension. Width/height or resx/resy combined with `input.bounds` define a sample matrix (i.e. \"image\") in spatial dimension.\n",
+  "type": "object",
+  "properties": {
+    "timeRange": {
+      "$ref": "#/components/schemas/StatisticalDateTimeInterval"
+    },
+    "aggregationInterval": {
+      "$ref": "#/components/schemas/Aggregation"
+    },
+    "width": {
+      "description": "Width of the sample matrix.\n_Only one pair of parameters \"width\"/\"height\" or \"resx\"/\"resy\" must be set at the same time._\n",
+      "type": "integer",
+      "format": "int32",
+      "minimum": 1,
+      "maximum": 2500,
+      "default": 256,
+      "example": 512
+    },
+    "height": {
+      "description": "Height of the sample matrix.\n_Only one pair of parameters \"width\"/\"height\" or \"resx\"/\"resy\" must be set at the same time._\n",
+      "type": "integer",
+      "format": "int32",
+      "minimum": 1,
+      "maximum": 2500,
+      "default": 256,
+      "example": 512
+    },
+    "resx": {
+      "description": "Spatial resolution used to calculate the width of the sample matrix from the `input.bounds`.\nIts units are defined by the CRS given in `input.bounds.properties.crs`\nparameter.\n_Only one pair of parameters \"width\"/\"height\" or \"resx\"/\"resy\" must be set at the same time._\n",
+      "type": "number",
+      "format": "double"
+    },
+    "resy": {
+      "description": "Spatial resolution used to calculate the height of the sample matrix from the `input.bounds`.\nIts units are defined by the CRS given in `input.bounds.properties.crs`\nparameter.\n_Only one pair of parameters \"width\"/\"height\" or \"resx\"/\"resy\" must be set at the same time._\n",
+      "type": "number",
+      "format": "double"
+    }
+  }
+}

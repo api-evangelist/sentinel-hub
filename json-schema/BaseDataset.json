@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BaseDataset",
+  "title": "BaseDataset",
+  "type": "object",
+  "properties": {
+    "type": {
+      "description": "Datasource abbreviation",
+      "type": "string"
+    },
+    "id": {
+      "description": "Identifier",
+      "type": "string"
+    }
+  }
+}

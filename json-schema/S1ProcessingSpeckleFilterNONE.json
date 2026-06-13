@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/S1ProcessingSpeckleFilterNONE",
+  "title": "S1ProcessingSpeckleFilterNONE",
+  "type": "object",
+  "description": "Does NO speckle filtering. Equivalent to not having speckleFilter defined.",
+  "required": [
+    "type"
+  ],
+  "properties": {
+    "type": {
+      "type": "string"
+    }
+  }
+}

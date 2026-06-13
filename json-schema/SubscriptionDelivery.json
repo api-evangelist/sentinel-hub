@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/SubscriptionDelivery",
+  "title": "SubscriptionDelivery",
+  "oneOf": [
+    {
+      "$ref": "#/components/schemas/SubscriptionPlanetDelivery"
+    }
+  ]
+}

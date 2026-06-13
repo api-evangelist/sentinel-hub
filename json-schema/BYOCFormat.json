@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BYOCFormat",
+  "title": "BYOCFormat",
+  "type": "object",
+  "required": [
+    "bitDepth",
+    "sampleFormat"
+  ],
+  "properties": {
+    "source": {
+      "description": "The string that must appear in `(BAND)` placeholder. If unset, defaults to the band name.",
+      "type": "string"
+    },
+    "bandIndex": {
+      "description": "The index of band in 1-based numbering.",
+      "type": "integer",
+      "format": "int32",
+      "default": 1
+    },
+    "bitDepth": {
+      "type": "integer",
+      "format": "int32",
+      "enum": [
+        8,
+        16,
+        32
+      ]
+    },
+    "sampleFormat": {
+      "type": "string",
+      "enum": [
+        "UINT",
+        "INT",
+        "FLOAT"
+      ]
+    },
+    "noData": {
+      "type": "number",
+      "description": "You can define noData either per band or per collection, but not both."
+    },
+    "aliases": {
+      "description": "An optional list of alias names that can be used instead of the band name in the evalscript.\nOnly used in certain specific collections and not settable by the user.\n",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "readOnly": true
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ArrayOverrides",
+  "title": "ArrayOverrides",
+  "description": "Overrides the values of `arrayParameters` for individual arrays.",
+  "type": "object",
+  "additionalProperties": {
+    "x-additionalPropertiesName": "array name",
+    "$ref": "#/components/schemas/ArrayOverride"
+  }
+}

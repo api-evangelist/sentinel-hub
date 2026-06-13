@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/S1Filtering",
+  "title": "S1Filtering",
+  "type": "object",
+  "properties": {
+    "timeRange": {
+      "$ref": "#/components/schemas/TimeRange"
+    },
+    "mosaickingOrder": {
+      "description": "The order in which tiles are overlapped from which the output result is mosaicked.",
+      "type": "string",
+      "enum": [
+        "mostRecent",
+        "leastRecent"
+      ],
+      "default": "mostRecent"
+    },
+    "resolution": {
+      "type": "string",
+      "enum": [
+        "HIGH",
+        "MEDIUM",
+        "FULL"
+      ]
+    },
+    "acquisitionMode": {
+      "type": "string",
+      "enum": [
+        "SM",
+        "IW",
+        "EW",
+        "WV",
+        "EN",
+        "AN",
+        "IM"
+      ]
+    },
+    "polarization": {
+      "type": "string",
+      "enum": [
+        "SH",
+        "SV",
+        "DH",
+        "DV",
+        "HH",
+        "HV",
+        "VV",
+        "VH"
+      ]
+    },
+    "orbitDirection": {
+      "type": "string",
+      "enum": [
+        "ASCENDING",
+        "DESCENDING"
+      ]
+    },
+    "timeliness": {
+      "type": "string",
+      "enum": [
+        "NRT10m",
+        "NRT1h",
+        "NRT3h",
+        "Fast24h",
+        "Offline",
+        "Reprocessing",
+        "ArchNormal"
+      ]
+    }
+  }
+}

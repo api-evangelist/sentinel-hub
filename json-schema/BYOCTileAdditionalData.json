@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BYOCTileAdditionalData",
+  "title": "BYOCTileAdditionalData",
+  "type": "object",
+  "properties": {
+    "failedIngestionCause": {
+      "description": "Contains additional information about why ingestion failed (if applicable).",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "warnings": {
+      "description": "Contains additional information about potential tile problems.",
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

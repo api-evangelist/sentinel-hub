@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogItemSearchFieldsFields",
+  "title": "fields",
+  "description": "The include and exclude members specify an array of\nproperty names that are either included or excluded\nfrom the result, respectively. If both include and\nexclude are specified, include takes precedence.\nValues should include the full JSON path of the property.\n",
+  "type": "object",
+  "properties": {
+    "include": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "exclude": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "example": {
+    "include": [
+      "id",
+      "properties.eo:cloud_cover"
+    ],
+    "exclude": [
+      "geometry",
+      "properties.datetime"
+    ]
+  }
+}

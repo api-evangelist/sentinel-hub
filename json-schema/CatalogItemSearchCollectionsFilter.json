@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogItemSearchCollectionsFilter",
+  "title": "collectionsFilter",
+  "type": "object",
+  "description": "Only returns the collections specified",
+  "properties": {
+    "collections": {
+      "$ref": "#/components/schemas/CatalogItemSearchCollectionsArray"
+    }
+  }
+}

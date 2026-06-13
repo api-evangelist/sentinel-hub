@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BatchStatisticalInput",
+  "title": "BatchStatisticalInput",
+  "type": "object",
+  "required": [
+    "features",
+    "data"
+  ],
+  "properties": {
+    "features": {
+      "description": "Storage location of the GeoPackage containing the features (polygons) to calculate the statistics for.",
+      "$ref": "#/components/schemas/ObjectStorageInfoV2"
+    },
+    "data": {
+      "$ref": "#/components/schemas/ProcessRequestInputData"
+    }
+  }
+}

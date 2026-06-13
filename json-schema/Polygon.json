@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/Polygon",
+  "title": "Polygon",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "Polygon"
+      ]
+    },
+    "coordinates": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array",
+          "items": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      }
+    }
+  }
+}

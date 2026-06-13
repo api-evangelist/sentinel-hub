@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BatchV2ProcessRequestUpdatePayload",
+  "title": "BatchV2ProcessRequestUpdatePayload",
+  "type": "object",
+  "properties": {
+    "description": {
+      "description": "Optional description that can be used to keep track of requests. If omitted, the description will not be changed.\n",
+      "type": "string"
+    }
+  }
+}

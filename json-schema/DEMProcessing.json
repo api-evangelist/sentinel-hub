@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/DEMProcessing",
+  "title": "DEMProcessing",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/BaseDatasetProcessing"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "clampNegative": {
+          "type": "boolean",
+          "default": false,
+          "description": "Mapzen DEM specific option. It replaces negative orthometric heights with 0. Useful for removing ocean bathymetry, for example."
+        },
+        "egm": {
+          "type": "boolean",
+          "default": false,
+          "description": "It replaces orthometric heights with ellipsoidal heights relative to the WGS84 ellipsoid."
+        }
+      }
+    }
+  ]
+}

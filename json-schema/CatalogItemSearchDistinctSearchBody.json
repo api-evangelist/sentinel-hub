@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogItemSearchDistinctSearchBody",
+  "title": "searchBody",
+  "type": "object",
+  "x-stac-api-fragment": "distinct",
+  "description": "**Extension:** Distinct\n\nReturn distinct values of specified property.",
+  "properties": {
+    "distinct": {
+      "$ref": "#/components/schemas/CatalogItemSearchDistinctDistinct"
+    }
+  }
+}

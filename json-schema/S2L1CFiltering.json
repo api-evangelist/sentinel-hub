@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/S2L1CFiltering",
+  "title": "S2L1CFiltering",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/S2L2AFiltering"
+    }
+  ]
+}

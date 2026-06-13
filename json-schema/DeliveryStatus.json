@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/DeliveryStatus",
+  "title": "DeliveryStatus",
+  "description": "Delivery status",
+  "type": "string",
+  "readOnly": true,
+  "enum": [
+    "WAITING",
+    "DELIVERED",
+    "DELIVERY_FAILED",
+    "PREPARING",
+    "INGESTING",
+    "DONE",
+    "IMPORT_FAILED",
+    "NON_INGESTIBLE"
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ProcessRequestInputData",
+  "title": "ProcessRequestInputData",
+  "description": "The collections you wish to request, along with certain processing and filtering parameters.\nTo learn how to request and work with multiple collection, check the \"Data Fusion\" page in our documentation https://docs.sentinel-hub.com/api/latest/data/data-fusion/.\n",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "oneOf": [
+      {
+        "$ref": "#/components/schemas/S2L1CDataset"
+      },
+      {
+        "$ref": "#/components/schemas/S2L2ADataset"
+      },
+      {
+        "$ref": "#/components/schemas/Ls8Dataset"
+      },
+      {
+        "$ref": "#/components/schemas/L8L1Dataset"
+      },
+      {
+        "$ref": "#/components/schemas/L8L2Dataset"
+      },
+      {
+        "$ref": "#/components/schemas/LETML1Dataset"
+      },
+      {
+        "$ref": "#/components/schemas/LETML2Dataset"
+      },
+      {
+        "$ref": "#/components/schemas/LTML1Dataset"
+      },
+      {
+        "$ref": "#/components/schemas/LTML2Dataset"
+      },
+      {
+        "$ref": "#/components/schemas/LMSSL1Dataset"
+      },
+      {
+        "$ref": "#/components/schemas/ModisDataset"
+      },
+      {
+        "$ref": "#/components/schemas/DEMDataset"
+      },
+      {
+        "$ref": "#/components/schemas/S1Dataset"
+      },
+      {
+        "$ref": "#/components/schemas/HLSDataset"
+      },
+      {
+        "$ref": "#/components/schemas/BYOCDataset"
+      }
+    ]
+  }
+}

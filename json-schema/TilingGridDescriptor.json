@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/TilingGridDescriptor",
+  "title": "TilingGridDescriptor",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Identifier",
+      "type": "integer",
+      "format": "int64"
+    },
+    "name": {
+      "type": "string"
+    },
+    "properties": {
+      "$ref": "#/components/schemas/TilingGridDescriptorProperties"
+    }
+  }
+}

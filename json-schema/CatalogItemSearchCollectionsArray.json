@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/CatalogItemSearchCollectionsArray",
+  "title": "collectionsArray",
+  "type": "array",
+  "description": "Array of Collection IDs to include in the search for items.\nOnly Item objects in one of the provided collections will be searched.",
+  "items": {
+    "type": "string"
+  },
+  "minItems": 1,
+  "maxItems": 1
+}

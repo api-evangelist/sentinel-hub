@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BatchV2ProcessRequest",
+  "title": "BatchV2ProcessRequest",
+  "required": [
+    "processRequest",
+    "output",
+    "input"
+  ],
+  "type": "object",
+  "properties": {
+    "processRequest": {
+      "$ref": "#/components/schemas/ProcessRequestForBatchV2"
+    },
+    "input": {
+      "$ref": "#/components/schemas/BatchV2ProcessInput"
+    },
+    "output": {
+      "$ref": "#/components/schemas/BatchV2ProcessOutput"
+    },
+    "description": {
+      "description": "Optional description that can be used to keep track of requests",
+      "type": "string"
+    }
+  }
+}

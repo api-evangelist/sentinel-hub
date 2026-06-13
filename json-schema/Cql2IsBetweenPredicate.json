@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/Cql2IsBetweenPredicate",
+  "title": "isBetweenPredicate",
+  "type": "object",
+  "required": [
+    "op",
+    "args"
+  ],
+  "properties": {
+    "op": {
+      "type": "string",
+      "enum": [
+        "between"
+      ]
+    },
+    "args": {
+      "$ref": "#/components/schemas/Cql2IsBetweenOperands"
+    }
+  }
+}

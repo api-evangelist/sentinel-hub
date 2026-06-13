@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ProcessRequestOutputFormatJpeg",
+  "title": "image/jpeg",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/ProcessRequestOutputFormat"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "quality": {
+          "description": "Quality level of JPEG compression.",
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 90
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "image/jpeg"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BatchZarrParameters",
+  "title": "BatchZarrParameters",
+  "description": "Specifies Zarr creation parameters.\n\nIf this parameter is specified, all outputs in processRequest **must** be of the type zarr/array\nand neither `bucketName` nor `output` can be specified.\nWith Zarr output **only** WGS84 and LAEA grids **are supported**.\n",
+  "type": "object",
+  "required": [
+    "path",
+    "group"
+  ],
+  "properties": {
+    "path": {
+      "description": "Path or path template specifying where batch processing results shall be stored. Supported formats: <ul>\n  <li>a valid Amazon S3 URL, e.g. `s3://some-bucket/some/folder`.<br/>\n    The output Zarr will be stored to this folder (prefix).\n    The request will fail if any files already exist in the folder.\n  </li>\n  <li>a templated Amazon S3 URL, e.g. `s3://some-bucket/some/folder/<requestId>`.\n    The placeholder `<requestId>` will be replaced by the ID of your batch request\n    and the output Zarr will be stored there.\n  </li>\n</ul> The specified path <b>must</b> not contain any subfolders or Zarr files such as <code>.zattrs</code>, <code>.zgroup</code>, <code>.zmetadata</code>.\n",
+      "type": "string"
+    },
+    "group": {
+      "$ref": "#/components/schemas/Group"
+    },
+    "arrayParameters": {
+      "description": "Parameters that will be used for all output arrays, except where overridden with `arrayOverrides`. Required unless `arrayOverrides` includes all required fields for all output arrays. All fields are standard Zarr fields. Further information can be found on the link below.\n",
+      "externalDocs": {
+        "description": "Zarr metadata specification version 2, Attributes",
+        "url": "https://zarr-specs.readthedocs.io/en/latest/v2/v2.0.html#metadata"
+      },
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/ArrayParameters"
+        }
+      ]
+    },
+    "arrayOverrides": {
+      "$ref": "#/components/schemas/ArrayOverrides"
+    }
+  }
+}

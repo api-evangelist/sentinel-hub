@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/PSSceneDataSpec",
+  "title": "PSSceneDataSpec",
+  "deprecated": true,
+  "type": "object",
+  "required": [
+    "dataFilter",
+    "itemType",
+    "productBundle",
+    "harmonizeTo"
+  ],
+  "properties": {
+    "dataFilter": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/PlanetSubscriptionDataFilterBase"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "maxCloudCoverage": {
+              "$ref": "#/components/schemas/MaxCloudCoverage"
+            },
+            "nativeFilter": {
+              "type": "object",
+              "description": "Planet Data API search filters\n",
+              "externalDocs": {
+                "description": "Link to the Planet documentation page about search filters.",
+                "url": "https://developers.planet.com/docs/data/searches-filtering/#search-filters"
+              },
+              "example": {
+                "type": "RangeFilter",
+                "field_name": "snow_ice_percent",
+                "config": {
+                  "gte": 10
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "catalog"
+      ],
+      "default": "catalog",
+      "description": "Use `catalog` to subscribe to PlanetScope data.\n"
+    },
+    "itemType": {
+      "type": "string",
+      "enum": [
+        "PSScene"
+      ],
+      "description": "The item type to subscribe to. Only [PSScene](https://developers.planet.com/docs/data/psscene/) is supported. Subscribing to [PSScene4Band](https://developers.planet.com/docs/data/psscene4band/) data is not possible since November 1st 2022.\n",
+      "externalDocs": {
+        "description": "Item Types Documentation",
+        "url": "https://developers.planet.com/docs/apis/data/items-assets/#item-types"
+      }
+    },
+    "productBundle": {
+      "type": "string",
+      "enum": [
+        "analytic_udm2",
+        "analytic_sr_udm2",
+        "analytic_8b_udm2",
+        "analytic_8b_sr_udm2"
+      ],
+      "description": "The product bundle to subscribe to.\n",
+      "externalDocs": {
+        "description": "Product Bundles Reference",
+        "url": "https://developers.planet.com/docs/orders/product-bundles-reference/"
+      }
+    },
+    "harmonizeTo": {
+      "type": "string",
+      "enum": [
+        "NONE",
+        "Sentinel-2"
+      ],
+      "description": "Sensing instrument whose values the data should be harmonized to, or `NONE` to disable harmonization.\n",
+      "externalDocs": {
+        "description": "Details on PlanetScope instruments",
+        "url": "https://developers.planet.com/docs/data/sensors/"
+      }
+    }
+  }
+}

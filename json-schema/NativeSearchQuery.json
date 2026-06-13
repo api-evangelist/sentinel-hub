@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/NativeSearchQuery",
+  "title": "NativeSearchQuery",
+  "oneOf": [
+    {
+      "$ref": "#/components/schemas/PlanetNativeSearchQuery"
+    },
+    {
+      "$ref": "#/components/schemas/MaxarNativeSearchQuery"
+    }
+  ]
+}

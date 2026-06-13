@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/S3BucketInfoTemplated",
+  "title": "S3BucketInfoTemplated",
+  "type": "object",
+  "required": [
+    "url"
+  ],
+  "properties": {
+    "url": {
+      "type": "string",
+      "description": "A URL or URL template specifying where the results shall be written. Supported formats: <ul>\n  <li>a valid Amazon S3 URL, e.g. `s3://my-personal-bucket/some-folder`.\n    A subdirectory will be created for this statistical batch request, named after the request ID, and output JSON files will be stored there.\n    This is equivalent to the template `s3://my-personal-bucket/some-folder/<REQUEST_ID>/<ID>.json`.\n  </li>\n  <li>a templated Amazon S3 URL, e.g. `s3://my-personal-bucket/some-folder/<ID>.json`.\n    Templating allows custom organization of the output files.\n    Templates can contain the following placeholders, which are replaced by respective actual values when writing results:\n    <ul>\n      <li> `<REQUEST_ID>` - the ID of your statistical batch request,</li>\n      <li> `<ID>` - the `id` property of the feature,</li>\n      <li> `<IDENTIFIER>` - the `identifier` property of the feature.</li>\n    </ul>\n    The template must contain `<ID>` or `<IDENTIFIER>` in order to ensure unique output files.\n  </li>\n</ul>\n"
+    },
+    "iamRoleARN": {
+      "type": "string",
+      "description": "IAM role ARN, which allows programmatic access to the S3 bucket specified in the `url` field using the recommended assume IAM role flow."
+    },
+    "accessKey": {
+      "type": "string",
+      "description": "AWS access key, which allows programmatic access to the S3 bucket specified in the `url` field."
+    },
+    "secretAccessKey": {
+      "type": "string",
+      "description": "AWS secret access key which must correspond to the AWS access key."
+    },
+    "region": {
+      "type": "string",
+      "description": "The region where the S3 bucket is located. If omitted, the region of the Sentinel Hub deployment that the request is submitted to is assumed."
+    }
+  }
+}

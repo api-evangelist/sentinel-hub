@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/TileStatus",
+  "title": "TileStatus",
+  "description": "The status of the tile.",
+  "type": "string",
+  "enum": [
+    "WAITING",
+    "QUEUED",
+    "INGESTING",
+    "INGESTED",
+    "FAILED"
+  ],
+  "readOnly": true
+}

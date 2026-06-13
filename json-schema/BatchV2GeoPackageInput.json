@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BatchV2GeoPackageInput",
+  "title": "GeoPackageInput",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "geopackage"
+      ]
+    },
+    "features": {
+      "description": "Location on an object storage of a GeoPackage file containing the features to be processed. <br/> The GeoPackage must adhere to the requirements listed in the <a href=\"https://docs.planet.com/develop/apis/batch-processing/#2-geopackage\" target=\"_blank\">documentation</a>.\n",
+      "$ref": "#/components/schemas/ObjectStorageInfoV2"
+    },
+    "defaults": {
+      "description": "Default values to be applied to the features if missing inside the GeoPackage file.\n_Only `width` and `height` or `resolution` can be set at the same time._\n",
+      "$ref": "#/components/schemas/BatchV2GeoPackageFeatureDefaults"
+    }
+  },
+  "required": [
+    "type",
+    "features"
+  ]
+}

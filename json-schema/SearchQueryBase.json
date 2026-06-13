@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/SearchQueryBase",
+  "title": "SearchQueryBase",
+  "required": [
+    "provider",
+    "bounds",
+    "data"
+  ],
+  "properties": {
+    "provider": {
+      "type": "string"
+    },
+    "bounds": {
+      "description": "Defines the request bounds by specifying the bounding box and/or geometry for the request.\nIf both are given, a request is made for a geometry and bbox is ignored.\n",
+      "$ref": "#/components/schemas/ProcessRequestInputBounds"
+    },
+    "data": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "dataFilter": {
+            "type": "object",
+            "properties": {
+              "timeRange": {
+                "$ref": "#/components/schemas/TimeRange"
+              },
+              "maxCloudCoverage": {
+                "$ref": "#/components/schemas/MaxCloudCoverage"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

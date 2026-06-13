@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/BandMetadata",
+  "title": "BandMetadata",
+  "type": "object",
+  "description": "Band information",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Band identifier"
+    },
+    "sampleType": {
+      "type": "string",
+      "enum": [
+        "UINT8",
+        "UINT16",
+        "FLOAT32",
+        "FLOAT64"
+      ],
+      "description": "Band sample type"
+    }
+  }
+}

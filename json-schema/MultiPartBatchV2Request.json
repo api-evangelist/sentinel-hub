@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/MultiPartBatchV2Request",
+  "title": "MultiPartBatchV2Request",
+  "type": "object",
+  "properties": {
+    "request": {
+      "$ref": "#/components/schemas/BatchV2ProcessRequest"
+    },
+    "evalscript": {
+      "description": "Block of JavaScript code.",
+      "type": "string"
+    }
+  }
+}

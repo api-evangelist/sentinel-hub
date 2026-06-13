@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/ProcessRequestOutput",
+  "title": "ProcessRequestOutput",
+  "type": "object",
+  "properties": {
+    "width": {
+      "description": "The request image width. Must be an integer between 1 and 2500.\n<br />*Only one pair of parameters \"width\"/\"height\" or \"resx\"/\"resy\" must\nbe set at the same time.*\n",
+      "type": "integer",
+      "format": "int32",
+      "minimum": 1,
+      "maximum": 2500,
+      "default": 256,
+      "example": 512
+    },
+    "height": {
+      "description": "The request image height. Must be an integer between 1 and 2500.\n<br />*Only one pair of parameters \"width\"/\"height\" or \"resx\"/\"resy\" must\nbe set at the same time.*\n",
+      "type": "integer",
+      "format": "int32",
+      "minimum": 1,
+      "maximum": 2500,
+      "default": 256,
+      "example": 512
+    },
+    "resx": {
+      "description": "Spatial resolution of the request image in a horizontal direction.\nIts units are defined by the CRS given in \"input.bounds.properties.crs\"\nparameter. <br />*Only one pair of parameters \"width\"/\"height\" or \"resx\"/\"resy\"\nmust be set at the same time.*\n",
+      "type": "number",
+      "format": "double"
+    },
+    "resy": {
+      "description": "Spatial resolution of the request image in a vertical direction.\nIts units are defined by the CRS given in \"input.bounds.properties.crs\"\nparameter. <br />*Only one pair of parameters \"width\"/\"height\" or \"resx\"/\"resy\"\nmust be set at the same time.*\n",
+      "type": "number",
+      "format": "double"
+    },
+    "responses": {
+      "type": "array",
+      "description": "Response object(s). <br/>\nIf you request multiple responses, set the `Accept` header to\n`application/tar`, `application/x-tar` or `multipart/mixed`.\n",
+      "items": {
+        "$ref": "#/components/schemas/ProcessRequestOutputResponse"
+      }
+    }
+  }
+}

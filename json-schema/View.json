@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.sentinel-hub.com/schemas/View",
+  "title": "View",
+  "description": "Links to paginate the resource",
+  "type": "object",
+  "properties": {
+    "currentToken": {
+      "type": "string"
+    },
+    "nextToken": {
+      "type": "string"
+    },
+    "previousToken": {
+      "type": "string"
+    },
+    "@id": {
+      "type": "string",
+      "format": "uri"
+    },
+    "next": {
+      "type": "string",
+      "format": "uri"
+    },
+    "previous": {
+      "type": "string",
+      "format": "uri"
+    }
+  }
+}
