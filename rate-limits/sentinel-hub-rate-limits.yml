@@ -1,0 +1,87 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Sentinel Hub
+providerId: sentinel-hub
+created: '2026-06-13'
+modified: '2026-06-13'
+reconciled: true
+tags:
+  - Satellite Imagery
+  - Geospatial
+  - Rate Limiting
+  - Processing Units
+description: >-
+  Sentinel Hub enforces per-minute rate limits on both Processing Units (PUs) and HTTP requests.
+  All limits are minute-based and must simultaneously be satisfied. Unused PUs and requests
+  do not accumulate to the next minute or month. Exceeding either limit returns HTTP 429 with a
+  Retry-After header (milliseconds until next available slot). Exceeding monthly quota returns
+  HTTP 403. Trial accounts are limited to 10 requests and 10 PUs per minute.
+notes: >-
+  Subscription tiers determine the exact PU/minute and requests/minute caps. Contact Planet/
+  Sentinel Hub support to request quota adjustments. Spread requests evenly across the minute
+  (e.g. one every 100ms for a 10 RPM plan) to maximise throughput.
+sources:
+  - https://docs.sentinel-hub.com/api/latest/api/overview/rate-limiting/
+  - https://docs.sentinel-hub.com/api/latest/api/overview/billing/
+  - https://documentation.dataspace.copernicus.eu/APIs/SentinelHub/Overview/ProcessingUnit.html
+responseCodes:
+  throttled: 429
+  quotaExceeded: 403
+  headers:
+    retryAfter:
+      name: Retry-After
+      description: Time in milliseconds until the next request slot is available.
+limits:
+  - name: Processing Units per Minute
+    scope: account
+    metric: processing-units-per-minute
+    limit: varies by subscription tier (10 for trial)
+    timeFrame: minute
+    notes: >-
+      All subscription types use minute-based PU limiting. Batch Processing API requests
+      consume 1/3 PUs; Async Processing API requests consume 2/3 PUs for areas >=10,000 px.
+  - name: HTTP Requests per Minute
+    scope: account
+    metric: requests-per-minute
+    limit: varies by subscription tier (10 for trial)
+    timeFrame: minute
+    notes: >-
+      Separate from PU limit; both must be satisfied simultaneously. Token (OAuth2) requests
+      themselves are also rate-limited — reuse tokens within their validity window.
+  - name: Processing Units per Month
+    scope: account
+    metric: processing-units-per-month
+    limit: varies by subscription package
+    timeFrame: month
+    notes: >-
+      Monthly allocation resets on the 1st of each calendar month regardless of subscription
+      start date. Unused PUs are forfeited at reset.
+  - name: OAuth2 Token Requests
+    scope: account
+    metric: token-requests-per-minute
+    limit: rate-limited (exact value not published)
+    timeFrame: minute
+    notes: >-
+      Excessive token requests trigger HTTP 429. Reuse JWT access tokens for their full
+      validity period rather than fetching a new token per API call.
+policies:
+  - name: Burst Spreading
+    description: >-
+      Distribute requests evenly across the rate-limit window rather than bursting at the
+      start of the minute. For a 10 RPM plan, send one request every 6 seconds.
+  - name: Exponential Backoff
+    description: >-
+      On HTTP 429, wait for the Retry-After interval then retry with exponentially increasing
+      back-off and random jitter to avoid thundering-herd after a rate-limit window resets.
+  - name: Token Reuse
+    description: >-
+      Cache OAuth2 JWT access tokens and reuse them until near-expiry (check the exp claim).
+      Requesting a new token per API call can itself trigger rate limiting.
+  - name: Response Caching
+    description: >-
+      Cache API responses for frequently-requested area/time combinations to reduce PU
+      consumption and request counts.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

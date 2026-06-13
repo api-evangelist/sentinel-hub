@@ -1,0 +1,137 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Sentinel Hub
+providerId: sentinel-hub
+created: '2026-06-13'
+modified: '2026-06-13'
+reconciled: true
+tags:
+  - Satellite Imagery
+  - Geospatial
+  - FinOps
+  - Processing Units
+  - FOCUS
+description: >-
+  FOCUS-aligned FinOps profile for Sentinel Hub (Sinergise / Planet). The primary cost driver
+  is Processing Units (PUs) consumed per API request, calculated from output pixel count,
+  band count, bit depth, and optional surcharges for Sentinel-1 orthorectification or complex
+  EvalScripts. Subscriptions grant a monthly PU and request allowance; Batch Processing API
+  reduces unit cost by 2/3 for large-area jobs; Async Processing API by 1/3 for mid-size jobs.
+notes: >-
+  Sentinel Hub was acquired by Planet Labs in 2022. Subscription pricing is now managed under
+  the Planet Insights Platform. CREODIAS and the Copernicus Data Space Ecosystem provide
+  additional access routes with separate billing. Monthly PU allocations do not roll over.
+sources:
+  - https://docs.planet.com/platform/processing-units/
+  - https://documentation.dataspace.copernicus.eu/APIs/SentinelHub/Overview/ProcessingUnit.html
+  - https://docs.sentinel-hub.com/api/latest/api/overview/billing/
+  - https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Sentinel Hub (Planet Labs / Sinergise)
+serviceCategory: Geospatial and Earth Observation
+billingModel:
+  pricingCategory: Subscription + Usage (Processing Units)
+  billingFrequency: Monthly or Annual
+  billingCurrency: USD
+  chargeCategories:
+    - Usage
+    - Subscription
+    - Purchase (Top-up PUs)
+    - Adjustment
+focusColumns:
+  ServiceName: Sentinel Hub
+  ServiceCategory: Geospatial and Earth Observation
+  ProviderName: Planet Labs (Sinergise)
+  PublisherName: Planet Labs
+  InvoiceIssuerName: Planet Labs
+  BillingCurrency: USD
+  ChargeCategory: Usage
+meters:
+  - name: processing_units
+    description: >-
+      Processing Units consumed per API request. Base = (output_pixels / 512^2) x
+      (bands / 3) x format_multiplier x samples_multiplier x data_fusion_multiplier.
+      Minimum 0.005 PU (Process/OGC) or 0.01 PU (Statistical).
+    unit: processing-units
+    aggregation: sum
+    dimensions:
+      - api
+      - collection
+      - account
+      - region
+  - name: http_requests
+    description: HTTP request count against the per-minute and per-month quota.
+    unit: requests
+    aggregation: sum
+    dimensions:
+      - api
+      - account
+  - name: data_delivery_egress
+    description: Cross-region bucket delivery for Batch and Async APIs (0.03 PU/MB).
+    unit: megabytes
+    aggregation: sum
+    dimensions:
+      - api
+      - account
+      - destination_region
+surcharges:
+  - name: Sentinel-1 Orthorectification
+    multiplier: 2.0
+    description: Applied to Sentinel-1 requests with orthorectification enabled.
+  - name: Sentinel-1 Radiometric Terrain Correction
+    multiplier: 2.5
+    description: Includes orthorectification; applied to RTC-corrected Sentinel-1 requests.
+  - name: Speckle Filtering
+    multiplier: 2.0
+    description: Applied to Sentinel-1 requests with speckle filtering enabled.
+  - name: Complex EvalScript
+    multiplier: variable
+    description: >-
+      +0.5 PU per additional 100ms execution time beyond the 200ms base for custom
+      EvalScript processing.
+  - name: 32-bit float output
+    multiplier: 2.0
+    description: Applied when output format is 32-bit float rather than 8/16-bit TIFF/PNG/JPG.
+  - name: Octet-stream output
+    multiplier: 1.4
+    description: Applied when output format is raw octet-stream.
+discounts:
+  - name: Batch Processing API
+    multiplier: 0.333
+    description: >-
+      Tiles larger than 10,000 pixels processed via Batch API cost 1/3 of equivalent
+      Process API PUs. Minimum 100 PU per batch request.
+  - name: Async Processing API
+    multiplier: 0.667
+    description: >-
+      Areas >= 10,000 pixels via Async API cost 2/3 of equivalent Process API PUs.
+      Minimum 10 PU per request.
+principles:
+  - name: Visibility
+    description: >-
+      Monitor PU consumption and HTTP request counts via the Sentinel Hub Dashboard.
+      Set alerts for monthly quota thresholds to avoid service interruption.
+  - name: Allocation
+    description: >-
+      Create separate OAuth2 clients per workload or team to attribute PU consumption
+      to specific projects and cost centres.
+  - name: Optimization
+    description: >-
+      Use Batch Processing API for large-area or historical jobs to reduce PU costs by 2/3.
+      Cache responses for repeated area/time queries. Limit band count and output resolution
+      to the minimum required. Prefer 8/16-bit output over 32-bit float where precision
+      permits.
+  - name: Accountability
+    description: >-
+      Track monthly PU burn rate vs. subscription allocation. Negotiate tier size based on
+      observed usage patterns. Consider CREODIAS or Copernicus Data Space Ecosystem access
+      for publicly-funded research to access free/subsidised quotas.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

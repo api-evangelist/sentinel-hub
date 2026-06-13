@@ -1,0 +1,178 @@
+aid: sentinel-hub
+url: https://raw.githubusercontent.com/api-evangelist/sentinel-hub/refs/heads/main/apis.yml
+name: Sentinel Hub
+kind: company
+description: >-
+  Sentinel Hub by Sinergise is a cloud-based satellite imagery processing platform providing
+  REST APIs for accessing, processing, and analysing data from Sentinel, Landsat, MODIS, and
+  commercial satellite constellations. APIs deliver raw imagery, rendered images, and geospatial
+  statistics on demand using custom EvalScript processing without requiring data downloads.
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - Satellite Imagery
+  - Geospatial
+  - Remote Sensing
+  - Earth Observation
+  - NDVI
+  - Sentinel
+  - Landsat
+  - MODIS
+  - OGC
+  - STAC
+created: '2026-06-13'
+modified: '2026-06-13'
+specificationVersion: '0.19'
+apis:
+  - aid: sentinel-hub:process
+    name: Sentinel Hub Process API
+    description: >-
+      RESTful API for on-demand retrieval and processing of satellite imagery. Submit POST
+      requests specifying area of interest, time range, data collection, and an EvalScript
+      to receive raw bands, rendered composites (true/false colour), or computed indices
+      (NDVI, EVI) as GeoTIFF, PNG, or JPEG. Base URL https://services.sentinel-hub.com.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+    baseURL: https://services.sentinel-hub.com
+    tags:
+      - Satellite Imagery
+      - Processing
+      - EvalScript
+      - GeoTIFF
+      - Remote Sensing
+    properties:
+      - type: Documentation
+        url: https://docs.sentinel-hub.com/api/latest/api/process/
+      - type: OpenAPI
+        url: https://docs.sentinel-hub.com/api/latest/reference/#tag/process
+      - type: Authentication
+        url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - aid: sentinel-hub:catalog
+    name: Sentinel Hub Catalog API
+    description: >-
+      STAC-compliant API for searching and discovering geospatial data across Sentinel Hub
+      collections. Supports GET and POST search with bounding-box, time-range, and CQL2
+      property filters. Returns STAC Items describing available scenes including Sentinel-1
+      GRD, Sentinel-2, BYOC, and Zarr collections.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.sentinel-hub.com/api/latest/api/catalog/
+    baseURL: https://services.sentinel-hub.com/api/v1/catalog/1.0.0
+    tags:
+      - STAC
+      - Catalog
+      - Search
+      - Geospatial
+      - Sentinel-1
+      - Sentinel-2
+    properties:
+      - type: Documentation
+        url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+      - type: OpenAPI
+        url: https://docs.sentinel-hub.com/api/latest/reference/#tag/catalog
+  - aid: sentinel-hub:statistical
+    name: Sentinel Hub Statistical API
+    description: >-
+      Compute histogram statistics, percentiles, and band aggregations over a user-defined
+      area of interest and time series without downloading any imagery. Returns JSON with
+      mean, standard deviation, and custom statistics per aggregation interval. Endpoints
+      available in EU (Frankfurt) and US (Oregon) regions.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.sentinel-hub.com/api/latest/api/statistical/
+    baseURL: https://services.sentinel-hub.com/api/v1/statistics
+    tags:
+      - Statistics
+      - Histogram
+      - NDVI
+      - Time Series
+      - Earth Observation
+    properties:
+      - type: Documentation
+        url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+      - type: OpenAPI
+        url: https://docs.sentinel-hub.com/api/latest/reference/#tag/statistical
+  - aid: sentinel-hub:batch
+    name: Sentinel Hub Batch Processing API
+    description: >-
+      Asynchronous API for high-volume processing of large geographic areas or extended
+      time periods. Jobs tile the area of interest using a tiling grid and process tiles
+      in parallel, writing results to user-supplied S3-compatible storage. Costs one third
+      of equivalent Process API requests in Processing Units.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+    baseURL: https://services.sentinel-hub.com/batch/v2
+    tags:
+      - Batch Processing
+      - Large Area
+      - Asynchronous
+      - S3
+      - GeoTIFF
+    properties:
+      - type: Documentation
+        url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+      - type: OpenAPI
+        url: https://docs.sentinel-hub.com/api/latest/reference/#tag/batch_process
+  - aid: sentinel-hub:ogc
+    name: Sentinel Hub OGC Services
+    description: >-
+      OGC-standard web services (WMS, WCS, WFS, WMTS) for integrating Sentinel Hub satellite
+      imagery into GIS applications such as QGIS, ArcGIS, OpenLayers, and Google Earth.
+      Authentication uses a configuration-instance ID created in the Sentinel Hub Dashboard.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.sentinel-hub.com/api/latest/api/ogc/
+    baseURL: https://services.sentinel-hub.com/ogc
+    tags:
+      - OGC
+      - WMS
+      - WCS
+      - WFS
+      - WMTS
+      - GIS
+    properties:
+      - type: Documentation
+        url: https://docs.sentinel-hub.com/api/latest/api/ogc/
+  - aid: sentinel-hub:byoc
+    name: Sentinel Hub BYOC API
+    description: >-
+      Bring Your Own COG (Cloud-Optimised GeoTIFF) API for ingesting custom raster data
+      into Sentinel Hub and processing it alongside public satellite collections. Supports
+      collection creation, tile registration, and management via REST endpoints.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.sentinel-hub.com/api/latest/data/byoc/
+    baseURL: https://services.sentinel-hub.com/api/v1/byoc
+    tags:
+      - BYOC
+      - Custom Data
+      - COG
+      - Raster Ingestion
+    properties:
+      - type: Documentation
+        url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+      - type: OpenAPI
+        url: https://docs.sentinel-hub.com/api/latest/reference/#tag/byoc
+common:
+  - type: Website
+    url: https://www.sentinel-hub.com/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/
+  - type: APIReference
+    url: https://docs.sentinel-hub.com/api/latest/reference/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Billing
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/billing/
+  - type: RateLimiting
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/rate-limiting/
+  - type: GitHub
+    url: https://github.com/sentinel-hub
+  - type: Forum
+    url: https://forum.sentinel-hub.com/
+  - type: Dashboard
+    url: https://apps.sentinel-hub.com/dashboard/
+  - type: Plans
+    url: plans/sentinel-hub-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/sentinel-hub-rate-limits.yml
+  - type: FinOps
+    url: finops/sentinel-hub-finops.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
