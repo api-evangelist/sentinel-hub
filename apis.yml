@@ -7,7 +7,7 @@ description: >-
   REST APIs for accessing, processing, and analysing data from Sentinel, Landsat, MODIS, and
   commercial satellite constellations. APIs deliver raw imagery, rendered images, and geospatial
   statistics on demand using custom EvalScript processing without requiring data downloads.
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
   - Satellite Imagery
   - Geospatial
@@ -30,7 +30,7 @@ apis:
       requests specifying area of interest, time range, data collection, and an EvalScript
       to receive raw bands, rendered composites (true/false colour), or computed indices
       (NDVI, EVI) as GeoTIFF, PNG, or JPEG. Base URL https://services.sentinel-hub.com.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
     baseURL: https://services.sentinel-hub.com
     tags:
@@ -53,7 +53,7 @@ apis:
       collections. Supports GET and POST search with bounding-box, time-range, and CQL2
       property filters. Returns STAC Items describing available scenes including Sentinel-1
       GRD, Sentinel-2, BYOC, and Zarr collections.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://docs.sentinel-hub.com/api/latest/api/catalog/
     baseURL: https://services.sentinel-hub.com/api/v1/catalog/1.0.0
     tags:
@@ -75,7 +75,7 @@ apis:
       area of interest and time series without downloading any imagery. Returns JSON with
       mean, standard deviation, and custom statistics per aggregation interval. Endpoints
       available in EU (Frankfurt) and US (Oregon) regions.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://docs.sentinel-hub.com/api/latest/api/statistical/
     baseURL: https://services.sentinel-hub.com/api/v1/statistics
     tags:
@@ -96,7 +96,7 @@ apis:
       time periods. Jobs tile the area of interest using a tiling grid and process tiles
       in parallel, writing results to user-supplied S3-compatible storage. Costs one third
       of equivalent Process API requests in Processing Units.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
     baseURL: https://services.sentinel-hub.com/batch/v2
     tags:
@@ -116,7 +116,7 @@ apis:
       OGC-standard web services (WMS, WCS, WFS, WMTS) for integrating Sentinel Hub satellite
       imagery into GIS applications such as QGIS, ArcGIS, OpenLayers, and Google Earth.
       Authentication uses a configuration-instance ID created in the Sentinel Hub Dashboard.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://docs.sentinel-hub.com/api/latest/api/ogc/
     baseURL: https://services.sentinel-hub.com/ogc
     tags:
@@ -135,7 +135,7 @@ apis:
       Bring Your Own COG (Cloud-Optimised GeoTIFF) API for ingesting custom raster data
       into Sentinel Hub and processing it alongside public satellite collections. Supports
       collection creation, tile registration, and management via REST endpoints.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://docs.sentinel-hub.com/api/latest/data/byoc/
     baseURL: https://services.sentinel-hub.com/api/v1/byoc
     tags:
