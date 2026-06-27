@@ -163,7 +163,7 @@ common:
     url: https://docs.sentinel-hub.com/api/latest/api/overview/rate-limiting/
   - type: GitHub
     url: https://github.com/sentinel-hub
-  - type: Forum
+  - type: Forums
     url: https://forum.sentinel-hub.com/
   - type: Dashboard
     url: https://apps.sentinel-hub.com/dashboard/
