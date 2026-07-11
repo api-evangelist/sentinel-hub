@@ -149,6 +149,10 @@ apis:
       - type: OpenAPI
         url: https://docs.sentinel-hub.com/api/latest/reference/#tag/byoc
 common:
+  - type: Authentication
+    url: authentication/sentinel-hub-authentication.yml
+  - type: OAuthScopes
+    url: scopes/sentinel-hub-scopes.yml
   - type: Website
     url: https://www.sentinel-hub.com/
   - type: Documentation
