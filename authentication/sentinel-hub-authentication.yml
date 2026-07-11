@@ -1,0 +1,29 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/sentinel-hub-openapi.yaml
+summary:
+  types:
+  - oauth2
+  oauth2_flows:
+  - clientCredentials
+schemes:
+- name: OAuth2
+  type: oauth2
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token
+    scopes: 1
+  description: |-
+    ### Authentication
+
+    More about the authentication <a href="https://docs.planet.com/develop/authentication/" target="_blank">here</a>.
+
+    To get an access token using curl:
+
+    ```
+    curl --request POST \
+      --url https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token \
+      --header "content-type: application/x-www-form-urlencoded" \
+      --data "grant_type=client_credentials&client_id
+  sources:
+  - openapi/sentinel-hub-openapi.yaml
