@@ -149,6 +149,8 @@ apis:
       - type: OpenAPI
         url: https://docs.sentinel-hub.com/api/latest/reference/#tag/byoc
 common:
+  - type: AgenticAccess
+    url: agentic-access/sentinel-hub-agentic-access.yml
   - type: DomainSecurity
     url: security/sentinel-hub-domain-security.yml
   - type: Authentication
