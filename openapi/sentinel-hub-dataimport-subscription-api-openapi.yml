@@ -1,0 +1,802 @@
+openapi: 3.1.0
+info:
+  title: API Reference async_process dataimport_subscription API
+  version: 1.0.0
+  contact:
+    name: Sentinel Hub
+  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
+
+    '
+servers:
+- url: https://services.sentinel-hub.com
+tags:
+- name: dataimport_subscription
+  x-displayName: Subscription
+  description: 'TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use [Planet Subscriptions API](https://docs.planet.com/develop/apis/subscriptions/reference/) instead.
+
+    '
+paths:
+  /api/v1/dataimport/subscriptions:
+    post:
+      deprecated: true
+      summary: Create a subscription
+      description: 'Create a non-confirmed data subscription object. After creation you can review the parameters of the subscription and then choose to confirm it or not.
+
+        '
+      operationId: dataImport_createSubscription
+      tags:
+      - dataimport_subscription
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionRequest'
+      responses:
+        '200':
+          description: Subscription created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+    get:
+      deprecated: true
+      summary: Query subscriptions
+      operationId: dataImport_getSubscriptions
+      tags:
+      - dataimport_subscription
+      parameters:
+      - $ref: '#/components/parameters/SubscriptionStatus'
+      - name: collectionId
+        description: Filter subscriptions by collectionId. Omit to get all subscriptions.
+        in: query
+        schema:
+          type: string
+          format: uuid
+      - $ref: '#/components/parameters/SearchBeanCount'
+      - $ref: '#/components/parameters/SearchBeanViewtoken'
+      - $ref: '#/components/parameters/SearchBeanSearch'
+      - name: deleted
+        description: If set to `true` the response will only return those subscriptions that had been deleted by the user.
+        in: query
+        schema:
+          default: false
+          type: boolean
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Subscription'
+                  links:
+                    $ref: '#/components/schemas/View'
+        '401':
+          $ref: '#/components/responses/401'
+      security:
+      - OAuth2: []
+  /api/v1/dataimport/subscriptions/{subscriptionId}:
+    get:
+      deprecated: true
+      summary: Get a subscription
+      operationId: dataImport_getSubscription
+      tags:
+      - dataimport_subscription
+      parameters:
+      - $ref: '#/components/parameters/SubscriptionId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+    delete:
+      deprecated: true
+      summary: Delete a non-running subscription
+      operationId: dataImport_deleteSubscription
+      description: "`CREATED` subscriptions will be permanently deleted.\n\n `CANCELLED` , `COMPLETED` or `FAILED` ones will be deleted for normal querying but will still be available.\n\n `RUNNING` subscriptions cannot be deleted."
+      tags:
+      - dataimport_subscription
+      parameters:
+      - $ref: '#/components/parameters/SubscriptionId'
+      responses:
+        '204':
+          description: Successful response - subscription deleted
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          description: Conflict - subscription cannot be deleted because it is currently being processed.
+      security:
+      - OAuth2: []
+  /api/v1/dataimport/subscriptions/{subscriptionId}/confirm:
+    post:
+      deprecated: true
+      summary: Confirm a subscription
+      description: 'Confirm the subscription and start executing it. Only subscription with status CREATED can be confirmed.
+
+        '
+      operationId: dataImport_confirmSubscription
+      tags:
+      - dataimport_subscription
+      parameters:
+      - $ref: '#/components/parameters/SubscriptionId'
+      responses:
+        '200':
+          description: Successful response - subscription confirmed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Insufficient quota for the order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuotaExceededError'
+        '409':
+          description: Conflict - subscription cannot be confirmed because its status is not CREATED.
+      security:
+      - OAuth2: []
+  /api/v1/dataimport/subscriptions/{subscriptionId}/cancel:
+    post:
+      deprecated: true
+      summary: Cancel a subscription
+      description: 'Cancel a RUNNING subscription so that it will stop executing. Already imported data will be kept. Only subscription with status RUNNING can be cancelled.
+
+        '
+      operationId: dataImport_cancelSubscription
+      tags:
+      - dataimport_subscription
+      parameters:
+      - $ref: '#/components/parameters/SubscriptionId'
+      responses:
+        '200':
+          description: Successful response - subscription cancelled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '409':
+          description: Conflict - subscription cannot be cancelled because its status is not RUNNING.
+      security:
+      - OAuth2: []
+components:
+  schemas:
+    ProcessRequestInputBounds:
+      title: Bounds
+      description: 'Defines the request bounds by specifying the bounding box and/or
+
+        geometry for the request. If both are specified it will generate an image
+
+        for the bounding box and render data contained within the geometry.
+
+        '
+      type: object
+      properties:
+        bbox:
+          description: 'The request bounding box. This and/or GEOMETRY must be specified.
+
+            Specify with a coordinate pair on two (opposite) vertices of the bounding
+
+            box rectangle. Coordinates need to be in easting,northing or longitude, latitude,
+
+            in that order in the CRS defined in the "bounds.properties.crs" parameter.
+
+            '
+          type: array
+          minItems: 4
+          maxItems: 4
+          items:
+            type: number
+            format: double
+          example:
+          - 13.822174072265625
+          - 45.85080395917834
+          - 14.55963134765625
+          - 46.29191774991382
+        geometry:
+          $ref: '#/components/schemas/Geometry'
+        properties:
+          $ref: '#/components/schemas/ProcessRequestInputBoundsProperties'
+    PlanetaryVariableDataSpec:
+      deprecated: true
+      type: object
+      required:
+      - dataFilter
+      - type
+      - id
+      properties:
+        dataFilter:
+          allOf:
+          - $ref: '#/components/schemas/PlanetSubscriptionDataFilterBase'
+        type:
+          type: string
+          enum:
+          - soil_water_content
+          - biomass_proxy
+          - land_surface_temperature
+          - forest_carbon_diligence_30m
+          - forest_carbon_monitoring_3m
+          description: The Planetary Variable Type to subscribe to.
+          externalDocs:
+            description: Plantery Variables types and IDs
+            url: https://developers.planet.com/docs/subscriptions/pvs-subs/#planetary-variables-types-and-ids
+        id:
+          type: string
+          enum:
+          - SWC-AMSR2-C_V1.0_100
+          - SWC-AMSR2-X_V1.0_100
+          - SWC-SMAP-L_V1.0_100
+          - SWC-AMSR2-C_V2.0_100
+          - SWC-AMSR2-X_V2.0_100
+          - SWC-SMAP-L_V2.0_100
+          - SWC-AMSRE-C_V4.0_1000
+          - SWC-AMSRE-X_V4.0_1000
+          - SWC-AMSR2-C_V4.0_1000
+          - SWC-AMSR2-X_V4.0_1000
+          - SWC-SMAP-L_V4.0_1000
+          - SWC-AMSRE-C_V5.0_1000
+          - SWC-AMSRE-X_V5.0_1000
+          - SWC-AMSR2-C_V5.0_1000
+          - SWC-AMSR2-X_V5.0_1000
+          - SWC-SMAP-L_V5.0_1000
+          - BIOMASS-PROXY_V3.0_10
+          - BIOMASS-PROXY_V4.0_10
+          - LST-AMSR2_V1.0_100
+          - LST-AMSRE_V1.0_1000
+          - LST-AMSR2_V1.0_1000
+          - CANOPY_HEIGHT_v1.1.0_30
+          - CANOPY_COVER_v1.1.0_30
+          - ABOVEGROUND_CARBON_DENSITY_v1.1.0_30
+          - CANOPY_HEIGHT_v1.2.0_30
+          - CANOPY_COVER_v1.2.0_30
+          - ABOVEGROUND_CARBON_DENSITY_v1.2.0_30
+          - CANOPY_HEIGHT_v1.0.0_3
+          - CANOPY_COVER_v1.0.0_3
+          - ABOVEGROUND_CARBON_DENSITY_v1.0.0_3
+          description: 'The ID of the Planetary Variable to subscribe to.
+
+            Note that each `id` value is only allowed with one corresponding `type` value.
+
+            '
+          externalDocs:
+            description: Allowed type/id combinations
+            url: https://developers.planet.com/docs/subscriptions/pvs-subs/#planetary-variables-types-and-ids
+    PlanetSubscriptionRequest:
+      deprecated: true
+      allOf:
+      - $ref: '#/components/schemas/Subscription'
+      - type: object
+        required:
+        - input
+        properties:
+          input:
+            type: object
+            required:
+            - provider
+            - bounds
+            - data
+            - planetApiKey
+            properties:
+              provider:
+                description: Specify this value to use data provider Planet.
+                type: string
+                enum:
+                - PLANET
+              planetApiKey:
+                description: Your Planet API key. Get one from Planet https://www.planet.com.
+                type: string
+              bounds:
+                description: 'Defines the bounds of the subscribed area by specifying a bounding box and/or a geometry.
+
+                  If both are given, the subscription will use  the geometry and the bbox is ignored.
+
+                  '
+                $ref: '#/components/schemas/ProcessRequestInputBounds'
+              data:
+                type: array
+                minItems: 1
+                maxItems: 1
+                description: 'Specification of the data to subscribe to.
+
+                  '
+                items:
+                  $ref: '#/components/schemas/PlanetSubscriptionDataSpec'
+    QuotaExceededError:
+      allOf:
+      - $ref: '#/components/schemas/Boom'
+      - type: object
+        properties:
+          errors:
+            type: object
+            properties:
+              availableQuota:
+                type: number
+                description: Currently available quota for the provider of the order
+              requiredQuota:
+                type: number
+                description: Quota that would be required for successful confirmation of the order
+    SubscriptionStatus:
+      description: Subscription status
+      type: string
+      readOnly: true
+      enum:
+      - CREATED
+      - RUNNING
+      - CANCELLED
+      - COMPLETED
+      - FAILED
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    SubscriptionRequest:
+      oneOf:
+      - $ref: '#/components/schemas/PlanetSubscriptionRequest'
+    View:
+      description: Links to paginate the resource
+      type: object
+      properties:
+        currentToken:
+          type: string
+        nextToken:
+          type: string
+        previousToken:
+          type: string
+        '@id':
+          type: string
+          format: uri
+        next:
+          type: string
+          format: uri
+        previous:
+          type: string
+          format: uri
+    Polygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - Polygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              maxItems: 2
+              minItems: 2
+              type: array
+              items:
+                type: number
+                format: double
+    ProcessRequestInputBoundsProperties:
+      title: BoundsProperties
+      type: object
+      properties:
+        crs:
+          description: 'The coordinate reference system of the coordinates. Must be
+
+            one of the values listed at https://docs.planet.com/develop/apis/processing/#crs-support.
+
+            Default CRS is WGS84, http://www.opengis.net/def/crs/OGC/1.3/CRS84.
+
+            '
+          type: string
+          default: http://www.opengis.net/def/crs/OGC/1.3/CRS84
+    MaxCloudCoverage:
+      description: The maximum allowable cloud coverage in percent.
+      type: number
+      format: double
+      minimum: 0
+      maximum: 100
+      default: 100
+    Subscription:
+      type: object
+      properties:
+        id:
+          description: Subscription ID
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          description: Subscription name. It's also used as a name for a new BYOC collection, if no collection is given in collectionId field.
+          type: string
+        accountId:
+          description: Account ID
+          type: string
+          format: uuid
+          readOnly: true
+        collectionId:
+          description: 'BYOC collection ID. If given at subscription creation, the data is imported into referenced collection, which must be compatible with the data being subscribed - that is, must either be empty or contain the same bands as the data being subscribed.
+
+
+            If not given at subscription creation, a new BYOC collection is created when the subscription is confirmed and its ID is returned in the response from the `confirm` endpoint.
+
+            '
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/SubscriptionStatus'
+        sqkm:
+          description: Area of the subscriptions's `input.bounds` in km<sup>2</sup>
+          type: number
+          readOnly: true
+        input:
+          type: object
+          description: Specification of the subscribed data
+    TimeRange:
+      type: object
+      description: A time interval to filter data by acquisition date. It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.
+      properties:
+        from:
+          description: The start of a search interval.
+          type: string
+          format: date-time
+        to:
+          description: The end of a search interval.
+          type: string
+          format: date-time
+      example:
+        from: '2018-10-01T00:00:00.000Z'
+        to: '2018-11-01T00:00:00.000Z'
+    AnalysisReadyPlanetScopeDataSpec:
+      deprecated: true
+      type: object
+      required:
+      - dataFilter
+      - type
+      - id
+      properties:
+        dataFilter:
+          allOf:
+          - $ref: '#/components/schemas/PlanetSubscriptionDataFilterBase'
+        type:
+          type: string
+          enum:
+          - analysis_ready_ps
+          description: The Analysis Ready Type to subscribe to.
+        id:
+          type: string
+          enum:
+          - PS_ARD_SR_DAILY
+          description: 'The ID of the Analysis Ready type to subscribe to.
+
+            '
+          externalDocs:
+            description: Analysis Ready IDs
+            url: https://developers.planet.com/docs/data/analysis-ready-ps/#available-ids
+    PSSceneDataSpec:
+      deprecated: true
+      type: object
+      required:
+      - dataFilter
+      - itemType
+      - productBundle
+      - harmonizeTo
+      properties:
+        dataFilter:
+          allOf:
+          - $ref: '#/components/schemas/PlanetSubscriptionDataFilterBase'
+          - type: object
+            properties:
+              maxCloudCoverage:
+                $ref: '#/components/schemas/MaxCloudCoverage'
+              nativeFilter:
+                type: object
+                description: 'Planet Data API search filters
+
+                  '
+                externalDocs:
+                  description: Link to the Planet documentation page about search filters.
+                  url: https://developers.planet.com/docs/data/searches-filtering/#search-filters
+                example:
+                  type: RangeFilter
+                  field_name: snow_ice_percent
+                  config:
+                    gte: 10
+        type:
+          type: string
+          enum:
+          - catalog
+          default: catalog
+          description: 'Use `catalog` to subscribe to PlanetScope data.
+
+            '
+        itemType:
+          type: string
+          enum:
+          - PSScene
+          description: 'The item type to subscribe to. Only [PSScene](https://developers.planet.com/docs/data/psscene/) is supported. Subscribing to [PSScene4Band](https://developers.planet.com/docs/data/psscene4band/) data is not possible since November 1st 2022.
+
+            '
+          externalDocs:
+            description: Item Types Documentation
+            url: https://developers.planet.com/docs/apis/data/items-assets/#item-types
+        productBundle:
+          type: string
+          enum:
+          - analytic_udm2
+          - analytic_sr_udm2
+          - analytic_8b_udm2
+          - analytic_8b_sr_udm2
+          description: 'The product bundle to subscribe to.
+
+            '
+          externalDocs:
+            description: Product Bundles Reference
+            url: https://developers.planet.com/docs/orders/product-bundles-reference/
+        harmonizeTo:
+          type: string
+          enum:
+          - NONE
+          - Sentinel-2
+          description: 'Sensing instrument whose values the data should be harmonized to, or `NONE` to disable harmonization.
+
+            '
+          externalDocs:
+            description: Details on PlanetScope instruments
+            url: https://developers.planet.com/docs/data/sensors/
+    PlanetSubscriptionDataFilterBase:
+      deprecated: true
+      type: object
+      required:
+      - timeRange
+      description: 'Selection criteria for the data the subscription should cover. At the minimum, `timeRange.from` must be included because subscriptions must have a start time.
+
+        '
+      properties:
+        timeRange:
+          allOf:
+          - $ref: '#/components/schemas/TimeRange'
+          - required:
+            - from
+          - description: 'A time interval to filter data by the **publish** date (in contrast to orders, where the data is filtered by the acquisition date). It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.
+
+              '
+    MultiPolygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - MultiPolygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              type: array
+              items:
+                maxItems: 2
+                minItems: 2
+                type: array
+                items:
+                  type: number
+                  format: double
+    PlanetSubscriptionDataSpec:
+      deprecated: true
+      oneOf:
+      - $ref: '#/components/schemas/PSSceneDataSpec'
+      - $ref: '#/components/schemas/PlanetaryVariableDataSpec'
+      - $ref: '#/components/schemas/AnalysisReadyPlanetScopeDataSpec'
+    Boom:
+      type: object
+      properties:
+        status:
+          description: HTTP status code
+          type: integer
+          format: int32
+        reason:
+          description: Reason for the error
+          type: string
+        message:
+          description: Friendly error message
+          type: string
+        code:
+          description: Code that uniquely identifies the error
+          type: string
+          enum:
+          - COMMON_BAD_PAYLOAD
+          - COMMON_NOT_FOUND
+          - COMMON_DATABASE_ERROR
+          - COMMON_UNIQUE_KEY_VIOLATION
+          - COMMON_INSUFFICIENT_PERMISSIONS
+          - COMMON_SENTINEL_ACCOUNT_EXPIRED
+          - COMMON_METHOD_NOT_ALLOWED
+          - COMMON_UNSUPPORTED_MEDIA_TYPE
+          - COMMON_ELASTICSEARCH_ERROR
+          - COMMON_UNAUTHORIZED
+          - COMMON_EXCEPTION
+          - RATE_LIMIT_STORAGE_TIMEOUT
+          - RATE_LIMIT_OVERLAPPING_POLICIES
+          - RATE_LIMIT_EXCEEDED
+          - RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY
+          - DASHBOARD_PAYPAL_SALE_ERROR
+          - DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR
+          - DASHBOARD_INVALID_PAYPAL_RESPONSE
+          - DASHBOARD_EXECUTE_SALE_ERROR
+          - DASHBOARD_EXECUTE_AGREEMENT_ERROR
+          - DASHBOARD_IPN_ERROR
+          - DASHBOARD_ADYEN_SALE_ERROR
+          - DASHBOARD_ADYEN_PAYMENT_CANCELLED
+          - RENDERER_EXCEPTION
+          - OAUTH_ERROR
+          - EMAIL_OCTOPUS_ERROR
+        errors:
+          description: Additional information about the error (Optional)
+          type: object
+    Geometry:
+      description: The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the "bounds.properties.crs" parameter. A GeoJsonObject.
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/Polygon'
+      - $ref: '#/components/schemas/MultiPolygon'
+      example:
+        type: Polygon
+        coordinates:
+        - - - 14.000701904296873
+            - 46.23685258143992
+          - - 13.822174072265625
+            - 46.09037664604301
+          - - 14.113311767578125
+            - 45.85080395917834
+          - - 14.55963134765625
+            - 46.038922598236
+          - - 14.441528320312498
+            - 46.28717293114449
+          - - 14.17236328125
+            - 46.29191774991382
+          - - 14.000701904296873
+            - 46.23685258143992
+  parameters:
+    SearchBeanViewtoken:
+      name: viewtoken
+      description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
+
+        This *viewtoken* can be used in the next request to retrieve the next page of items.
+
+
+        The next page can be retrieved by repeating the query. However, replace your URL with the
+
+        next URL in the returned links object.
+
+        '
+      in: query
+      schema:
+        type: string
+    SearchBeanCount:
+      name: count
+      description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
+
+        For more records, use *viewtoken* to page through.'
+      in: query
+      schema:
+        type: integer
+        format: int32
+    SubscriptionStatus:
+      name: status
+      description: Filter subscriptions by status. Omit to get all subscriptions.
+      in: query
+      schema:
+        $ref: '#/components/schemas/SubscriptionStatus'
+    SearchBeanSearch:
+      name: search
+      description: Optional search query. Either a single word to search for or multiple words separated by the `|` (or) and `&` (and) operators. If omitted, all items are returned.
+      in: query
+      schema:
+        type: string
+    SubscriptionId:
+      name: subscriptionId
+      description: Subscription ID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '403':
+      description: Insufficient permissions
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '401':
+      description: Unauthorized
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: "### Authentication\n\nMore about the authentication <a href=\"https://docs.planet.com/develop/authentication/\" target=\"_blank\">here</a>.\n\nTo get an access token using curl:\n\n```\ncurl --request POST \\\n  --url https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token \\\n  --header \"content-type: application/x-www-form-urlencoded\" \\\n  --data \"grant_type=client_credentials&client_id=<your client id>&client_secret=<your client secret>\"\n```\n"
+      flows:
+        clientCredentials:
+          tokenUrl: https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token
+          scopes:
+            SH: Sentinel Hub
+x-tagGroups:
+- name: Process API
+  tags:
+  - process
+- name: Catalog
+  tags:
+  - catalog_core
+  - catalog_collections
+  - catalog_features
+  - catalog_item_search
+- name: Async API
+  tags:
+  - async_process
+- name: BatchV2 API
+  tags:
+  - batch_v2_process
+  - batch_v2_tiling_grid
+- name: Stats API
+  tags:
+  - statistical
+- name: Batch Stats API
+  tags:
+  - batch_statistical
+- name: BYOC
+  tags:
+  - byoc_collection
+  - byoc_tile
+- name: Zarr Import API
+  tags:
+  - zarr_collection
+  - zarr_array
+- name: TPDI
+  tags:
+  - dataimport_search
+  - dataimport_product
+  - dataimport_order
+  - dataimport_delivery
+  - dataimport_tile_delivery
+  - dataimport_subscription
+  - dataimport_subscription_delivery
+  - dataimport_subscription_tile_delivery
+  - dataimport_quota
+- name: Metadata
+  tags:
+  - metadata_location
+  - metadata_collection

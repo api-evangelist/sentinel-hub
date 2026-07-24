@@ -1,0 +1,662 @@
+openapi: 3.1.0
+info:
+  title: API Reference async_process byoc_tile API
+  version: 1.0.0
+  contact:
+    name: Sentinel Hub
+  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
+
+    '
+servers:
+- url: https://services.sentinel-hub.com
+tags:
+- name: byoc_tile
+  x-displayName: Tile
+paths:
+  /byoc/v1/collections/{collectionId}/tiles:
+    post:
+      summary: Create a tile
+      operationId: createByocCollectionTile
+      tags:
+      - byoc_tile
+      parameters:
+      - $ref: '#/components/parameters/ByocCollectionId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BYOCTile'
+      responses:
+        '201':
+          description: Tile created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BYOCTileResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '409':
+          $ref: '#/components/responses/409'
+      security:
+      - OAuth2: []
+    get:
+      summary: Get collection tiles
+      operationId: getByocCollectionTiles
+      tags:
+      - byoc_tile
+      parameters:
+      - $ref: '#/components/parameters/ByocCollectionId'
+      - name: count
+        description: Number of items to retrieve.
+        in: query
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 100
+      - $ref: '#/components/parameters/SearchBeanViewtoken'
+      - name: sort
+        description: Sort the tiles by created date in ascending or descending order.
+        in: query
+        schema:
+          type: string
+          enum:
+          - created:asc
+          - created:desc
+      - name: path
+        description: Get the tile with the exact path. Returns a single tile or no tile, if there's none with given path.
+        in: query
+        schema:
+          type: string
+      - name: status
+        description: Get only the files with the given status.
+        in: query
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BYOCTileStatus'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BYOCTilesResponse'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+      security:
+      - OAuth2: []
+  /byoc/v1/collections/{collectionId}/tiles/{tileId}:
+    get:
+      summary: Get a tile
+      operationId: getByocCollectionTileById
+      tags:
+      - byoc_tile
+      parameters:
+      - $ref: '#/components/parameters/ByocCollectionId'
+      - $ref: '#/components/parameters/ByocTileId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BYOCTileResponse'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+    put:
+      summary: Update a tile
+      operationId: updateByocCollectionTileById
+      tags:
+      - byoc_tile
+      parameters:
+      - $ref: '#/components/parameters/ByocCollectionId'
+      - $ref: '#/components/parameters/ByocTileId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BYOCTileUpdatePayload'
+      responses:
+        '204':
+          description: Tile updated
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+      security:
+      - OAuth2: []
+    delete:
+      summary: Delete a tile
+      operationId: deleteByocCollectionTileById
+      tags:
+      - byoc_tile
+      parameters:
+      - $ref: '#/components/parameters/ByocCollectionId'
+      - $ref: '#/components/parameters/ByocTileId'
+      responses:
+        '204':
+          description: Tile deleted
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+  /byoc/v1/collections/{collectionId}/tiles/{tileId}/reingest:
+    post:
+      summary: Reingest a tile
+      description: Initiates reingestion of a tile.
+      operationId: reingestByocCollectionTileById
+      tags:
+      - byoc_tile
+      parameters:
+      - $ref: '#/components/parameters/ByocCollectionId'
+      - $ref: '#/components/parameters/ByocTileId'
+      responses:
+        '204':
+          description: Reingestion initiated.
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+  /byoc/v1/collections/{collectionId}/tiles/{tileId}/files:
+    get:
+      summary: List files of a tile in your Planet collection
+      operationId: listByocTileFiles
+      tags:
+      - byoc_tile
+      parameters:
+      - $ref: '#/components/parameters/ByocCollectionId'
+      - $ref: '#/components/parameters/ByocTileId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                items:
+                  type: string
+                  format: filename with path
+                example:
+                - 20241230_100706_56_24fd.json
+                - 20241230_100706_56_24fd_metadata.json
+                - 20241230_100706_56_24fd_ortho_analytic_4b_sr.tif
+                - 20241230_100706_56_24fd_ortho_udm2.tif
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          description: 'Collection or tile does not exists, or collection was not created by a Planet Subscription/Order.
+
+            '
+      security:
+      - OAuth2: []
+  /byoc/v1/collections/{collectionId}/tiles/{tileId}/files/{path}:
+    get:
+      summary: Retrieve a file from your Planet collection tile
+      operationId: getByocTileFile
+      tags:
+      - byoc_tile
+      parameters:
+      - $ref: '#/components/parameters/ByocCollectionId'
+      - $ref: '#/components/parameters/ByocTileId'
+      - $ref: '#/components/parameters/ByocFilePath'
+      - in: header
+        name: Range
+        schema:
+          type: string
+          format: RFC 7223
+        description: 'Optional byte range to retrieve part of a file according to [RFC 7233](https://datatracker.ietf.org/doc/html/rfc7233#section-3.1). Typically used with large files to resume interrupted downloads.
+
+          '
+        example: bytes=16384-23473
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/octet-stream:
+              schema:
+                title: file contents as delivered by the Planet subscription/order
+                type: string
+                format: binary
+        '206':
+          description: Partial response in case partial retrieval was requested with the `Range` request header
+          content:
+            application/octet-stream:
+              schema:
+                title: partial file contents as delivered by the Planet subscription/order
+                type: string
+                format: binary
+          headers:
+            Content-Range:
+              schema:
+                type: string
+                format: RFC 7223
+              description: 'Byte range of the returned part of the file according to [RFC 7233](https://datatracker.ietf.org/doc/html/rfc7233#section-4.2).
+
+                '
+              example: bytes 16384-23473/23474
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          description: 'Collection, tile, or file does not exists, or collection was not created by a Planet Subscription/Order.
+
+            '
+      security:
+      - OAuth2: []
+    head:
+      summary: Get size of a file from your Planet collection tile
+      operationId: headByocTileFile
+      tags:
+      - byoc_tile
+      parameters:
+      - $ref: '#/components/parameters/ByocCollectionId'
+      - $ref: '#/components/parameters/ByocTileId'
+      - $ref: '#/components/parameters/ByocFilePath'
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            Content-Length:
+              schema:
+                type: integer
+              description: File length in bytes
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          description: 'Collection, tile, or file does not exists, or collection was not created by a Planet Subscription/Order.
+
+            '
+      security:
+      - OAuth2: []
+components:
+  schemas:
+    BYOCTileAdditionalData:
+      type: object
+      properties:
+        failedIngestionCause:
+          description: Contains additional information about why ingestion failed (if applicable).
+          type:
+          - string
+          - 'null'
+        warnings:
+          description: Contains additional information about potential tile problems.
+          type:
+          - string
+          - 'null'
+    BYOCTileResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/BYOCTile'
+    BYOCTile:
+      type: object
+      required:
+      - path
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        path:
+          description: 'The path within the bucket where the files are. Can also use
+
+            the ''(BAND)'' placeholder when the file names contain more than just
+
+            the band name.
+
+            '
+          type: string
+          pattern: ^([^/](/?[^/])*)?$
+          example: folder/prefix_(BAND)
+        tileGeometry:
+          description: 'The tile bounding box in the CRS of the tile.
+
+            It''s automatically set to the union of all file bounding boxes.
+
+            '
+          readOnly: true
+          $ref: '#/components/schemas/Polygon'
+        coverGeometry:
+          allOf:
+          - description: 'The geometry as GeoJSON which outlines the area that has data.
+
+
+              If it isn''t specified, it is automatically set to the intersection of all file bounding boxes.
+
+
+              You may specify this in any CRS, however it will be converted to CRS84.
+
+
+              After ingestion is complete, this stays in CRS84 on our system,
+
+              however, for you convenience, we convert and return this in the CRS of the tile.
+
+              '
+          - $ref: '#/components/schemas/Geometry'
+        sensingTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The sensing time of the tile in ISO 8601 but without sub-millisecond precision.
+        status:
+          $ref: '#/components/schemas/BYOCTileStatus'
+        additionalData:
+          $ref: '#/components/schemas/BYOCTileAdditionalData'
+        created:
+          type: string
+          format: date-time
+          description: The time when the tile was created in ISO 8601.
+          readOnly: true
+    BYOCTilesResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BYOCTile'
+        links:
+          $ref: '#/components/schemas/View'
+    BYOCTileStatus:
+      description: The status of the tile.
+      type: string
+      enum:
+      - WAITING
+      - QUEUED
+      - INGESTING
+      - INGESTED
+      - FAILED
+      readOnly: true
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    View:
+      description: Links to paginate the resource
+      type: object
+      properties:
+        currentToken:
+          type: string
+        nextToken:
+          type: string
+        previousToken:
+          type: string
+        '@id':
+          type: string
+          format: uri
+        next:
+          type: string
+          format: uri
+        previous:
+          type: string
+          format: uri
+    Polygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - Polygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              maxItems: 2
+              minItems: 2
+              type: array
+              items:
+                type: number
+                format: double
+    BYOCTileUpdatePayload:
+      type: object
+      properties:
+        coverGeometry:
+          description: 'The geometry as GeoJSON, which outlines the area that has data. If it isn''t specified, it is automatically set to the tile bounding box.
+
+            '
+          $ref: '#/components/schemas/Geometry'
+        sensingTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The sensing time of the tile in ISO 8601 but without sub-millisecond precision.
+    MultiPolygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - MultiPolygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              type: array
+              items:
+                maxItems: 2
+                minItems: 2
+                type: array
+                items:
+                  type: number
+                  format: double
+    Boom:
+      type: object
+      properties:
+        status:
+          description: HTTP status code
+          type: integer
+          format: int32
+        reason:
+          description: Reason for the error
+          type: string
+        message:
+          description: Friendly error message
+          type: string
+        code:
+          description: Code that uniquely identifies the error
+          type: string
+          enum:
+          - COMMON_BAD_PAYLOAD
+          - COMMON_NOT_FOUND
+          - COMMON_DATABASE_ERROR
+          - COMMON_UNIQUE_KEY_VIOLATION
+          - COMMON_INSUFFICIENT_PERMISSIONS
+          - COMMON_SENTINEL_ACCOUNT_EXPIRED
+          - COMMON_METHOD_NOT_ALLOWED
+          - COMMON_UNSUPPORTED_MEDIA_TYPE
+          - COMMON_ELASTICSEARCH_ERROR
+          - COMMON_UNAUTHORIZED
+          - COMMON_EXCEPTION
+          - RATE_LIMIT_STORAGE_TIMEOUT
+          - RATE_LIMIT_OVERLAPPING_POLICIES
+          - RATE_LIMIT_EXCEEDED
+          - RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY
+          - DASHBOARD_PAYPAL_SALE_ERROR
+          - DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR
+          - DASHBOARD_INVALID_PAYPAL_RESPONSE
+          - DASHBOARD_EXECUTE_SALE_ERROR
+          - DASHBOARD_EXECUTE_AGREEMENT_ERROR
+          - DASHBOARD_IPN_ERROR
+          - DASHBOARD_ADYEN_SALE_ERROR
+          - DASHBOARD_ADYEN_PAYMENT_CANCELLED
+          - RENDERER_EXCEPTION
+          - OAUTH_ERROR
+          - EMAIL_OCTOPUS_ERROR
+        errors:
+          description: Additional information about the error (Optional)
+          type: object
+    Geometry:
+      description: The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the "bounds.properties.crs" parameter. A GeoJsonObject.
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/Polygon'
+      - $ref: '#/components/schemas/MultiPolygon'
+      example:
+        type: Polygon
+        coordinates:
+        - - - 14.000701904296873
+            - 46.23685258143992
+          - - 13.822174072265625
+            - 46.09037664604301
+          - - 14.113311767578125
+            - 45.85080395917834
+          - - 14.55963134765625
+            - 46.038922598236
+          - - 14.441528320312498
+            - 46.28717293114449
+          - - 14.17236328125
+            - 46.29191774991382
+          - - 14.000701904296873
+            - 46.23685258143992
+  parameters:
+    SearchBeanViewtoken:
+      name: viewtoken
+      description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
+
+        This *viewtoken* can be used in the next request to retrieve the next page of items.
+
+
+        The next page can be retrieved by repeating the query. However, replace your URL with the
+
+        next URL in the returned links object.
+
+        '
+      in: query
+      schema:
+        type: string
+    ByocCollectionId:
+      name: collectionId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    ByocTileId:
+      name: tileId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    ByocFilePath:
+      name: path
+      description: Filename with path as returned by the "List files of a tile" endpoint.
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '409':
+      description: Conflict in the request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '403':
+      description: Insufficient permissions
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '401':
+      description: Unauthorized
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: "### Authentication\n\nMore about the authentication <a href=\"https://docs.planet.com/develop/authentication/\" target=\"_blank\">here</a>.\n\nTo get an access token using curl:\n\n```\ncurl --request POST \\\n  --url https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token \\\n  --header \"content-type: application/x-www-form-urlencoded\" \\\n  --data \"grant_type=client_credentials&client_id=<your client id>&client_secret=<your client secret>\"\n```\n"
+      flows:
+        clientCredentials:
+          tokenUrl: https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token
+          scopes:
+            SH: Sentinel Hub
+x-tagGroups:
+- name: Process API
+  tags:
+  - process
+- name: Catalog
+  tags:
+  - catalog_core
+  - catalog_collections
+  - catalog_features
+  - catalog_item_search
+- name: Async API
+  tags:
+  - async_process
+- name: BatchV2 API
+  tags:
+  - batch_v2_process
+  - batch_v2_tiling_grid
+- name: Stats API
+  tags:
+  - statistical
+- name: Batch Stats API
+  tags:
+  - batch_statistical
+- name: BYOC
+  tags:
+  - byoc_collection
+  - byoc_tile
+- name: Zarr Import API
+  tags:
+  - zarr_collection
+  - zarr_array
+- name: TPDI
+  tags:
+  - dataimport_search
+  - dataimport_product
+  - dataimport_order
+  - dataimport_delivery
+  - dataimport_tile_delivery
+  - dataimport_subscription
+  - dataimport_subscription_delivery
+  - dataimport_subscription_tile_delivery
+  - dataimport_quota
+- name: Metadata
+  tags:
+  - metadata_location
+  - metadata_collection

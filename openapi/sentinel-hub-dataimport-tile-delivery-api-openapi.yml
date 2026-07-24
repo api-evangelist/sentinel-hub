@@ -1,0 +1,248 @@
+openapi: 3.1.0
+info:
+  title: API Reference async_process dataimport_tile_delivery API
+  version: 1.0.0
+  contact:
+    name: Sentinel Hub
+  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
+
+    '
+servers:
+- url: https://services.sentinel-hub.com
+tags:
+- name: dataimport_tile_delivery
+  x-displayName: Order delivery tile
+  description: 'TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use the [BYOC API](https://docs.planet.com/develop/apis/byoc/reference/#tag/byoc_tile) instead to work with tiles.
+
+    '
+paths:
+  /api/v1/dataimport/orders/{orderId}/deliveries/{deliveryId}/tiles:
+    get:
+      summary: Get the tiles of an order delivery
+      description: 'The delivery tiles correspond to BYOC tiles that were created during the ingestion of this delivery.
+
+        Thus their corresponding IDs will match. While for most deliveries just one tile is created, for the
+
+        largest ones there can be tens of tiles.
+
+
+        Only tiles from last 3 months can be retrieved.'
+      operationId: dataImport_getTileDeliveries
+      tags:
+      - dataimport_tile_delivery
+      parameters:
+      - $ref: '#/components/parameters/OrderId'
+      - $ref: '#/components/parameters/DeliveryId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DeliveryTile'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+  /api/v1/dataimport/orders/{orderId}/deliveries/{deliveryId}/tiles/{tileId}:
+    get:
+      summary: Get an order delivery tile.
+      description: Only tiles from last 3 months can be retrieved.
+      operationId: dataImport_getTileDelivery
+      tags:
+      - dataimport_tile_delivery
+      parameters:
+      - $ref: '#/components/parameters/OrderId'
+      - $ref: '#/components/parameters/DeliveryId'
+      - $ref: '#/components/parameters/TileId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryTile'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+components:
+  parameters:
+    TileId:
+      name: tileId
+      description: Tile ID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    OrderId:
+      name: orderId
+      description: Order ID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    DeliveryId:
+      name: deliveryId
+      description: Delivery ID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  schemas:
+    TileStatus:
+      description: The status of the tile.
+      type: string
+      enum:
+      - WAITING
+      - QUEUED
+      - INGESTING
+      - INGESTED
+      - FAILED
+      readOnly: true
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    DeliveryTile:
+      type: object
+      properties:
+        id:
+          description: Tile ID
+          type: string
+          format: uuid
+        deliveryId:
+          description: Tile ID
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/TileStatus'
+    Boom:
+      type: object
+      properties:
+        status:
+          description: HTTP status code
+          type: integer
+          format: int32
+        reason:
+          description: Reason for the error
+          type: string
+        message:
+          description: Friendly error message
+          type: string
+        code:
+          description: Code that uniquely identifies the error
+          type: string
+          enum:
+          - COMMON_BAD_PAYLOAD
+          - COMMON_NOT_FOUND
+          - COMMON_DATABASE_ERROR
+          - COMMON_UNIQUE_KEY_VIOLATION
+          - COMMON_INSUFFICIENT_PERMISSIONS
+          - COMMON_SENTINEL_ACCOUNT_EXPIRED
+          - COMMON_METHOD_NOT_ALLOWED
+          - COMMON_UNSUPPORTED_MEDIA_TYPE
+          - COMMON_ELASTICSEARCH_ERROR
+          - COMMON_UNAUTHORIZED
+          - COMMON_EXCEPTION
+          - RATE_LIMIT_STORAGE_TIMEOUT
+          - RATE_LIMIT_OVERLAPPING_POLICIES
+          - RATE_LIMIT_EXCEEDED
+          - RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY
+          - DASHBOARD_PAYPAL_SALE_ERROR
+          - DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR
+          - DASHBOARD_INVALID_PAYPAL_RESPONSE
+          - DASHBOARD_EXECUTE_SALE_ERROR
+          - DASHBOARD_EXECUTE_AGREEMENT_ERROR
+          - DASHBOARD_IPN_ERROR
+          - DASHBOARD_ADYEN_SALE_ERROR
+          - DASHBOARD_ADYEN_PAYMENT_CANCELLED
+          - RENDERER_EXCEPTION
+          - OAUTH_ERROR
+          - EMAIL_OCTOPUS_ERROR
+        errors:
+          description: Additional information about the error (Optional)
+          type: object
+  responses:
+    '403':
+      description: Insufficient permissions
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '401':
+      description: Unauthorized
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: "### Authentication\n\nMore about the authentication <a href=\"https://docs.planet.com/develop/authentication/\" target=\"_blank\">here</a>.\n\nTo get an access token using curl:\n\n```\ncurl --request POST \\\n  --url https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token \\\n  --header \"content-type: application/x-www-form-urlencoded\" \\\n  --data \"grant_type=client_credentials&client_id=<your client id>&client_secret=<your client secret>\"\n```\n"
+      flows:
+        clientCredentials:
+          tokenUrl: https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token
+          scopes:
+            SH: Sentinel Hub
+x-tagGroups:
+- name: Process API
+  tags:
+  - process
+- name: Catalog
+  tags:
+  - catalog_core
+  - catalog_collections
+  - catalog_features
+  - catalog_item_search
+- name: Async API
+  tags:
+  - async_process
+- name: BatchV2 API
+  tags:
+  - batch_v2_process
+  - batch_v2_tiling_grid
+- name: Stats API
+  tags:
+  - statistical
+- name: Batch Stats API
+  tags:
+  - batch_statistical
+- name: BYOC
+  tags:
+  - byoc_collection
+  - byoc_tile
+- name: Zarr Import API
+  tags:
+  - zarr_collection
+  - zarr_array
+- name: TPDI
+  tags:
+  - dataimport_search
+  - dataimport_product
+  - dataimport_order
+  - dataimport_delivery
+  - dataimport_tile_delivery
+  - dataimport_subscription
+  - dataimport_subscription_delivery
+  - dataimport_subscription_tile_delivery
+  - dataimport_quota
+- name: Metadata
+  tags:
+  - metadata_location
+  - metadata_collection

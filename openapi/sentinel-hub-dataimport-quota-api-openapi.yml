@@ -1,0 +1,206 @@
+openapi: 3.1.0
+info:
+  title: API Reference async_process dataimport_quota API
+  version: 1.0.0
+  contact:
+    name: Sentinel Hub
+  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
+
+    '
+servers:
+- url: https://services.sentinel-hub.com
+tags:
+- name: dataimport_quota
+  x-displayName: Quota
+paths:
+  /api/v1/dataimport/accountquotas:
+    get:
+      summary: Get import quotas
+      description: Get the list of your import quotas for all providers and collections
+      operationId: dataImport_getQuotas
+      tags:
+      - dataimport_quota
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Quota'
+        '401':
+          $ref: '#/components/responses/401'
+      security:
+      - OAuth2: []
+  /api/v1/dataimport/accountquotas/{collectionId}:
+    get:
+      summary: Get import quota
+      description: Get the import quota for the specified collection
+      operationId: dataImport_getQuota
+      tags:
+      - dataimport_quota
+      parameters:
+      - $ref: '#/components/parameters/QuotaTpdiCollectionId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quota'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+components:
+  schemas:
+    QuotaTpdiCollectionId:
+      description: Collection ID
+      type: string
+      readOnly: true
+      enum:
+      - MAXAR_WORLDVIEW
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    Quota:
+      type: object
+      properties:
+        collectionId:
+          $ref: '#/components/schemas/QuotaTpdiCollectionId'
+        quotaSqkm:
+          type: number
+          description: This is total purchased quota. Available quota is quotaSqkm - quotaUsed.
+          readOnly: true
+        quotaUsed:
+          type: number
+          description: Quota used in square kilometers.
+          readOnly: true
+    Boom:
+      type: object
+      properties:
+        status:
+          description: HTTP status code
+          type: integer
+          format: int32
+        reason:
+          description: Reason for the error
+          type: string
+        message:
+          description: Friendly error message
+          type: string
+        code:
+          description: Code that uniquely identifies the error
+          type: string
+          enum:
+          - COMMON_BAD_PAYLOAD
+          - COMMON_NOT_FOUND
+          - COMMON_DATABASE_ERROR
+          - COMMON_UNIQUE_KEY_VIOLATION
+          - COMMON_INSUFFICIENT_PERMISSIONS
+          - COMMON_SENTINEL_ACCOUNT_EXPIRED
+          - COMMON_METHOD_NOT_ALLOWED
+          - COMMON_UNSUPPORTED_MEDIA_TYPE
+          - COMMON_ELASTICSEARCH_ERROR
+          - COMMON_UNAUTHORIZED
+          - COMMON_EXCEPTION
+          - RATE_LIMIT_STORAGE_TIMEOUT
+          - RATE_LIMIT_OVERLAPPING_POLICIES
+          - RATE_LIMIT_EXCEEDED
+          - RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY
+          - DASHBOARD_PAYPAL_SALE_ERROR
+          - DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR
+          - DASHBOARD_INVALID_PAYPAL_RESPONSE
+          - DASHBOARD_EXECUTE_SALE_ERROR
+          - DASHBOARD_EXECUTE_AGREEMENT_ERROR
+          - DASHBOARD_IPN_ERROR
+          - DASHBOARD_ADYEN_SALE_ERROR
+          - DASHBOARD_ADYEN_PAYMENT_CANCELLED
+          - RENDERER_EXCEPTION
+          - OAUTH_ERROR
+          - EMAIL_OCTOPUS_ERROR
+        errors:
+          description: Additional information about the error (Optional)
+          type: object
+  parameters:
+    QuotaTpdiCollectionId:
+      name: collectionId
+      description: Collection ID
+      in: path
+      required: true
+      schema:
+        type: string
+        enum:
+        - MAXAR_WORLDVIEW
+  responses:
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '401':
+      description: Unauthorized
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: "### Authentication\n\nMore about the authentication <a href=\"https://docs.planet.com/develop/authentication/\" target=\"_blank\">here</a>.\n\nTo get an access token using curl:\n\n```\ncurl --request POST \\\n  --url https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token \\\n  --header \"content-type: application/x-www-form-urlencoded\" \\\n  --data \"grant_type=client_credentials&client_id=<your client id>&client_secret=<your client secret>\"\n```\n"
+      flows:
+        clientCredentials:
+          tokenUrl: https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token
+          scopes:
+            SH: Sentinel Hub
+x-tagGroups:
+- name: Process API
+  tags:
+  - process
+- name: Catalog
+  tags:
+  - catalog_core
+  - catalog_collections
+  - catalog_features
+  - catalog_item_search
+- name: Async API
+  tags:
+  - async_process
+- name: BatchV2 API
+  tags:
+  - batch_v2_process
+  - batch_v2_tiling_grid
+- name: Stats API
+  tags:
+  - statistical
+- name: Batch Stats API
+  tags:
+  - batch_statistical
+- name: BYOC
+  tags:
+  - byoc_collection
+  - byoc_tile
+- name: Zarr Import API
+  tags:
+  - zarr_collection
+  - zarr_array
+- name: TPDI
+  tags:
+  - dataimport_search
+  - dataimport_product
+  - dataimport_order
+  - dataimport_delivery
+  - dataimport_tile_delivery
+  - dataimport_subscription
+  - dataimport_subscription_delivery
+  - dataimport_subscription_tile_delivery
+  - dataimport_quota
+- name: Metadata
+  tags:
+  - metadata_location
+  - metadata_collection

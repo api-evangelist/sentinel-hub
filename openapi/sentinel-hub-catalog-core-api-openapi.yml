@@ -1,0 +1,379 @@
+openapi: 3.1.0
+info:
+  title: API Reference async_process catalog_core API
+  version: 1.0.0
+  contact:
+    name: Sentinel Hub
+  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
+
+    '
+servers:
+- url: https://services.sentinel-hub.com
+tags:
+- name: catalog_core
+  x-displayName: Core
+  description: 'This is an OpenAPI definition of the SpatioTemporal Asset Catalog API - Core specification. Any service that implements this endpoint to allow discovery of spatiotemporal assets can be considered a STAC API.
+
+
+    Make sure to use the appropriate <a href="https://docs.sentinel-hub.com/api/latest/data/" target="_blank"> end-point for each of the datasets</a>, e.g. for Landsat, Sentinel-3, etc.'
+paths:
+  /catalog/v1:
+    get:
+      tags:
+      - catalog_core
+      summary: landing page
+      description: 'Returns the root STAC Catalog or STAC Collection that is the entry point
+
+        for users to browse with STAC Browser or for search engines to crawl.
+
+        This can either return a single STAC Collection or more commonly a STAC
+
+        catalog.
+
+
+        The landing page provides links to the
+
+        API definition (link relations `service-desc` and `service-doc`)
+
+        and the STAC records such as collections/catalogs (link relation `child`)
+
+        or items (link relation `item`).
+
+
+        Extensions may add additional links with new relation types.'
+      operationId: getCatalogLandingPage
+      responses:
+        '200':
+          $ref: '#/components/responses/CatalogCoreLandingPage'
+        '500':
+          $ref: '#/components/responses/CatalogError'
+      security: []
+  /catalog/v1/conformance:
+    get:
+      tags:
+      - catalog_core
+      summary: information about specifications that this API conforms to
+      description: 'A list of all conformance classes specified in a standard that the
+
+        server conforms to.'
+      operationId: getCatalogConformanceDeclaration
+      responses:
+        '200':
+          $ref: '#/components/responses/CatalogConformanceDeclaration'
+        '500':
+          $ref: '#/components/responses/CatalogError'
+      security: []
+components:
+  schemas:
+    CatalogLink:
+      title: Link
+      type: object
+      required:
+      - href
+      - rel
+      properties:
+        href:
+          type: string
+          format: uri
+          description: The location of the resource
+        rel:
+          type: string
+          description: Relation type of the link
+        type:
+          type: string
+          description: The media type of the resource
+        title:
+          type: string
+          description: Title of the resource
+        method:
+          type: string
+          enum:
+          - GET
+          - POST
+          default: GET
+          description: Specifies the HTTP method that the resource expects
+        headers:
+          type: object
+          description: Object key values pairs they map to headers
+          example:
+            Accept: application/json
+        body:
+          type: object
+          description: For POST requests, the resource can specify the HTTP body as a JSON object.
+        merge:
+          type: boolean
+          default: false
+          description: 'This is only valid when the server is responding to POST request.
+
+
+            If merge is true, the client is expected to merge the body value
+
+            into the current request body before following the link.
+
+            This avoids passing large post bodies back and forth when following
+
+            links, particularly for navigating pages through the `POST /search`
+
+            endpoint.
+
+
+            NOTE: To support form encoding it is expected that a client be able
+
+            to merge in the key value pairs specified as JSON
+
+            `{"next": "token"}` will become `&next=token`.'
+    CatalogCatalog:
+      title: catalog
+      type: object
+      required:
+      - stac_version
+      - type
+      - id
+      - description
+      - links
+      properties:
+        stac_version:
+          $ref: '#/components/schemas/CatalogStacVersion'
+        stac_extensions:
+          $ref: '#/components/schemas/CatalogStacExtensions'
+        type:
+          type: string
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        links:
+          $ref: '#/components/schemas/CatalogLinks'
+    CatalogException:
+      title: exception
+      type: object
+      description: 'Information about the exception: an error code plus an optional description.'
+      required:
+      - code
+      properties:
+        code:
+          type: string
+        description:
+          type: string
+    CatalogStacExtensions:
+      title: STAC extensions
+      type: array
+      uniqueItems: true
+      items:
+        anyOf:
+        - title: Reference to a JSON Schema
+          type: string
+          format: uri
+        - title: Reference to a core extension
+          type: string
+    CatalogStacVersion:
+      title: STAC version
+      type: string
+      example: 1.0.0
+    CatalogConformanceClasses:
+      title: conformanceClasses
+      type: object
+      required:
+      - conformsTo
+      properties:
+        conformsTo:
+          description: A list of all conformance classes implemented by the server. In addition to the STAC-specific conformance classes, all OGC-related conformance classes listed at `GET /conformances` must be listed here. This entry should mirror what `GET /conformances` returns, if implemented.
+          type: array
+          items:
+            type: string
+    CatalogCoreLandingPage:
+      allOf:
+      - $ref: '#/components/schemas/CatalogCatalog'
+      - $ref: '#/components/schemas/CatalogConformanceClasses'
+    CatalogLinks:
+      title: links
+      type: array
+      items:
+        $ref: '#/components/schemas/CatalogLink'
+  responses:
+    CatalogCoreLandingPage:
+      description: 'The landing page provides links to the API definition
+
+        (link relations `service-desc` and `service-doc`),
+
+        the Conformance declaration (path `/conformance`,
+
+        link relation `conformance`), and the Feature
+
+        Collections (path `/collections`, link relation
+
+        `data`).'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogCoreLandingPage'
+          example:
+            type: Catalog
+            stac_version: 1.0.0
+            id: sentinel-hub
+            title: Sentinel Hub STAC catalog
+            description: STAC v1.0.0 implementation by Sentinel Hub
+            conformsTo:
+            - http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/core
+            - http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/oas30
+            - http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/geojson
+            - https://api.stacspec.org/v1.0.0/core
+            - https://api.stacspec.org/v1.0.0/collections
+            - https://api.stacspec.org/v1.0.0/ogcapi-features
+            - https://api.stacspec.org/v1.0.0/ogcapi-features#fields
+            - https://api.stacspec.org/v1.0.0/ogcapi-features#context
+            - https://api.stacspec.org/v1.0.0/ogcapi-features#filter
+            - https://api.stacspec.org/v1.0.0/item-search
+            - https://api.stacspec.org/v1.0.0/item-search#fields
+            - https://api.stacspec.org/v1.0.0/item-search#context
+            - https://api.stacspec.org/v1.0.0/item-search#filter
+            - http://www.opengis.net/spec/ogcapi-features-3/1.0/conf/filter
+            - http://www.opengis.net/spec/ogcapi-features-3/1.0/conf/features-filter
+            - http://www.opengis.net/spec/cql2/1.0/conf/cql2-text
+            - http://www.opengis.net/spec/cql2/1.0/conf/cql2-json
+            - http://www.opengis.net/spec/cql2/1.0/conf/basic-cql2
+            links:
+            - href: https://services.sentinel-hub.com/catalog/v1/
+              rel: root
+              type: application/json
+            - href: https://services.sentinel-hub.com/catalog/v1/
+              rel: self
+              type: application/json
+            - href: https://services.sentinel-hub.com/catalog/v1/collections
+              rel: data
+              type: application/json
+            - href: https://services.sentinel-hub.com/catalog/v1/conformance
+              rel: conformance
+              type: application/json
+              title: STAC conformance classes implemented by this server
+            - href: https://services.sentinel-hub.com/catalog/v1/search
+              rel: search
+              type: application/geo+json
+              title: STAC search
+              method: GET
+            - href: https://services.sentinel-hub.com/catalog/v1/search
+              rel: search
+              type: application/geo+json
+              title: STAC search
+              method: POST
+            - href: https://services.sentinel-hub.com/catalog/v1/queryables
+              rel: http://www.opengis.net/def/rel/ogc/1.0/queryables
+              type: application/schema+json
+            - href: https://services.sentinel-hub.com/catalog/v1/collections/sentinel-2-l1c
+              rel: child
+              type: application/json
+              title: Sentinel 2 L1C
+            - href: https://services.sentinel-hub.com/catalog/v1/collections/sentinel-1-grd
+              rel: child
+              type: application/json
+              title: Sentinel 1 GRD
+            - href: https://services.sentinel-hub.com/catalog/v1/collections/sentinel-2-l2a
+              rel: child
+              type: application/json
+              title: Sentinel 2 L2A
+            - href: https://docs.sentinel-hub.com/api/latest/reference/openapi.v1.yaml
+              rel: service-desc
+              type: application/vnd.oai.openapi;version="3.1"
+              title: OpenAPI service description
+            - href: https://docs.planet.com/develop/apis/catalog/reference/#tag/catalog_core
+              rel: service-doc
+              type: text/html
+              title: OpenAPI service documentation
+    CatalogError:
+      description: An error occurred.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogException'
+    CatalogConformanceDeclaration:
+      description: 'The URIs of all conformance classes supported by the server.
+
+
+        To support "generic" clients that want to access multiple
+
+        OGC API Features implementations - and not "just" a specific
+
+        API / server, the server declares the conformance
+
+        classes it implements and conforms to.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogConformanceClasses'
+          example:
+            conformsTo:
+            - http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/core
+            - http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/oas30
+            - http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/geojson
+            - https://api.stacspec.org/v1.0.0/core
+            - https://api.stacspec.org/v1.0.0/collections
+            - https://api.stacspec.org/v1.0.0/ogcapi-features
+            - https://api.stacspec.org/v1.0.0/ogcapi-features#fields
+            - https://api.stacspec.org/v1.0.0/ogcapi-features#context
+            - https://api.stacspec.org/v1.0.0/ogcapi-features#filter
+            - https://api.stacspec.org/v1.0.0/item-search
+            - https://api.stacspec.org/v1.0.0/item-search#fields
+            - https://api.stacspec.org/v1.0.0/item-search#context
+            - https://api.stacspec.org/v1.0.0/item-search#filter
+            - http://www.opengis.net/spec/ogcapi-features-3/1.0/conf/filter
+            - http://www.opengis.net/spec/ogcapi-features-3/1.0/conf/features-filter
+            - http://www.opengis.net/spec/cql2/1.0/conf/cql2-text
+            - http://www.opengis.net/spec/cql2/1.0/conf/cql2-json
+            - http://www.opengis.net/spec/cql2/1.0/conf/basic-cql2
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: "### Authentication\n\nMore about the authentication <a href=\"https://docs.planet.com/develop/authentication/\" target=\"_blank\">here</a>.\n\nTo get an access token using curl:\n\n```\ncurl --request POST \\\n  --url https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token \\\n  --header \"content-type: application/x-www-form-urlencoded\" \\\n  --data \"grant_type=client_credentials&client_id=<your client id>&client_secret=<your client secret>\"\n```\n"
+      flows:
+        clientCredentials:
+          tokenUrl: https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token
+          scopes:
+            SH: Sentinel Hub
+x-tagGroups:
+- name: Process API
+  tags:
+  - process
+- name: Catalog
+  tags:
+  - catalog_core
+  - catalog_collections
+  - catalog_features
+  - catalog_item_search
+- name: Async API
+  tags:
+  - async_process
+- name: BatchV2 API
+  tags:
+  - batch_v2_process
+  - batch_v2_tiling_grid
+- name: Stats API
+  tags:
+  - statistical
+- name: Batch Stats API
+  tags:
+  - batch_statistical
+- name: BYOC
+  tags:
+  - byoc_collection
+  - byoc_tile
+- name: Zarr Import API
+  tags:
+  - zarr_collection
+  - zarr_array
+- name: TPDI
+  tags:
+  - dataimport_search
+  - dataimport_product
+  - dataimport_order
+  - dataimport_delivery
+  - dataimport_tile_delivery
+  - dataimport_subscription
+  - dataimport_subscription_delivery
+  - dataimport_subscription_tile_delivery
+  - dataimport_quota
+- name: Metadata
+  tags:
+  - metadata_location
+  - metadata_collection

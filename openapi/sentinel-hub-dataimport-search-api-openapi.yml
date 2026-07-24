@@ -1,0 +1,697 @@
+openapi: 3.1.0
+info:
+  title: API Reference async_process dataimport_search API
+  version: 1.0.0
+  contact:
+    name: Sentinel Hub
+  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
+
+    '
+servers:
+- url: https://services.sentinel-hub.com
+tags:
+- name: dataimport_search
+  x-displayName: Search
+  description: 'TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use [Planet Item Search](https://docs.planet.com/develop/apis/data/reference/#tag/Item-Search) instead.
+
+    '
+paths:
+  /api/v1/dataimport/search:
+    post:
+      summary: Search data
+      description: Search data with Process API-like interface.
+      operationId: dataImport_searchData
+      tags:
+      - dataimport_search
+      parameters:
+      - name: count
+        description: 'Number of items to retrieve.
+
+
+          Maximum value is provider dependent.
+
+          '
+        in: query
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+      - $ref: '#/components/parameters/SearchBeanViewtoken'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchQuery'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResults'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+      security:
+      - OAuth2: []
+  /api/v1/dataimport/nativesearch:
+    post:
+      summary: Native search
+      description: 'Proxy search. All the fields not listed as <span style="color:red">required</span> are passed verbatim to the data provider''s search API, and the result from the latter is returned verbatim.
+
+        '
+      operationId: dataImport_nativeSearch
+      tags:
+      - dataimport_search
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NativeSearchQuery'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResults'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+      security:
+      - OAuth2: []
+components:
+  schemas:
+    ProcessRequestInputBounds:
+      title: Bounds
+      description: 'Defines the request bounds by specifying the bounding box and/or
+
+        geometry for the request. If both are specified it will generate an image
+
+        for the bounding box and render data contained within the geometry.
+
+        '
+      type: object
+      properties:
+        bbox:
+          description: 'The request bounding box. This and/or GEOMETRY must be specified.
+
+            Specify with a coordinate pair on two (opposite) vertices of the bounding
+
+            box rectangle. Coordinates need to be in easting,northing or longitude, latitude,
+
+            in that order in the CRS defined in the "bounds.properties.crs" parameter.
+
+            '
+          type: array
+          minItems: 4
+          maxItems: 4
+          items:
+            type: number
+            format: double
+          example:
+          - 13.822174072265625
+          - 45.85080395917834
+          - 14.55963134765625
+          - 46.29191774991382
+        geometry:
+          $ref: '#/components/schemas/Geometry'
+        properties:
+          $ref: '#/components/schemas/ProcessRequestInputBoundsProperties'
+    SearchResults:
+      oneOf:
+      - $ref: '#/components/schemas/PlanetSearchResults'
+      - $ref: '#/components/schemas/MaxarSearchResults'
+    PlanetSearchResults:
+      deprecated: true
+      allOf:
+      - $ref: '#/components/schemas/SearchResultBase'
+      - type: object
+        properties:
+          features:
+            type: array
+            externalDocs:
+              description: Search results as returned by Planet Quick search
+              url: https://developers.planet.com/docs/apis/data/reference/#tag/Item-Search/operation/QuickSearch
+          <other fields>:
+            description: Other fields returned by Planet Quick search may be included in the response.
+    MaxarMaxOffNadir:
+      type: number
+      format: int
+      minimum: 0
+      maximum: 45
+      default: 45
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    PlanetSearchRequestBase:
+      deprecated: true
+      type: object
+      required:
+      - provider
+      properties:
+        provider:
+          description: Specify this value to use data provider Planet.
+          type: string
+          enum:
+          - PLANET
+        planetApiKey:
+          description: 'Your Planet API key. Get one from Planet https://www.planet.com.
+
+            It is required unless you purchased your Planet data plan through Sentinel Hub,
+
+            in which case it is optional and will filter search results based on the permissions of the key.
+
+            '
+          type: string
+    View:
+      description: Links to paginate the resource
+      type: object
+      properties:
+        currentToken:
+          type: string
+        nextToken:
+          type: string
+        previousToken:
+          type: string
+        '@id':
+          type: string
+          format: uri
+        next:
+          type: string
+          format: uri
+        previous:
+          type: string
+          format: uri
+    Polygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - Polygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              maxItems: 2
+              minItems: 2
+              type: array
+              items:
+                type: number
+                format: double
+    ProcessRequestInputBoundsProperties:
+      title: BoundsProperties
+      type: object
+      properties:
+        crs:
+          description: 'The coordinate reference system of the coordinates. Must be
+
+            one of the values listed at https://docs.planet.com/develop/apis/processing/#crs-support.
+
+            Default CRS is WGS84, http://www.opengis.net/def/crs/OGC/1.3/CRS84.
+
+            '
+          type: string
+          default: http://www.opengis.net/def/crs/OGC/1.3/CRS84
+    SearchQuery:
+      oneOf:
+      - $ref: '#/components/schemas/PlanetSearchQuery'
+      - $ref: '#/components/schemas/MaxarSearchQuery'
+    MaxarMaxSunElevation:
+      description: The maximum allowable sun elevation in degrees
+      type: number
+      format: int
+      minimum: 0
+      maximum: 90
+      default: 90
+    MaxarSearchQuery:
+      allOf:
+      - $ref: '#/components/schemas/MaxarRequestBase'
+      - $ref: '#/components/schemas/SearchQueryBase'
+      - type: object
+        properties:
+          data:
+            type: array
+            minItems: 1
+            maxItems: 1
+            items:
+              type: object
+              required:
+              - productBands
+              properties:
+                productBands:
+                  type: string
+                  description: 'Band Bundle
+
+                    '
+                  enum:
+                  - 4BB
+                dataFilter:
+                  type: object
+                  properties:
+                    minOffNadir:
+                      $ref: '#/components/schemas/MaxarMinOffNadir'
+                    maxOffNadir:
+                      $ref: '#/components/schemas/MaxarMaxOffNadir'
+                    minSunElevation:
+                      $ref: '#/components/schemas/MaxarMinSunElevation'
+                    maxSunElevation:
+                      $ref: '#/components/schemas/MaxarMaxSunElevation'
+                    sensor:
+                      $ref: '#/components/schemas/MaxarSensor'
+    NativeSearchQuery:
+      oneOf:
+      - $ref: '#/components/schemas/PlanetNativeSearchQuery'
+      - $ref: '#/components/schemas/MaxarNativeSearchQuery'
+    MaxarSensor:
+      description: 'If specified, limits search results to a single sensor (satellite).
+
+        Results are also filtered to include only sensors that support the requested `productBands`. Thus, if a sensor that does not support all bands is specified, no results will be returned.
+
+        '
+      type: string
+      enum:
+      - WV01
+      - WV02
+      - WV03
+      - WV04
+      - GE01
+    MaxarMinOffNadir:
+      type: number
+      format: int
+      minimum: 0
+      maximum: 45
+      default: 0
+    MaxCloudCoverage:
+      description: The maximum allowable cloud coverage in percent.
+      type: number
+      format: double
+      minimum: 0
+      maximum: 100
+      default: 100
+    PlanetSearchQuery:
+      deprecated: true
+      allOf:
+      - $ref: '#/components/schemas/PlanetSearchRequestBase'
+      - $ref: '#/components/schemas/SearchQueryBase'
+      - type: object
+        properties:
+          data:
+            type: array
+            minItems: 1
+            maxItems: 1
+            items:
+              type: object
+              required:
+              - itemType
+              - productBundle
+              properties:
+                type:
+                  type: string
+                  enum:
+                  - catalog
+                  default: catalog
+                  description: 'Use `catalog` for PlanetScope and SkySat data.
+
+                    '
+                itemType:
+                  type: string
+                  enum:
+                  - PSScene
+                  - SkySatCollect
+                  description: 'The item type of data to search for or order:
+
+                    * Use [PSScene](https://developers.planet.com/docs/data/psscene/) to order PlanetScope data.
+
+                    [PSScene4Band](https://developers.planet.com/docs/data/psscene4band/) is deprecated and cannot be ordered since November 1st 2022.
+
+                    * Use [SkySatCollect](https://developers.planet.com/docs/data/skysatcollect/) to order SkySat archive data.
+
+                    '
+                  externalDocs:
+                    description: Item Types Documentation
+                    url: https://developers.planet.com/docs/apis/data/items-assets/#item-types
+                productBundle:
+                  type: string
+                  enum:
+                  - analytic_udm2
+                  - analytic_sr_udm2
+                  - analytic_8b_udm2
+                  - analytic_8b_sr_udm2
+                  - analytic
+                  - analytic_sr
+                  - panchromatic
+                  description: 'When ordering, selects the product bundle (that is, the group of assets) to order.
+
+
+                    When searching, limits search to products available as the specified product bundle.
+
+
+                    Supported values depend on item type:
+
+                    * for `PSScene`, the product bundles containing "*udm2*" are supported,
+
+                    * for `SkySatCollect`, `analytic_udm2`, `analytic_sr_udm2` and `panchromatic` are supported.
+
+
+                    Other values used by Planet but not listed here are not supported.
+
+                    '
+                  externalDocs:
+                    description: Product Bundles Reference
+                    url: https://developers.planet.com/apis/orders/product-bundles-reference/
+                dataFilter:
+                  type: object
+                  properties:
+                    nativeFilter:
+                      type: object
+                      description: Planet Data API search filters
+                      externalDocs:
+                        description: Link to the Planet documentation page about search filters.
+                        url: https://developers.planet.com/docs/data/searches-filtering/#search-filters
+                      example:
+                        type: RangeFilter
+                        field_name: snow_ice_percent
+                        config:
+                          gte: 10
+    SearchResultBase:
+      properties:
+        links:
+          $ref: '#/components/schemas/View'
+    TimeRange:
+      type: object
+      description: A time interval to filter data by acquisition date. It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.
+      properties:
+        from:
+          description: The start of a search interval.
+          type: string
+          format: date-time
+        to:
+          description: The end of a search interval.
+          type: string
+          format: date-time
+      example:
+        from: '2018-10-01T00:00:00.000Z'
+        to: '2018-11-01T00:00:00.000Z'
+    SearchQueryBase:
+      required:
+      - provider
+      - bounds
+      - data
+      properties:
+        provider:
+          type: string
+        bounds:
+          description: 'Defines the request bounds by specifying the bounding box and/or geometry for the request.
+
+            If both are given, a request is made for a geometry and bbox is ignored.
+
+            '
+          $ref: '#/components/schemas/ProcessRequestInputBounds'
+        data:
+          type: array
+          minItems: 1
+          maxItems: 1
+          items:
+            type: object
+            properties:
+              dataFilter:
+                type: object
+                properties:
+                  timeRange:
+                    $ref: '#/components/schemas/TimeRange'
+                  maxCloudCoverage:
+                    $ref: '#/components/schemas/MaxCloudCoverage'
+    PlanetNativeSearchQuery:
+      deprecated: true
+      allOf:
+      - $ref: '#/components/schemas/PlanetSearchRequestBase'
+      - type: object
+        example:
+          provider: PLANET
+          item_types:
+          - PSScene
+          filter:
+            type: AndFilter
+            config:
+            - type: GeometryFilter
+              field_name: geometry
+              config:
+                type: Polygon
+                coordinates:
+                - - - 15.786
+                    - 46.7008
+                  - - 15.786
+                    - 46.7234
+                  - - 15.8473
+                    - 46.7234
+                  - - 15.8473
+                    - 46.7008
+                  - - 15.786
+                    - 46.7008
+            - type: DateRangeFilter
+              field_name: acquired
+              config:
+                gte: '2019-04-27T00:00:00.000Z'
+                lte: '2019-04-30T00:00:00.000Z'
+            - type: RangeFilter
+              field_name: cloud_cover
+              config:
+                lte: 0.3
+        additionalProperties:
+          externalDocs:
+            description: Fields from Request body of Planet Quick search.
+            url: https://developers.planet.com/docs/apis/data/reference/#tag/Item-Search/operation/QuickSearch
+    MaxarMinSunElevation:
+      description: The minimum allowable sun elevation in degrees
+      type: number
+      format: int
+      minimum: 0
+      maximum: 90
+      default: 0
+    MaxarNativeSearchQuery:
+      allOf:
+      - $ref: '#/components/schemas/MaxarRequestBase'
+      - type: object
+        example:
+          provider: MAXAR
+          startDate: '2020-11-06T00:00:00.0Z'
+          endDate: '2020-11-06T23:59:59.0Z'
+          sensor: WV03
+          aoiInGeoJson:
+            type: Polygon
+            coordinates:
+            - - - 15.81
+                - 46.7
+              - - 15.84
+                - 46.7
+              - - 15.84
+                - 46.72
+              - - 15.81
+                - 46.72
+              - - 15.81
+                - 46.7
+            crs:
+              type: name
+              properties:
+                name: EPSG:4326
+        additionalProperties:
+          description: Fields from request body of MAXAR search.
+    MaxarRequestBase:
+      type: object
+      required:
+      - provider
+      properties:
+        provider:
+          description: Specify this value to use data provider Maxar.
+          type: string
+          enum:
+          - MAXAR
+    MultiPolygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - MultiPolygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              type: array
+              items:
+                maxItems: 2
+                minItems: 2
+                type: array
+                items:
+                  type: number
+                  format: double
+    MaxarSearchResults:
+      properties:
+        features:
+          type: array
+          description: 'Search results as returned by MAXAR search.
+
+            Note thate MAXAR search does not support paging. Thus, the `count` and `viewtoken` query parameters are ignored and a plain list of results is returned.
+
+            '
+    Boom:
+      type: object
+      properties:
+        status:
+          description: HTTP status code
+          type: integer
+          format: int32
+        reason:
+          description: Reason for the error
+          type: string
+        message:
+          description: Friendly error message
+          type: string
+        code:
+          description: Code that uniquely identifies the error
+          type: string
+          enum:
+          - COMMON_BAD_PAYLOAD
+          - COMMON_NOT_FOUND
+          - COMMON_DATABASE_ERROR
+          - COMMON_UNIQUE_KEY_VIOLATION
+          - COMMON_INSUFFICIENT_PERMISSIONS
+          - COMMON_SENTINEL_ACCOUNT_EXPIRED
+          - COMMON_METHOD_NOT_ALLOWED
+          - COMMON_UNSUPPORTED_MEDIA_TYPE
+          - COMMON_ELASTICSEARCH_ERROR
+          - COMMON_UNAUTHORIZED
+          - COMMON_EXCEPTION
+          - RATE_LIMIT_STORAGE_TIMEOUT
+          - RATE_LIMIT_OVERLAPPING_POLICIES
+          - RATE_LIMIT_EXCEEDED
+          - RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY
+          - DASHBOARD_PAYPAL_SALE_ERROR
+          - DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR
+          - DASHBOARD_INVALID_PAYPAL_RESPONSE
+          - DASHBOARD_EXECUTE_SALE_ERROR
+          - DASHBOARD_EXECUTE_AGREEMENT_ERROR
+          - DASHBOARD_IPN_ERROR
+          - DASHBOARD_ADYEN_SALE_ERROR
+          - DASHBOARD_ADYEN_PAYMENT_CANCELLED
+          - RENDERER_EXCEPTION
+          - OAUTH_ERROR
+          - EMAIL_OCTOPUS_ERROR
+        errors:
+          description: Additional information about the error (Optional)
+          type: object
+    Geometry:
+      description: The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the "bounds.properties.crs" parameter. A GeoJsonObject.
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/Polygon'
+      - $ref: '#/components/schemas/MultiPolygon'
+      example:
+        type: Polygon
+        coordinates:
+        - - - 14.000701904296873
+            - 46.23685258143992
+          - - 13.822174072265625
+            - 46.09037664604301
+          - - 14.113311767578125
+            - 45.85080395917834
+          - - 14.55963134765625
+            - 46.038922598236
+          - - 14.441528320312498
+            - 46.28717293114449
+          - - 14.17236328125
+            - 46.29191774991382
+          - - 14.000701904296873
+            - 46.23685258143992
+  parameters:
+    SearchBeanViewtoken:
+      name: viewtoken
+      description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
+
+        This *viewtoken* can be used in the next request to retrieve the next page of items.
+
+
+        The next page can be retrieved by repeating the query. However, replace your URL with the
+
+        next URL in the returned links object.
+
+        '
+      in: query
+      schema:
+        type: string
+  responses:
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '403':
+      description: Insufficient permissions
+    '401':
+      description: Unauthorized
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: "### Authentication\n\nMore about the authentication <a href=\"https://docs.planet.com/develop/authentication/\" target=\"_blank\">here</a>.\n\nTo get an access token using curl:\n\n```\ncurl --request POST \\\n  --url https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token \\\n  --header \"content-type: application/x-www-form-urlencoded\" \\\n  --data \"grant_type=client_credentials&client_id=<your client id>&client_secret=<your client secret>\"\n```\n"
+      flows:
+        clientCredentials:
+          tokenUrl: https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token
+          scopes:
+            SH: Sentinel Hub
+x-tagGroups:
+- name: Process API
+  tags:
+  - process
+- name: Catalog
+  tags:
+  - catalog_core
+  - catalog_collections
+  - catalog_features
+  - catalog_item_search
+- name: Async API
+  tags:
+  - async_process
+- name: BatchV2 API
+  tags:
+  - batch_v2_process
+  - batch_v2_tiling_grid
+- name: Stats API
+  tags:
+  - statistical
+- name: Batch Stats API
+  tags:
+  - batch_statistical
+- name: BYOC
+  tags:
+  - byoc_collection
+  - byoc_tile
+- name: Zarr Import API
+  tags:
+  - zarr_collection
+  - zarr_array
+- name: TPDI
+  tags:
+  - dataimport_search
+  - dataimport_product
+  - dataimport_order
+  - dataimport_delivery
+  - dataimport_tile_delivery
+  - dataimport_subscription
+  - dataimport_subscription_delivery
+  - dataimport_subscription_tile_delivery
+  - dataimport_quota
+- name: Metadata
+  tags:
+  - metadata_location
+  - metadata_collection

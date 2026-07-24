@@ -1,0 +1,536 @@
+openapi: 3.1.0
+info:
+  title: API Reference async_process byoc_collection API
+  version: 1.0.0
+  contact:
+    name: Sentinel Hub
+  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
+
+    '
+servers:
+- url: https://services.sentinel-hub.com
+tags:
+- name: byoc_collection
+  x-displayName: Collection
+paths:
+  /byoc/v1/collections:
+    post:
+      summary: Create a collection
+      operationId: createByocCollection
+      tags:
+      - byoc_collection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BYOCCollection'
+      responses:
+        '201':
+          description: Collection created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BYOCCollectionResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '409':
+          $ref: '#/components/responses/409'
+      security:
+      - OAuth2: []
+    get:
+      summary: Query collections
+      operationId: getByocCollections
+      tags:
+      - byoc_collection
+      parameters:
+      - name: count
+        description: Number of items to retrieve.
+        in: query
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 100
+      - $ref: '#/components/parameters/SearchBeanViewtoken'
+      - $ref: '#/components/parameters/SearchBeanSearch'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BYOCCollectionsResponse'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+      security:
+      - OAuth2: []
+  /byoc/v1/collections/{collectionId}:
+    get:
+      summary: Get a collection
+      operationId: getByocCollectionById
+      tags:
+      - byoc_collection
+      parameters:
+      - $ref: '#/components/parameters/ByocCollectionId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BYOCCollectionResponse'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+    put:
+      summary: Update a collection
+      operationId: updateByocCollectionById
+      tags:
+      - byoc_collection
+      parameters:
+      - $ref: '#/components/parameters/ByocCollectionId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BYOCCollectionUpdatePayload'
+      responses:
+        '204':
+          description: Collection updated
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          $ref: '#/components/responses/409'
+      security:
+      - OAuth2: []
+    delete:
+      summary: Delete a collection
+      operationId: deleteByocCollectionById
+      tags:
+      - byoc_collection
+      parameters:
+      - $ref: '#/components/parameters/ByocCollectionId'
+      responses:
+        '204':
+          description: Collection deleted
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+  /byoc/v1/collections/{collectionId}/copyTiles:
+    post:
+      summary: Copy collection tiles
+      description: 'Copies ingested tiles from one collection to another, but only those whose path isn''t present in the target collection.
+
+
+        You need to have access to both source and target collections, and target collection needs to have either the same band names and types, or it should have no bands.
+
+        '
+      operationId: copyByocCollectionTiles
+      tags:
+      - byoc_collection
+      parameters:
+      - $ref: '#/components/parameters/ByocCollectionId'
+      - name: toCollection
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: Tiles copied
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+components:
+  responses:
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '403':
+      description: Insufficient permissions
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '409':
+      description: Conflict in the request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '401':
+      description: Unauthorized
+  schemas:
+    BYOCCollectionsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BYOCCollection'
+        links:
+          $ref: '#/components/schemas/View'
+    BYOCCollectionUpdatePayload:
+      type: object
+      required:
+      - name
+      - s3Bucket
+      properties:
+        name:
+          type: string
+        s3Bucket:
+          description: Can only be changed if the collection is empty.
+          type: string
+        noData:
+          description: If the value is not provided, the old one gets deleted.
+          type: number
+        additionalData:
+          description: 'If provided, overwrites the current bands property of the collection:
+
+            - to rename band(s), provide the current value of the "bands" property with only the name(s) of one or more bands changed
+
+            - to set noData value(s), provide the current value of the "bands" property with only the noData value(s) of one or more bands changed
+
+            - to remove band(s), provide the current value of the "bands" property but leave out the band(s) you wish to remove
+
+            - to remove all bands, you must first empty the collection, then provide "additionalData" without the "bands" property or with an empty "bands" property.
+
+
+            Keep in mind that:
+
+            - bands cannot be added nor their other properties ("bitDepth", "bandIndex", etc) changed once you add a tile.
+
+            - once sample format is set you cannot change it, and tiles ingested from then on need be in the set sample format.
+
+
+            If "additionalData" is omitted, the bands will not be changed.
+
+            '
+          $ref: '#/components/schemas/BYOCCollectionAdditionalData'
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    View:
+      description: Links to paginate the resource
+      type: object
+      properties:
+        currentToken:
+          type: string
+        nextToken:
+          type: string
+        previousToken:
+          type: string
+        '@id':
+          type: string
+          format: uri
+        next:
+          type: string
+          format: uri
+        previous:
+          type: string
+          format: uri
+    Polygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - Polygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              maxItems: 2
+              minItems: 2
+              type: array
+              items:
+                type: number
+                format: double
+    Boom:
+      type: object
+      properties:
+        status:
+          description: HTTP status code
+          type: integer
+          format: int32
+        reason:
+          description: Reason for the error
+          type: string
+        message:
+          description: Friendly error message
+          type: string
+        code:
+          description: Code that uniquely identifies the error
+          type: string
+          enum:
+          - COMMON_BAD_PAYLOAD
+          - COMMON_NOT_FOUND
+          - COMMON_DATABASE_ERROR
+          - COMMON_UNIQUE_KEY_VIOLATION
+          - COMMON_INSUFFICIENT_PERMISSIONS
+          - COMMON_SENTINEL_ACCOUNT_EXPIRED
+          - COMMON_METHOD_NOT_ALLOWED
+          - COMMON_UNSUPPORTED_MEDIA_TYPE
+          - COMMON_ELASTICSEARCH_ERROR
+          - COMMON_UNAUTHORIZED
+          - COMMON_EXCEPTION
+          - RATE_LIMIT_STORAGE_TIMEOUT
+          - RATE_LIMIT_OVERLAPPING_POLICIES
+          - RATE_LIMIT_EXCEEDED
+          - RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY
+          - DASHBOARD_PAYPAL_SALE_ERROR
+          - DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR
+          - DASHBOARD_INVALID_PAYPAL_RESPONSE
+          - DASHBOARD_EXECUTE_SALE_ERROR
+          - DASHBOARD_EXECUTE_AGREEMENT_ERROR
+          - DASHBOARD_IPN_ERROR
+          - DASHBOARD_ADYEN_SALE_ERROR
+          - DASHBOARD_ADYEN_PAYMENT_CANCELLED
+          - RENDERER_EXCEPTION
+          - OAUTH_ERROR
+          - EMAIL_OCTOPUS_ERROR
+        errors:
+          description: Additional information about the error (Optional)
+          type: object
+    BYOCFormat:
+      type: object
+      required:
+      - bitDepth
+      - sampleFormat
+      properties:
+        source:
+          description: The string that must appear in `(BAND)` placeholder. If unset, defaults to the band name.
+          type: string
+        bandIndex:
+          description: The index of band in 1-based numbering.
+          type: integer
+          format: int32
+          default: 1
+        bitDepth:
+          type: integer
+          format: int32
+          enum:
+          - 8
+          - 16
+          - 32
+        sampleFormat:
+          type: string
+          enum:
+          - UINT
+          - INT
+          - FLOAT
+        noData:
+          type: number
+          description: You can define noData either per band or per collection, but not both.
+        aliases:
+          description: 'An optional list of alias names that can be used instead of the band name in the evalscript.
+
+            Only used in certain specific collections and not settable by the user.
+
+            '
+          type: array
+          items:
+            type: string
+          readOnly: true
+    BYOCCollectionAdditionalData:
+      type: object
+      properties:
+        bands:
+          type: object
+          description: Limited to 100 bands.
+          additionalProperties:
+            x-additionalPropertiesName: band
+            $ref: '#/components/schemas/BYOCFormat'
+        maxMetersPerPixel:
+          type: number
+          readOnly: true
+          description: 'How much meters per pixel can you request with Process/OGC/Batch requests for this collection. The limit is internally increased to 500, if it''s less than that.
+
+            '
+        extent:
+          description: The collection extent in WGS84.
+          $ref: '#/components/schemas/Polygon'
+          readOnly: true
+        hasSensingTimes:
+          type: string
+          enum:
+          - 'YES'
+          - PARTIALLY
+          - 'NO'
+          description: Information if tiles have sensing time.
+          readOnly: true
+        fromSensingTime:
+          type: string
+          format: date-time
+          description: The sensing time in ISO 8601 of the least recent tile.
+          readOnly: true
+        toSensingTime:
+          type: string
+          format: date-time
+          description: The sensing time in ISO 8601 of the most recent tile.
+          readOnly: true
+    BYOCCollectionResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/BYOCCollection'
+    BYOCCollection:
+      required:
+      - name
+      - s3Bucket
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        accountId:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+        s3Bucket:
+          type: string
+        isConfigured:
+          description: It's set to true, if the collection has bands.
+          type: boolean
+        created:
+          description: The date when the collection was created. Older collections don't have it.
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        noData:
+          type: number
+        requiresMetadataUpdate:
+          description: 'Flag if the metadata, found under additionalData, needs to be updated after a tile is added or removed.
+
+            Metadata is updated in a few minutes.
+
+            '
+          type: boolean
+          readOnly: true
+        additionalData:
+          $ref: '#/components/schemas/BYOCCollectionAdditionalData'
+  parameters:
+    SearchBeanSearch:
+      name: search
+      description: Optional search query. Either a single word to search for or multiple words separated by the `|` (or) and `&` (and) operators. If omitted, all items are returned.
+      in: query
+      schema:
+        type: string
+    SearchBeanViewtoken:
+      name: viewtoken
+      description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
+
+        This *viewtoken* can be used in the next request to retrieve the next page of items.
+
+
+        The next page can be retrieved by repeating the query. However, replace your URL with the
+
+        next URL in the returned links object.
+
+        '
+      in: query
+      schema:
+        type: string
+    ByocCollectionId:
+      name: collectionId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: "### Authentication\n\nMore about the authentication <a href=\"https://docs.planet.com/develop/authentication/\" target=\"_blank\">here</a>.\n\nTo get an access token using curl:\n\n```\ncurl --request POST \\\n  --url https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token \\\n  --header \"content-type: application/x-www-form-urlencoded\" \\\n  --data \"grant_type=client_credentials&client_id=<your client id>&client_secret=<your client secret>\"\n```\n"
+      flows:
+        clientCredentials:
+          tokenUrl: https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token
+          scopes:
+            SH: Sentinel Hub
+x-tagGroups:
+- name: Process API
+  tags:
+  - process
+- name: Catalog
+  tags:
+  - catalog_core
+  - catalog_collections
+  - catalog_features
+  - catalog_item_search
+- name: Async API
+  tags:
+  - async_process
+- name: BatchV2 API
+  tags:
+  - batch_v2_process
+  - batch_v2_tiling_grid
+- name: Stats API
+  tags:
+  - statistical
+- name: Batch Stats API
+  tags:
+  - batch_statistical
+- name: BYOC
+  tags:
+  - byoc_collection
+  - byoc_tile
+- name: Zarr Import API
+  tags:
+  - zarr_collection
+  - zarr_array
+- name: TPDI
+  tags:
+  - dataimport_search
+  - dataimport_product
+  - dataimport_order
+  - dataimport_delivery
+  - dataimport_tile_delivery
+  - dataimport_subscription
+  - dataimport_subscription_delivery
+  - dataimport_subscription_tile_delivery
+  - dataimport_quota
+- name: Metadata
+  tags:
+  - metadata_location
+  - metadata_collection

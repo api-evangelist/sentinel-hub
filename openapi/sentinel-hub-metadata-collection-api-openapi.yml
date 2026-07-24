@@ -1,0 +1,310 @@
+openapi: 3.1.0
+info:
+  title: API Reference async_process metadata_collection API
+  version: 1.0.0
+  contact:
+    name: Sentinel Hub
+  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
+
+    '
+servers:
+- url: https://services.sentinel-hub.com
+tags:
+- name: metadata_collection
+  x-displayName: Collection
+paths:
+  /api/v1/metadata/collection/byoc-{collectionId}:
+    get:
+      summary: BYOC Collection
+      description: Metadata about specific BYOC collection
+      operationId: metadata_byoc_id
+      tags:
+      - metadata_collection
+      parameters:
+      - name: collectionId
+        in: path
+        required: true
+        schema:
+          description: BYOC Collection identifier
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BYOCCollectionMetadata'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+  /api/v1/metadata/collection/batch-{collectionId}:
+    get:
+      summary: Batch Collection
+      description: Metadata about specific batch collection
+      operationId: metadata_batch_id
+      tags:
+      - metadata_collection
+      parameters:
+      - name: collectionId
+        in: path
+        required: true
+        schema:
+          description: Batch Collection identifier
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchCollectionMetadata'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+  /api/v1/metadata/collection/zarr-{collectionId}:
+    get:
+      summary: Zarr Collection
+      description: Metadata about specific Zarr collection
+      operationId: metadata_zarr_id
+      tags:
+      - metadata_collection
+      parameters:
+      - name: collectionId
+        in: path
+        required: true
+        schema:
+          description: Zarr Collection identifier
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZarrCollectionMetadata'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+components:
+  schemas:
+    BandMetadata:
+      type: object
+      description: Band information
+      properties:
+        name:
+          type: string
+          description: Band identifier
+        sampleType:
+          type: string
+          enum:
+          - UINT8
+          - UINT16
+          - FLOAT32
+          - FLOAT64
+          description: Band sample type
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    Location:
+      type: object
+      properties:
+        '@id':
+          type: string
+          format: uri
+        id:
+          description: Sentinel Hub deployment location identifier
+          type: string
+        url:
+          description: Endpoint url
+          type: string
+        wmsUrl:
+          description: WMS Service url
+          type: string
+        processUrl:
+          description: Process API url
+          type: string
+        catalogUrl:
+          description: Catalog API url
+          type: string
+    BYOCCollectionMetadata:
+      type: object
+      properties:
+        '@id':
+          type: string
+          format: uri
+        id:
+          description: BYOC Collection identifier
+          type: string
+        location:
+          description: BYOC Collection location
+          $ref: '#/components/schemas/Location'
+        datasetType:
+          $ref: '#/components/schemas/CustomDatasetType'
+        bands:
+          type: array
+          items:
+            $ref: '#/components/schemas/BandMetadata'
+    CustomDatasetType:
+      type: string
+      enum:
+      - custom
+    ZarrCollectionMetadata:
+      type: object
+      properties:
+        '@id':
+          type: string
+          format: uri
+        id:
+          description: Zarr Collection identifier
+          type: string
+        location:
+          description: Zarr Collection location
+          $ref: '#/components/schemas/Location'
+        datasetType:
+          $ref: '#/components/schemas/CustomDatasetType'
+        bands:
+          type: array
+          items:
+            $ref: '#/components/schemas/BandMetadata'
+    Boom:
+      type: object
+      properties:
+        status:
+          description: HTTP status code
+          type: integer
+          format: int32
+        reason:
+          description: Reason for the error
+          type: string
+        message:
+          description: Friendly error message
+          type: string
+        code:
+          description: Code that uniquely identifies the error
+          type: string
+          enum:
+          - COMMON_BAD_PAYLOAD
+          - COMMON_NOT_FOUND
+          - COMMON_DATABASE_ERROR
+          - COMMON_UNIQUE_KEY_VIOLATION
+          - COMMON_INSUFFICIENT_PERMISSIONS
+          - COMMON_SENTINEL_ACCOUNT_EXPIRED
+          - COMMON_METHOD_NOT_ALLOWED
+          - COMMON_UNSUPPORTED_MEDIA_TYPE
+          - COMMON_ELASTICSEARCH_ERROR
+          - COMMON_UNAUTHORIZED
+          - COMMON_EXCEPTION
+          - RATE_LIMIT_STORAGE_TIMEOUT
+          - RATE_LIMIT_OVERLAPPING_POLICIES
+          - RATE_LIMIT_EXCEEDED
+          - RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY
+          - DASHBOARD_PAYPAL_SALE_ERROR
+          - DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR
+          - DASHBOARD_INVALID_PAYPAL_RESPONSE
+          - DASHBOARD_EXECUTE_SALE_ERROR
+          - DASHBOARD_EXECUTE_AGREEMENT_ERROR
+          - DASHBOARD_IPN_ERROR
+          - DASHBOARD_ADYEN_SALE_ERROR
+          - DASHBOARD_ADYEN_PAYMENT_CANCELLED
+          - RENDERER_EXCEPTION
+          - OAUTH_ERROR
+          - EMAIL_OCTOPUS_ERROR
+        errors:
+          description: Additional information about the error (Optional)
+          type: object
+    BatchCollectionMetadata:
+      type: object
+      properties:
+        '@id':
+          type: string
+          format: uri
+        id:
+          description: Batch Collection identifier
+          type: string
+        location:
+          description: Batch Collection location
+          $ref: '#/components/schemas/Location'
+        datasetType:
+          $ref: '#/components/schemas/CustomDatasetType'
+        bands:
+          type: array
+          items:
+            $ref: '#/components/schemas/BandMetadata'
+  responses:
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '401':
+      description: Unauthorized
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: "### Authentication\n\nMore about the authentication <a href=\"https://docs.planet.com/develop/authentication/\" target=\"_blank\">here</a>.\n\nTo get an access token using curl:\n\n```\ncurl --request POST \\\n  --url https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token \\\n  --header \"content-type: application/x-www-form-urlencoded\" \\\n  --data \"grant_type=client_credentials&client_id=<your client id>&client_secret=<your client secret>\"\n```\n"
+      flows:
+        clientCredentials:
+          tokenUrl: https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token
+          scopes:
+            SH: Sentinel Hub
+x-tagGroups:
+- name: Process API
+  tags:
+  - process
+- name: Catalog
+  tags:
+  - catalog_core
+  - catalog_collections
+  - catalog_features
+  - catalog_item_search
+- name: Async API
+  tags:
+  - async_process
+- name: BatchV2 API
+  tags:
+  - batch_v2_process
+  - batch_v2_tiling_grid
+- name: Stats API
+  tags:
+  - statistical
+- name: Batch Stats API
+  tags:
+  - batch_statistical
+- name: BYOC
+  tags:
+  - byoc_collection
+  - byoc_tile
+- name: Zarr Import API
+  tags:
+  - zarr_collection
+  - zarr_array
+- name: TPDI
+  tags:
+  - dataimport_search
+  - dataimport_product
+  - dataimport_order
+  - dataimport_delivery
+  - dataimport_tile_delivery
+  - dataimport_subscription
+  - dataimport_subscription_delivery
+  - dataimport_subscription_tile_delivery
+  - dataimport_quota
+- name: Metadata
+  tags:
+  - metadata_location
+  - metadata_collection

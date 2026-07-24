@@ -1,0 +1,610 @@
+openapi: 3.1.0
+info:
+  title: API Reference async_process dataimport_subscription_delivery API
+  version: 1.0.0
+  contact:
+    name: Sentinel Hub
+  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
+
+    '
+servers:
+- url: https://services.sentinel-hub.com
+tags:
+- name: dataimport_subscription_delivery
+  x-displayName: Subscription delivery
+  description: 'TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use [Planet Subscriptions API](https://docs.planet.com/develop/apis/subscriptions/reference/) instead.
+
+    '
+paths:
+  /api/v1/dataimport/subscriptions/{subscriptionId}/deliveries:
+    get:
+      deprecated: true
+      summary: Get subscription deliveries
+      operationId: dataImport_getSubscriptionDeliveries
+      tags:
+      - dataimport_subscription_delivery
+      parameters:
+      - $ref: '#/components/parameters/SubscriptionId'
+      - $ref: '#/components/parameters/DeliveryStatus'
+      - $ref: '#/components/parameters/SearchBeanCount'
+      - $ref: '#/components/parameters/SearchBeanViewtoken'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SubscriptionDelivery'
+                  links:
+                    $ref: '#/components/schemas/View'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+  /api/v1/dataimport/subscriptions/{subscriptionId}/deliveries/{deliveryId}:
+    get:
+      deprecated: true
+      summary: Get a subscription delivery
+      operationId: dataImport_getSubscriptionDelivery
+      tags:
+      - dataimport_subscription_delivery
+      parameters:
+      - $ref: '#/components/parameters/SubscriptionId'
+      - $ref: '#/components/parameters/DeliveryId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionDelivery'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+  /api/v1/dataimport/subscriptions/{subscriptionId}/deliveries/{deliveryId}/files:
+    get:
+      deprecated: true
+      summary: List files of a subscription delivery
+      description: 'Lists all files delivered by the data provider. The file list and contents is provider-specific.
+
+        '
+      operationId: dataImport_getSubscriptionDeliveryFiles
+      tags:
+      - dataimport_subscription_delivery
+      parameters:
+      - $ref: '#/components/parameters/SubscriptionId'
+      - $ref: '#/components/parameters/DeliveryId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                items:
+                  type: string
+                  format: filename with path
+                example:
+                - 20211208_095127_54_2416_3B_AnalyticMS_SR_clip.tif
+                - 20211208_095127_54_2416_metadata.json
+                - 20211208_095127_54_2416_3B_AnalyticMS_metadata_clip.xml
+                - 20211208_095127_54_2416_3B_udm2_clip.tif
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          description: Delivery status is not `DONE`
+      security:
+      - OAuth2: []
+  /api/v1/dataimport/subscriptions/{subscriptionId}/deliveries/{deliveryId}/files/{file}:
+    get:
+      deprecated: true
+      summary: Retrieve a delivery file
+      description: Download a single file delivered by the data provider.
+      operationId: dataImport_getSubscriptionDeliveryFile
+      tags:
+      - dataimport_subscription_delivery
+      parameters:
+      - $ref: '#/components/parameters/SubscriptionId'
+      - $ref: '#/components/parameters/DeliveryId'
+      - $ref: '#/components/parameters/DeliveryFile'
+      - in: header
+        name: Range
+        schema:
+          type: string
+          format: RFC 7223
+        description: 'Optional byte range to retrieve part of a file according to [RFC 7233](https://datatracker.ietf.org/doc/html/rfc7233#section-3.1). Typically used with large files to resume interrupted downloads.
+
+          '
+        example: bytes=16384-23473
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/octet-stream:
+              schema:
+                title: file contents as delivered by data provider
+                type: string
+                format: binary
+        '206':
+          description: Partial response in case partial retrieval was requested with the `Range` request header
+          content:
+            application/octet-stream:
+              schema:
+                title: partial file contents as delivered by data provider
+                type: string
+                format: binary
+          headers:
+            Content-Range:
+              schema:
+                type: string
+                format: RFC 7223
+              description: 'Byte range of the returned part of the file according to [RFC 7233](https://datatracker.ietf.org/doc/html/rfc7233#section-4.2).
+
+                '
+              example: bytes 16384-23473/23474
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          description: Delivery status is not `DONE`
+      security:
+      - OAuth2: []
+    head:
+      deprecated: true
+      summary: Get delivery file size
+      operationId: dataImport_headSubscriptionDeliveryFile
+      tags:
+      - dataimport_subscription_delivery
+      parameters:
+      - $ref: '#/components/parameters/SubscriptionId'
+      - $ref: '#/components/parameters/DeliveryId'
+      - $ref: '#/components/parameters/DeliveryFile'
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            Content-Length:
+              schema:
+                type: integer
+              description: File length in bytes
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          description: Delivery status is not `DONE`
+      security:
+      - OAuth2: []
+  /api/v1/dataimport/subscriptions/{subscriptionId}/deliveries/{deliveryId}/archive/create:
+    post:
+      deprecated: true
+      summary: Request creation of delivery archive
+      operationId: dataImport_postSubscriptionDeliveryArchiveCreate
+      tags:
+      - dataimport_subscription_delivery
+      parameters:
+      - $ref: '#/components/parameters/SubscriptionId'
+      - $ref: '#/components/parameters/DeliveryId'
+      - $ref: '#/components/parameters/DeliveryArchiveFormat'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryArchive'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '409':
+          description: 'Delivery status is not `DONE` or archival of the same delivery in the same format has already been requested
+
+            '
+      security:
+      - OAuth2: []
+  /api/v1/dataimport/subscriptions/{subscriptionId}/deliveries/{deliveryId}/archive:
+    get:
+      deprecated: true
+      summary: Retrieve delivery archive
+      operationId: dataImport_getSubscriptionDeliveryArchive
+      tags:
+      - dataimport_subscription_delivery
+      parameters:
+      - $ref: '#/components/parameters/SubscriptionId'
+      - $ref: '#/components/parameters/DeliveryId'
+      - $ref: '#/components/parameters/DeliveryArchiveFormat'
+      - in: header
+        name: Range
+        schema:
+          type: string
+          format: RFC 7223
+        description: 'Optional byte range to retrieve part of the archive according to [RFC 7233](https://datatracker.ietf.org/doc/html/rfc7233#section-3.1). Typically used to resume interrupted downloads.
+
+          '
+        example: bytes=16384-23473
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/octet-stream:
+              schema:
+                title: archive contents
+                type: string
+                format: binary
+        '206':
+          description: Partial response in case partial retrieval was requested with the `Range` request header
+          content:
+            application/octet-stream:
+              schema:
+                title: partial archive contents
+                type: string
+                format: binary
+          headers:
+            Content-Range:
+              schema:
+                type: string
+                format: RFC 7223
+              description: 'Byte range of the returned part of the archive according to [RFC 7233](https://datatracker.ietf.org/doc/html/rfc7233#section-4.2).
+
+                '
+              example: bytes 16384-23473/23474
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+    head:
+      deprecated: true
+      summary: Get size of delivery archive
+      operationId: dataImport_headSubscriptionDeliveryArchive
+      tags:
+      - dataimport_subscription_delivery
+      parameters:
+      - $ref: '#/components/parameters/SubscriptionId'
+      - $ref: '#/components/parameters/DeliveryId'
+      - $ref: '#/components/parameters/DeliveryArchiveFormat'
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            Content-Length:
+              schema:
+                type: integer
+              description: Archive length in bytes
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+  /api/v1/dataimport/subscriptions/{subscriptionId}/deliveries/{deliveryId}/archive/status:
+    get:
+      deprecated: true
+      summary: Get status of delivery archive creation
+      operationId: dataImport_getSubscriptionDeliveryArchiveStatus
+      tags:
+      - dataimport_subscription_delivery
+      parameters:
+      - $ref: '#/components/parameters/SubscriptionId'
+      - $ref: '#/components/parameters/DeliveryId'
+      - $ref: '#/components/parameters/DeliveryArchiveFormat'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryArchive'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+components:
+  schemas:
+    DeliveryArchiveStatus:
+      description: Status of archive creation. Only archives with status `DONE` can be downloaded.
+      type: string
+      enum:
+      - WAITING
+      - PREPARING
+      - DONE
+      - FAILED
+    SubscriptionDeliveryBase:
+      type: object
+      properties:
+        id:
+          description: Delivery ID
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/DeliveryStatus'
+        errorMessage:
+          description: Error message if status = "DELIVERY_FAILED", "NON_INGESTIBLE" or "IMPORT_FAILED".
+          type: string
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    View:
+      description: Links to paginate the resource
+      type: object
+      properties:
+        currentToken:
+          type: string
+        nextToken:
+          type: string
+        previousToken:
+          type: string
+        '@id':
+          type: string
+          format: uri
+        next:
+          type: string
+          format: uri
+        previous:
+          type: string
+          format: uri
+    DeliveryArchive:
+      type: object
+      properties:
+        deliveryId:
+          type: string
+          format: uuid
+        format:
+          $ref: '#/components/schemas/DeliveryArchiveFormat'
+        requested:
+          type: string
+          format: date-time
+          description: Time of archiving request in ISO 8601
+        status:
+          $ref: '#/components/schemas/DeliveryArchiveStatus'
+        size:
+          type: integer
+          description: Size of archive in bytes. Only provided for archives with status `DONE`.
+    DeliveryArchiveFormat:
+      description: One of supported archive formats. Currently only `zip` is supported.
+      type: string
+      default: zip
+      enum:
+      - zip
+    SubscriptionDelivery:
+      oneOf:
+      - $ref: '#/components/schemas/SubscriptionPlanetDelivery'
+    PlanetDeliveryProvider:
+      deprecated: true
+      type: object
+      properties:
+        provider:
+          description: Provider of the delivery
+          type: string
+          enum:
+          - PLANET
+    SubscriptionPlanetDelivery:
+      allOf:
+      - $ref: '#/components/schemas/PlanetDeliveryProvider'
+      - $ref: '#/components/schemas/SubscriptionDeliveryBase'
+      - type: object
+        properties:
+          itemId:
+            description: Planet's item ID for PlanetScope and SkySat deliveries.
+            type: string
+    Boom:
+      type: object
+      properties:
+        status:
+          description: HTTP status code
+          type: integer
+          format: int32
+        reason:
+          description: Reason for the error
+          type: string
+        message:
+          description: Friendly error message
+          type: string
+        code:
+          description: Code that uniquely identifies the error
+          type: string
+          enum:
+          - COMMON_BAD_PAYLOAD
+          - COMMON_NOT_FOUND
+          - COMMON_DATABASE_ERROR
+          - COMMON_UNIQUE_KEY_VIOLATION
+          - COMMON_INSUFFICIENT_PERMISSIONS
+          - COMMON_SENTINEL_ACCOUNT_EXPIRED
+          - COMMON_METHOD_NOT_ALLOWED
+          - COMMON_UNSUPPORTED_MEDIA_TYPE
+          - COMMON_ELASTICSEARCH_ERROR
+          - COMMON_UNAUTHORIZED
+          - COMMON_EXCEPTION
+          - RATE_LIMIT_STORAGE_TIMEOUT
+          - RATE_LIMIT_OVERLAPPING_POLICIES
+          - RATE_LIMIT_EXCEEDED
+          - RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY
+          - DASHBOARD_PAYPAL_SALE_ERROR
+          - DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR
+          - DASHBOARD_INVALID_PAYPAL_RESPONSE
+          - DASHBOARD_EXECUTE_SALE_ERROR
+          - DASHBOARD_EXECUTE_AGREEMENT_ERROR
+          - DASHBOARD_IPN_ERROR
+          - DASHBOARD_ADYEN_SALE_ERROR
+          - DASHBOARD_ADYEN_PAYMENT_CANCELLED
+          - RENDERER_EXCEPTION
+          - OAUTH_ERROR
+          - EMAIL_OCTOPUS_ERROR
+        errors:
+          description: Additional information about the error (Optional)
+          type: object
+    DeliveryStatus:
+      description: Delivery status
+      type: string
+      readOnly: true
+      enum:
+      - WAITING
+      - DELIVERED
+      - DELIVERY_FAILED
+      - PREPARING
+      - INGESTING
+      - DONE
+      - IMPORT_FAILED
+      - NON_INGESTIBLE
+  parameters:
+    DeliveryStatus:
+      name: status
+      description: Filter deliveries by status. Omit to get all deliveries.
+      in: query
+      schema:
+        $ref: '#/components/schemas/DeliveryStatus'
+    SearchBeanViewtoken:
+      name: viewtoken
+      description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
+
+        This *viewtoken* can be used in the next request to retrieve the next page of items.
+
+
+        The next page can be retrieved by repeating the query. However, replace your URL with the
+
+        next URL in the returned links object.
+
+        '
+      in: query
+      schema:
+        type: string
+    DeliveryId:
+      name: deliveryId
+      description: Delivery ID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    DeliveryArchiveFormat:
+      name: format
+      description: One of supported archive formats. Currently only `zip` is supported.
+      in: query
+      schema:
+        $ref: '#/components/schemas/DeliveryArchiveFormat'
+    SearchBeanCount:
+      name: count
+      description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
+
+        For more records, use *viewtoken* to page through.'
+      in: query
+      schema:
+        type: integer
+        format: int32
+    SubscriptionId:
+      name: subscriptionId
+      description: Subscription ID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    DeliveryFile:
+      name: file
+      description: File with full path as returned by the "List delivery files" endpoint.
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '403':
+      description: Insufficient permissions
+    '401':
+      description: Unauthorized
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: "### Authentication\n\nMore about the authentication <a href=\"https://docs.planet.com/develop/authentication/\" target=\"_blank\">here</a>.\n\nTo get an access token using curl:\n\n```\ncurl --request POST \\\n  --url https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token \\\n  --header \"content-type: application/x-www-form-urlencoded\" \\\n  --data \"grant_type=client_credentials&client_id=<your client id>&client_secret=<your client secret>\"\n```\n"
+      flows:
+        clientCredentials:
+          tokenUrl: https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token
+          scopes:
+            SH: Sentinel Hub
+x-tagGroups:
+- name: Process API
+  tags:
+  - process
+- name: Catalog
+  tags:
+  - catalog_core
+  - catalog_collections
+  - catalog_features
+  - catalog_item_search
+- name: Async API
+  tags:
+  - async_process
+- name: BatchV2 API
+  tags:
+  - batch_v2_process
+  - batch_v2_tiling_grid
+- name: Stats API
+  tags:
+  - statistical
+- name: Batch Stats API
+  tags:
+  - batch_statistical
+- name: BYOC
+  tags:
+  - byoc_collection
+  - byoc_tile
+- name: Zarr Import API
+  tags:
+  - zarr_collection
+  - zarr_array
+- name: TPDI
+  tags:
+  - dataimport_search
+  - dataimport_product
+  - dataimport_order
+  - dataimport_delivery
+  - dataimport_tile_delivery
+  - dataimport_subscription
+  - dataimport_subscription_delivery
+  - dataimport_subscription_tile_delivery
+  - dataimport_quota
+- name: Metadata
+  tags:
+  - metadata_location
+  - metadata_collection

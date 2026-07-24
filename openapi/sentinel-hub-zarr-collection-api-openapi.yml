@@ -1,0 +1,495 @@
+openapi: 3.1.0
+info:
+  title: API Reference async_process zarr_collection API
+  version: 1.0.0
+  contact:
+    name: Sentinel Hub
+  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
+
+    '
+servers:
+- url: https://services.sentinel-hub.com
+tags:
+- name: zarr_collection
+  x-displayName: Collection
+paths:
+  /zarr/v1/collections:
+    post:
+      summary: Create a Zarr collection
+      tags:
+      - zarr_collection
+      operationId: createZarrCollection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZarrCollection'
+      responses:
+        '201':
+          description: Collection created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZarrSingleResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+    get:
+      summary: Query Zarr collections
+      tags:
+      - zarr_collection
+      operationId: getZarrCollections
+      parameters:
+      - $ref: '#/components/parameters/SearchBeanCount'
+      - $ref: '#/components/parameters/SearchBeanViewtoken'
+      - name: search
+        in: query
+        description: 'Optional query to search Zarr collections by name. If omitted, all items are returned.
+
+          '
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/ZarrQueryCollectionsResponse'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+      security:
+      - OAuth2: []
+  /zarr/v1/collections/{collectionId}:
+    get:
+      summary: Get a Zarr collection
+      tags:
+      - zarr_collection
+      operationId: getZarrCollection
+      parameters:
+      - $ref: '#/components/parameters/ByocCollectionId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZarrSingleResponse'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+    put:
+      summary: Update Zarr collection
+      operationId: updateZarrCollectionById
+      tags:
+      - zarr_collection
+      parameters:
+      - $ref: '#/components/parameters/ByocCollectionId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZarrCollectionUpdatePayload'
+      responses:
+        '204':
+          description: Collection updated
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+    delete:
+      summary: Delete Zarr collection
+      operationId: deleteZarrCollectionById
+      tags:
+      - zarr_collection
+      parameters:
+      - $ref: '#/components/parameters/ByocCollectionId'
+      responses:
+        '204':
+          description: Collection deleted
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+  /zarr/v1/collections/{collectionId}/reingest:
+    put:
+      summary: Reingest a Zarr collection
+      tags:
+      - zarr_collection
+      operationId: reingestZarrCollectionById
+      parameters:
+      - $ref: '#/components/parameters/ByocCollectionId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZarrSingleResponse'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+components:
+  schemas:
+    ZarrCollectionAdditionalData:
+      type: object
+      readOnly: true
+      properties:
+        bands:
+          type: object
+          additionalProperties:
+            x-additionalPropertiesName: band
+            $ref: '#/components/schemas/BYOCFormat'
+        maxMetersPerPixel:
+          type: number
+          readOnly: true
+          description: 'How many meters per pixel can you request with Process/OGC/Batch requests for this collection.
+
+            '
+    ZarrQueryCollectionsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZarrCollection'
+    ZarrSingleResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/ZarrCollection'
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    ZAttrs:
+      type:
+      - object
+      - 'null'
+      description: Custom attributes as read from the `.zattrs` file.
+      externalDocs:
+        description: Zarr storage specification version 2, Attributes
+        url: https://zarr-specs.readthedocs.io/en/latest/v2/v2.0.html#attributes
+      readOnly: true
+    Polygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - Polygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              maxItems: 2
+              minItems: 2
+              type: array
+              items:
+                type: number
+                format: double
+    ZarrCollection:
+      type: object
+      format: ZarrCollection
+      required:
+      - name
+      - s3Bucket
+      - path
+      - crs
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        accountId:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+        created:
+          description: The date and time when the collection was created.
+          type: string
+          format: date-time
+          readOnly: true
+        s3Bucket:
+          type: string
+          description: The S3 bucket where the Zarr is stored.
+        path:
+          type: string
+          description: 'The prefix within the bucket where the Zarr is stored. Must end with ''/'' but not start with it and must contain a Zarr group.
+
+            '
+        status:
+          type: string
+          enum:
+          - CREATED
+          - INGESTING
+          - INGESTED
+          - FAILED
+          description: Only INGESTED collections can be used in Process API.
+          readOnly: true
+        ingestionErrors:
+          type:
+          - string
+          - 'null'
+          description: Error message in case ingestion of the Zarr or any of its arrays failed.
+          readOnly: true
+        crs:
+          type: string
+          description: 'Native CRS of the Zarr. See also [Sentinel Hub CRS support](https://docs.planet.com/develop/apis/processing/#crs-support).
+
+            '
+        envelope:
+          description: 'The area of coverage of the ingested Zarr collection, defined in its native CRS.
+
+            '
+          type:
+          - object
+          - 'null'
+          readOnly: true
+          $ref: '#/components/schemas/Polygon'
+        width:
+          type:
+          - number
+          - 'null'
+          description: Width of the ingested Zarr collection in pixels.
+          readOnly: true
+        height:
+          type:
+          - number
+          - 'null'
+          description: Height of the ingested Zarr collection in pixels.
+          readOnly: true
+        zattrs:
+          $ref: '#/components/schemas/ZAttrs'
+        additionalData:
+          $ref: '#/components/schemas/ZarrCollectionAdditionalData'
+    Boom:
+      type: object
+      properties:
+        status:
+          description: HTTP status code
+          type: integer
+          format: int32
+        reason:
+          description: Reason for the error
+          type: string
+        message:
+          description: Friendly error message
+          type: string
+        code:
+          description: Code that uniquely identifies the error
+          type: string
+          enum:
+          - COMMON_BAD_PAYLOAD
+          - COMMON_NOT_FOUND
+          - COMMON_DATABASE_ERROR
+          - COMMON_UNIQUE_KEY_VIOLATION
+          - COMMON_INSUFFICIENT_PERMISSIONS
+          - COMMON_SENTINEL_ACCOUNT_EXPIRED
+          - COMMON_METHOD_NOT_ALLOWED
+          - COMMON_UNSUPPORTED_MEDIA_TYPE
+          - COMMON_ELASTICSEARCH_ERROR
+          - COMMON_UNAUTHORIZED
+          - COMMON_EXCEPTION
+          - RATE_LIMIT_STORAGE_TIMEOUT
+          - RATE_LIMIT_OVERLAPPING_POLICIES
+          - RATE_LIMIT_EXCEEDED
+          - RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY
+          - DASHBOARD_PAYPAL_SALE_ERROR
+          - DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR
+          - DASHBOARD_INVALID_PAYPAL_RESPONSE
+          - DASHBOARD_EXECUTE_SALE_ERROR
+          - DASHBOARD_EXECUTE_AGREEMENT_ERROR
+          - DASHBOARD_IPN_ERROR
+          - DASHBOARD_ADYEN_SALE_ERROR
+          - DASHBOARD_ADYEN_PAYMENT_CANCELLED
+          - RENDERER_EXCEPTION
+          - OAUTH_ERROR
+          - EMAIL_OCTOPUS_ERROR
+        errors:
+          description: Additional information about the error (Optional)
+          type: object
+    ZarrCollectionUpdatePayload:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+    BYOCFormat:
+      type: object
+      required:
+      - bitDepth
+      - sampleFormat
+      properties:
+        source:
+          description: The string that must appear in `(BAND)` placeholder. If unset, defaults to the band name.
+          type: string
+        bandIndex:
+          description: The index of band in 1-based numbering.
+          type: integer
+          format: int32
+          default: 1
+        bitDepth:
+          type: integer
+          format: int32
+          enum:
+          - 8
+          - 16
+          - 32
+        sampleFormat:
+          type: string
+          enum:
+          - UINT
+          - INT
+          - FLOAT
+        noData:
+          type: number
+          description: You can define noData either per band or per collection, but not both.
+        aliases:
+          description: 'An optional list of alias names that can be used instead of the band name in the evalscript.
+
+            Only used in certain specific collections and not settable by the user.
+
+            '
+          type: array
+          items:
+            type: string
+          readOnly: true
+  parameters:
+    ByocCollectionId:
+      name: collectionId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    SearchBeanViewtoken:
+      name: viewtoken
+      description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
+
+        This *viewtoken* can be used in the next request to retrieve the next page of items.
+
+
+        The next page can be retrieved by repeating the query. However, replace your URL with the
+
+        next URL in the returned links object.
+
+        '
+      in: query
+      schema:
+        type: string
+    SearchBeanCount:
+      name: count
+      description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
+
+        For more records, use *viewtoken* to page through.'
+      in: query
+      schema:
+        type: integer
+        format: int32
+  responses:
+    '403':
+      description: Insufficient permissions
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '401':
+      description: Unauthorized
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: "### Authentication\n\nMore about the authentication <a href=\"https://docs.planet.com/develop/authentication/\" target=\"_blank\">here</a>.\n\nTo get an access token using curl:\n\n```\ncurl --request POST \\\n  --url https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token \\\n  --header \"content-type: application/x-www-form-urlencoded\" \\\n  --data \"grant_type=client_credentials&client_id=<your client id>&client_secret=<your client secret>\"\n```\n"
+      flows:
+        clientCredentials:
+          tokenUrl: https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token
+          scopes:
+            SH: Sentinel Hub
+x-tagGroups:
+- name: Process API
+  tags:
+  - process
+- name: Catalog
+  tags:
+  - catalog_core
+  - catalog_collections
+  - catalog_features
+  - catalog_item_search
+- name: Async API
+  tags:
+  - async_process
+- name: BatchV2 API
+  tags:
+  - batch_v2_process
+  - batch_v2_tiling_grid
+- name: Stats API
+  tags:
+  - statistical
+- name: Batch Stats API
+  tags:
+  - batch_statistical
+- name: BYOC
+  tags:
+  - byoc_collection
+  - byoc_tile
+- name: Zarr Import API
+  tags:
+  - zarr_collection
+  - zarr_array
+- name: TPDI
+  tags:
+  - dataimport_search
+  - dataimport_product
+  - dataimport_order
+  - dataimport_delivery
+  - dataimport_tile_delivery
+  - dataimport_subscription
+  - dataimport_subscription_delivery
+  - dataimport_subscription_tile_delivery
+  - dataimport_quota
+- name: Metadata
+  tags:
+  - metadata_location
+  - metadata_collection

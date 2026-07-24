@@ -1,0 +1,118 @@
+openapi: 3.1.0
+info:
+  title: API Reference async_process dataimport_product API
+  version: 1.0.0
+  contact:
+    name: Sentinel Hub
+  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
+
+    '
+servers:
+- url: https://services.sentinel-hub.com
+tags:
+- name: dataimport_product
+  x-displayName: Product
+  description: 'TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use [Planet Data API](https://docs.planet.com/develop/apis/data/reference/) instead.
+
+    '
+paths:
+  /api/v1/dataimport/collections/{collectionId}/products/{productId}/thumbnail:
+    get:
+      summary: Get thumbnail of data product
+      description: Get a scaled-down, non-geolocated, non-clipped image of the data product
+      operationId: dataImport_getProductThumbnail
+      tags:
+      - dataimport_product
+      parameters:
+      - $ref: '#/components/parameters/TpdiCollectionId'
+      - name: productId
+        description: ID of the product to get thumbnail of, typically returned by a previous search
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: planetApiKey
+        deprecated: true
+        description: 'Your Planet API key. Get one from Planet https://www.planet.com.
+
+          It is required in order to get thumbnails of Planet data products
+
+          unless you purchased your Planet data plan through Sentinel Hub.
+
+          '
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response (image)
+      security:
+      - OAuth2: []
+components:
+  parameters:
+    TpdiCollectionId:
+      name: collectionId
+      description: Collection ID
+      in: path
+      required: true
+      schema:
+        type: string
+        enum:
+        - PLANET_SCOPE
+        - PLANET_SKYSAT
+        - MAXAR_WORLDVIEW
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: "### Authentication\n\nMore about the authentication <a href=\"https://docs.planet.com/develop/authentication/\" target=\"_blank\">here</a>.\n\nTo get an access token using curl:\n\n```\ncurl --request POST \\\n  --url https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token \\\n  --header \"content-type: application/x-www-form-urlencoded\" \\\n  --data \"grant_type=client_credentials&client_id=<your client id>&client_secret=<your client secret>\"\n```\n"
+      flows:
+        clientCredentials:
+          tokenUrl: https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token
+          scopes:
+            SH: Sentinel Hub
+x-tagGroups:
+- name: Process API
+  tags:
+  - process
+- name: Catalog
+  tags:
+  - catalog_core
+  - catalog_collections
+  - catalog_features
+  - catalog_item_search
+- name: Async API
+  tags:
+  - async_process
+- name: BatchV2 API
+  tags:
+  - batch_v2_process
+  - batch_v2_tiling_grid
+- name: Stats API
+  tags:
+  - statistical
+- name: Batch Stats API
+  tags:
+  - batch_statistical
+- name: BYOC
+  tags:
+  - byoc_collection
+  - byoc_tile
+- name: Zarr Import API
+  tags:
+  - zarr_collection
+  - zarr_array
+- name: TPDI
+  tags:
+  - dataimport_search
+  - dataimport_product
+  - dataimport_order
+  - dataimport_delivery
+  - dataimport_tile_delivery
+  - dataimport_subscription
+  - dataimport_subscription_delivery
+  - dataimport_subscription_tile_delivery
+  - dataimport_quota
+- name: Metadata
+  tags:
+  - metadata_location
+  - metadata_collection

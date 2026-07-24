@@ -1,0 +1,1202 @@
+openapi: 3.1.0
+info:
+  title: API Reference async_process API
+  version: 1.0.0
+  contact:
+    name: Sentinel Hub
+  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
+
+    '
+servers:
+- url: https://services.sentinel-hub.com
+tags:
+- name: async_process
+  x-displayName: Async Process
+  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
+
+    '
+paths:
+  /async/v1/process:
+    post:
+      operationId: createNewAsyncProcessRequest
+      summary: Submit a new async process request
+      tags:
+      - async_process
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AsyncProcessRequest'
+      responses:
+        '200':
+          description: Request submitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncStatusResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '429':
+          description: Maximum number of concurrent async requests reached.
+      security:
+      - OAuth2: []
+  /async/v1/process/{requestId}:
+    get:
+      operationId: getStatusAsyncRequest
+      summary: Get status of the request
+      description: The status of the request will only be returned while it's running. After completion (either succeed or failure) this endpoint will return 404.
+      tags:
+      - async_process
+      parameters:
+      - $ref: '#/components/parameters/AsyncProcessRequestId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncStatusResponse'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+      security:
+      - OAuth2: []
+components:
+  schemas:
+    ObjectStorageInfoV2:
+      type: object
+      oneOf:
+      - title: S3BucketInfo
+        required:
+        - s3
+        properties:
+          s3:
+            $ref: '#/components/schemas/S3BucketInfo'
+      - title: GSBucketInfo
+        x-cdse-exclude: true
+        required:
+        - gs
+        properties:
+          gs:
+            $ref: '#/components/schemas/GSBucketInfo'
+    ProcessRequestInputBounds:
+      title: Bounds
+      description: 'Defines the request bounds by specifying the bounding box and/or
+
+        geometry for the request. If both are specified it will generate an image
+
+        for the bounding box and render data contained within the geometry.
+
+        '
+      type: object
+      properties:
+        bbox:
+          description: 'The request bounding box. This and/or GEOMETRY must be specified.
+
+            Specify with a coordinate pair on two (opposite) vertices of the bounding
+
+            box rectangle. Coordinates need to be in easting,northing or longitude, latitude,
+
+            in that order in the CRS defined in the "bounds.properties.crs" parameter.
+
+            '
+          type: array
+          minItems: 4
+          maxItems: 4
+          items:
+            type: number
+            format: double
+          example:
+          - 13.822174072265625
+          - 45.85080395917834
+          - 14.55963134765625
+          - 46.29191774991382
+        geometry:
+          $ref: '#/components/schemas/Geometry'
+        properties:
+          $ref: '#/components/schemas/ProcessRequestInputBoundsProperties'
+    ProcessRequestInputData:
+      description: 'The collections you wish to request, along with certain processing and filtering parameters.
+
+        To learn how to request and work with multiple collection, check the "Data Fusion" page in our documentation https://docs.sentinel-hub.com/api/latest/data/data-fusion/.
+
+        '
+      type: array
+      minItems: 1
+      items:
+        oneOf:
+        - $ref: '#/components/schemas/S2L1CDataset'
+        - $ref: '#/components/schemas/S2L2ADataset'
+        - $ref: '#/components/schemas/Ls8Dataset'
+        - $ref: '#/components/schemas/L8L1Dataset'
+        - $ref: '#/components/schemas/L8L2Dataset'
+        - $ref: '#/components/schemas/LETML1Dataset'
+        - $ref: '#/components/schemas/LETML2Dataset'
+        - $ref: '#/components/schemas/LTML1Dataset'
+        - $ref: '#/components/schemas/LTML2Dataset'
+        - $ref: '#/components/schemas/LMSSL1Dataset'
+        - $ref: '#/components/schemas/ModisDataset'
+        - $ref: '#/components/schemas/DEMDataset'
+        - $ref: '#/components/schemas/S1Dataset'
+        - $ref: '#/components/schemas/HLSDataset'
+        - $ref: '#/components/schemas/BYOCDataset'
+    ModisDataset:
+      title: modis
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/ModisFiltering'
+          processing:
+            $ref: '#/components/schemas/BaseDatasetProcessing'
+          type:
+            type: string
+            enum:
+            - modis
+    LETML1Dataset:
+      title: landsat-etm-l1
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-etm-l1
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithRt'
+    AsyncProcessRequestOutput:
+      type: object
+      required:
+      - delivery
+      properties:
+        width:
+          description: 'The request image width. Must be an integer between 1 and 10000.
+
+            <br />*Only one pair of parameters "width"/"height" or "resx"/"resy" must
+
+            be set at the same time.*
+
+            '
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 10000
+          example: 512
+        height:
+          description: 'The request image height. Must be an integer between 1 and 10000.
+
+            <br />*Only one pair of parameters "width"/"height" or "resx"/"resy" must
+
+            be set at the same time.*
+
+            '
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 10000
+          example: 512
+        resx:
+          description: 'Spatial resolution of the request image in a horizontal direction.
+
+            Its units are defined by the CRS given in "input.bounds.properties.crs"
+
+            parameter. <br />*Only one pair of parameters "width"/"height" or "resx"/"resy"
+
+            must be set at the same time.*
+
+            '
+          type: number
+          format: double
+        resy:
+          description: 'Spatial resolution of the request image in a vertical direction.
+
+            Its units are defined by the CRS given in "input.bounds.properties.crs"
+
+            parameter. <br />*Only one pair of parameters "width"/"height" or "resx"/"resy"
+
+            must be set at the same time.*
+
+            '
+          type: number
+          format: double
+        responses:
+          type: array
+          description: 'Response object(s). <br/>
+
+            '
+          items:
+            $ref: '#/components/schemas/ProcessRequestOutputResponse'
+        delivery:
+          $ref: '#/components/schemas/AsyncProcessOutputDeliveryV2'
+    ProcessRequestOutputFormatJpeg:
+      title: image/jpeg
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ProcessRequestOutputFormat'
+      - type: object
+        properties:
+          quality:
+            description: Quality level of JPEG compression.
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 100
+            default: 90
+          type:
+            type: string
+            enum:
+            - image/jpeg
+    AsyncProcessS3BucketInfoTemplated:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+          description: "A URL or URL template specifying where the results shall be accessed. Supported formats: <ul>\n  <li>a valid Amazon S3 URL, e.g. `s3://my-personal-bucket/some-folder`.\n    A subdirectory will be created for this async process request, named after the request ID, and output files will be stored there.\n    This is equivalent to the template `s3://my-personal-bucket/some-folder/<REQUEST_ID>/<OUTPUT>`.\n  </li>\n  <li>a templated Amazon S3 URL, e.g. `s3://my-personal-bucket/some-folder/<OUTPUT>`.\n    Templating allows custom organization of the output files.\n    Templates can contain the following placeholders, which are replaced by respective actual values when writing results:\n    <ul>\n      <li> `<REQUEST_ID>` - the ID of your async process request,</li>\n      <li> `<OUTPUT>` - the output of the async request.</li>\n    </ul>\n    If the request is not templated `<REQUEST_ID>/<OUTPUT>` will be used as default.\n  </li>\n</ul>\n"
+        iamRoleARN:
+          type: string
+          description: IAM role ARN, which allows programmatic access to the S3 bucket specified in the `url` field using the recommended assume IAM role flow.
+        accessKey:
+          type: string
+          description: AWS access key, which allows programmatic access to the S3 bucket specified in the `url` field.
+        secretAccessKey:
+          type: string
+          description: AWS secret access key which must correspond to the AWS access key.
+        region:
+          type: string
+          description: The region where the S3 bucket is located. If omitted, the region of the Sentinel Hub deployment that the request is submitted to is assumed.
+    GSBucketInfo:
+      title: GSBucketInfo
+      type: object
+      required:
+      - url
+      - credentials
+      properties:
+        url:
+          type: string
+          description: A URL pointing to a Google Cloud Storage bucket or an object in a GCS bucket, e.g. `gs://my-bucket/some-folder` or `gs://my-bucket/some-folder/some-file.gpkg`.
+        credentials:
+          type: string
+          description: Base64-encoded service account credentials in JSON format.
+    BYOCDataset:
+      title: BYOC / BATCH / ZARR
+      type: object
+      allOf:
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/BYOCFiltering'
+          processing:
+            $ref: '#/components/schemas/BaseDatasetProcessing'
+          type:
+            type: string
+            description: 'For a BYOC collection, set to "byoc-\<collectionId\>", for example "byoc-017aa0ae-33a6-45d3-8548-0f7d1041b40c".
+
+
+              For a BATCH collection, set to "batch-\<collectionId\>", for example "batch-9688cd56-6c70-4221-add8-a5821d0256a9".
+
+
+              For a ZARR collection, set to "zarr-\<collectionId\>", for example "zarr-e2c7baec-3dfa-4523-b125-e242bdb5dd7c".
+
+              '
+      - $ref: '#/components/schemas/BaseDataset'
+    LandsatTierFilteringWithoutRt:
+      type: object
+      properties:
+        tiers:
+          type: string
+          default: ALL_TIERS
+          enum:
+          - TIER_1
+          - ALL_TIERS
+    S2L2ADataset:
+      title: sentinel-2-l2a
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/S2L2AFiltering'
+          processing:
+            $ref: '#/components/schemas/S2Processing'
+          type:
+            type: string
+            enum:
+            - sentinel-2-l2a
+    S1Filtering:
+      type: object
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        mosaickingOrder:
+          description: The order in which tiles are overlapped from which the output result is mosaicked.
+          type: string
+          enum:
+          - mostRecent
+          - leastRecent
+          default: mostRecent
+        resolution:
+          type: string
+          enum:
+          - HIGH
+          - MEDIUM
+          - FULL
+        acquisitionMode:
+          type: string
+          enum:
+          - SM
+          - IW
+          - EW
+          - WV
+          - EN
+          - AN
+          - IM
+        polarization:
+          type: string
+          enum:
+          - SH
+          - SV
+          - DH
+          - DV
+          - HH
+          - HV
+          - VV
+          - VH
+        orbitDirection:
+          type: string
+          enum:
+          - ASCENDING
+          - DESCENDING
+        timeliness:
+          type: string
+          enum:
+          - NRT10m
+          - NRT1h
+          - NRT3h
+          - Fast24h
+          - Offline
+          - Reprocessing
+          - ArchNormal
+    LandsatDataset:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/LandsatFiltering'
+          processing:
+            $ref: '#/components/schemas/BaseDatasetProcessing'
+    BYOCFiltering:
+      type: object
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        mosaickingOrder:
+          description: The order in which tiles are overlapped from which the output result is mosaicked.
+          type: string
+          enum:
+          - mostRecent
+          - leastRecent
+          default: mostRecent
+    S1ProcessingSpeckleFilterLEE:
+      type: object
+      description: The Lee speckle filter. Note that processing time rapidly increases as window size increases.
+      required:
+      - type
+      - windowSizeX
+      - windowSizeY
+      properties:
+        type:
+          type: string
+        windowSizeX:
+          type: integer
+          minimum: 1
+          maximum: 7
+          description: The window size in the X direction of the source data. Odd values recommended.
+        windowSizeY:
+          type: integer
+          minimum: 1
+          maximum: 7
+          description: The window size in the Y direction of the source data. Odd values recommended.
+    LETML2Dataset:
+      title: landsat-etm-l2
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-etm-l2
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
+    LTML2Dataset:
+      title: landsat-tm-l2
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-tm-l2
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    DEMProcessing:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDatasetProcessing'
+      - type: object
+        properties:
+          clampNegative:
+            type: boolean
+            default: false
+            description: Mapzen DEM specific option. It replaces negative orthometric heights with 0. Useful for removing ocean bathymetry, for example.
+          egm:
+            type: boolean
+            default: false
+            description: It replaces orthometric heights with ellipsoidal heights relative to the WGS84 ellipsoid.
+    Polygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - Polygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              maxItems: 2
+              minItems: 2
+              type: array
+              items:
+                type: number
+                format: double
+    S1ProcessingSpeckleFilterNONE:
+      type: object
+      description: Does NO speckle filtering. Equivalent to not having speckleFilter defined.
+      required:
+      - type
+      properties:
+        type:
+          type: string
+    ProcessRequestInputBoundsProperties:
+      title: BoundsProperties
+      type: object
+      properties:
+        crs:
+          description: 'The coordinate reference system of the coordinates. Must be
+
+            one of the values listed at https://docs.planet.com/develop/apis/processing/#crs-support.
+
+            Default CRS is WGS84, http://www.opengis.net/def/crs/OGC/1.3/CRS84.
+
+            '
+          type: string
+          default: http://www.opengis.net/def/crs/OGC/1.3/CRS84
+    S1Processing:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDatasetProcessing'
+      - type: object
+        properties:
+          speckleFilter:
+            type: object
+            oneOf:
+            - $ref: '#/components/schemas/S1ProcessingSpeckleFilterLEE'
+            - $ref: '#/components/schemas/S1ProcessingSpeckleFilterNONE'
+            discriminator:
+              propertyName: type
+              mapping:
+                LEE: '#/components/schemas/S1ProcessingSpeckleFilterLEE'
+                NONE: '#/components/schemas/S1ProcessingSpeckleFilterNONE'
+          backCoeff:
+            type: string
+            enum:
+            - BETA0
+            - SIGMA0_ELLIPSOID
+            - GAMMA0_ELLIPSOID
+            - GAMMA0_TERRAIN
+            default: GAMMA0_ELLIPSOID
+          orthorectify:
+            type: boolean
+            default: false
+          demInstance:
+            type: string
+            enum:
+            - MAPZEN
+            - COPERNICUS
+            - COPERNICUS_30
+            - COPERNICUS_90
+            default: MAPZEN
+          radiometricTerrainOversampling:
+            type: number
+            format: double
+            minimum: 1
+            maximum: 4
+            default: 2
+    DEMDataset:
+      title: dem
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/DEMFiltering'
+          processing:
+            $ref: '#/components/schemas/DEMProcessing'
+          type:
+            type: string
+            enum:
+            - dem
+    ProcessRequestInput:
+      title: Input
+      type: object
+      required:
+      - bounds
+      - data
+      properties:
+        bounds:
+          $ref: '#/components/schemas/ProcessRequestInputBounds'
+        data:
+          $ref: '#/components/schemas/ProcessRequestInputData'
+    L8L1Dataset:
+      title: landsat-ot-l1
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-ot-l1
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithRt'
+    S2L2AFiltering:
+      type: object
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        mosaickingOrder:
+          description: The order in which tiles are overlapped from which the output result is mosaicked.
+          type: string
+          enum:
+          - mostRecent
+          - leastRecent
+          - leastCC
+          default: mostRecent
+        maxCloudCoverage:
+          allOf:
+          - $ref: '#/components/schemas/MaxCloudCoverage'
+          - default: 100
+    HLSFiltering:
+      type: object
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        mosaickingOrder:
+          description: The order in which tiles are overlapped from which the output result is mosaicked.
+          type: string
+          enum:
+          - mostRecent
+          - leastRecent
+          - leastCC
+          default: mostRecent
+        maxCloudCoverage:
+          allOf:
+          - $ref: '#/components/schemas/MaxCloudCoverage'
+          - default: 100
+        constellation:
+          type: string
+          description: 'The selected constellation. "SENTINEL" selects only Sentinel products, while "LANDSAT" selects only Landsat products.
+
+
+            By default, products of both constellations are selected.
+
+            '
+          enum:
+          - SENTINEL
+          - LANDSAT
+    LTML1Dataset:
+      title: landsat-tm-l1
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-tm-l1
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
+    ProcessRequestOutputFormat:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Output format mime-type
+    L8L2Dataset:
+      title: landsat-ot-l2
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-ot-l2
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
+    AsyncStatusResponse:
+      type: object
+      properties:
+        id:
+          description: UUID of the submitted request
+          format: UUID
+          type: string
+        status:
+          description: Status of the request
+          type: string
+          enum:
+          - RUNNING
+    MaxCloudCoverage:
+      description: The maximum allowable cloud coverage in percent.
+      type: number
+      format: double
+      minimum: 0
+      maximum: 100
+      default: 100
+    LMSSL1Dataset:
+      title: landsat-mss-l1
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-mss-l1
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
+    TimeRange:
+      type: object
+      description: A time interval to filter data by acquisition date. It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.
+      properties:
+        from:
+          description: The start of a search interval.
+          type: string
+          format: date-time
+        to:
+          description: The end of a search interval.
+          type: string
+          format: date-time
+      example:
+        from: '2018-10-01T00:00:00.000Z'
+        to: '2018-11-01T00:00:00.000Z'
+    ProcessRequestOutputFormatJson:
+      title: application/json
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ProcessRequestOutputFormat'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - application/json
+    LandsatTierFilteringWithRt:
+      type: object
+      properties:
+        tiers:
+          type: string
+          default: ALL_TIERS
+          enum:
+          - TIER_1
+          - TIER_1_AND_RT
+          - ALL_TIERS
+    S2Processing:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDatasetProcessing'
+      - type: object
+        properties:
+          harmonizeValues:
+            description: 'Harmonizes data values to be comparable with old processing baselines. See <a href="https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l1c/#harmonize-values" target="_blank">here</a> for details.
+
+              '
+            type: boolean
+            default: true
+    HLSDataset:
+      title: hls
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - hls
+          dataFilter:
+            $ref: '#/components/schemas/HLSFiltering'
+          processing:
+            $ref: '#/components/schemas/BaseDatasetProcessing'
+    S2L1CDataset:
+      title: sentinel-2-l1c
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/S2L1CFiltering'
+          processing:
+            $ref: '#/components/schemas/S2Processing'
+          type:
+            type: string
+            enum:
+            - sentinel-2-l1c
+    DEMFiltering:
+      type: object
+      properties:
+        demInstance:
+          description: Selects DEM instance.
+          type: string
+          enum:
+          - MAPZEN
+          - COPERNICUS_30
+          - COPERNICUS_90
+          default: MAPZEN
+    Ls8Dataset:
+      title: landsat-8-l1c
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-8-l1c
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithRt'
+    BaseDatasetProcessing:
+      type: object
+      properties:
+        upsampling:
+          description: 'The interpolation used when the requested
+
+            resolution is higher than the source resolution.
+
+            '
+          type: string
+          enum:
+          - NEAREST
+          - BILINEAR
+          - BICUBIC
+          default: NEAREST
+        downsampling:
+          description: 'The interpolation used when the requested
+
+            resolution is lower than the source resolution.
+
+            '
+          type: string
+          enum:
+          - NEAREST
+          - BILINEAR
+          - BICUBIC
+          default: NEAREST
+    BaseDataset:
+      type: object
+      properties:
+        type:
+          description: Datasource abbreviation
+          type: string
+        id:
+          description: Identifier
+          type: string
+    ProcessRequestOutputFormatTiff:
+      title: image/tiff
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ProcessRequestOutputFormat'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - image/tiff
+    AsyncProcessGSBucketInfoTemplated:
+      type: object
+      required:
+      - url
+      - credentials
+      properties:
+        url:
+          type: string
+          description: "A URL or URL template specifying where the results shall be accessed. Supported formats: <ul>\n  <li>a valid Google Cloud Storage URL, e.g. `gs://my-bucket/some-folder`.\n    A subdirectory will be created for this async process request, named after the request ID, and output files will be stored there.\n    This is equivalent to the template `gs://my-bucket/some-folder/<REQUEST_ID>/<OUTPUT>`.\n  </li>\n  <li>a templated Google Cloud Storage URL, e.g. `gs://my-bucket/some-folder/<OUTPUT>`.\n    Templating allows custom organization of the output files.\n    Templates can contain the following placeholders, which are replaced by respective actual values when writing results:\n    <ul>\n      <li> `<REQUEST_ID>` - the ID of your async process request,</li>\n      <li> `<OUTPUT>` - the output of the async request.</li>\n    </ul>\n    If the request is not templated `<REQUEST_ID>/<OUTPUT>` will be used as default.\n  </li>\n</ul>\n"
+        credentials:
+          type: string
+          description: Base64-encoded service account credentials in JSON format.
+    S1Dataset:
+      title: sentinel-1-grd
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/S1Filtering'
+          processing:
+            $ref: '#/components/schemas/S1Processing'
+          type:
+            type: string
+            enum:
+            - sentinel-1-grd
+    ProcessRequestOutputResponse:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: 'Response''s identifier is used to connect the results of an evalscript with the output file.
+
+            Each response identifier value must either match one of the values in `setup()` -> `output.id` in the evalscript (see <a href="https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l1c/examples/#ndvi-image--and--value-multi-part-response-png-and-geotiff" target="_blank">example</a>)
+
+            or be `userdata` (see <a href="https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l1c/examples/#true-color-and-metadata-multi-part-response-geotiff-and-json" target="_blank">example</a>).
+
+            '
+          enum:
+          - <identifier>
+          - userdata
+        format:
+          description: Format object (default is `image/png`).
+          type: object
+          oneOf:
+          - $ref: '#/components/schemas/ProcessRequestOutputFormatPng'
+          - $ref: '#/components/schemas/ProcessRequestOutputFormatJpeg'
+          - $ref: '#/components/schemas/ProcessRequestOutputFormatTiff'
+          - $ref: '#/components/schemas/ProcessRequestOutputFormatJson'
+    MultiPolygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - MultiPolygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              type: array
+              items:
+                maxItems: 2
+                minItems: 2
+                type: array
+                items:
+                  type: number
+                  format: double
+    LandsatFiltering:
+      type: object
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        mosaickingOrder:
+          description: The order in which tiles are overlapped from which the output result is mosaicked.
+          type: string
+          enum:
+          - mostRecent
+          - leastRecent
+          - leastCC
+          default: mostRecent
+        maxCloudCoverage:
+          allOf:
+          - $ref: '#/components/schemas/MaxCloudCoverage'
+          - default: 100
+    Boom:
+      type: object
+      properties:
+        status:
+          description: HTTP status code
+          type: integer
+          format: int32
+        reason:
+          description: Reason for the error
+          type: string
+        message:
+          description: Friendly error message
+          type: string
+        code:
+          description: Code that uniquely identifies the error
+          type: string
+          enum:
+          - COMMON_BAD_PAYLOAD
+          - COMMON_NOT_FOUND
+          - COMMON_DATABASE_ERROR
+          - COMMON_UNIQUE_KEY_VIOLATION
+          - COMMON_INSUFFICIENT_PERMISSIONS
+          - COMMON_SENTINEL_ACCOUNT_EXPIRED
+          - COMMON_METHOD_NOT_ALLOWED
+          - COMMON_UNSUPPORTED_MEDIA_TYPE
+          - COMMON_ELASTICSEARCH_ERROR
+          - COMMON_UNAUTHORIZED
+          - COMMON_EXCEPTION
+          - RATE_LIMIT_STORAGE_TIMEOUT
+          - RATE_LIMIT_OVERLAPPING_POLICIES
+          - RATE_LIMIT_EXCEEDED
+          - RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY
+          - DASHBOARD_PAYPAL_SALE_ERROR
+          - DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR
+          - DASHBOARD_INVALID_PAYPAL_RESPONSE
+          - DASHBOARD_EXECUTE_SALE_ERROR
+          - DASHBOARD_EXECUTE_AGREEMENT_ERROR
+          - DASHBOARD_IPN_ERROR
+          - DASHBOARD_ADYEN_SALE_ERROR
+          - DASHBOARD_ADYEN_PAYMENT_CANCELLED
+          - RENDERER_EXCEPTION
+          - OAUTH_ERROR
+          - EMAIL_OCTOPUS_ERROR
+        errors:
+          description: Additional information about the error (Optional)
+          type: object
+    AsyncProcessRequest:
+      type: object
+      required:
+      - input
+      - output
+      properties:
+        input:
+          $ref: '#/components/schemas/ProcessRequestInput'
+        output:
+          $ref: '#/components/schemas/AsyncProcessRequestOutput'
+        evalscript:
+          description: 'Your evalscript. For details, click
+
+            <a href="https://docs.planet.com/develop/evalscripts/" target="_blank">here</a>.
+
+
+            Either this or `evalscriptReference` parameter is required.
+
+            '
+          type: string
+        evalscriptReference:
+          description: 'Reference to your evalscript stored in an object storage. For details, click
+
+            <a href="https://docs.planet.com/develop/evalscripts/" target="_blank">here</a>.
+
+
+            Either this or `evalscript` parameter is required.
+
+            '
+          $ref: '#/components/schemas/ObjectStorageInfoV2'
+    S2L1CFiltering:
+      allOf:
+      - $ref: '#/components/schemas/S2L2AFiltering'
+    Geometry:
+      description: The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the "bounds.properties.crs" parameter. A GeoJsonObject.
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/Polygon'
+      - $ref: '#/components/schemas/MultiPolygon'
+      example:
+        type: Polygon
+        coordinates:
+        - - - 14.000701904296873
+            - 46.23685258143992
+          - - 13.822174072265625
+            - 46.09037664604301
+          - - 14.113311767578125
+            - 45.85080395917834
+          - - 14.55963134765625
+            - 46.038922598236
+          - - 14.441528320312498
+            - 46.28717293114449
+          - - 14.17236328125
+            - 46.29191774991382
+          - - 14.000701904296873
+            - 46.23685258143992
+    AsyncProcessOutputDeliveryV2:
+      type: object
+      oneOf:
+      - title: S3BucketInfo
+        required:
+        - s3
+        properties:
+          s3:
+            $ref: '#/components/schemas/AsyncProcessS3BucketInfoTemplated'
+      - title: GSBucketInfo
+        x-cdse-exclude: true
+        required:
+        - gs
+        properties:
+          gs:
+            $ref: '#/components/schemas/AsyncProcessGSBucketInfoTemplated'
+    S3BucketInfo:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+          description: A URL pointing to an S3 bucket or an object in an S3 bucket. It can contain prefixes, e.g. `s3://my-personal-bucket/some-folder` or `s3://my-personal-bucket/some-folder/some-file.gpkg`.
+        iamRoleARN:
+          type: string
+          description: IAM role ARN, which allows programmatic access to the S3 bucket specified in the `url` field using the recommended assume IAM role flow.
+        accessKey:
+          type: string
+          description: AWS access key, which allows programmatic access to the S3 bucket specified in the `url` field.
+        secretAccessKey:
+          type: string
+          description: AWS secret access key which must correspond to the AWS access key.
+        region:
+          type: string
+          description: The region where the S3 bucket is located. If omitted, the region of the deployment that the request is submitted to is assumed.
+    ModisFiltering:
+      type: object
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        mosaickingOrder:
+          description: The order in which tiles are overlapped from which the output result is mosaicked.
+          type: string
+          enum:
+          - mostRecent
+          - leastRecent
+          default: mostRecent
+    ProcessRequestOutputFormatPng:
+      title: image/png
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ProcessRequestOutputFormat'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - image/png
+  parameters:
+    AsyncProcessRequestId:
+      name: requestId
+      description: Request ID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '403':
+      description: Insufficient permissions
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '401':
+      description: Unauthorized
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: "### Authentication\n\nMore about the authentication <a href=\"https://docs.planet.com/develop/authentication/\" target=\"_blank\">here</a>.\n\nTo get an access token using curl:\n\n```\ncurl --request POST \\\n  --url https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token \\\n  --header \"content-type: application/x-www-form-urlencoded\" \\\n  --data \"grant_type=client_credentials&client_id=<your client id>&client_secret=<your client secret>\"\n```\n"
+      flows:
+        clientCredentials:
+          tokenUrl: https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token
+          scopes:
+            SH: Sentinel Hub
+x-tagGroups:
+- name: Process API
+  tags:
+  - process
+- name: Catalog
+  tags:
+  - catalog_core
+  - catalog_collections
+  - catalog_features
+  - catalog_item_search
+- name: Async API
+  tags:
+  - async_process
+- name: BatchV2 API
+  tags:
+  - batch_v2_process
+  - batch_v2_tiling_grid
+- name: Stats API
+  tags:
+  - statistical
+- name: Batch Stats API
+  tags:
+  - batch_statistical
+- name: BYOC
+  tags:
+  - byoc_collection
+  - byoc_tile
+- name: Zarr Import API
+  tags:
+  - zarr_collection
+  - zarr_array
+- name: TPDI
+  tags:
+  - dataimport_search
+  - dataimport_product
+  - dataimport_order
+  - dataimport_delivery
+  - dataimport_tile_delivery
+  - dataimport_subscription
+  - dataimport_subscription_delivery
+  - dataimport_subscription_tile_delivery
+  - dataimport_quota
+- name: Metadata
+  tags:
+  - metadata_location
+  - metadata_collection

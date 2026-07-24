@@ -1,0 +1,1242 @@
+openapi: 3.1.0
+info:
+  title: API Reference async_process statistical API
+  version: 1.0.0
+  contact:
+    name: Sentinel Hub
+  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
+
+    '
+servers:
+- url: https://services.sentinel-hub.com
+tags:
+- name: statistical
+  x-displayName: Statistical
+paths:
+  /statistics/v1:
+    post:
+      summary: Submit statistical request
+      tags:
+      - statistical
+      operationId: submitStatisticalRequest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatisticalRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MultiPartStatisticalRequest'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatisticalResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '403':
+          $ref: '#/components/responses/403'
+      security:
+      - OAuth2: []
+components:
+  schemas:
+    ProcessRequestInputData:
+      description: 'The collections you wish to request, along with certain processing and filtering parameters.
+
+        To learn how to request and work with multiple collection, check the "Data Fusion" page in our documentation https://docs.sentinel-hub.com/api/latest/data/data-fusion/.
+
+        '
+      type: array
+      minItems: 1
+      items:
+        oneOf:
+        - $ref: '#/components/schemas/S2L1CDataset'
+        - $ref: '#/components/schemas/S2L2ADataset'
+        - $ref: '#/components/schemas/Ls8Dataset'
+        - $ref: '#/components/schemas/L8L1Dataset'
+        - $ref: '#/components/schemas/L8L2Dataset'
+        - $ref: '#/components/schemas/LETML1Dataset'
+        - $ref: '#/components/schemas/LETML2Dataset'
+        - $ref: '#/components/schemas/LTML1Dataset'
+        - $ref: '#/components/schemas/LTML2Dataset'
+        - $ref: '#/components/schemas/LMSSL1Dataset'
+        - $ref: '#/components/schemas/ModisDataset'
+        - $ref: '#/components/schemas/DEMDataset'
+        - $ref: '#/components/schemas/S1Dataset'
+        - $ref: '#/components/schemas/HLSDataset'
+        - $ref: '#/components/schemas/BYOCDataset'
+    ProcessRequestInputBounds:
+      title: Bounds
+      description: 'Defines the request bounds by specifying the bounding box and/or
+
+        geometry for the request. If both are specified it will generate an image
+
+        for the bounding box and render data contained within the geometry.
+
+        '
+      type: object
+      properties:
+        bbox:
+          description: 'The request bounding box. This and/or GEOMETRY must be specified.
+
+            Specify with a coordinate pair on two (opposite) vertices of the bounding
+
+            box rectangle. Coordinates need to be in easting,northing or longitude, latitude,
+
+            in that order in the CRS defined in the "bounds.properties.crs" parameter.
+
+            '
+          type: array
+          minItems: 4
+          maxItems: 4
+          items:
+            type: number
+            format: double
+          example:
+          - 13.822174072265625
+          - 45.85080395917834
+          - 14.55963134765625
+          - 46.29191774991382
+        geometry:
+          $ref: '#/components/schemas/Geometry'
+        properties:
+          $ref: '#/components/schemas/ProcessRequestInputBoundsProperties'
+    DateTimeInterval:
+      type: object
+      properties:
+        from:
+          type: string
+          description: ISO-8601 time representing start of search interval, e.g. 2019-01-31T14:00:00+01:00
+          format: date-time
+        to:
+          type: string
+          description: ISO-8601 time representing end of search interval, e.g. 2019-02-05T15:00:00+01:00.
+          format: date-time
+    StatisticalResponse:
+      description: 'Statistics
+
+        '
+      type: object
+      properties:
+        status:
+          description: 'Overall status of the request.
+
+            '
+          type: string
+          enum:
+          - OK
+          - PARTIAL
+          - FAILED
+        geometryPixelCount:
+          description: 'Number of pixels intersecting the request geometry.
+
+            '
+          type: integer
+        data:
+          description: 'Statistics for intervals, where data is available.
+
+            '
+          type: array
+          items:
+            type: object
+            properties:
+              interval:
+                description: 'Interval on which, there''s actual data
+
+                  '
+                $ref: '#/components/schemas/DateTimeInterval'
+              outputs:
+                description: 'Per output statistics.
+
+                  Output names are defined in evalscript.
+
+                  '
+                type: object
+                additionalProperties:
+                  x-additionalPropertiesName: output name
+                  type: object
+                  properties:
+                    bands:
+                      description: 'Per band statistics and histograms.
+
+                        '
+                      type: object
+                      additionalProperties:
+                        x-additionalPropertiesName: band name
+                        $ref: '#/components/schemas/BandStatistics'
+              error:
+                description: 'If an error occurs when calculating statistics for a given interval it is reported here.
+
+                  '
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                    - BAD_REQUEST
+                    - EXECUTION_ERROR
+                    - TIMEOUT
+    HistogramDefinition:
+      description: "The name of the band (as key) for which a histogram is defined below. Each key must match with one of the band names\n`output.bands` specified in a `setup()` function in an evalscript (for this output) or be \"default\". If it is \"default\",\nthe histogram specified below will be returned for all bands of this output for which histogram is not explicitly defined.\n\nEach band's histogram may be defined by providing one of the following properties:\n  * `binWidth`\n  * `nBins`\n  * exact bins provided by `bins` array\n\n[This example](https://docs.planet.com/develop/apis/statistical/examples/#multiple-outputs-with-different-datamasks-multi-band-output-with-custom-bands-names-and-different-histogram-types)\nshows how to specify histograms using different parameters.\n\nHistograms can be calculated using float or integer math. Providing `lowEdge` and `highEdge` or `binWidth` or\nelements of the `bins` array as integer numbers will select integer math, otherwise float will be used.\nOutput type of the band's output (specified in `output.sampleType` in the `setup()` function in the evalscript)\nmust match the respective histogram math.\n\nIf `lowEdge` and `highEdge` are not explicitly provided, min and max values are used, respectively.\n"
+      type: object
+      properties:
+        nBins:
+          description: 'Number of bins in the histogram.
+
+            '
+          type: number
+        binWidth:
+          description: 'Bin width.
+
+            '
+          type: number
+        lowEdge:
+          description: 'Values lower to this will not be included in any of the histogram''s bins.
+
+            '
+          type: number
+        highEdge:
+          description: 'Values higher to this will not be included in any of the histogram''s bins.
+
+            '
+          type: number
+        bins:
+          description: 'Explicitly defined bins.
+
+            Array [v1,v2,v3,v4] will define the following bins:
+
+            [v1,v2), [v2,v3), [v3,v4]
+
+            '
+          type: array
+          items:
+            type: number
+            minItems: 2
+    LETML1Dataset:
+      title: landsat-etm-l1
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-etm-l1
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithRt'
+    LandsatTierFilteringWithoutRt:
+      type: object
+      properties:
+        tiers:
+          type: string
+          default: ALL_TIERS
+          enum:
+          - TIER_1
+          - ALL_TIERS
+    BYOCDataset:
+      title: BYOC / BATCH / ZARR
+      type: object
+      allOf:
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/BYOCFiltering'
+          processing:
+            $ref: '#/components/schemas/BaseDatasetProcessing'
+          type:
+            type: string
+            description: 'For a BYOC collection, set to "byoc-\<collectionId\>", for example "byoc-017aa0ae-33a6-45d3-8548-0f7d1041b40c".
+
+
+              For a BATCH collection, set to "batch-\<collectionId\>", for example "batch-9688cd56-6c70-4221-add8-a5821d0256a9".
+
+
+              For a ZARR collection, set to "zarr-\<collectionId\>", for example "zarr-e2c7baec-3dfa-4523-b125-e242bdb5dd7c".
+
+              '
+      - $ref: '#/components/schemas/BaseDataset'
+    S2L2ADataset:
+      title: sentinel-2-l2a
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/S2L2AFiltering'
+          processing:
+            $ref: '#/components/schemas/S2Processing'
+          type:
+            type: string
+            enum:
+            - sentinel-2-l2a
+    S1Filtering:
+      type: object
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        mosaickingOrder:
+          description: The order in which tiles are overlapped from which the output result is mosaicked.
+          type: string
+          enum:
+          - mostRecent
+          - leastRecent
+          default: mostRecent
+        resolution:
+          type: string
+          enum:
+          - HIGH
+          - MEDIUM
+          - FULL
+        acquisitionMode:
+          type: string
+          enum:
+          - SM
+          - IW
+          - EW
+          - WV
+          - EN
+          - AN
+          - IM
+        polarization:
+          type: string
+          enum:
+          - SH
+          - SV
+          - DH
+          - DV
+          - HH
+          - HV
+          - VV
+          - VH
+        orbitDirection:
+          type: string
+          enum:
+          - ASCENDING
+          - DESCENDING
+        timeliness:
+          type: string
+          enum:
+          - NRT10m
+          - NRT1h
+          - NRT3h
+          - Fast24h
+          - Offline
+          - Reprocessing
+          - ArchNormal
+    LandsatDataset:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/LandsatFiltering'
+          processing:
+            $ref: '#/components/schemas/BaseDatasetProcessing'
+    MultiPartStatisticalRequest:
+      type: object
+      properties:
+        request:
+          $ref: '#/components/schemas/StatisticalRequest'
+        evalscript:
+          description: 'Block of JavaScript code that will replace the evalscript property of the statistics request.
+
+            '
+          type: string
+    BYOCFiltering:
+      type: object
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        mosaickingOrder:
+          description: The order in which tiles are overlapped from which the output result is mosaicked.
+          type: string
+          enum:
+          - mostRecent
+          - leastRecent
+          default: mostRecent
+    S1ProcessingSpeckleFilterLEE:
+      type: object
+      description: The Lee speckle filter. Note that processing time rapidly increases as window size increases.
+      required:
+      - type
+      - windowSizeX
+      - windowSizeY
+      properties:
+        type:
+          type: string
+        windowSizeX:
+          type: integer
+          minimum: 1
+          maximum: 7
+          description: The window size in the X direction of the source data. Odd values recommended.
+        windowSizeY:
+          type: integer
+          minimum: 1
+          maximum: 7
+          description: The window size in the Y direction of the source data. Odd values recommended.
+    LETML2Dataset:
+      title: landsat-etm-l2
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-etm-l2
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
+    LTML2Dataset:
+      title: landsat-tm-l2
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-tm-l2
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    StatisticsDefinition:
+      description: Single band statistics definition. The name of the band (as key) for which a calculation of statistic is defined below. Each key must match with one of the band names `output.bands` specified in a `setup()` function in an evalscript (for this output) or be "default". If it is "default", the statistics specified below will be calculated for all bands of this output for which calculation of statistics is not explicitly defined.
+      type: object
+      properties:
+        percentiles:
+          description: Calculate percentiles.
+          type: object
+          properties:
+            k:
+              description: 'Percentiles definition as array of values between [0,1], [see this example](https://docs.planet.com/develop/apis/statistical/examples/#statistics-histogram-and-percentiles-for-one-single-band-output).
+
+                '
+              type: array
+              items:
+                type: number
+                format: double
+                minimum: 0
+                maximum: 1
+    DEMProcessing:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDatasetProcessing'
+      - type: object
+        properties:
+          clampNegative:
+            type: boolean
+            default: false
+            description: Mapzen DEM specific option. It replaces negative orthometric heights with 0. Useful for removing ocean bathymetry, for example.
+          egm:
+            type: boolean
+            default: false
+            description: It replaces orthometric heights with ellipsoidal heights relative to the WGS84 ellipsoid.
+    Polygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - Polygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              maxItems: 2
+              minItems: 2
+              type: array
+              items:
+                type: number
+                format: double
+    S1ProcessingSpeckleFilterNONE:
+      type: object
+      description: Does NO speckle filtering. Equivalent to not having speckleFilter defined.
+      required:
+      - type
+      properties:
+        type:
+          type: string
+    StatisticalDateTimeInterval:
+      type: object
+      required:
+      - from
+      - to
+      properties:
+        from:
+          type: string
+          description: ISO-8601 time representing start of search interval, e.g. 2019-01-31T14:00:00+01:00
+          format: date-time
+        to:
+          type: string
+          description: ISO-8601 time representing end of search interval, e.g. 2019-02-05T15:00:00+01:00.
+          format: date-time
+    ProcessRequestInputBoundsProperties:
+      title: BoundsProperties
+      type: object
+      properties:
+        crs:
+          description: 'The coordinate reference system of the coordinates. Must be
+
+            one of the values listed at https://docs.planet.com/develop/apis/processing/#crs-support.
+
+            Default CRS is WGS84, http://www.opengis.net/def/crs/OGC/1.3/CRS84.
+
+            '
+          type: string
+          default: http://www.opengis.net/def/crs/OGC/1.3/CRS84
+    S1Processing:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDatasetProcessing'
+      - type: object
+        properties:
+          speckleFilter:
+            type: object
+            oneOf:
+            - $ref: '#/components/schemas/S1ProcessingSpeckleFilterLEE'
+            - $ref: '#/components/schemas/S1ProcessingSpeckleFilterNONE'
+            discriminator:
+              propertyName: type
+              mapping:
+                LEE: '#/components/schemas/S1ProcessingSpeckleFilterLEE'
+                NONE: '#/components/schemas/S1ProcessingSpeckleFilterNONE'
+          backCoeff:
+            type: string
+            enum:
+            - BETA0
+            - SIGMA0_ELLIPSOID
+            - GAMMA0_ELLIPSOID
+            - GAMMA0_TERRAIN
+            default: GAMMA0_ELLIPSOID
+          orthorectify:
+            type: boolean
+            default: false
+          demInstance:
+            type: string
+            enum:
+            - MAPZEN
+            - COPERNICUS
+            - COPERNICUS_30
+            - COPERNICUS_90
+            default: MAPZEN
+          radiometricTerrainOversampling:
+            type: number
+            format: double
+            minimum: 1
+            maximum: 4
+            default: 2
+    ProcessRequestInput:
+      title: Input
+      type: object
+      required:
+      - bounds
+      - data
+      properties:
+        bounds:
+          $ref: '#/components/schemas/ProcessRequestInputBounds'
+        data:
+          $ref: '#/components/schemas/ProcessRequestInputData'
+    DEMDataset:
+      title: dem
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/DEMFiltering'
+          processing:
+            $ref: '#/components/schemas/DEMProcessing'
+          type:
+            type: string
+            enum:
+            - dem
+    L8L1Dataset:
+      title: landsat-ot-l1
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-ot-l1
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithRt'
+    StatisticalRequestCalculations:
+      description: 'Define which statistics and histogram to calculate.
+
+        It can be specified differently for each evalscript output.
+
+        If omitted only the basic statistic (min, max, mean, stDev) will be calculated.
+
+        '
+      type: object
+      additionalProperties:
+        x-additionalPropertiesName: output name
+        $ref: '#/components/schemas/CalculationDefinition'
+    S2L2AFiltering:
+      type: object
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        mosaickingOrder:
+          description: The order in which tiles are overlapped from which the output result is mosaicked.
+          type: string
+          enum:
+          - mostRecent
+          - leastRecent
+          - leastCC
+          default: mostRecent
+        maxCloudCoverage:
+          allOf:
+          - $ref: '#/components/schemas/MaxCloudCoverage'
+          - default: 100
+    Aggregation:
+      required:
+      - of
+      description: 'Specifies how given time range is split into time intervals.
+
+        '
+      type: object
+      properties:
+        of:
+          description: 'Duration in ISO 8601 duration format, check [here](https://docs.planet.com/develop/apis/statistical/#split-the-requested-timerange-into-multiple-time-intervals) for more details.
+
+            '
+          type: string
+        lastIntervalBehavior:
+          description: "This parameter specifies the behavior of the last interval if the given time range isn't divisible by the provided aggregation interval.\n * SKIP - skip the last interval  (default behavior)\n * SHORTEN - shortens the last interval so that it ends at the end of provided time range.\n * EXTEND - extends the last interval over the end of the provided time range so that all intervals are of equal duration\n"
+          type: string
+          enum:
+          - SKIP
+          - SHORTEN
+          - EXTEND
+    HLSFiltering:
+      type: object
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        mosaickingOrder:
+          description: The order in which tiles are overlapped from which the output result is mosaicked.
+          type: string
+          enum:
+          - mostRecent
+          - leastRecent
+          - leastCC
+          default: mostRecent
+        maxCloudCoverage:
+          allOf:
+          - $ref: '#/components/schemas/MaxCloudCoverage'
+          - default: 100
+        constellation:
+          type: string
+          description: 'The selected constellation. "SENTINEL" selects only Sentinel products, while "LANDSAT" selects only Landsat products.
+
+
+            By default, products of both constellations are selected.
+
+            '
+          enum:
+          - SENTINEL
+          - LANDSAT
+    LTML1Dataset:
+      title: landsat-tm-l1
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-tm-l1
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
+    L8L2Dataset:
+      title: landsat-ot-l2
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-ot-l2
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
+    MaxCloudCoverage:
+      description: The maximum allowable cloud coverage in percent.
+      type: number
+      format: double
+      minimum: 0
+      maximum: 100
+      default: 100
+    LMSSL1Dataset:
+      title: landsat-mss-l1
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-mss-l1
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
+    TimeRange:
+      type: object
+      description: A time interval to filter data by acquisition date. It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.
+      properties:
+        from:
+          description: The start of a search interval.
+          type: string
+          format: date-time
+        to:
+          description: The end of a search interval.
+          type: string
+          format: date-time
+      example:
+        from: '2018-10-01T00:00:00.000Z'
+        to: '2018-11-01T00:00:00.000Z'
+    LandsatTierFilteringWithRt:
+      type: object
+      properties:
+        tiers:
+          type: string
+          default: ALL_TIERS
+          enum:
+          - TIER_1
+          - TIER_1_AND_RT
+          - ALL_TIERS
+    S2Processing:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDatasetProcessing'
+      - type: object
+        properties:
+          harmonizeValues:
+            description: 'Harmonizes data values to be comparable with old processing baselines. See <a href="https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l1c/#harmonize-values" target="_blank">here</a> for details.
+
+              '
+            type: boolean
+            default: true
+    HLSDataset:
+      title: hls
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - hls
+          dataFilter:
+            $ref: '#/components/schemas/HLSFiltering'
+          processing:
+            $ref: '#/components/schemas/BaseDatasetProcessing'
+    S2L1CDataset:
+      title: sentinel-2-l1c
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/S2L1CFiltering'
+          processing:
+            $ref: '#/components/schemas/S2Processing'
+          type:
+            type: string
+            enum:
+            - sentinel-2-l1c
+    DEMFiltering:
+      type: object
+      properties:
+        demInstance:
+          description: Selects DEM instance.
+          type: string
+          enum:
+          - MAPZEN
+          - COPERNICUS_30
+          - COPERNICUS_90
+          default: MAPZEN
+    StatisticalRequest:
+      required:
+      - input
+      - aggregation
+      type: object
+      properties:
+        input:
+          $ref: '#/components/schemas/ProcessRequestInput'
+        aggregation:
+          $ref: '#/components/schemas/StatisticalRequestAggregation'
+        calculations:
+          $ref: '#/components/schemas/StatisticalRequestCalculations'
+    Ls8Dataset:
+      title: landsat-8-l1c
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-8-l1c
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithRt'
+    BaseDatasetProcessing:
+      type: object
+      properties:
+        upsampling:
+          description: 'The interpolation used when the requested
+
+            resolution is higher than the source resolution.
+
+            '
+          type: string
+          enum:
+          - NEAREST
+          - BILINEAR
+          - BICUBIC
+          default: NEAREST
+        downsampling:
+          description: 'The interpolation used when the requested
+
+            resolution is lower than the source resolution.
+
+            '
+          type: string
+          enum:
+          - NEAREST
+          - BILINEAR
+          - BICUBIC
+          default: NEAREST
+    StatisticalRequestAggregation:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/StatisticalRequestAggregationWithoutEvalscript'
+      - type: object
+        required:
+        - evalscript
+        properties:
+          evalscript:
+            description: 'Your evalscript. For details, click
+
+              <a href="https://docs.planet.com/develop/evalscripts/" target="_blank">here</a>.
+
+              The evalscript will be executed once for each time interval defined by `timeRange` and `aggregationInterval`.
+
+              '
+            type: string
+    BaseDataset:
+      type: object
+      properties:
+        type:
+          description: Datasource abbreviation
+          type: string
+        id:
+          description: Identifier
+          type: string
+    StatisticalRequestAggregationWithoutEvalscript:
+      required:
+      - timeRange
+      - aggregationInterval
+      description: 'Specifies how data is aggregated and processed before statistics is calculated. `timeRange` and `aggregationInterval` combined define sampling intervals in time dimension. Width/height or resx/resy combined with `input.bounds` define a sample matrix (i.e. "image") in spatial dimension.
+
+        '
+      type: object
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/StatisticalDateTimeInterval'
+        aggregationInterval:
+          $ref: '#/components/schemas/Aggregation'
+        width:
+          description: 'Width of the sample matrix.
+
+            _Only one pair of parameters "width"/"height" or "resx"/"resy" must be set at the same time._
+
+            '
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 2500
+          default: 256
+          example: 512
+        height:
+          description: 'Height of the sample matrix.
+
+            _Only one pair of parameters "width"/"height" or "resx"/"resy" must be set at the same time._
+
+            '
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 2500
+          default: 256
+          example: 512
+        resx:
+          description: 'Spatial resolution used to calculate the width of the sample matrix from the `input.bounds`.
+
+            Its units are defined by the CRS given in `input.bounds.properties.crs`
+
+            parameter.
+
+            _Only one pair of parameters "width"/"height" or "resx"/"resy" must be set at the same time._
+
+            '
+          type: number
+          format: double
+        resy:
+          description: 'Spatial resolution used to calculate the height of the sample matrix from the `input.bounds`.
+
+            Its units are defined by the CRS given in `input.bounds.properties.crs`
+
+            parameter.
+
+            _Only one pair of parameters "width"/"height" or "resx"/"resy" must be set at the same time._
+
+            '
+          type: number
+          format: double
+    CalculationDefinition:
+      description: The name of the output (as key) for which a calculation of statistics and histogram are defined below. Each key must match with one of the `output.id` specified in a `setup()` function in an evalscript or be "default". If it is "default", the specified statistics and histogram will be calculated for all outputs for which calculation of statistics is not explicitly defined.
+      type: object
+      properties:
+        histograms:
+          description: 'Histogram definitions. They can be specified differently for each band in this output.
+
+            '
+          type: object
+          additionalProperties:
+            x-additionalPropertiesName: band name
+            $ref: '#/components/schemas/HistogramDefinition'
+        statistics:
+          description: 'Statistics definitions. It can be specified differently for each band in this output.
+
+            '
+          type: object
+          additionalProperties:
+            x-additionalPropertiesName: band name
+            $ref: '#/components/schemas/StatisticsDefinition'
+    MultiPolygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - MultiPolygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              type: array
+              items:
+                maxItems: 2
+                minItems: 2
+                type: array
+                items:
+                  type: number
+                  format: double
+    LandsatFiltering:
+      type: object
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        mosaickingOrder:
+          description: The order in which tiles are overlapped from which the output result is mosaicked.
+          type: string
+          enum:
+          - mostRecent
+          - leastRecent
+          - leastCC
+          default: mostRecent
+        maxCloudCoverage:
+          allOf:
+          - $ref: '#/components/schemas/MaxCloudCoverage'
+          - default: 100
+    Boom:
+      type: object
+      properties:
+        status:
+          description: HTTP status code
+          type: integer
+          format: int32
+        reason:
+          description: Reason for the error
+          type: string
+        message:
+          description: Friendly error message
+          type: string
+        code:
+          description: Code that uniquely identifies the error
+          type: string
+          enum:
+          - COMMON_BAD_PAYLOAD
+          - COMMON_NOT_FOUND
+          - COMMON_DATABASE_ERROR
+          - COMMON_UNIQUE_KEY_VIOLATION
+          - COMMON_INSUFFICIENT_PERMISSIONS
+          - COMMON_SENTINEL_ACCOUNT_EXPIRED
+          - COMMON_METHOD_NOT_ALLOWED
+          - COMMON_UNSUPPORTED_MEDIA_TYPE
+          - COMMON_ELASTICSEARCH_ERROR
+          - COMMON_UNAUTHORIZED
+          - COMMON_EXCEPTION
+          - RATE_LIMIT_STORAGE_TIMEOUT
+          - RATE_LIMIT_OVERLAPPING_POLICIES
+          - RATE_LIMIT_EXCEEDED
+          - RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY
+          - DASHBOARD_PAYPAL_SALE_ERROR
+          - DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR
+          - DASHBOARD_INVALID_PAYPAL_RESPONSE
+          - DASHBOARD_EXECUTE_SALE_ERROR
+          - DASHBOARD_EXECUTE_AGREEMENT_ERROR
+          - DASHBOARD_IPN_ERROR
+          - DASHBOARD_ADYEN_SALE_ERROR
+          - DASHBOARD_ADYEN_PAYMENT_CANCELLED
+          - RENDERER_EXCEPTION
+          - OAUTH_ERROR
+          - EMAIL_OCTOPUS_ERROR
+        errors:
+          description: Additional information about the error (Optional)
+          type: object
+    S1Dataset:
+      title: sentinel-1-grd
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/S1Filtering'
+          processing:
+            $ref: '#/components/schemas/S1Processing'
+          type:
+            type: string
+            enum:
+            - sentinel-1-grd
+    S2L1CFiltering:
+      allOf:
+      - $ref: '#/components/schemas/S2L2AFiltering'
+    Geometry:
+      description: The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the "bounds.properties.crs" parameter. A GeoJsonObject.
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/Polygon'
+      - $ref: '#/components/schemas/MultiPolygon'
+      example:
+        type: Polygon
+        coordinates:
+        - - - 14.000701904296873
+            - 46.23685258143992
+          - - 13.822174072265625
+            - 46.09037664604301
+          - - 14.113311767578125
+            - 45.85080395917834
+          - - 14.55963134765625
+            - 46.038922598236
+          - - 14.441528320312498
+            - 46.28717293114449
+          - - 14.17236328125
+            - 46.29191774991382
+          - - 14.000701904296873
+            - 46.23685258143992
+    BandStatistics:
+      type: object
+      description: 'Per band statistics and histograms
+
+        '
+      properties:
+        histogram:
+          description: Histogram
+          type: object
+          properties:
+            overflow:
+              description: 'Number of samples above `highEdge` value
+
+                '
+              type: number
+              format: integer
+            underflow:
+              description: 'Number of samples below `lowEdge` value
+
+                '
+              type: number
+              format: integer
+            bins:
+              description: 'Histogram bins
+
+                '
+              type: array
+              items:
+                type: object
+                properties:
+                  lowEdge:
+                    description: Bin's low edge (inclusive)
+                    type: number
+                  highEdge:
+                    description: Bin's high edge (not inclusive unless last bin)
+                    type: number
+                  count:
+                    description: number of samples that fall into the bin
+                    type: number
+                    format: integer
+        stats:
+          type: object
+          description: Statistics
+          properties:
+            min:
+              description: minimum value
+              type: number
+            max:
+              description: maximum value
+              type: number
+            mean:
+              description: mean value
+              type: number
+            stDev:
+              description: standard deviation
+              type: number
+            sampleCount:
+              description: total number of samples
+              type: number
+              format: integer
+            noDataCount:
+              description: total number of samples without value
+              type: number
+              format: integer
+            percentiles:
+              description: 'Percentile to percentile value map.
+
+                '
+              type: object
+              additionalProperties:
+                x-additionalPropertiesName: percentile [0,1]
+                type: number
+                format: double
+    ModisFiltering:
+      type: object
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        mosaickingOrder:
+          description: The order in which tiles are overlapped from which the output result is mosaicked.
+          type: string
+          enum:
+          - mostRecent
+          - leastRecent
+          default: mostRecent
+    ModisDataset:
+      title: modis
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/ModisFiltering'
+          processing:
+            $ref: '#/components/schemas/BaseDatasetProcessing'
+          type:
+            type: string
+            enum:
+            - modis
+  responses:
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '403':
+      description: Insufficient permissions
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: "### Authentication\n\nMore about the authentication <a href=\"https://docs.planet.com/develop/authentication/\" target=\"_blank\">here</a>.\n\nTo get an access token using curl:\n\n```\ncurl --request POST \\\n  --url https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token \\\n  --header \"content-type: application/x-www-form-urlencoded\" \\\n  --data \"grant_type=client_credentials&client_id=<your client id>&client_secret=<your client secret>\"\n```\n"
+      flows:
+        clientCredentials:
+          tokenUrl: https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token
+          scopes:
+            SH: Sentinel Hub
+x-tagGroups:
+- name: Process API
+  tags:
+  - process
+- name: Catalog
+  tags:
+  - catalog_core
+  - catalog_collections
+  - catalog_features
+  - catalog_item_search
+- name: Async API
+  tags:
+  - async_process
+- name: BatchV2 API
+  tags:
+  - batch_v2_process
+  - batch_v2_tiling_grid
+- name: Stats API
+  tags:
+  - statistical
+- name: Batch Stats API
+  tags:
+  - batch_statistical
+- name: BYOC
+  tags:
+  - byoc_collection
+  - byoc_tile
+- name: Zarr Import API
+  tags:
+  - zarr_collection
+  - zarr_array
+- name: TPDI
+  tags:
+  - dataimport_search
+  - dataimport_product
+  - dataimport_order
+  - dataimport_delivery
+  - dataimport_tile_delivery
+  - dataimport_subscription
+  - dataimport_subscription_delivery
+  - dataimport_subscription_tile_delivery
+  - dataimport_quota
+- name: Metadata
+  tags:
+  - metadata_location
+  - metadata_collection
