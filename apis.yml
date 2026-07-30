@@ -7,7 +7,20 @@ description: >-
   REST APIs for accessing, processing, and analysing data from Sentinel, Landsat, MODIS, and
   commercial satellite constellations. APIs deliver raw imagery, rendered images, and geospatial
   statistics on demand using custom EvalScript processing without requiring data downloads.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/sentinel-hub.png
 tags:
   - Satellite Imagery
   - Geospatial
@@ -23,131 +36,608 @@ created: '2026-06-13'
 modified: '2026-06-13'
 specificationVersion: '0.19'
 apis:
-  - aid: sentinel-hub:process
-    name: Sentinel Hub Process API
-    description: >-
-      RESTful API for on-demand retrieval and processing of satellite imagery. Submit POST
-      requests specifying area of interest, time range, data collection, and an EvalScript
-      to receive raw bands, rendered composites (true/false colour), or computed indices
-      (NDVI, EVI) as GeoTIFF, PNG, or JPEG. Base URL https://services.sentinel-hub.com.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
-    baseURL: https://services.sentinel-hub.com
-    tags:
-      - Satellite Imagery
-      - Processing
-      - EvalScript
-      - GeoTIFF
-      - Remote Sensing
-    properties:
-      - type: Documentation
-        url: https://docs.sentinel-hub.com/api/latest/api/process/
-      - type: OpenAPI
-        url: https://docs.sentinel-hub.com/api/latest/reference/#tag/process
-      - type: Authentication
-        url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
-  - aid: sentinel-hub:catalog
-    name: Sentinel Hub Catalog API
-    description: >-
-      STAC-compliant API for searching and discovering geospatial data across Sentinel Hub
-      collections. Supports GET and POST search with bounding-box, time-range, and CQL2
-      property filters. Returns STAC Items describing available scenes including Sentinel-1
-      GRD, Sentinel-2, BYOC, and Zarr collections.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://docs.sentinel-hub.com/api/latest/api/catalog/
-    baseURL: https://services.sentinel-hub.com/api/v1/catalog/1.0.0
-    tags:
-      - STAC
-      - Catalog
-      - Search
-      - Geospatial
-      - Sentinel-1
-      - Sentinel-2
-    properties:
-      - type: Documentation
-        url: https://docs.sentinel-hub.com/api/latest/api/catalog/
-      - type: OpenAPI
-        url: https://docs.sentinel-hub.com/api/latest/reference/#tag/catalog
-  - aid: sentinel-hub:statistical
-    name: Sentinel Hub Statistical API
-    description: >-
-      Compute histogram statistics, percentiles, and band aggregations over a user-defined
-      area of interest and time series without downloading any imagery. Returns JSON with
-      mean, standard deviation, and custom statistics per aggregation interval. Endpoints
-      available in EU (Frankfurt) and US (Oregon) regions.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://docs.sentinel-hub.com/api/latest/api/statistical/
-    baseURL: https://services.sentinel-hub.com/api/v1/statistics
-    tags:
-      - Statistics
-      - Histogram
-      - NDVI
-      - Time Series
-      - Earth Observation
-    properties:
-      - type: Documentation
-        url: https://docs.sentinel-hub.com/api/latest/api/statistical/
-      - type: OpenAPI
-        url: https://docs.sentinel-hub.com/api/latest/reference/#tag/statistical
-  - aid: sentinel-hub:batch
-    name: Sentinel Hub Batch Processing API
-    description: >-
-      Asynchronous API for high-volume processing of large geographic areas or extended
-      time periods. Jobs tile the area of interest using a tiling grid and process tiles
-      in parallel, writing results to user-supplied S3-compatible storage. Costs one third
-      of equivalent Process API requests in Processing Units.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
-    baseURL: https://services.sentinel-hub.com/batch/v2
-    tags:
-      - Batch Processing
-      - Large Area
-      - Asynchronous
-      - S3
-      - GeoTIFF
-    properties:
-      - type: Documentation
-        url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
-      - type: OpenAPI
-        url: https://docs.sentinel-hub.com/api/latest/reference/#tag/batch_process
-  - aid: sentinel-hub:ogc
-    name: Sentinel Hub OGC Services
-    description: >-
-      OGC-standard web services (WMS, WCS, WFS, WMTS) for integrating Sentinel Hub satellite
-      imagery into GIS applications such as QGIS, ArcGIS, OpenLayers, and Google Earth.
-      Authentication uses a configuration-instance ID created in the Sentinel Hub Dashboard.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://docs.sentinel-hub.com/api/latest/api/ogc/
-    baseURL: https://services.sentinel-hub.com/ogc
-    tags:
-      - OGC
-      - WMS
-      - WCS
-      - WFS
-      - WMTS
-      - GIS
-    properties:
-      - type: Documentation
-        url: https://docs.sentinel-hub.com/api/latest/api/ogc/
-  - aid: sentinel-hub:byoc
-    name: Sentinel Hub BYOC API
-    description: >-
-      Bring Your Own COG (Cloud-Optimised GeoTIFF) API for ingesting custom raster data
-      into Sentinel Hub and processing it alongside public satellite collections. Supports
-      collection creation, tile registration, and management via REST endpoints.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://docs.sentinel-hub.com/api/latest/data/byoc/
-    baseURL: https://services.sentinel-hub.com/api/v1/byoc
-    tags:
-      - BYOC
-      - Custom Data
-      - COG
-      - Raster Ingestion
-    properties:
-      - type: Documentation
-        url: https://docs.sentinel-hub.com/api/latest/data/byoc/
-      - type: OpenAPI
-        url: https://docs.sentinel-hub.com/api/latest/reference/#tag/byoc
+- aid: sentinel-hub:ogc
+  name: Sentinel Hub OGC Services
+  description: >-
+    OGC-standard web services (WMS, WCS, WFS, WMTS) for integrating Sentinel Hub satellite imagery into
+    GIS applications such as QGIS, ArcGIS, OpenLayers, and Google Earth. Authentication uses a configuration-instance
+    ID created in the Sentinel Hub Dashboard.
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/ogc/
+  baseURL: https://services.sentinel-hub.com/ogc
+  tags:
+  - OGC
+  - WMS
+  - WCS
+  - WFS
+  - WMTS
+  - GIS
+  properties:
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/ogc/
+- aid: sentinel-hub:sentinel-hub-async-process-api
+  name: Sentinel Hub async_process API
+  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._'
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - async_process
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-async-process-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-batch-statistical-api
+  name: Sentinel Hub batch_statistical API
+  description: The batch_statistical API from Sentinel Hub — 6 operation(s) for batch_statistical.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - batch_statistical
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-batch-statistical-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-batch-v2-process-api
+  name: Sentinel Hub batch_v2_process API
+  description: The batch_v2_process API from Sentinel Hub — 5 operation(s) for batch_v2_process.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - batch_v2_process
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-batch-v2-process-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-batch-v2-tiling-grid-api
+  name: Sentinel Hub batch_v2_tiling_grid API
+  description: >-
+    The batch_v2_tiling_grid API from Sentinel Hub — 2 operation(s) for batch_v2_tiling_grid.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - batch_v2_tiling_grid
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-batch-v2-tiling-grid-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-byoc-collection-api
+  name: Sentinel Hub byoc_collection API
+  description: The byoc_collection API from Sentinel Hub — 3 operation(s) for byoc_collection.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - byoc_collection
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-byoc-collection-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-byoc-tile-api
+  name: Sentinel Hub byoc_tile API
+  description: The byoc_tile API from Sentinel Hub — 5 operation(s) for byoc_tile.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - byoc_tile
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-byoc-tile-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-catalog-collections-api
+  name: Sentinel Hub catalog_collections API
+  description: >-
+    This is an OpenAPI definition of the SpatioTemporal Asset Catalog API - Collections specification.
+    This is a subset of the STAC API - Features specification.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - catalog_collections
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-catalog-collections-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-catalog-core-api
+  name: Sentinel Hub catalog_core API
+  description: >-
+    This is an OpenAPI definition of the SpatioTemporal Asset Catalog API - Core specification. Any service
+    that implements this endpoint to allow discovery of spatiotemporal assets can be considered a STAC
+    API.
+
+
+    Make sure to use the appropriate <a href="https://docs.sentinel-hub.com/api/latest/data/" target="_blank">
+    end-point for each of the datasets</a>, e.g. for Landsat, Sentinel-3, etc.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - catalog_core
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-catalog-core-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-catalog-features-api
+  name: Sentinel Hub catalog_features API
+  description: >-
+    This is an OpenAPI definition of the SpatioTemporal Asset Catalog API - Features specification. This
+    extends OGC API - Features - Part 1: Core.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - catalog_features
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-catalog-features-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-catalog-item-search-api
+  name: Sentinel Hub catalog_item_search API
+  description: >-
+    This is an OpenAPI definition of the SpatioTemporal Asset Catalog API - Item Search specification.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - catalog_item_search
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-catalog-item-search-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-dataimport-delivery-api
+  name: Sentinel Hub dataimport_delivery API
+  description: >-
+    TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use
+    [Planet Orders API](https://docs.planet.com/develop/apis/orders/reference/) instead.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - dataimport_delivery
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-dataimport-delivery-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-dataimport-order-api
+  name: Sentinel Hub dataimport_order API
+  description: >-
+    TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use
+    [Planet Orders API](https://docs.planet.com/develop/apis/orders/reference/) instead.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - dataimport_order
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-dataimport-order-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-dataimport-product-api
+  name: Sentinel Hub dataimport_product API
+  description: >-
+    TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use
+    [Planet Data API](https://docs.planet.com/develop/apis/data/reference/) instead.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - dataimport_product
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-dataimport-product-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-dataimport-quota-api
+  name: Sentinel Hub dataimport_quota API
+  description: The dataimport_quota API from Sentinel Hub — 2 operation(s) for dataimport_quota.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - dataimport_quota
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-dataimport-quota-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-dataimport-search-api
+  name: Sentinel Hub dataimport_search API
+  description: >-
+    TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use
+    [Planet Item Search](https://docs.planet.com/develop/apis/data/reference/#tag/Item-Search) instead.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - dataimport_search
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-dataimport-search-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-dataimport-subscription-api
+  name: Sentinel Hub dataimport_subscription API
+  description: >-
+    TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use
+    [Planet Subscriptions API](https://docs.planet.com/develop/apis/subscriptions/reference/) instead.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - dataimport_subscription
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-dataimport-subscription-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-dataimport-subscription-delivery-api
+  name: Sentinel Hub dataimport_subscription_delivery API
+  description: >-
+    TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use
+    [Planet Subscriptions API](https://docs.planet.com/develop/apis/subscriptions/reference/) instead.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - dataimport_subscription_delivery
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-dataimport-subscription-delivery-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-dataimport-subscription-tile-delivery-api
+  name: Sentinel Hub dataimport_subscription_tile_delivery API
+  description: >-
+    TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use
+    the [BYOC API](https://docs.planet.com/develop/apis/byoc/reference/#tag/byoc_tile) instead to work
+    with tiles.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - dataimport_subscription_tile_delivery
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-dataimport-subscription-tile-delivery-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-dataimport-tile-delivery-api
+  name: Sentinel Hub dataimport_tile_delivery API
+  description: >-
+    TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use
+    the [BYOC API](https://docs.planet.com/develop/apis/byoc/reference/#tag/byoc_tile) instead to work
+    with tiles.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - dataimport_tile_delivery
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-dataimport-tile-delivery-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-metadata-collection-api
+  name: Sentinel Hub metadata_collection API
+  description: The metadata_collection API from Sentinel Hub — 3 operation(s) for metadata_collection.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - metadata_collection
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-metadata-collection-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-metadata-location-api
+  name: Sentinel Hub metadata_location API
+  description: The metadata_location API from Sentinel Hub — 2 operation(s) for metadata_location.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - metadata_location
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-metadata-location-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-process-api
+  name: Sentinel Hub process API
+  description: >-
+    Make sure to use the appropriate <a href="https://docs.sentinel-hub.com/api/latest/data/" target="_blank">end-point
+    for each of the datasets</a>, e.g. for Landsat, Sentinel-3, etc.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - process
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-process-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-statistical-api
+  name: Sentinel Hub statistical API
+  description: The statistical API from Sentinel Hub — 1 operation(s) for statistical.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - statistical
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-statistical-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-zarr-array-api
+  name: Sentinel Hub zarr_array API
+  description: The zarr_array API from Sentinel Hub — 2 operation(s) for zarr_array.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - zarr_array
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-zarr-array-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
+- aid: sentinel-hub:sentinel-hub-zarr-collection-api
+  name: Sentinel Hub zarr_collection API
+  description: The zarr_collection API from Sentinel Hub — 3 operation(s) for zarr_collection.
+  humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
+  baseURL: https://services.sentinel-hub.com
+  tags:
+  - zarr_collection
+  properties:
+  - type: OpenAPI
+    url: openapi/sentinel-hub-zarr-collection-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/process/
+  - type: Authentication
+    url: https://docs.sentinel-hub.com/api/latest/api/overview/authentication/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/catalog/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/statistical/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/api/batch-processing/
+  - type: Documentation
+    url: https://docs.sentinel-hub.com/api/latest/data/byoc/
 common:
   - type: AgenticAccess
     url: agentic-access/sentinel-hub-agentic-access.yml
