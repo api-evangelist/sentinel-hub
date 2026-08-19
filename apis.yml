@@ -34,7 +34,7 @@ tags:
   - STAC
 created: '2026-06-13'
 modified: '2026-06-13'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: sentinel-hub:ogc
   name: Sentinel Hub OGC Services
