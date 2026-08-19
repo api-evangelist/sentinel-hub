@@ -1,0 +1,42 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "API Reference async_process statistical API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "statistical",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Submit statistical request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://services.sentinel-hub.com/statistics/v1",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Submit statistical request"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

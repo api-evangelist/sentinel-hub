@@ -1,0 +1,95 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "API Reference async_process zarr_array API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "zarr_array",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Query Zarr collection's arrays",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://services.sentinel-hub.com/zarr/v1/collections/:collectionId/arrays",
+            "params": [
+              {
+                "name": "collectionId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.\nFor more records, use *viewtoken* to page through."
+              },
+              {
+                "name": "viewtoken",
+                "value": "",
+                "type": "query",
+                "description": "When the total number of items is larger than *count*, the response contains *viewtoken*.\nThis *viewtoken* can be used in the next request to retrieve the next page of items.\n\nThe next page can be retrieved by repeating the query. However, replace your URL with the\nnext URL in the returned links object.\n"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Optional query to search arrays by name. If omitted, all items are returned.\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Query Zarr collection's arrays"
+        },
+        {
+          "info": {
+            "name": "Get a single Zarr array",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://services.sentinel-hub.com/zarr/v1/collections/:collectionId/arrays/:arrayName",
+            "params": [
+              {
+                "name": "collectionId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "arrayName",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get a single Zarr array"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

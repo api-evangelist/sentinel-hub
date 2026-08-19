@@ -1,0 +1,94 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "API Reference async_process catalog_collections API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "catalog_collections",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "the feature collections in the dataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://services.sentinel-hub.com/catalog/v1/collections",
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "A body of Feature Collections that belong or are used together with additional links.\nRequest may not return the full set of metadata per Feature Collection."
+        },
+        {
+          "info": {
+            "name": "describe the feature collection with id `collectionId`",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://services.sentinel-hub.com/catalog/v1/collections/:collectionId",
+            "params": [
+              {
+                "name": "collectionId",
+                "value": "",
+                "type": "path",
+                "description": "local identifier of a collection"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "A single Feature Collection for the given if `collectionId`.\nRequest this endpoint to get a full list of metadata for the Feature Collection."
+        },
+        {
+          "info": {
+            "name": "Get the JSON Schema defining the list of variable terms that can be used in CQL2 expressions.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://services.sentinel-hub.com/catalog/v1/collections/:collectionId/queryables",
+            "params": [
+              {
+                "name": "collectionId",
+                "value": "",
+                "type": "path",
+                "description": "ID of Collection"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "This endpoint returns a list of variable terms that can be used in CQL2 expressions. The\nprecise definition of this can be found in the OGC API - Features - Part 3: Filtering and the\nCommon Query Language (CQL) specification."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,222 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "API Reference async_process batch_statistical API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "batch_statistical",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Query statistical batch requests",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://services.sentinel-hub.com/statistics/batch/v1",
+            "params": [
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.\nFor more records, use *viewtoken* to page through."
+              },
+              {
+                "name": "viewtoken",
+                "value": "",
+                "type": "query",
+                "description": "When the total number of items is larger than *count*, the response contains *viewtoken*.\nThis *viewtoken* can be used in the next request to retrieve the next page of items.\n\nThe next page can be retrieved by repeating the query. However, replace your URL with the\nnext URL in the returned links object.\n"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort the statistical batch requests by given field.\nOmit for default ordering.\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Query statistical batch requests"
+        },
+        {
+          "info": {
+            "name": "Submit a new statistical batch request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://services.sentinel-hub.com/statistics/batch/v1",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Submit a new statistical batch request"
+        },
+        {
+          "info": {
+            "name": "Retrieve a single batch statistical request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://services.sentinel-hub.com/statistics/batch/v1/:requestId",
+            "params": [
+              {
+                "name": "requestId",
+                "value": "",
+                "type": "path",
+                "description": "Request ID"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieve a single batch statistical request"
+        },
+        {
+          "info": {
+            "name": "Retrieve the status of a batch statistical request.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://services.sentinel-hub.com/statistics/batch/v1/:requestId/status",
+            "params": [
+              {
+                "name": "requestId",
+                "value": "",
+                "type": "path",
+                "description": "Request ID"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieve the status of a batch statistical request."
+        },
+        {
+          "info": {
+            "name": "Request analysis of a batch statistical request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://services.sentinel-hub.com/statistics/batch/v1/:requestId/analyse",
+            "params": [
+              {
+                "name": "requestId",
+                "value": "",
+                "type": "path",
+                "description": "Request ID"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Request analysis of a batch statistical request"
+        },
+        {
+          "info": {
+            "name": "Start (confirm) processing of a batch statistical request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://services.sentinel-hub.com/statistics/batch/v1/:requestId/start",
+            "params": [
+              {
+                "name": "requestId",
+                "value": "",
+                "type": "path",
+                "description": "Request ID"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Start (confirm) processing of a batch statistical request"
+        },
+        {
+          "info": {
+            "name": "Stop a batch statistical request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://services.sentinel-hub.com/statistics/batch/v1/:requestId/stop",
+            "params": [
+              {
+                "name": "requestId",
+                "value": "",
+                "type": "path",
+                "description": "Request ID"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Stop a batch statistical request"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

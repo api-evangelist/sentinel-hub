@@ -1,0 +1,92 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "API Reference async_process dataimport_tile_delivery API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "dataimport_tile_delivery",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the tiles of an order delivery",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://services.sentinel-hub.com/api/v1/dataimport/orders/:orderId/deliveries/:deliveryId/tiles",
+            "params": [
+              {
+                "name": "orderId",
+                "value": "",
+                "type": "path",
+                "description": "Order ID"
+              },
+              {
+                "name": "deliveryId",
+                "value": "",
+                "type": "path",
+                "description": "Delivery ID"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "The delivery tiles correspond to BYOC tiles that were created during the ingestion of this delivery.\nThus their corresponding IDs will match. While for most deliveries just one tile is created, for the\nlargest ones there can be tens of tiles.\n\nOnly tiles from last 3 months can be retrieved."
+        },
+        {
+          "info": {
+            "name": "Get an order delivery tile.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://services.sentinel-hub.com/api/v1/dataimport/orders/:orderId/deliveries/:deliveryId/tiles/:tileId",
+            "params": [
+              {
+                "name": "orderId",
+                "value": "",
+                "type": "path",
+                "description": "Order ID"
+              },
+              {
+                "name": "deliveryId",
+                "value": "",
+                "type": "path",
+                "description": "Delivery ID"
+              },
+              {
+                "name": "tileId",
+                "value": "",
+                "type": "path",
+                "description": "Tile ID"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Only tiles from last 3 months can be retrieved."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,172 @@
+{
+  "item": [
+    {
+      "id": "7dd4e142-ff08-4d06-8870-c3bfc4645d6e",
+      "name": "dataimport_product",
+      "description": {
+        "content": "TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use [Planet Data API](https://docs.planet.com/develop/apis/data/reference/) instead.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "607ce86b-9052-4037-b427-c2dbfdc216a1",
+          "name": "Get thumbnail of data product",
+          "request": {
+            "name": "Get thumbnail of data product",
+            "description": {
+              "content": "Get a scaled-down, non-geolocated, non-clipped image of the data product",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "dataimport",
+                "collections",
+                ":collectionId",
+                "products",
+                ":productId",
+                "thumbnail"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "planetApiKey",
+                  "value": "<string>",
+                  "description": "Your Planet API key. Get one from Planet https://www.planet.com.\nIt is required in order to get thumbnails of Planet data products\nunless you purchased your Planet data plan through Sentinel Hub.\n"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "collectionId",
+                  "description": "(Required) Collection ID"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "productId",
+                  "description": "(Required) ID of the product to get thumbnail of, typically returned by a previous search"
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "SH"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "146262d1-907c-4944-bcff-7a8e3b3d55b1",
+              "name": "Successful response (image)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "dataimport",
+                    "collections",
+                    ":collectionId",
+                    "products",
+                    ":productId",
+                    "thumbnail"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "planetApiKey",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collectionId",
+                      "description": "(Required) Collection ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "productId",
+                      "description": "(Required) ID of the product to get thumbnail of, typically returned by a previous search"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://services.sentinel-hub.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "563b1da5-3cbd-48af-8709-63aa4e1dafb2",
+    "name": "API Reference async_process dataimport_product API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "**NOTE:** _Asynchronous Processing API is currently in beta release._\n\n\nContact Support:\n Name: Sentinel Hub",
+      "type": "text/plain"
+    }
+  }
+}

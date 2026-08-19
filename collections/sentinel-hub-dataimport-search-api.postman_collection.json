@@ -1,0 +1,572 @@
+{
+  "item": [
+    {
+      "id": "00c094bf-2db0-4adc-9ba0-2876390a5a00",
+      "name": "dataimport_search",
+      "description": {
+        "content": "TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use [Planet Item Search](https://docs.planet.com/develop/apis/data/reference/#tag/Item-Search) instead.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e504b27a-d986-44bb-bc07-5293e3f7b9b4",
+          "name": "Search data",
+          "request": {
+            "name": "Search data",
+            "description": {
+              "content": "Search data with Process API-like interface.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "dataimport",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "count",
+                  "value": "<integer>",
+                  "description": "Number of items to retrieve.\n\nMaximum value is provider dependent.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "viewtoken",
+                  "value": "<string>",
+                  "description": "When the total number of items is larger than *count*, the response contains *viewtoken*.\nThis *viewtoken* can be used in the next request to retrieve the next page of items.\n\nThe next page can be retrieved by repeating the query. However, replace your URL with the\nnext URL in the returned links object.\n"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "SH"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bounds\": {\n    \"bbox\": [\n      \"<double>\",\n      \"<double>\",\n      \"<double>\",\n      \"<double>\"\n    ],\n    \"geometry\": {\n      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n    },\n    \"properties\": {\n      \"crs\": \"http://www.opengis.net/def/crs/OGC/1.3/CRS84\"\n    }\n  },\n  \"data\": [\n    {\n      \"itemType\": \"<string>\",\n      \"productBundle\": \"<string>\",\n      \"dataFilter\": {\n        \"timeRange\": {\n          \"from\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"to\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"maxCloudCoverage\": 100,\n        \"nativeFilter\": \"<object>\"\n      },\n      \"type\": \"catalog\"\n    }\n  ],\n  \"provider\": \"<string>\",\n  \"planetApiKey\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ead45565-30ed-4ed0-8fbe-4d875f98a11b",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "dataimport",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "count",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "viewtoken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bounds\": {\n    \"bbox\": [\n      13.822174072265625,\n      45.85080395917834,\n      14.55963134765625,\n      46.29191774991382\n    ],\n    \"geometry\": {\n      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n    },\n    \"properties\": {\n      \"crs\": \"http://www.opengis.net/def/crs/OGC/1.3/CRS84\"\n    }\n  },\n  \"data\": [\n    {\n      \"itemType\": \"PSScene\",\n      \"productBundle\": \"analytic_sr_udm2\",\n      \"dataFilter\": {\n        \"timeRange\": {\n          \"from\": \"2018-10-01T00:00:00.000Z\",\n          \"to\": \"2018-11-01T00:00:00.000Z\"\n        },\n        \"maxCloudCoverage\": 100,\n        \"nativeFilter\": {\n          \"type\": \"RangeFilter\",\n          \"field_name\": \"snow_ice_percent\",\n          \"config\": {\n            \"gte\": 10\n          }\n        }\n      },\n      \"type\": \"catalog\"\n    }\n  ],\n  \"provider\": \"PLANET\",\n  \"planetApiKey\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"links\": {\n    \"currentToken\": \"string\",\n    \"nextToken\": \"string\",\n    \"previousToken\": \"string\",\n    \"@id\": \"http://PWBhsSCMclpHubZnm.wxpjHxldXFMMGfaRaGt7AE5iNMB8pKxqrmoPQpCXqg2Bm.orv\",\n    \"next\": \"http://zNGjeiMfRDbAiKoyfIkvlDlnLLTSgWUp.uukE-RA\",\n    \"previous\": \"http://mPdTYCLsHpRlkumnzkZBcbqCUqpUGb.gmVbxNSO4CZUCRP2uhpiMH.F59iM6\"\n  },\n  \"<other fields>\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d487e193-3db5-4d47-a818-0baa2c667ebb",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "dataimport",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "count",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "viewtoken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bounds\": {\n    \"bbox\": [\n      13.822174072265625,\n      45.85080395917834,\n      14.55963134765625,\n      46.29191774991382\n    ],\n    \"geometry\": {\n      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n    },\n    \"properties\": {\n      \"crs\": \"http://www.opengis.net/def/crs/OGC/1.3/CRS84\"\n    }\n  },\n  \"data\": [\n    {\n      \"itemType\": \"PSScene\",\n      \"productBundle\": \"analytic_sr_udm2\",\n      \"dataFilter\": {\n        \"timeRange\": {\n          \"from\": \"2018-10-01T00:00:00.000Z\",\n          \"to\": \"2018-11-01T00:00:00.000Z\"\n        },\n        \"maxCloudCoverage\": 100,\n        \"nativeFilter\": {\n          \"type\": \"RangeFilter\",\n          \"field_name\": \"snow_ice_percent\",\n          \"config\": {\n            \"gte\": 10\n          }\n        }\n      },\n      \"type\": \"catalog\"\n    }\n  ],\n  \"provider\": \"PLANET\",\n  \"planetApiKey\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 4114,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_UNAUTHORIZED\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c4720c88-6d46-4965-a557-8174cf7a4c27",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "dataimport",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "count",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "viewtoken",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bounds\": {\n    \"bbox\": [\n      13.822174072265625,\n      45.85080395917834,\n      14.55963134765625,\n      46.29191774991382\n    ],\n    \"geometry\": {\n      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n    },\n    \"properties\": {\n      \"crs\": \"http://www.opengis.net/def/crs/OGC/1.3/CRS84\"\n    }\n  },\n  \"data\": [\n    {\n      \"itemType\": \"PSScene\",\n      \"productBundle\": \"analytic_sr_udm2\",\n      \"dataFilter\": {\n        \"timeRange\": {\n          \"from\": \"2018-10-01T00:00:00.000Z\",\n          \"to\": \"2018-11-01T00:00:00.000Z\"\n        },\n        \"maxCloudCoverage\": 100,\n        \"nativeFilter\": {\n          \"type\": \"RangeFilter\",\n          \"field_name\": \"snow_ice_percent\",\n          \"config\": {\n            \"gte\": 10\n          }\n        }\n      },\n      \"type\": \"catalog\"\n    }\n  ],\n  \"provider\": \"PLANET\",\n  \"planetApiKey\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1307152a-8a2f-4faf-82d1-ea1a7aa4e8f0",
+          "name": "Native search",
+          "request": {
+            "name": "Native search",
+            "description": {
+              "content": "Proxy search. All the fields not listed as <span style=\"color:red\">required</span> are passed verbatim to the data provider's search API, and the result from the latter is returned verbatim.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "dataimport",
+                "nativesearch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "SH"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"provider\": \"<string>\",\n  \"planetApiKey\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ac0f07a4-7ce4-4e38-b793-5bc46341e8e0",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "dataimport",
+                    "nativesearch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"PLANET\",\n  \"planetApiKey\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"links\": {\n    \"currentToken\": \"string\",\n    \"nextToken\": \"string\",\n    \"previousToken\": \"string\",\n    \"@id\": \"http://PWBhsSCMclpHubZnm.wxpjHxldXFMMGfaRaGt7AE5iNMB8pKxqrmoPQpCXqg2Bm.orv\",\n    \"next\": \"http://zNGjeiMfRDbAiKoyfIkvlDlnLLTSgWUp.uukE-RA\",\n    \"previous\": \"http://mPdTYCLsHpRlkumnzkZBcbqCUqpUGb.gmVbxNSO4CZUCRP2uhpiMH.F59iM6\"\n  },\n  \"<other fields>\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0afa09e3-bca8-4e2a-bff3-5d6e2a6c5233",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "dataimport",
+                    "nativesearch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"PLANET\",\n  \"planetApiKey\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 4114,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_UNAUTHORIZED\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3e40ed9f-1319-4a7c-abcf-eb3dba20fad4",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "dataimport",
+                    "nativesearch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"PLANET\",\n  \"planetApiKey\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8057704d-2baa-4721-9e63-52381c4f36e9",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "dataimport",
+                    "nativesearch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"PLANET\",\n  \"planetApiKey\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://services.sentinel-hub.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "212f1cbd-cf77-47c6-831b-c30105d9cd7f",
+    "name": "API Reference async_process dataimport_search API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "**NOTE:** _Asynchronous Processing API is currently in beta release._\n\n\nContact Support:\n Name: Sentinel Hub",
+      "type": "text/plain"
+    }
+  }
+}

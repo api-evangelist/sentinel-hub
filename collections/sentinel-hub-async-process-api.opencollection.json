@@ -1,0 +1,70 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "API Reference async_process API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "async_process",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Submit a new async process request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://services.sentinel-hub.com/async/v1/process",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Submit a new async process request"
+        },
+        {
+          "info": {
+            "name": "Get status of the request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://services.sentinel-hub.com/async/v1/process/:requestId",
+            "params": [
+              {
+                "name": "requestId",
+                "value": "",
+                "type": "path",
+                "description": "Request ID"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "The status of the request will only be returned while it's running. After completion (either succeed or failure) this endpoint will return 404."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

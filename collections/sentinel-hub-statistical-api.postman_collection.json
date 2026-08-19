@@ -1,0 +1,296 @@
+{
+  "item": [
+    {
+      "id": "767c0b4b-88d8-4f2e-b72c-ba4055a526cf",
+      "name": "statistical",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f36cdbc9-9276-4cbb-891c-148778ca02f5",
+          "name": "Submit statistical request",
+          "request": {
+            "name": "Submit statistical request",
+            "description": {},
+            "url": {
+              "path": [
+                "statistics",
+                "v1"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "SH"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "request",
+                  "value": "{\"input\":{\"bounds\":{\"bbox\":[\"<double>\",\"<double>\",\"<double>\",\"<double>\"],\"geometry\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"properties\":{\"crs\":\"http://www.opengis.net/def/crs/OGC/1.3/CRS84\"}},\"data\":[{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}]},\"aggregation\":\"<object>\",\"calculations\":{\"key_0\":{\"histograms\":{\"key_0\":{\"nBins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"binWidth\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"lowEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"highEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"bins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_1\":{\"nBins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"binWidth\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"lowEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"highEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"bins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}},\"statistics\":{\"key_0\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}}},\"key_1\":{\"histograms\":{\"key_0\":{\"nBins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"binWidth\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"lowEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"highEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"bins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_1\":{\"nBins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"binWidth\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"lowEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"highEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"bins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}},\"statistics\":{\"key_0\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}}}}}",
+                  "type": "text",
+                  "description": ""
+                },
+                {
+                  "key": "evalscript",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "Block of JavaScript code that will replace the evalscript property of the statistics request.\n"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ee1a4daf-136f-4d14-bc3d-34c96b222f62",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "statistics",
+                    "v1"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "request",
+                      "value": "{\"input\":{\"bounds\":{\"bbox\":[13.822174072265625,45.85080395917834,14.55963134765625,46.29191774991382],\"geometry\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"properties\":{\"crs\":\"http://www.opengis.net/def/crs/OGC/1.3/CRS84\"}},\"data\":[{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}]},\"aggregation\":{\"aggregationInterval\":{\"of\":\"string\",\"lastIntervalBehavior\":\"SKIP\"},\"evalscript\":\"string\",\"timeRange\":{\"from\":\"1994-01-18T20:47:40.914Z\",\"to\":\"1975-05-23T16:36:10.497Z\"},\"width\":512,\"height\":512,\"resx\":2191.455782240356,\"resy\":4903.458618545889},\"calculations\":{\"key_0\":{\"histograms\":{\"key_0\":{\"nBins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"binWidth\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"lowEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"highEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"bins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_1\":{\"nBins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"binWidth\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"lowEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"highEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"bins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}},\"statistics\":{\"key_0\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_1\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_2\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}}},\"key_1\":{\"histograms\":{\"key_0\":{\"nBins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"binWidth\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"lowEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"highEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"bins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}},\"statistics\":{\"key_0\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_1\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}}},\"key_2\":{\"histograms\":{\"key_0\":{\"nBins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"binWidth\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"lowEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"highEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"bins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_1\":{\"nBins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"binWidth\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"lowEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"highEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"bins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}},\"statistics\":{\"key_0\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_1\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_2\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_3\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_4\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}}}}}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Block of JavaScript code that will replace the evalscript property of the statistics request.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "evalscript",
+                      "value": "<string>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"FAILED\",\n  \"geometryPixelCount\": 4517,\n  \"data\": [\n    {\n      \"interval\": {\n        \"from\": \"1955-08-07T19:34:09.068Z\",\n        \"to\": \"1997-11-23T08:43:59.259Z\"\n      },\n      \"outputs\": {\n        \"key_0\": {\n          \"bands\": {\n            \"key_0\": {\n              \"histogram\": {\n                \"overflow\": 8274.89556182986,\n                \"underflow\": 9872.891359439349,\n                \"bins\": [\n                  {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                  },\n                  {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                  }\n                ]\n              },\n              \"stats\": {\n                \"min\": 2153.363774629562,\n                \"max\": 1512.0582924255077,\n                \"mean\": 2222.3419169840754,\n                \"stDev\": 4640.241429340653,\n                \"sampleCount\": 8070.442060602944,\n                \"noDataCount\": 5757.674083403458,\n                \"percentiles\": {\n                  \"key_0\": {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                  },\n                  \"key_1\": {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                  },\n                  \"key_2\": {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                  }\n                }\n              }\n            }\n          }\n        }\n      },\n      \"error\": {\n        \"type\": \"TIMEOUT\"\n      }\n    },\n    {\n      \"interval\": {\n        \"from\": \"1988-07-12T07:24:53.456Z\",\n        \"to\": \"1948-03-21T00:30:12.425Z\"\n      },\n      \"outputs\": {\n        \"key_0\": {\n          \"bands\": {\n            \"key_0\": {\n              \"histogram\": {\n                \"overflow\": 3824.8995486140434,\n                \"underflow\": 8475.822628452244,\n                \"bins\": [\n                  {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                  },\n                  {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                  }\n                ]\n              },\n              \"stats\": {\n                \"min\": 9863.903893927878,\n                \"max\": 8936.08244842713,\n                \"mean\": 8720.323362239902,\n                \"stDev\": 5115.887726650912,\n                \"sampleCount\": 605.506615668413,\n                \"noDataCount\": 5458.054686349564,\n                \"percentiles\": {\n                  \"key_0\": {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                  }\n                }\n              }\n            },\n            \"key_1\": {\n              \"histogram\": {\n                \"overflow\": 391.3530190558212,\n                \"underflow\": 1751.1571544870908,\n                \"bins\": [\n                  {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                  },\n                  {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                  }\n                ]\n              },\n              \"stats\": {\n                \"min\": 9784.967002329204,\n                \"max\": 8149.363238056436,\n                \"mean\": 4503.891939922337,\n                \"stDev\": 73.00224660319986,\n                \"sampleCount\": 1210.7009779163136,\n                \"noDataCount\": 9563.6227636577,\n                \"percentiles\": {\n                  \"key_0\": {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                  },\n                  \"key_1\": {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                  },\n                  \"key_2\": {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                  }\n                }\n              }\n            },\n            \"key_2\": {\n              \"histogram\": {\n                \"overflow\": 3296.5275170961186,\n                \"underflow\": 6387.490383261311,\n                \"bins\": [\n                  {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                  },\n                  {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                  }\n                ]\n              },\n              \"stats\": {\n                \"min\": 1905.663318561619,\n                \"max\": 8867.860053834114,\n                \"mean\": 6415.45316392492,\n                \"stDev\": 6000.1283144030585,\n                \"sampleCount\": 732.7172059869624,\n                \"noDataCount\": 1283.5432967511317,\n                \"percentiles\": {\n                  \"key_0\": {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                  }\n                }\n              }\n            }\n          }\n        }\n      },\n      \"error\": {\n        \"type\": \"BAD_REQUEST\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4d4a43cc-cf2c-4a32-a5b8-327d564f843c",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "statistics",
+                    "v1"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "request",
+                      "value": "{\"input\":{\"bounds\":{\"bbox\":[13.822174072265625,45.85080395917834,14.55963134765625,46.29191774991382],\"geometry\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"properties\":{\"crs\":\"http://www.opengis.net/def/crs/OGC/1.3/CRS84\"}},\"data\":[{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}]},\"aggregation\":{\"aggregationInterval\":{\"of\":\"string\",\"lastIntervalBehavior\":\"SKIP\"},\"evalscript\":\"string\",\"timeRange\":{\"from\":\"1994-01-18T20:47:40.914Z\",\"to\":\"1975-05-23T16:36:10.497Z\"},\"width\":512,\"height\":512,\"resx\":2191.455782240356,\"resy\":4903.458618545889},\"calculations\":{\"key_0\":{\"histograms\":{\"key_0\":{\"nBins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"binWidth\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"lowEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"highEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"bins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_1\":{\"nBins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"binWidth\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"lowEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"highEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"bins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}},\"statistics\":{\"key_0\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_1\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_2\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}}},\"key_1\":{\"histograms\":{\"key_0\":{\"nBins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"binWidth\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"lowEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"highEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"bins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}},\"statistics\":{\"key_0\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_1\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}}},\"key_2\":{\"histograms\":{\"key_0\":{\"nBins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"binWidth\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"lowEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"highEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"bins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_1\":{\"nBins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"binWidth\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"lowEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"highEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"bins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}},\"statistics\":{\"key_0\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_1\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_2\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_3\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_4\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}}}}}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Block of JavaScript code that will replace the evalscript property of the statistics request.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "evalscript",
+                      "value": "<string>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 3509,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_METHOD_NOT_ALLOWED\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9f471c44-8647-454f-af7d-c421c3f073b7",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "statistics",
+                    "v1"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "request",
+                      "value": "{\"input\":{\"bounds\":{\"bbox\":[13.822174072265625,45.85080395917834,14.55963134765625,46.29191774991382],\"geometry\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"properties\":{\"crs\":\"http://www.opengis.net/def/crs/OGC/1.3/CRS84\"}},\"data\":[{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}]},\"aggregation\":{\"aggregationInterval\":{\"of\":\"string\",\"lastIntervalBehavior\":\"SKIP\"},\"evalscript\":\"string\",\"timeRange\":{\"from\":\"1994-01-18T20:47:40.914Z\",\"to\":\"1975-05-23T16:36:10.497Z\"},\"width\":512,\"height\":512,\"resx\":2191.455782240356,\"resy\":4903.458618545889},\"calculations\":{\"key_0\":{\"histograms\":{\"key_0\":{\"nBins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"binWidth\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"lowEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"highEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"bins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_1\":{\"nBins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"binWidth\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"lowEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"highEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"bins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}},\"statistics\":{\"key_0\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_1\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_2\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}}},\"key_1\":{\"histograms\":{\"key_0\":{\"nBins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"binWidth\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"lowEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"highEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"bins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}},\"statistics\":{\"key_0\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_1\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}}},\"key_2\":{\"histograms\":{\"key_0\":{\"nBins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"binWidth\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"lowEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"highEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"bins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_1\":{\"nBins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"binWidth\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"lowEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"highEdge\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"bins\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}},\"statistics\":{\"key_0\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_1\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_2\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_3\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"key_4\":{\"percentiles\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}}}}}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Block of JavaScript code that will replace the evalscript property of the statistics request.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "evalscript",
+                      "value": "<string>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://services.sentinel-hub.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "ca12a1dc-5962-4157-8f39-13781bbdde18",
+    "name": "API Reference async_process statistical API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "**NOTE:** _Asynchronous Processing API is currently in beta release._\n\n\nContact Support:\n Name: Sentinel Hub",
+      "type": "text/plain"
+    }
+  }
+}

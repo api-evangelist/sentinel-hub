@@ -1,0 +1,58 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "API Reference async_process dataimport_product API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "dataimport_product",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get thumbnail of data product",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://services.sentinel-hub.com/api/v1/dataimport/collections/:collectionId/products/:productId/thumbnail",
+            "params": [
+              {
+                "name": "collectionId",
+                "value": "",
+                "type": "path",
+                "description": "Collection ID"
+              },
+              {
+                "name": "productId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the product to get thumbnail of, typically returned by a previous search"
+              },
+              {
+                "name": "planetApiKey",
+                "value": "",
+                "type": "query",
+                "description": "Your Planet API key. Get one from Planet https://www.planet.com.\nIt is required in order to get thumbnails of Planet data products\nunless you purchased your Planet data plan through Sentinel Hub.\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get a scaled-down, non-geolocated, non-clipped image of the data product"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

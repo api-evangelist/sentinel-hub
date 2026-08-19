@@ -1,0 +1,882 @@
+{
+  "item": [
+    {
+      "id": "492df079-874b-45b1-b694-737118ded084",
+      "name": "catalog_collections",
+      "description": {
+        "content": "This is an OpenAPI definition of the SpatioTemporal Asset Catalog API - Collections specification. This is a subset of the STAC API - Features specification.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5fe4876a-471d-41a8-8ed3-32f8dc62ff8f",
+          "name": "the feature collections in the dataset",
+          "request": {
+            "name": "the feature collections in the dataset",
+            "description": {
+              "content": "A body of Feature Collections that belong or are used together with additional links.\nRequest may not return the full set of metadata per Feature Collection.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "catalog",
+                "v1",
+                "collections"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "SH"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5a0591fd-4c89-4be6-a08e-4d539b9b635b",
+              "name": "The feature collections shared by this API.\n\nThe dataset is organized as one or more feature collections. This resource\nprovides information about and access to the collections.\n\nThe response contains the list of collections. For each collection, a link\nto the items in the collection (path `/collections/{collectionId}/items`,\nlink relation `items`) as well as key information about the collection.\nThis information includes:\n\n* A local identifier for the collection that is unique for the dataset;\n* A list of coordinate reference systems (CRS) in which geometries may be returned by the server. The first CRS is the default coordinate reference system (the default is always WGS 84 with axis order longitude/latitude);\n* An optional title and description for the collection;\n* An optional extent that can be used to provide an indication of the spatial and temporal extent of the collection - typically derived from the data;\n* An optional indicator about the type of the items in the collection (the default value, if the indicator is not provided, is 'feature').",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "catalog",
+                    "v1",
+                    "collections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"links\": [\n    {\n      \"href\": \"https://services.sentinel-hub.com/catalog/v1/\",\n      \"rel\": \"root\",\n      \"type\": \"application/json\"\n    },\n    {\n      \"href\": \"https://services.sentinel-hub.com/catalog/v1/collections/\",\n      \"rel\": \"self\",\n      \"type\": \"application/json\"\n    },\n    {\n      \"href\": \"https://services.sentinel-hub.com/catalog/v1/\",\n      \"rel\": \"parent\",\n      \"type\": \"application/json\"\n    }\n  ],\n  \"collections\": [\n    {\n      \"stac_version\": \"1.0.0\",\n      \"stac_extensions\": [\n        \"https://stac-extensions.github.io/scientific/v1.0.0/schema.json\",\n        \"https://stac-extensions.github.io/eo/v1.0.0/schema.json\"\n      ],\n      \"type\": \"Collection\",\n      \"id\": \"sentinel-2-l1c\",\n      \"title\": \"Sentinel 2 L1C\",\n      \"description\": \"Sentinel 2 imagery processed to level 1C\",\n      \"sci:citation\": \"Modified Copernicus Sentinel data [Year]/Sentinel Hub\",\n      \"license\": \"proprietary\",\n      \"providers\": [\n        {\n          \"name\": \"ESA\",\n          \"roles\": [\n            \"producer\"\n          ],\n          \"url\": \"https://esa.int/\"\n        },\n        {\n          \"name\": \"AWS\",\n          \"roles\": [\n            \"host\"\n          ],\n          \"url\": \"https://aws.amazon.com/\"\n        },\n        {\n          \"name\": \"Sinergise\",\n          \"roles\": [\n            \"processor\"\n          ],\n          \"url\": \"https://www.sinergise.com/\"\n        }\n      ],\n      \"extent\": {\n        \"spatial\": {\n          \"bbox\": [\n            [\n              -180,\n              -56,\n              180,\n              83\n            ]\n          ]\n        },\n        \"temporal\": {\n          \"interval\": [\n            [\n              \"2015-11-01T00:00:00Z\",\n              null\n            ]\n          ]\n        }\n      },\n      \"summaries\": {\n        \"platform\": [\n          \"sentinel-2a\",\n          \"sentinel-2b\"\n        ],\n        \"instrument\": [\n          \"msi\"\n        ],\n        \"constellation\": [\n          \"sentinel-2\"\n        ],\n        \"gsd\": [\n          10\n        ],\n        \"eo:cloud_cover\": {\n          \"minimum\": 0,\n          \"maximum\": 100\n        },\n        \"eo:bands\": [\n          {\n            \"name\": \"B01\",\n            \"common_name\": \"coastal\",\n            \"center_wavelength\": 0.4427,\n            \"full_width_half_max\": 0.021\n          },\n          {\n            \"name\": \"B02\",\n            \"common_name\": \"blue\",\n            \"center_wavelength\": 0.4924,\n            \"full_width_half_max\": 0.066\n          },\n          {\n            \"name\": \"B03\",\n            \"common_name\": \"green\",\n            \"center_wavelength\": 0.5598,\n            \"full_width_half_max\": 0.036\n          },\n          {\n            \"name\": \"B04\",\n            \"common_name\": \"red\",\n            \"center_wavelength\": 0.6646,\n            \"full_width_half_max\": 0.031\n          },\n          {\n            \"name\": \"B05\",\n            \"center_wavelength\": 0.7041,\n            \"full_width_half_max\": 0.015\n          },\n          {\n            \"name\": \"B06\",\n            \"center_wavelength\": 0.7405,\n            \"full_width_half_max\": 0.015\n          },\n          {\n            \"name\": \"B07\",\n            \"center_wavelength\": 0.7828,\n            \"full_width_half_max\": 0.02\n          },\n          {\n            \"name\": \"B08\",\n            \"common_name\": \"nir\",\n            \"center_wavelength\": 0.8328,\n            \"full_width_half_max\": 0.106\n          },\n          {\n            \"name\": \"B8A\",\n            \"common_name\": \"nir08\",\n            \"center_wavelength\": 0.8647,\n            \"full_width_half_max\": 0.021\n          },\n          {\n            \"name\": \"B09\",\n            \"common_name\": \"nir09\",\n            \"center_wavelength\": 0.9451,\n            \"full_width_half_max\": 0.02\n          },\n          {\n            \"name\": \"B10\",\n            \"common_name\": \"cirrus\",\n            \"center_wavelength\": 1.3735,\n            \"full_width_half_max\": 0.031\n          },\n          {\n            \"name\": \"B11\",\n            \"common_name\": \"swir16\",\n            \"center_wavelength\": 1.6137,\n            \"full_width_half_max\": 0.091\n          },\n          {\n            \"name\": \"B12\",\n            \"common_name\": \"swir22\",\n            \"center_wavelength\": 2.2024,\n            \"full_width_half_max\": 0.175\n          }\n        ]\n      },\n      \"links\": [\n        {\n          \"href\": \"https://services.sentinel-hub.com/catalog/v1/\",\n          \"rel\": \"root\",\n          \"type\": \"application/json\"\n        },\n        {\n          \"href\": \"https://services.sentinel-hub.com/catalog/v1/collections/sentinel-2-l1c\",\n          \"rel\": \"self\",\n          \"type\": \"application/json\"\n        },\n        {\n          \"href\": \"https://services.sentinel-hub.com/catalog/v1/collections\",\n          \"rel\": \"parent\",\n          \"type\": \"application/json\"\n        },\n        {\n          \"href\": \"https://services.sentinel-hub.com/catalog/v1/collections/sentinel-2-l1c/queryables\",\n          \"rel\": \"http://www.opengis.net/def/rel/ogc/1.0/queryables\",\n          \"type\": \"application/schema+json\"\n        },\n        {\n          \"href\": \"https://services.sentinel-hub.com/catalog/v1/collections/sentinel-2-l1c/items\",\n          \"rel\": \"items\",\n          \"type\": \"application/geo+json\"\n        }\n      ]\n    },\n    {\n      \"stac_version\": \"1.0.0\",\n      \"stac_extensions\": [\n        \"https://stac-extensions.github.io/scientific/v1.0.0/schema.json\",\n        \"https://stac-extensions.github.io/sat/v1.0.0/schema.json\",\n        \"https://stac-extensions.github.io/sar/v1.0.0/schema.json\",\n        \"https://docs.sentinel-hub.com/api/latest/stac/s1/v1.0.0/schema.json\"\n      ],\n      \"type\": \"Collection\",\n      \"id\": \"sentinel-1-grd\",\n      \"title\": \"Sentinel 1 GRD\",\n      \"description\": \"Sentinel 1 Ground Range Detected Imagery\",\n      \"sci:citation\": \"Modified Copernicus Sentinel data [Year]/Sentinel Hub\",\n      \"license\": \"proprietary\",\n      \"providers\": [\n        {\n          \"name\": \"ESA\",\n          \"roles\": [\n            \"producer\"\n          ],\n          \"url\": \"https://esa.int/\"\n        },\n        {\n          \"name\": \"AWS\",\n          \"roles\": [\n            \"host\"\n          ],\n          \"url\": \"https://aws.amazon.com/\"\n        },\n        {\n          \"name\": \"Sinergise\",\n          \"roles\": [\n            \"processor\"\n          ],\n          \"url\": \"https://www.sinergise.com/\"\n        }\n      ],\n      \"extent\": {\n        \"spatial\": {\n          \"bbox\": [\n            [\n              -180,\n              -85,\n              180,\n              85\n            ]\n          ]\n        },\n        \"temporal\": {\n          \"interval\": [\n            [\n              \"2014-10-03T00:00:00Z\",\n              null\n            ]\n          ]\n        }\n      },\n      \"summaries\": {\n        \"platform\": [\n          \"sentinel-1a\",\n          \"sentinel-1b\"\n        ],\n        \"instrument\": [\n          \"c-sar\"\n        ],\n        \"constellation\": [\n          \"sentinel-1\"\n        ],\n        \"sat:orbit_state\": [\n          \"ascending\",\n          \"descending\"\n        ],\n        \"sar:instrument_mode\": [\n          \"SM\",\n          \"IW\",\n          \"EW\",\n          \"WV\",\n          \"EN\",\n          \"AN\",\n          \"IM\"\n        ],\n        \"sar:frequency_band\": [\n          \"C\"\n        ],\n        \"sar:center_frequency\": [\n          5.405\n        ],\n        \"sar:product_type\": [\n          \"GRD\"\n        ],\n        \"sar:polarizations\": [\n          \"HH\",\n          \"HV\",\n          \"VH\",\n          \"VV\"\n        ],\n        \"sar:resolution_range\": [\n          9,\n          20,\n          23,\n          50,\n          52,\n          84,\n          88,\n          93\n        ],\n        \"sar:resolution_azimuth\": [\n          9,\n          22,\n          23,\n          50,\n          51,\n          84,\n          87\n        ],\n        \"sar:pixel_spacing_range\": [\n          3.5,\n          10,\n          25,\n          40\n        ],\n        \"sar:pixel_spacing_azimuth\": [\n          3.5,\n          10,\n          25,\n          40\n        ],\n        \"s1:timeliness\": [\n          \"NRT10m\",\n          \"NRT1h\",\n          \"NRT3h\",\n          \"Fast24h\",\n          \"Offline\",\n          \"Reprocessing\",\n          \"ArchNormal\"\n        ],\n        \"s1:resolution\": [\n          \"HIGH\",\n          \"MEDIUM\",\n          \"FULL\"\n        ],\n        \"s1:polarization\": [\n          \"SH\",\n          \"SV\",\n          \"DH\",\n          \"DV\",\n          \"HH\",\n          \"HV\",\n          \"VV\",\n          \"VH\"\n        ]\n      },\n      \"links\": [\n        {\n          \"href\": \"https://services.sentinel-hub.com/catalog/v1/\",\n          \"rel\": \"root\",\n          \"type\": \"application/json\"\n        },\n        {\n          \"href\": \"https://services.sentinel-hub.com/catalog/v1/collections/sentinel-1-grd\",\n          \"rel\": \"self\",\n          \"type\": \"application/json\"\n        },\n        {\n          \"href\": \"https://services.sentinel-hub.com/catalog/v1/collections\",\n          \"rel\": \"parent\",\n          \"type\": \"application/json\"\n        },\n        {\n          \"href\": \"https://services.sentinel-hub.com/catalog/v1/collections/sentinel-1-grd/queryables\",\n          \"rel\": \"http://www.opengis.net/def/rel/ogc/1.0/queryables\",\n          \"type\": \"application/schema+json\"\n        },\n        {\n          \"href\": \"https://services.sentinel-hub.com/catalog/v1/collections/sentinel-1-grd/items\",\n          \"rel\": \"items\",\n          \"type\": \"application/geo+json\"\n        }\n      ]\n    },\n    {\n      \"stac_version\": \"1.0.0\",\n      \"stac_extensions\": [\n        \"https://stac-extensions.github.io/scientific/v1.0.0/schema.json\",\n        \"https://stac-extensions.github.io/eo/v1.0.0/schema.json\"\n      ],\n      \"type\": \"Collection\",\n      \"id\": \"sentinel-2-l2a\",\n      \"title\": \"Sentinel 2 L2A\",\n      \"description\": \"Sentinel 2 imagery processed to level 2A\",\n      \"sci:citation\": \"Modified Copernicus Sentinel data [Year]/Sentinel Hub\",\n      \"license\": \"proprietary\",\n      \"providers\": [\n        {\n          \"name\": \"ESA\",\n          \"roles\": [\n            \"producer\"\n          ],\n          \"url\": \"https://esa.int/\"\n        },\n        {\n          \"name\": \"AWS\",\n          \"roles\": [\n            \"host\"\n          ],\n          \"url\": \"https://aws.amazon.com/\"\n        },\n        {\n          \"name\": \"Sinergise\",\n          \"roles\": [\n            \"processor\"\n          ],\n          \"url\": \"https://www.sinergise.com/\"\n        }\n      ],\n      \"extent\": {\n        \"spatial\": {\n          \"bbox\": [\n            [\n              -180,\n              -56,\n              180,\n              83\n            ]\n          ]\n        },\n        \"temporal\": {\n          \"interval\": [\n            [\n              \"2016-11-01T00:00:00Z\",\n              null\n            ]\n          ]\n        }\n      },\n      \"summaries\": {\n        \"platform\": [\n          \"sentinel-2a\",\n          \"sentinel-2b\"\n        ],\n        \"instrument\": [\n          \"msi\"\n        ],\n        \"constellation\": [\n          \"sentinel-2\"\n        ],\n        \"gsd\": [\n          10\n        ],\n        \"eo:cloud_cover\": {\n          \"minimum\": 0,\n          \"maximum\": 100\n        },\n        \"eo:bands\": [\n          {\n            \"name\": \"B01\",\n            \"common_name\": \"coastal\",\n            \"center_wavelength\": 0.4427,\n            \"full_width_half_max\": 0.021\n          },\n          {\n            \"name\": \"B02\",\n            \"common_name\": \"blue\",\n            \"center_wavelength\": 0.4924,\n            \"full_width_half_max\": 0.066\n          },\n          {\n            \"name\": \"B03\",\n            \"common_name\": \"green\",\n            \"center_wavelength\": 0.5598,\n            \"full_width_half_max\": 0.036\n          },\n          {\n            \"name\": \"B04\",\n            \"common_name\": \"red\",\n            \"center_wavelength\": 0.6646,\n            \"full_width_half_max\": 0.031\n          },\n          {\n            \"name\": \"B05\",\n            \"center_wavelength\": 0.7041,\n            \"full_width_half_max\": 0.015\n          },\n          {\n            \"name\": \"B06\",\n            \"center_wavelength\": 0.7405,\n            \"full_width_half_max\": 0.015\n          },\n          {\n            \"name\": \"B07\",\n            \"center_wavelength\": 0.7828,\n            \"full_width_half_max\": 0.02\n          },\n          {\n            \"name\": \"B08\",\n            \"common_name\": \"nir\",\n            \"center_wavelength\": 0.8328,\n            \"full_width_half_max\": 0.106\n          },\n          {\n            \"name\": \"B8A\",\n            \"common_name\": \"nir08\",\n            \"center_wavelength\": 0.8647,\n            \"full_width_half_max\": 0.021\n          },\n          {\n            \"name\": \"B09\",\n            \"common_name\": \"nir09\",\n            \"center_wavelength\": 0.9451,\n            \"full_width_half_max\": 0.02\n          },\n          {\n            \"name\": \"B11\",\n            \"common_name\": \"swir16\",\n            \"center_wavelength\": 1.6137,\n            \"full_width_half_max\": 0.091\n          },\n          {\n            \"name\": \"B12\",\n            \"common_name\": \"swir22\",\n            \"center_wavelength\": 2.2024,\n            \"full_width_half_max\": 0.175\n          }\n        ]\n      },\n      \"links\": [\n        {\n          \"href\": \"https://services.sentinel-hub.com/catalog/v1/\",\n          \"rel\": \"root\",\n          \"type\": \"application/json\"\n        },\n        {\n          \"href\": \"https://services.sentinel-hub.com/catalog/v1/collections/sentinel-2-l2a\",\n          \"rel\": \"self\",\n          \"type\": \"application/json\"\n        },\n        {\n          \"href\": \"https://services.sentinel-hub.com/catalog/v1/collections\",\n          \"rel\": \"parent\",\n          \"type\": \"application/json\"\n        },\n        {\n          \"href\": \"https://services.sentinel-hub.com/catalog/v1/collections/sentinel-2-l2a/queryables\",\n          \"rel\": \"http://www.opengis.net/def/rel/ogc/1.0/queryables\",\n          \"type\": \"application/schema+json\"\n        },\n        {\n          \"href\": \"https://services.sentinel-hub.com/catalog/v1/collections/sentinel-2-l2a/items\",\n          \"rel\": \"items\",\n          \"type\": \"application/geo+json\"\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "653f999d-8224-4fab-8f02-9a1faf69406e",
+              "name": "Insufficient permissions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "catalog",
+                    "v1",
+                    "collections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0f97c2fa-a390-4e18-891a-8ae572b25d47",
+              "name": "A server error occurred.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "catalog",
+                    "v1",
+                    "collections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "51f73712-7a0b-4cd3-94eb-3a4613f3adda",
+          "name": "describe the feature collection with id `collectionId`",
+          "request": {
+            "name": "describe the feature collection with id `collectionId`",
+            "description": {
+              "content": "A single Feature Collection for the given if `collectionId`.\nRequest this endpoint to get a full list of metadata for the Feature Collection.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "catalog",
+                "v1",
+                "collections",
+                ":collectionId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "collectionId",
+                  "description": "(Required) local identifier of a collection"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "SH"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d3e0a4c2-41d1-46bb-b303-3e64dc2989a3",
+              "name": "Information about the feature collection with id `collectionId`.\n\nThe response contains a link to the items in the collection\n(path `/collections/{collectionId}/items`, link relation `items`)\nas well as key information about the collection. This information\nincludes:\n\n* A local identifier for the collection that is unique for the dataset;\n* A list of coordinate reference systems (CRS) in which geometries may be returned by the server. The first CRS is the default coordinate reference system (the default is always WGS 84 with axis order longitude/latitude);\n* An optional title and description for the collection;\n* An optional extent that can be used to provide an indication of the spatial and temporal extent of the collection - typically derived from the data;\n* An optional indicator about the type of the items in the collection (the default value, if the indicator is not provided, is 'feature').",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "catalog",
+                    "v1",
+                    "collections",
+                    ":collectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collectionId",
+                      "description": "(Required) local identifier of a collection"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"stac_version\": \"1.0.0\",\n  \"stac_extensions\": [\n    \"https://stac-extensions.github.io/scientific/v1.0.0/schema.json\",\n    \"https://stac-extensions.github.io/eo/v1.0.0/schema.json\"\n  ],\n  \"type\": \"Collection\",\n  \"id\": \"sentinel-2-l2a\",\n  \"title\": \"Sentinel 2 L2A\",\n  \"description\": \"Sentinel 2 imagery processed to level 2A\",\n  \"sci:citation\": \"Modified Copernicus Sentinel data [Year]/Sentinel Hub\",\n  \"license\": \"proprietary\",\n  \"providers\": [\n    {\n      \"name\": \"ESA\",\n      \"roles\": [\n        \"producer\"\n      ],\n      \"url\": \"https://esa.int/\"\n    },\n    {\n      \"name\": \"AWS\",\n      \"roles\": [\n        \"host\"\n      ],\n      \"url\": \"https://aws.amazon.com/\"\n    },\n    {\n      \"name\": \"Sinergise\",\n      \"roles\": [\n        \"processor\"\n      ],\n      \"url\": \"https://www.sinergise.com/\"\n    }\n  ],\n  \"extent\": {\n    \"spatial\": {\n      \"bbox\": [\n        [\n          -180,\n          -56,\n          180,\n          83\n        ]\n      ]\n    },\n    \"temporal\": {\n      \"interval\": [\n        [\n          \"2016-11-01T00:00:00Z\",\n          null\n        ]\n      ]\n    }\n  },\n  \"summaries\": {\n    \"platform\": [\n      \"sentinel-2a\",\n      \"sentinel-2b\"\n    ],\n    \"instrument\": [\n      \"msi\"\n    ],\n    \"constellation\": [\n      \"sentinel-2\"\n    ],\n    \"gsd\": [\n      10\n    ],\n    \"eo:cloud_cover\": {\n      \"minimum\": 0,\n      \"maximum\": 100\n    },\n    \"eo:bands\": [\n      {\n        \"name\": \"B01\",\n        \"common_name\": \"coastal\",\n        \"center_wavelength\": 0.4427,\n        \"full_width_half_max\": 0.021\n      },\n      {\n        \"name\": \"B02\",\n        \"common_name\": \"blue\",\n        \"center_wavelength\": 0.4924,\n        \"full_width_half_max\": 0.066\n      },\n      {\n        \"name\": \"B03\",\n        \"common_name\": \"green\",\n        \"center_wavelength\": 0.5598,\n        \"full_width_half_max\": 0.036\n      },\n      {\n        \"name\": \"B04\",\n        \"common_name\": \"red\",\n        \"center_wavelength\": 0.6646,\n        \"full_width_half_max\": 0.031\n      },\n      {\n        \"name\": \"B05\",\n        \"center_wavelength\": 0.7041,\n        \"full_width_half_max\": 0.015\n      },\n      {\n        \"name\": \"B06\",\n        \"center_wavelength\": 0.7405,\n        \"full_width_half_max\": 0.015\n      },\n      {\n        \"name\": \"B07\",\n        \"center_wavelength\": 0.7828,\n        \"full_width_half_max\": 0.02\n      },\n      {\n        \"name\": \"B08\",\n        \"common_name\": \"nir\",\n        \"center_wavelength\": 0.8328,\n        \"full_width_half_max\": 0.106\n      },\n      {\n        \"name\": \"B8A\",\n        \"common_name\": \"nir08\",\n        \"center_wavelength\": 0.8647,\n        \"full_width_half_max\": 0.021\n      },\n      {\n        \"name\": \"B09\",\n        \"common_name\": \"nir09\",\n        \"center_wavelength\": 0.9451,\n        \"full_width_half_max\": 0.02\n      },\n      {\n        \"name\": \"B11\",\n        \"common_name\": \"swir16\",\n        \"center_wavelength\": 1.6137,\n        \"full_width_half_max\": 0.091\n      },\n      {\n        \"name\": \"B12\",\n        \"common_name\": \"swir22\",\n        \"center_wavelength\": 2.2024,\n        \"full_width_half_max\": 0.175\n      }\n    ]\n  },\n  \"links\": [\n    {\n      \"href\": \"https://services.sentinel-hub.com/catalog/v1/\",\n      \"rel\": \"root\",\n      \"type\": \"application/json\"\n    },\n    {\n      \"href\": \"https://services.sentinel-hub.com/catalog/v1/collections/sentinel-2-l2a\",\n      \"rel\": \"self\",\n      \"type\": \"application/json\"\n    },\n    {\n      \"href\": \"https://services.sentinel-hub.com/catalog/v1/collections\",\n      \"rel\": \"parent\",\n      \"type\": \"application/json\"\n    },\n    {\n      \"href\": \"https://services.sentinel-hub.com/catalog/v1/collections/sentinel-2-l2a/queryables\",\n      \"rel\": \"http://www.opengis.net/def/rel/ogc/1.0/queryables\",\n      \"type\": \"application/schema+json\"\n    },\n    {\n      \"href\": \"https://services.sentinel-hub.com/catalog/v1/collections/sentinel-2-l2a/items\",\n      \"rel\": \"items\",\n      \"type\": \"application/geo+json\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ae783e3a-c142-45d7-9673-86496678aba2",
+              "name": "Illegal collection.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "catalog",
+                    "v1",
+                    "collections",
+                    ":collectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collectionId",
+                      "description": "(Required) local identifier of a collection"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e24e4dc7-5855-4500-88ed-c4a2f9f59a3e",
+              "name": "Insufficient permissions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "catalog",
+                    "v1",
+                    "collections",
+                    ":collectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collectionId",
+                      "description": "(Required) local identifier of a collection"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e6981000-b67a-427d-8452-a2a185718ca1",
+              "name": "The requested URI was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "catalog",
+                    "v1",
+                    "collections",
+                    ":collectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collectionId",
+                      "description": "(Required) local identifier of a collection"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "df98bc71-9839-4c1d-9368-74f6a20a26ca",
+              "name": "A server error occurred.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "catalog",
+                    "v1",
+                    "collections",
+                    ":collectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collectionId",
+                      "description": "(Required) local identifier of a collection"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c5bc80dd-80b8-419d-a11e-db84ed01096c",
+          "name": "Get the JSON Schema defining the list of variable terms that can be used in CQL2 expressions.",
+          "request": {
+            "name": "Get the JSON Schema defining the list of variable terms that can be used in CQL2 expressions.",
+            "description": {
+              "content": "This endpoint returns a list of variable terms that can be used in CQL2 expressions. The\nprecise definition of this can be found in the OGC API - Features - Part 3: Filtering and the\nCommon Query Language (CQL) specification.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "catalog",
+                "v1",
+                "collections",
+                ":collectionId",
+                "queryables"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "collectionId",
+                  "description": "(Required) ID of Collection"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/schema+json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "SH"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "79f6fb71-9948-4b4b-8b88-a3c051841913",
+              "name": "A JSON Schema defining the Queryables allowed in CQL2 expressions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "catalog",
+                    "v1",
+                    "collections",
+                    ":collectionId",
+                    "queryables"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collectionId",
+                      "description": "(Required) ID of Collection"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/schema+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/schema+json"
+                }
+              ],
+              "body": "{\n  \"$schema\": \"https://json-schema.org/draft/2019-09/schema\",\n  \"$id\": \"https://services.sentinel-hub.com/catalog/v1/collections/sentinel-2-l2a/queryables/\",\n  \"type\": \"object\",\n  \"title\": \"Queryables for Catalog STAC API\",\n  \"description\": \"Queryable names for the Catalog STAC API Item Search filter.\",\n  \"properties\": {\n    \"eo:cloud_cover\": {\n      \"description\": \"Cloud Cover\",\n      \"type\": \"number\",\n      \"minimum\": 0,\n      \"maximum\": 100\n    }\n  },\n  \"additionalProperties\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "48bbe77c-e000-4a0e-b0a0-7441c1cae39f",
+              "name": "Illegal collection.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "catalog",
+                    "v1",
+                    "collections",
+                    ":collectionId",
+                    "queryables"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collectionId",
+                      "description": "(Required) ID of Collection"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cdc4d304-f4e7-45c0-9521-309d01dfb365",
+              "name": "Insufficient permissions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "catalog",
+                    "v1",
+                    "collections",
+                    ":collectionId",
+                    "queryables"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collectionId",
+                      "description": "(Required) ID of Collection"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e311ac3c-4dac-49b2-9b54-fc8d66de43fe",
+              "name": "The requested URI was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "catalog",
+                    "v1",
+                    "collections",
+                    ":collectionId",
+                    "queryables"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collectionId",
+                      "description": "(Required) ID of Collection"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "12a09281-2c14-4e1a-987a-cd383bf3feb5",
+              "name": "A server error occurred.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "catalog",
+                    "v1",
+                    "collections",
+                    ":collectionId",
+                    "queryables"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collectionId",
+                      "description": "(Required) ID of Collection"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://services.sentinel-hub.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "1f6aab01-2d01-4cb8-bdea-916b7ddf40c6",
+    "name": "API Reference async_process catalog_collections API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "**NOTE:** _Asynchronous Processing API is currently in beta release._\n\n\nContact Support:\n Name: Sentinel Hub",
+      "type": "text/plain"
+    }
+  }
+}

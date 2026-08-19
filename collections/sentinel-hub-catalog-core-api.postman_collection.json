@@ -1,0 +1,251 @@
+{
+  "item": [
+    {
+      "id": "b2d8972e-8a7e-47d5-806b-1a9744b7e7c4",
+      "name": "catalog_core",
+      "description": {
+        "content": "This is an OpenAPI definition of the SpatioTemporal Asset Catalog API - Core specification. Any service that implements this endpoint to allow discovery of spatiotemporal assets can be considered a STAC API.\n\nMake sure to use the appropriate <a href=\"https://docs.sentinel-hub.com/api/latest/data/\" target=\"_blank\"> end-point for each of the datasets</a>, e.g. for Landsat, Sentinel-3, etc.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b249b9d9-6a95-4a8a-9646-bf910978c4fe",
+          "name": "landing page",
+          "request": {
+            "name": "landing page",
+            "description": {
+              "content": "Returns the root STAC Catalog or STAC Collection that is the entry point\nfor users to browse with STAC Browser or for search engines to crawl.\nThis can either return a single STAC Collection or more commonly a STAC\ncatalog.\n\nThe landing page provides links to the\nAPI definition (link relations `service-desc` and `service-doc`)\nand the STAC records such as collections/catalogs (link relation `child`)\nor items (link relation `item`).\n\nExtensions may add additional links with new relation types.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "catalog",
+                "v1"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "344ce726-d815-4d5a-8286-9cc5fc1a78ef",
+              "name": "The landing page provides links to the API definition\n(link relations `service-desc` and `service-doc`),\nthe Conformance declaration (path `/conformance`,\nlink relation `conformance`), and the Feature\nCollections (path `/collections`, link relation\n`data`).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "catalog",
+                    "v1"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"Catalog\",\n  \"stac_version\": \"1.0.0\",\n  \"id\": \"sentinel-hub\",\n  \"title\": \"Sentinel Hub STAC catalog\",\n  \"description\": \"STAC v1.0.0 implementation by Sentinel Hub\",\n  \"conformsTo\": [\n    \"http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/core\",\n    \"http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/oas30\",\n    \"http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/geojson\",\n    \"https://api.stacspec.org/v1.0.0/core\",\n    \"https://api.stacspec.org/v1.0.0/collections\",\n    \"https://api.stacspec.org/v1.0.0/ogcapi-features\",\n    \"https://api.stacspec.org/v1.0.0/ogcapi-features#fields\",\n    \"https://api.stacspec.org/v1.0.0/ogcapi-features#context\",\n    \"https://api.stacspec.org/v1.0.0/ogcapi-features#filter\",\n    \"https://api.stacspec.org/v1.0.0/item-search\",\n    \"https://api.stacspec.org/v1.0.0/item-search#fields\",\n    \"https://api.stacspec.org/v1.0.0/item-search#context\",\n    \"https://api.stacspec.org/v1.0.0/item-search#filter\",\n    \"http://www.opengis.net/spec/ogcapi-features-3/1.0/conf/filter\",\n    \"http://www.opengis.net/spec/ogcapi-features-3/1.0/conf/features-filter\",\n    \"http://www.opengis.net/spec/cql2/1.0/conf/cql2-text\",\n    \"http://www.opengis.net/spec/cql2/1.0/conf/cql2-json\",\n    \"http://www.opengis.net/spec/cql2/1.0/conf/basic-cql2\"\n  ],\n  \"links\": [\n    {\n      \"href\": \"https://services.sentinel-hub.com/catalog/v1/\",\n      \"rel\": \"root\",\n      \"type\": \"application/json\"\n    },\n    {\n      \"href\": \"https://services.sentinel-hub.com/catalog/v1/\",\n      \"rel\": \"self\",\n      \"type\": \"application/json\"\n    },\n    {\n      \"href\": \"https://services.sentinel-hub.com/catalog/v1/collections\",\n      \"rel\": \"data\",\n      \"type\": \"application/json\"\n    },\n    {\n      \"href\": \"https://services.sentinel-hub.com/catalog/v1/conformance\",\n      \"rel\": \"conformance\",\n      \"type\": \"application/json\",\n      \"title\": \"STAC conformance classes implemented by this server\"\n    },\n    {\n      \"href\": \"https://services.sentinel-hub.com/catalog/v1/search\",\n      \"rel\": \"search\",\n      \"type\": \"application/geo+json\",\n      \"title\": \"STAC search\",\n      \"method\": \"GET\"\n    },\n    {\n      \"href\": \"https://services.sentinel-hub.com/catalog/v1/search\",\n      \"rel\": \"search\",\n      \"type\": \"application/geo+json\",\n      \"title\": \"STAC search\",\n      \"method\": \"POST\"\n    },\n    {\n      \"href\": \"https://services.sentinel-hub.com/catalog/v1/queryables\",\n      \"rel\": \"http://www.opengis.net/def/rel/ogc/1.0/queryables\",\n      \"type\": \"application/schema+json\"\n    },\n    {\n      \"href\": \"https://services.sentinel-hub.com/catalog/v1/collections/sentinel-2-l1c\",\n      \"rel\": \"child\",\n      \"type\": \"application/json\",\n      \"title\": \"Sentinel 2 L1C\"\n    },\n    {\n      \"href\": \"https://services.sentinel-hub.com/catalog/v1/collections/sentinel-1-grd\",\n      \"rel\": \"child\",\n      \"type\": \"application/json\",\n      \"title\": \"Sentinel 1 GRD\"\n    },\n    {\n      \"href\": \"https://services.sentinel-hub.com/catalog/v1/collections/sentinel-2-l2a\",\n      \"rel\": \"child\",\n      \"type\": \"application/json\",\n      \"title\": \"Sentinel 2 L2A\"\n    },\n    {\n      \"href\": \"https://docs.sentinel-hub.com/api/latest/reference/openapi.v1.yaml\",\n      \"rel\": \"service-desc\",\n      \"type\": \"application/vnd.oai.openapi;version=\\\"3.1\\\"\",\n      \"title\": \"OpenAPI service description\"\n    },\n    {\n      \"href\": \"https://docs.planet.com/develop/apis/catalog/reference/#tag/catalog_core\",\n      \"rel\": \"service-doc\",\n      \"type\": \"text/html\",\n      \"title\": \"OpenAPI service documentation\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7b4febd0-7b74-46b2-a1c2-ba00f81edda9",
+              "name": "An error occurred.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "catalog",
+                    "v1"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "071c3b6e-8b9c-4528-95b6-c856a6f11081",
+          "name": "information about specifications that this API conforms to",
+          "request": {
+            "name": "information about specifications that this API conforms to",
+            "description": {
+              "content": "A list of all conformance classes specified in a standard that the\nserver conforms to.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "catalog",
+                "v1",
+                "conformance"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "177d5402-10d5-4039-a2d5-205fdde01ce7",
+              "name": "The URIs of all conformance classes supported by the server.\n\nTo support \"generic\" clients that want to access multiple\nOGC API Features implementations - and not \"just\" a specific\nAPI / server, the server declares the conformance\nclasses it implements and conforms to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "catalog",
+                    "v1",
+                    "conformance"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"conformsTo\": [\n    \"http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/core\",\n    \"http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/oas30\",\n    \"http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/geojson\",\n    \"https://api.stacspec.org/v1.0.0/core\",\n    \"https://api.stacspec.org/v1.0.0/collections\",\n    \"https://api.stacspec.org/v1.0.0/ogcapi-features\",\n    \"https://api.stacspec.org/v1.0.0/ogcapi-features#fields\",\n    \"https://api.stacspec.org/v1.0.0/ogcapi-features#context\",\n    \"https://api.stacspec.org/v1.0.0/ogcapi-features#filter\",\n    \"https://api.stacspec.org/v1.0.0/item-search\",\n    \"https://api.stacspec.org/v1.0.0/item-search#fields\",\n    \"https://api.stacspec.org/v1.0.0/item-search#context\",\n    \"https://api.stacspec.org/v1.0.0/item-search#filter\",\n    \"http://www.opengis.net/spec/ogcapi-features-3/1.0/conf/filter\",\n    \"http://www.opengis.net/spec/ogcapi-features-3/1.0/conf/features-filter\",\n    \"http://www.opengis.net/spec/cql2/1.0/conf/cql2-text\",\n    \"http://www.opengis.net/spec/cql2/1.0/conf/cql2-json\",\n    \"http://www.opengis.net/spec/cql2/1.0/conf/basic-cql2\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "36867a71-516c-45e4-957a-98f1df8244bc",
+              "name": "An error occurred.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "catalog",
+                    "v1",
+                    "conformance"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://services.sentinel-hub.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "16166c11-ea8e-4d3f-ae94-579095593f0d",
+    "name": "API Reference async_process catalog_core API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "**NOTE:** _Asynchronous Processing API is currently in beta release._\n\n\nContact Support:\n Name: Sentinel Hub",
+      "type": "text/plain"
+    }
+  }
+}

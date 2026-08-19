@@ -1,0 +1,1847 @@
+{
+  "item": [
+    {
+      "id": "c010224d-f52c-4401-a0da-39b1753d0728",
+      "name": "byoc_collection",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "086c74c0-a40f-4f4c-8057-f0a4bbe77e8f",
+          "name": "Create a collection",
+          "request": {
+            "name": "Create a collection",
+            "description": {},
+            "url": {
+              "path": [
+                "byoc",
+                "v1",
+                "collections"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "SH"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"s3Bucket\": \"<string>\",\n  \"isConfigured\": \"<boolean>\",\n  \"noData\": \"<number>\",\n  \"additionalData\": {\n    \"bands\": {\n      \"key_0\": {\n        \"bitDepth\": \"<integer>\",\n        \"sampleFormat\": \"<string>\",\n        \"source\": \"<string>\",\n        \"bandIndex\": 1,\n        \"noData\": \"<number>\"\n      }\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fd81bedf-1e96-4ae2-adef-638e8ecc7fe7",
+              "name": "Collection created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"s3Bucket\": \"<string>\",\n  \"isConfigured\": \"<boolean>\",\n  \"noData\": \"<number>\",\n  \"additionalData\": {\n    \"bands\": {\n      \"key_0\": {\n        \"bitDepth\": 8,\n        \"sampleFormat\": \"FLOAT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 2192.49349858844\n      },\n      \"key_1\": {\n        \"bitDepth\": 32,\n        \"sampleFormat\": \"UINT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 8007.518845182565\n      },\n      \"key_2\": {\n        \"bitDepth\": 32,\n        \"sampleFormat\": \"UINT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 7574.476467506941\n      },\n      \"key_3\": {\n        \"bitDepth\": 8,\n        \"sampleFormat\": \"UINT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 8689.18885474081\n      },\n      \"key_4\": {\n        \"bitDepth\": 32,\n        \"sampleFormat\": \"UINT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 9828.478332546525\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"name\": \"string\",\n    \"s3Bucket\": \"string\",\n    \"id\": \"97aa0a19-60a4-5827-9f78-a6b765d1bf9d\",\n    \"accountId\": \"40b3aa2d-359e-4fad-663a-4348041686b6\",\n    \"isConfigured\": true,\n    \"created\": \"1971-10-07T22:05:49.388Z\",\n    \"noData\": 8418.843087991198,\n    \"requiresMetadataUpdate\": true,\n    \"additionalData\": {\n      \"bands\": {\n        \"key_0\": {\n          \"bitDepth\": 8,\n          \"sampleFormat\": \"INT\",\n          \"source\": \"string\",\n          \"bandIndex\": 1,\n          \"noData\": 5276.944063386225,\n          \"aliases\": [\n            \"string\",\n            \"string\"\n          ]\n        }\n      },\n      \"maxMetersPerPixel\": 81.03747682371099,\n      \"extent\": {\n        \"type\": \"Polygon\",\n        \"coordinates\": [\n          [\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          ],\n          [\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          ]\n        ]\n      },\n      \"hasSensingTimes\": \"NO\",\n      \"fromSensingTime\": \"2019-07-22T23:00:53.029Z\",\n      \"toSensingTime\": \"2014-02-07T08:35:46.705Z\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "27bca2b3-6d3e-43f1-abb0-3ff5cd1d8508",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"s3Bucket\": \"<string>\",\n  \"isConfigured\": \"<boolean>\",\n  \"noData\": \"<number>\",\n  \"additionalData\": {\n    \"bands\": {\n      \"key_0\": {\n        \"bitDepth\": 8,\n        \"sampleFormat\": \"FLOAT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 2192.49349858844\n      },\n      \"key_1\": {\n        \"bitDepth\": 32,\n        \"sampleFormat\": \"UINT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 8007.518845182565\n      },\n      \"key_2\": {\n        \"bitDepth\": 32,\n        \"sampleFormat\": \"UINT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 7574.476467506941\n      },\n      \"key_3\": {\n        \"bitDepth\": 8,\n        \"sampleFormat\": \"UINT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 8689.18885474081\n      },\n      \"key_4\": {\n        \"bitDepth\": 32,\n        \"sampleFormat\": \"UINT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 9828.478332546525\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 2998,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_BAD_PAYLOAD\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5b21ff5c-6c75-4182-8171-2395bd87cc14",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"s3Bucket\": \"<string>\",\n  \"isConfigured\": \"<boolean>\",\n  \"noData\": \"<number>\",\n  \"additionalData\": {\n    \"bands\": {\n      \"key_0\": {\n        \"bitDepth\": 8,\n        \"sampleFormat\": \"FLOAT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 2192.49349858844\n      },\n      \"key_1\": {\n        \"bitDepth\": 32,\n        \"sampleFormat\": \"UINT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 8007.518845182565\n      },\n      \"key_2\": {\n        \"bitDepth\": 32,\n        \"sampleFormat\": \"UINT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 7574.476467506941\n      },\n      \"key_3\": {\n        \"bitDepth\": 8,\n        \"sampleFormat\": \"UINT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 8689.18885474081\n      },\n      \"key_4\": {\n        \"bitDepth\": 32,\n        \"sampleFormat\": \"UINT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 9828.478332546525\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7bb2e86a-7798-424f-b9cb-16452800b891",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"s3Bucket\": \"<string>\",\n  \"isConfigured\": \"<boolean>\",\n  \"noData\": \"<number>\",\n  \"additionalData\": {\n    \"bands\": {\n      \"key_0\": {\n        \"bitDepth\": 8,\n        \"sampleFormat\": \"FLOAT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 2192.49349858844\n      },\n      \"key_1\": {\n        \"bitDepth\": 32,\n        \"sampleFormat\": \"UINT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 8007.518845182565\n      },\n      \"key_2\": {\n        \"bitDepth\": 32,\n        \"sampleFormat\": \"UINT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 7574.476467506941\n      },\n      \"key_3\": {\n        \"bitDepth\": 8,\n        \"sampleFormat\": \"UINT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 8689.18885474081\n      },\n      \"key_4\": {\n        \"bitDepth\": 32,\n        \"sampleFormat\": \"UINT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 9828.478332546525\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "cf666199-faa7-4caa-b8ca-22bd283bd99c",
+              "name": "Conflict in the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"s3Bucket\": \"<string>\",\n  \"isConfigured\": \"<boolean>\",\n  \"noData\": \"<number>\",\n  \"additionalData\": {\n    \"bands\": {\n      \"key_0\": {\n        \"bitDepth\": 8,\n        \"sampleFormat\": \"FLOAT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 2192.49349858844\n      },\n      \"key_1\": {\n        \"bitDepth\": 32,\n        \"sampleFormat\": \"UINT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 8007.518845182565\n      },\n      \"key_2\": {\n        \"bitDepth\": 32,\n        \"sampleFormat\": \"UINT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 7574.476467506941\n      },\n      \"key_3\": {\n        \"bitDepth\": 8,\n        \"sampleFormat\": \"UINT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 8689.18885474081\n      },\n      \"key_4\": {\n        \"bitDepth\": 32,\n        \"sampleFormat\": \"UINT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 9828.478332546525\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 2998,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_BAD_PAYLOAD\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9388a538-a676-45e1-b1e5-a45b3878f99e",
+          "name": "Query collections",
+          "request": {
+            "name": "Query collections",
+            "description": {},
+            "url": {
+              "path": [
+                "byoc",
+                "v1",
+                "collections"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "count",
+                  "value": "<integer>",
+                  "description": "Number of items to retrieve."
+                },
+                {
+                  "disabled": false,
+                  "key": "viewtoken",
+                  "value": "<string>",
+                  "description": "When the total number of items is larger than *count*, the response contains *viewtoken*.\nThis *viewtoken* can be used in the next request to retrieve the next page of items.\n\nThe next page can be retrieved by repeating the query. However, replace your URL with the\nnext URL in the returned links object.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Optional search query. Either a single word to search for or multiple words separated by the `|` (or) and `&` (and) operators. If omitted, all items are returned."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "SH"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "007043f2-0715-4e69-bf46-5ea8bba3fcf5",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "count",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "viewtoken",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"name\": \"string\",\n      \"s3Bucket\": \"string\",\n      \"id\": \"3e2f4cbd-bca7-bb72-18b4-848aa3face36\",\n      \"accountId\": \"0d0d24a1-9448-1f80-5dc8-24df28aa0e40\",\n      \"isConfigured\": true,\n      \"created\": \"1995-06-05T14:40:05.698Z\",\n      \"noData\": 3097.6831956317706,\n      \"requiresMetadataUpdate\": false,\n      \"additionalData\": {\n        \"bands\": {\n          \"key_0\": {\n            \"bitDepth\": 8,\n            \"sampleFormat\": \"INT\",\n            \"source\": \"string\",\n            \"bandIndex\": 1,\n            \"noData\": 1257.5707773630086,\n            \"aliases\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        },\n        \"maxMetersPerPixel\": 800.9498777183666,\n        \"extent\": {\n          \"type\": \"Polygon\",\n          \"coordinates\": [\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          ]\n        },\n        \"hasSensingTimes\": \"PARTIALLY\",\n        \"fromSensingTime\": \"1990-04-23T23:33:45.942Z\",\n        \"toSensingTime\": \"1975-10-16T15:20:32.856Z\"\n      }\n    },\n    {\n      \"name\": \"string\",\n      \"s3Bucket\": \"string\",\n      \"id\": \"2a40c731-ce93-6dc8-1026-33e30d992021\",\n      \"accountId\": \"b901266f-e665-4e40-bca0-de0637298ce3\",\n      \"isConfigured\": true,\n      \"created\": \"2008-09-29T13:40:46.595Z\",\n      \"noData\": 1790.0927151704882,\n      \"requiresMetadataUpdate\": false,\n      \"additionalData\": {\n        \"bands\": {\n          \"key_0\": {\n            \"bitDepth\": 16,\n            \"sampleFormat\": \"FLOAT\",\n            \"source\": \"string\",\n            \"bandIndex\": 1,\n            \"noData\": 5986.716102927148,\n            \"aliases\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          \"key_1\": {\n            \"bitDepth\": 8,\n            \"sampleFormat\": \"FLOAT\",\n            \"source\": \"string\",\n            \"bandIndex\": 1,\n            \"noData\": 5825.717816193446,\n            \"aliases\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          \"key_2\": {\n            \"bitDepth\": 16,\n            \"sampleFormat\": \"FLOAT\",\n            \"source\": \"string\",\n            \"bandIndex\": 1,\n            \"noData\": 4647.1569667951935,\n            \"aliases\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        },\n        \"maxMetersPerPixel\": 82.09925610000668,\n        \"extent\": {\n          \"type\": \"Polygon\",\n          \"coordinates\": [\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          ]\n        },\n        \"hasSensingTimes\": \"YES\",\n        \"fromSensingTime\": \"1950-03-19T22:08:32.353Z\",\n        \"toSensingTime\": \"2001-10-14T18:07:08.886Z\"\n      }\n    }\n  ],\n  \"links\": {\n    \"currentToken\": \"string\",\n    \"nextToken\": \"string\",\n    \"previousToken\": \"string\",\n    \"@id\": \"http://jRKdvVt.ltxsw0C07QIjlLrCHSQ1I55OXcnPpdjr-ByUzj+DdxXKkIAkjo3Qcgckyf8\",\n    \"next\": \"https://lwJEWprjeiXBuKzxVD.zceorqZZJ48BWVnoH.X-oh21AaAgbh31dVCI33KeH+D0sY97FtyIG.bnf7yIZoWfEU\",\n    \"previous\": \"http://bTrSUPSVdWSHpvSSuaWzVrTYRym.otaeWsCOua\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1da36fc8-a159-472d-b4bc-a2ad3a7584be",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "count",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "viewtoken",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c1f0d8e4-5524-452d-8ecd-f43fcb289213",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "count",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "viewtoken",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cd952ae1-e10d-4498-a0f6-75a570a10527",
+          "name": "Get a collection",
+          "request": {
+            "name": "Get a collection",
+            "description": {},
+            "url": {
+              "path": [
+                "byoc",
+                "v1",
+                "collections",
+                ":collectionId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "collectionId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "SH"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "3610226d-8356-44da-bc45-ea7344d90172",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections",
+                    ":collectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "collectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"name\": \"string\",\n    \"s3Bucket\": \"string\",\n    \"id\": \"97aa0a19-60a4-5827-9f78-a6b765d1bf9d\",\n    \"accountId\": \"40b3aa2d-359e-4fad-663a-4348041686b6\",\n    \"isConfigured\": true,\n    \"created\": \"1971-10-07T22:05:49.388Z\",\n    \"noData\": 8418.843087991198,\n    \"requiresMetadataUpdate\": true,\n    \"additionalData\": {\n      \"bands\": {\n        \"key_0\": {\n          \"bitDepth\": 8,\n          \"sampleFormat\": \"INT\",\n          \"source\": \"string\",\n          \"bandIndex\": 1,\n          \"noData\": 5276.944063386225,\n          \"aliases\": [\n            \"string\",\n            \"string\"\n          ]\n        }\n      },\n      \"maxMetersPerPixel\": 81.03747682371099,\n      \"extent\": {\n        \"type\": \"Polygon\",\n        \"coordinates\": [\n          [\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          ],\n          [\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ],\n            [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          ]\n        ]\n      },\n      \"hasSensingTimes\": \"NO\",\n      \"fromSensingTime\": \"2019-07-22T23:00:53.029Z\",\n      \"toSensingTime\": \"2014-02-07T08:35:46.705Z\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5f909eb9-8935-4f24-b969-07266c140eec",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections",
+                    ":collectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "collectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d615a086-7504-49af-b13a-7bb9a8f4464c",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections",
+                    ":collectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "collectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "75ddc207-495b-425d-adfe-5af523590b00",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections",
+                    ":collectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "collectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 2998,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_BAD_PAYLOAD\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5a450d42-48ce-46c6-a762-ab9f3cfb4ee7",
+          "name": "Update a collection",
+          "request": {
+            "name": "Update a collection",
+            "description": {},
+            "url": {
+              "path": [
+                "byoc",
+                "v1",
+                "collections",
+                ":collectionId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "collectionId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "SH"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"s3Bucket\": \"<string>\",\n  \"noData\": \"<number>\",\n  \"additionalData\": {\n    \"bands\": {\n      \"key_0\": {\n        \"bitDepth\": \"<integer>\",\n        \"sampleFormat\": \"<string>\",\n        \"source\": \"<string>\",\n        \"bandIndex\": 1,\n        \"noData\": \"<number>\"\n      },\n      \"key_1\": {\n        \"bitDepth\": \"<integer>\",\n        \"sampleFormat\": \"<string>\",\n        \"source\": \"<string>\",\n        \"bandIndex\": 1,\n        \"noData\": \"<number>\"\n      }\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4d5b8cd6-18e6-462c-8ea3-80466a802c77",
+              "name": "Collection updated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections",
+                    ":collectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "collectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"s3Bucket\": \"<string>\",\n  \"noData\": \"<number>\",\n  \"additionalData\": {\n    \"bands\": {\n      \"key_0\": {\n        \"bitDepth\": 16,\n        \"sampleFormat\": \"FLOAT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 686.7385525606528\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6c1bff6f-19af-4bd8-9c61-5c1794e9f73e",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections",
+                    ":collectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "collectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"s3Bucket\": \"<string>\",\n  \"noData\": \"<number>\",\n  \"additionalData\": {\n    \"bands\": {\n      \"key_0\": {\n        \"bitDepth\": 16,\n        \"sampleFormat\": \"FLOAT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 686.7385525606528\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 2998,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_BAD_PAYLOAD\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "09252e43-cc31-4bea-a8cb-bdc11fcbfb3f",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections",
+                    ":collectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "collectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"s3Bucket\": \"<string>\",\n  \"noData\": \"<number>\",\n  \"additionalData\": {\n    \"bands\": {\n      \"key_0\": {\n        \"bitDepth\": 16,\n        \"sampleFormat\": \"FLOAT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 686.7385525606528\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "649b9236-9416-4db1-a036-e8fd030f2c56",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections",
+                    ":collectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "collectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"s3Bucket\": \"<string>\",\n  \"noData\": \"<number>\",\n  \"additionalData\": {\n    \"bands\": {\n      \"key_0\": {\n        \"bitDepth\": 16,\n        \"sampleFormat\": \"FLOAT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 686.7385525606528\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "95d7f61b-157f-4c1b-ba6b-c115e9354567",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections",
+                    ":collectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "collectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"s3Bucket\": \"<string>\",\n  \"noData\": \"<number>\",\n  \"additionalData\": {\n    \"bands\": {\n      \"key_0\": {\n        \"bitDepth\": 16,\n        \"sampleFormat\": \"FLOAT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 686.7385525606528\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 2998,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_BAD_PAYLOAD\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a92ee1aa-c85e-46e5-91ee-7e81ec795b1b",
+              "name": "Conflict in the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections",
+                    ":collectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "collectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"s3Bucket\": \"<string>\",\n  \"noData\": \"<number>\",\n  \"additionalData\": {\n    \"bands\": {\n      \"key_0\": {\n        \"bitDepth\": 16,\n        \"sampleFormat\": \"FLOAT\",\n        \"source\": \"string\",\n        \"bandIndex\": 1,\n        \"noData\": 686.7385525606528\n      }\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 2998,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_BAD_PAYLOAD\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e15d6ff0-c091-4dde-b6c0-3551d4be8d93",
+          "name": "Delete a collection",
+          "request": {
+            "name": "Delete a collection",
+            "description": {},
+            "url": {
+              "path": [
+                "byoc",
+                "v1",
+                "collections",
+                ":collectionId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "collectionId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "SH"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e20a6345-aeb4-45ee-b4e7-38460a313514",
+              "name": "Collection deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections",
+                    ":collectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "collectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "bdb49ae3-fc58-4276-9df9-5fe0924f2d3e",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections",
+                    ":collectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "collectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9ea629b9-bc61-47b6-b293-da25549ca624",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections",
+                    ":collectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "collectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ff5d108a-6a0c-4342-b5ec-9fbf67b41f6c",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections",
+                    ":collectionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "collectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 2998,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_BAD_PAYLOAD\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6d88f66f-b2d1-49c9-b60f-33b273a998fd",
+          "name": "Copy collection tiles",
+          "request": {
+            "name": "Copy collection tiles",
+            "description": {
+              "content": "Copies ingested tiles from one collection to another, but only those whose path isn't present in the target collection.\n\nYou need to have access to both source and target collections, and target collection needs to have either the same band names and types, or it should have no bands.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "byoc",
+                "v1",
+                "collections",
+                ":collectionId",
+                "copyTiles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "toCollection",
+                  "value": "<uuid>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "collectionId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "SH"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "970d0b63-f162-49fa-8284-4cd45bf4cf04",
+              "name": "Tiles copied",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections",
+                    ":collectionId",
+                    "copyTiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "toCollection",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "collectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a18c8bb9-24bd-44b4-9fd7-8cd20a15b1d6",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections",
+                    ":collectionId",
+                    "copyTiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "toCollection",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "collectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4e06b11b-9b81-4541-a915-e388076c2454",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections",
+                    ":collectionId",
+                    "copyTiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "toCollection",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "collectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f5877001-97f9-4e37-b98f-94af81cf2a37",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "byoc",
+                    "v1",
+                    "collections",
+                    ":collectionId",
+                    "copyTiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "toCollection",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "collectionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 2998,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_BAD_PAYLOAD\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://services.sentinel-hub.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "e00862f0-4ab4-49cf-8b30-9b669f28e03e",
+    "name": "API Reference async_process byoc_collection API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "**NOTE:** _Asynchronous Processing API is currently in beta release._\n\n\nContact Support:\n Name: Sentinel Hub",
+      "type": "text/plain"
+    }
+  }
+}

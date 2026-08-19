@@ -1,0 +1,40 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "API Reference async_process catalog_core API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "catalog_core",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "landing page",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://services.sentinel-hub.com/catalog/v1"
+          },
+          "docs": "Returns the root STAC Catalog or STAC Collection that is the entry point\nfor users to browse with STAC Browser or for search engines to crawl.\nThis can either return a single STAC Collection or more commonly a STAC\ncatalog.\n\nThe landing page provides links to the\nAPI definition (link relations `service-desc` and `service-doc`)\nand the STAC records such as collections/catalogs (link relation `child`)\nor items (link relation `item`).\n\nExtensions may add additional links with new relation types."
+        },
+        {
+          "info": {
+            "name": "information about specifications that this API conforms to",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://services.sentinel-hub.com/catalog/v1/conformance"
+          },
+          "docs": "A list of all conformance classes specified in a standard that the\nserver conforms to."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

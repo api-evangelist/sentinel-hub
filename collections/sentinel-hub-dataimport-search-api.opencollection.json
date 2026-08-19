@@ -1,0 +1,80 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "API Reference async_process dataimport_search API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "dataimport_search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search data",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://services.sentinel-hub.com/api/v1/dataimport/search",
+            "params": [
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to retrieve.\n\nMaximum value is provider dependent.\n"
+              },
+              {
+                "name": "viewtoken",
+                "value": "",
+                "type": "query",
+                "description": "When the total number of items is larger than *count*, the response contains *viewtoken*.\nThis *viewtoken* can be used in the next request to retrieve the next page of items.\n\nThe next page can be retrieved by repeating the query. However, replace your URL with the\nnext URL in the returned links object.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Search data with Process API-like interface."
+        },
+        {
+          "info": {
+            "name": "Native search",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://services.sentinel-hub.com/api/v1/dataimport/nativesearch",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Proxy search. All the fields not listed as <span style=\"color:red\">required</span> are passed verbatim to the data provider's search API, and the result from the latter is returned verbatim.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

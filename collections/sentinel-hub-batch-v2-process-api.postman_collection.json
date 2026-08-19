@@ -1,0 +1,2269 @@
+{
+  "item": [
+    {
+      "id": "bac53e25-3ba9-4a70-b47d-98e16f6e5136",
+      "name": "batch_v2_process",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "bba3e720-36eb-4a9f-8dd0-d76e65d75a6c",
+          "name": "Submit new batch processing request",
+          "request": {
+            "name": "Submit new batch processing request",
+            "description": {},
+            "url": {
+              "path": [
+                "batch",
+                "v2",
+                "process"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "SH"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "request",
+                  "value": "{\"processRequest\":{\"evalscript\":\"<string>\",\"input\":{\"bounds\":{\"bbox\":[{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}],\"geometry\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"properties\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"data\":[{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}]},\"output\":{\"responses\":[{\"format\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"identifier\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},{\"format\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"identifier\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}]}},\"output\":{\"delivery\":{\"s3\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"type\":\"<string>\",\"overwrite\":false,\"skipExisting\":false,\"cogOutput\":false,\"cogParameters\":{\"overviewLevels\":[{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}],\"overviewMinSize\":\"<integer>\",\"resamplingAlgorithm\":\"average\",\"blockxsize\":256,\"blockysize\":256,\"usePredictor\":true},\"createCollection\":false,\"collectionId\":\"<string>\"},\"input\":{\"type\":\"<string>\",\"features\":{\"s3\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"defaults\":{\"width\":\"<integer>\",\"height\":\"<integer>\",\"resolution\":\"<double>\"}},\"description\":\"<string>\"}",
+                  "type": "text",
+                  "description": ""
+                },
+                {
+                  "key": "evalscript",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "Block of JavaScript code."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7a6d5e06-364c-46cf-b45e-4b95b5f7292c",
+              "name": "Request submitted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "request",
+                      "value": "{\"processRequest\":{\"evalscript\":\"string\",\"input\":{\"bounds\":{\"bbox\":[13.822174072265625,45.85080395917834,14.55963134765625,46.29191774991382],\"geometry\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"properties\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"data\":[{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}]},\"output\":{\"responses\":[{\"format\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"identifier\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},{\"format\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"identifier\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}]}},\"output\":{\"delivery\":{\"s3\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"type\":\"raster\",\"overwrite\":false,\"skipExisting\":false,\"cogOutput\":false,\"cogParameters\":{\"overviewLevels\":[{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}],\"overviewMinSize\":261,\"resamplingAlgorithm\":\"average\",\"blockxsize\":256,\"blockysize\":256,\"usePredictor\":true},\"createCollection\":false,\"collectionId\":\"string\"},\"input\":{\"type\":\"geopackage\",\"features\":{\"s3\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"defaults\":{\"width\":512,\"height\":512,\"resolution\":4494.41694464789}},\"description\":\"string\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Block of JavaScript code.",
+                        "type": "text/plain"
+                      },
+                      "key": "evalscript",
+                      "value": "<string>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"c08f380e-bcf4-6f77-0263-9758e812358c\",\n  \"request\": {\n    \"processRequest\": {\n      \"evalscript\": \"string\",\n      \"input\": {\n        \"bounds\": {\n          \"bbox\": [\n            13.822174072265625,\n            45.85080395917834,\n            14.55963134765625,\n            46.29191774991382\n          ],\n          \"geometry\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"properties\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"data\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      \"output\": {\n        \"responses\": [\n          {\n            \"format\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"identifier\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"format\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"identifier\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    },\n    \"output\": {\n      \"delivery\": {\n        \"s3\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"type\": \"raster\",\n      \"overwrite\": false,\n      \"skipExisting\": false,\n      \"cogOutput\": false,\n      \"cogParameters\": {\n        \"overviewLevels\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"overviewMinSize\": 3817,\n        \"resamplingAlgorithm\": \"average\",\n        \"blockxsize\": 256,\n        \"blockysize\": 256,\n        \"usePredictor\": true\n      },\n      \"createCollection\": false,\n      \"collectionId\": \"string\"\n    },\n    \"input\": {\n      \"type\": \"geopackage\",\n      \"features\": {\n        \"s3\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"defaults\": {\n        \"width\": 512,\n        \"height\": 512,\n        \"resolution\": 9040.185760092036\n      }\n    },\n    \"description\": \"string\"\n  },\n  \"domainAccountId\": \"3ba13557-d057-374c-c77d-1e88c644e7c7\",\n  \"projectId\": \"349b2083-dafa-894d-4f42-78aa7cd5fb33\",\n  \"workspaceId\": \"55f8dc3d-ba24-8dbe-36d6-0912f8bc9b83\",\n  \"status\": \"ANALYSING\",\n  \"error\": \"string\",\n  \"userAction\": \"START\",\n  \"userActionUpdated\": \"2018-04-08T00:00:32.377Z\",\n  \"created\": \"2021-04-13T16:23:50.093Z\",\n  \"completionPercentage\": 4015.4801753665024,\n  \"lastUpdated\": \"1998-02-21T07:21:35.305Z\",\n  \"costPU\": 2377.5098437005695,\n  \"stoppedStatusReason\": \"UNHEALTHY\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "70bfc766-ca0e-4a0d-8bc8-b569d2820af0",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "request",
+                      "value": "{\"processRequest\":{\"evalscript\":\"string\",\"input\":{\"bounds\":{\"bbox\":[13.822174072265625,45.85080395917834,14.55963134765625,46.29191774991382],\"geometry\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"properties\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"data\":[{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}]},\"output\":{\"responses\":[{\"format\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"identifier\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},{\"format\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"identifier\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}]}},\"output\":{\"delivery\":{\"s3\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"type\":\"raster\",\"overwrite\":false,\"skipExisting\":false,\"cogOutput\":false,\"cogParameters\":{\"overviewLevels\":[{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}],\"overviewMinSize\":261,\"resamplingAlgorithm\":\"average\",\"blockxsize\":256,\"blockysize\":256,\"usePredictor\":true},\"createCollection\":false,\"collectionId\":\"string\"},\"input\":{\"type\":\"geopackage\",\"features\":{\"s3\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"defaults\":{\"width\":512,\"height\":512,\"resolution\":4494.41694464789}},\"description\":\"string\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Block of JavaScript code.",
+                        "type": "text/plain"
+                      },
+                      "key": "evalscript",
+                      "value": "<string>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 9783,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_NOT_FOUND\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ec5c74dd-d41f-4062-96ed-d404e6aee4a5",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "request",
+                      "value": "{\"processRequest\":{\"evalscript\":\"string\",\"input\":{\"bounds\":{\"bbox\":[13.822174072265625,45.85080395917834,14.55963134765625,46.29191774991382],\"geometry\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"properties\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"data\":[{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}]},\"output\":{\"responses\":[{\"format\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"identifier\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},{\"format\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"identifier\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}]}},\"output\":{\"delivery\":{\"s3\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"type\":\"raster\",\"overwrite\":false,\"skipExisting\":false,\"cogOutput\":false,\"cogParameters\":{\"overviewLevels\":[{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}],\"overviewMinSize\":261,\"resamplingAlgorithm\":\"average\",\"blockxsize\":256,\"blockysize\":256,\"usePredictor\":true},\"createCollection\":false,\"collectionId\":\"string\"},\"input\":{\"type\":\"geopackage\",\"features\":{\"s3\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"defaults\":{\"width\":512,\"height\":512,\"resolution\":4494.41694464789}},\"description\":\"string\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Block of JavaScript code.",
+                        "type": "text/plain"
+                      },
+                      "key": "evalscript",
+                      "value": "<string>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c99908f0-1843-4e68-bfac-169d24d279a4",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "request",
+                      "value": "{\"processRequest\":{\"evalscript\":\"string\",\"input\":{\"bounds\":{\"bbox\":[13.822174072265625,45.85080395917834,14.55963134765625,46.29191774991382],\"geometry\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"properties\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"data\":[{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}]},\"output\":{\"responses\":[{\"format\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"identifier\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},{\"format\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"identifier\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}]}},\"output\":{\"delivery\":{\"s3\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"type\":\"raster\",\"overwrite\":false,\"skipExisting\":false,\"cogOutput\":false,\"cogParameters\":{\"overviewLevels\":[{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}],\"overviewMinSize\":261,\"resamplingAlgorithm\":\"average\",\"blockxsize\":256,\"blockysize\":256,\"usePredictor\":true},\"createCollection\":false,\"collectionId\":\"string\"},\"input\":{\"type\":\"geopackage\",\"features\":{\"s3\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"defaults\":{\"width\":512,\"height\":512,\"resolution\":4494.41694464789}},\"description\":\"string\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Block of JavaScript code.",
+                        "type": "text/plain"
+                      },
+                      "key": "evalscript",
+                      "value": "<string>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "349f105e-33bd-47da-a4a5-1354bc721fc1",
+          "name": "Query batch process requests",
+          "request": {
+            "name": "Query batch process requests",
+            "description": {},
+            "url": {
+              "path": [
+                "batch",
+                "v2",
+                "process"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "count",
+                  "value": "<integer>",
+                  "description": "Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.\nFor more records, use *viewtoken* to page through."
+                },
+                {
+                  "disabled": false,
+                  "key": "viewtoken",
+                  "value": "<string>",
+                  "description": "When the total number of items is larger than *count*, the response contains *viewtoken*.\nThis *viewtoken* can be used in the next request to retrieve the next page of items.\n\nThe next page can be retrieved by repeating the query. However, replace your URL with the\nnext URL in the returned links object.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort the batch process requests by given field.\nOmit for default ordering.\n"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "SH"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5db58df5-ee19-4e02-98ea-68bce8ee03fd",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "count",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "viewtoken",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"0acef973-7306-b151-ff1d-49d6d0167a71\",\n      \"request\": {\n        \"processRequest\": {\n          \"evalscript\": \"string\",\n          \"input\": {\n            \"bounds\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"data\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"output\": {\n            \"responses\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"output\": {\n          \"delivery\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"overwrite\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"skipExisting\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"cogOutput\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"cogParameters\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"createCollection\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"collectionId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"input\": {\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"features\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"defaults\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"description\": \"string\"\n      },\n      \"domainAccountId\": \"bc8d3a6a-e5e3-4f0d-e9f4-3e5b65d4b1aa\",\n      \"projectId\": \"166d0705-e33d-4cb5-e286-b55d4a5358bb\",\n      \"workspaceId\": \"c2abeaac-1f01-4edb-2a59-b86548412849\",\n      \"status\": \"CREATED\",\n      \"error\": \"string\",\n      \"userAction\": \"STOP\",\n      \"userActionUpdated\": \"1968-06-24T20:17:31.544Z\",\n      \"created\": \"1970-08-29T06:36:26.221Z\",\n      \"completionPercentage\": 2526.8170209812547,\n      \"lastUpdated\": \"1988-12-22T23:54:31.485Z\",\n      \"costPU\": 196.09073261767418,\n      \"stoppedStatusReason\": \"UNHEALTHY\"\n    },\n    {\n      \"id\": \"083d377e-0c90-4964-e5d3-d3067eff53e6\",\n      \"request\": {\n        \"processRequest\": {\n          \"evalscript\": \"string\",\n          \"input\": {\n            \"bounds\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"data\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"output\": {\n            \"responses\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        },\n        \"output\": {\n          \"delivery\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"overwrite\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"skipExisting\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"cogOutput\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"cogParameters\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"createCollection\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"collectionId\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"input\": {\n          \"type\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"features\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"defaults\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"description\": \"string\"\n      },\n      \"domainAccountId\": \"4f17d852-6173-eef0-2b84-f485d90cb959\",\n      \"projectId\": \"6bfde4d6-fcbe-0a91-fdc0-9ad05b8bdb41\",\n      \"workspaceId\": \"f880c7ed-a626-cba2-77d0-5c6f57ca0994\",\n      \"status\": \"DONE\",\n      \"error\": \"string\",\n      \"userAction\": \"STOP\",\n      \"userActionUpdated\": \"1980-06-25T09:13:20.243Z\",\n      \"created\": \"1971-10-30T19:35:32.963Z\",\n      \"completionPercentage\": 6766.447229376839,\n      \"lastUpdated\": \"1970-01-27T03:54:43.658Z\",\n      \"costPU\": 9083.317475011998,\n      \"stoppedStatusReason\": \"OUT_OF_PU\"\n    }\n  ],\n  \"links\": {\n    \"currentToken\": \"string\",\n    \"nextToken\": \"string\",\n    \"previousToken\": \"string\",\n    \"@id\": \"http://MYJKz.nffNX0yRIl\",\n    \"next\": \"http://pOIICCIWHqtwslBvyW.qdtW4iyXQmFeidkHQ2vYCP-8ABK5vFHhX6hSbipFK\",\n    \"previous\": \"http://ifDqnWTfjAHshBOryDzrkjnwSGdj.uvtJG2IE\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "74f651e3-9601-4752-98aa-3e81bea25e71",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "count",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "viewtoken",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "83e75cd7-25ee-4c0b-ab9c-dbec983cf949",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "count",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "viewtoken",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a179c185-73b2-4710-a05f-779fca5690c6",
+          "name": "Retrieve a single batch process task by ID",
+          "request": {
+            "name": "Retrieve a single batch process task by ID",
+            "description": {},
+            "url": {
+              "path": [
+                "batch",
+                "v2",
+                "process",
+                ":taskId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "taskId",
+                  "description": "(Required) Task ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "SH"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "93944807-47b6-4cf6-9b9f-2f12d16925a3",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"c08f380e-bcf4-6f77-0263-9758e812358c\",\n  \"request\": {\n    \"processRequest\": {\n      \"evalscript\": \"string\",\n      \"input\": {\n        \"bounds\": {\n          \"bbox\": [\n            13.822174072265625,\n            45.85080395917834,\n            14.55963134765625,\n            46.29191774991382\n          ],\n          \"geometry\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"properties\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"data\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      \"output\": {\n        \"responses\": [\n          {\n            \"format\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"identifier\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"format\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"identifier\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    },\n    \"output\": {\n      \"delivery\": {\n        \"s3\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"type\": \"raster\",\n      \"overwrite\": false,\n      \"skipExisting\": false,\n      \"cogOutput\": false,\n      \"cogParameters\": {\n        \"overviewLevels\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"overviewMinSize\": 3817,\n        \"resamplingAlgorithm\": \"average\",\n        \"blockxsize\": 256,\n        \"blockysize\": 256,\n        \"usePredictor\": true\n      },\n      \"createCollection\": false,\n      \"collectionId\": \"string\"\n    },\n    \"input\": {\n      \"type\": \"geopackage\",\n      \"features\": {\n        \"s3\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"defaults\": {\n        \"width\": 512,\n        \"height\": 512,\n        \"resolution\": 9040.185760092036\n      }\n    },\n    \"description\": \"string\"\n  },\n  \"domainAccountId\": \"3ba13557-d057-374c-c77d-1e88c644e7c7\",\n  \"projectId\": \"349b2083-dafa-894d-4f42-78aa7cd5fb33\",\n  \"workspaceId\": \"55f8dc3d-ba24-8dbe-36d6-0912f8bc9b83\",\n  \"status\": \"ANALYSING\",\n  \"error\": \"string\",\n  \"userAction\": \"START\",\n  \"userActionUpdated\": \"2018-04-08T00:00:32.377Z\",\n  \"created\": \"2021-04-13T16:23:50.093Z\",\n  \"completionPercentage\": 4015.4801753665024,\n  \"lastUpdated\": \"1998-02-21T07:21:35.305Z\",\n  \"costPU\": 2377.5098437005695,\n  \"stoppedStatusReason\": \"UNHEALTHY\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "28d3299d-c1b1-4eb5-b057-cc519ece9c66",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7c7ec413-6f01-40ae-87dd-c9be87c9ce67",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "53945fc5-6835-486a-9768-9018a5d6c3de",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 9783,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_NOT_FOUND\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6fc1e750-e8bf-46a7-a759-9cb3169cd9f6",
+          "name": "Update a batch process request",
+          "request": {
+            "name": "Update a batch process request",
+            "description": {
+              "content": "Only the requests that are not currently being processed nor waiting to be processed can be updated.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "batch",
+                "v2",
+                "process",
+                ":taskId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "taskId",
+                  "description": "(Required) Task ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "SH"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2f7fe6b7-5979-43b8-89ea-40fefbcb55b6",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"processRequest\": {\n    \"evalscript\": \"string\",\n    \"input\": {\n      \"bounds\": {\n        \"bbox\": [\n          13.822174072265625,\n          45.85080395917834,\n          14.55963134765625,\n          46.29191774991382\n        ],\n        \"geometry\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"properties\": {\n          \"crs\": \"http://www.opengis.net/def/crs/OGC/1.3/CRS84\"\n        }\n      },\n      \"data\": [\n        {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      ]\n    },\n    \"output\": {\n      \"responses\": [\n        {\n          \"format\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"identifier\": \"<identifier>\"\n        },\n        {\n          \"format\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"identifier\": \"userdata\"\n        }\n      ]\n    }\n  },\n  \"output\": {\n    \"delivery\": {\n      \"s3\": {\n        \"url\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"iamRoleARN\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"accessKey\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"secretAccessKey\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"region\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"type\": \"raster\",\n    \"overwrite\": false,\n    \"skipExisting\": false,\n    \"cogOutput\": false,\n    \"cogParameters\": {\n      \"overviewLevels\": [\n        5197,\n        3017\n      ],\n      \"overviewMinSize\": 450,\n      \"resamplingAlgorithm\": \"average\",\n      \"blockxsize\": 256,\n      \"blockysize\": 256,\n      \"usePredictor\": true\n    },\n    \"createCollection\": false,\n    \"collectionId\": \"string\"\n  },\n  \"input\": {\n    \"type\": \"geopackage\",\n    \"features\": {\n      \"s3\": {\n        \"url\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"iamRoleARN\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"accessKey\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"secretAccessKey\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"region\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    },\n    \"defaults\": {\n      \"width\": 512,\n      \"height\": 512,\n      \"resolution\": 2762.9934613817354\n    }\n  },\n  \"description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1144208f-1420-4809-b459-4a23df523f1e",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ec35af20-4fdc-4100-afda-698f1605de1e",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4d60e17e-68f1-4252-b3e5-a98d5fbe96bb",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "978458df-1ab6-407c-88e0-2f9440ceeff6",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 9783,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_NOT_FOUND\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "72e037a5-00cc-4767-b960-3ab41f8ad779",
+              "name": "Conflict in the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 9783,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_NOT_FOUND\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "57ba08cb-f290-41cb-b807-6914d138b7ea",
+          "name": "Request analysis of a batch process request",
+          "request": {
+            "name": "Request analysis of a batch process request",
+            "description": {},
+            "url": {
+              "path": [
+                "batch",
+                "v2",
+                "process",
+                ":taskId",
+                "analyse"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "taskId",
+                  "description": "(Required) Task ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "SH"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "eb1950fe-90c2-4e4c-94d4-2c19a04ab8e2",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId",
+                    "analyse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "881e474d-8c00-4d1a-a42c-4050c780f2be",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId",
+                    "analyse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 9783,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_NOT_FOUND\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9e90d3e1-ea63-4bde-bc4f-f30d2bfef1dd",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId",
+                    "analyse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3e64af50-7a3a-457d-aec2-549a63357ae3",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId",
+                    "analyse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b2556a37-3dda-4bbf-9f59-e3a9ebffb549",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId",
+                    "analyse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 9783,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_NOT_FOUND\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "efe48478-a871-40dd-99d3-a0aacce26ee0",
+          "name": "Start (confirm) processing of a batch process request",
+          "request": {
+            "name": "Start (confirm) processing of a batch process request",
+            "description": {},
+            "url": {
+              "path": [
+                "batch",
+                "v2",
+                "process",
+                ":taskId",
+                "start"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "taskId",
+                  "description": "(Required) Task ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "SH"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "1ab6a723-4f3b-4797-ac60-880a7902fc69",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId",
+                    "start"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a15fe834-8c76-4521-997a-b4e8d0ee4da9",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId",
+                    "start"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 9783,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_NOT_FOUND\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "18f8bc53-729f-4990-ba50-c0a9606c2c0b",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId",
+                    "start"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f4955094-a202-492d-981b-c86d2c2def8b",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId",
+                    "start"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "87300c90-100b-45b6-b33b-6d64d0fbe057",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId",
+                    "start"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 9783,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_NOT_FOUND\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fb954af4-2f46-45b2-9134-022afd90f330",
+          "name": "Stop a batch process request",
+          "request": {
+            "name": "Stop a batch process request",
+            "description": {},
+            "url": {
+              "path": [
+                "batch",
+                "v2",
+                "process",
+                ":taskId",
+                "stop"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "taskId",
+                  "description": "(Required) Task ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "SH"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "58c4ed2b-e5a6-4083-88b4-255d1840563e",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId",
+                    "stop"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2b15217d-04b1-4d9f-bf15-e6b4ea6c5fd4",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId",
+                    "stop"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 9783,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_NOT_FOUND\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "945fdba7-04ce-49a6-8386-492c5e8c5268",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId",
+                    "stop"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7aa61066-9662-4137-b76e-8d6f4005d531",
+              "name": "Insufficient permissions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId",
+                    "stop"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "da639ad5-c9e8-420d-b55f-960d37019d01",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch",
+                    "v2",
+                    "process",
+                    ":taskId",
+                    "stop"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "taskId",
+                      "description": "(Required) Task ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 9783,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_NOT_FOUND\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://services.sentinel-hub.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "c345d8d9-bdcd-4ef6-bc47-a722f4e06244",
+    "name": "API Reference async_process batch_v2_process API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "**NOTE:** _Asynchronous Processing API is currently in beta release._\n\n\nContact Support:\n Name: Sentinel Hub",
+      "type": "text/plain"
+    }
+  }
+}

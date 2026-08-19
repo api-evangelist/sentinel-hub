@@ -1,0 +1,318 @@
+{
+  "item": [
+    {
+      "id": "b340c0f6-0948-42c1-9bbf-07caa8cdc50b",
+      "name": "process",
+      "description": {
+        "content": "Make sure to use the appropriate <a href=\"https://docs.sentinel-hub.com/api/latest/data/\" target=\"_blank\">end-point for each of the datasets</a>, e.g. for Landsat, Sentinel-3, etc.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4dfe3e34-03ec-4771-9e44-528c046b50e8",
+          "name": "Process",
+          "request": {
+            "name": "Process",
+            "description": {},
+            "url": {
+              "path": [
+                "process",
+                "v1"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "image/jpeg"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "SH"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "request",
+                  "value": "{\"input\":{\"bounds\":{\"bbox\":[\"<double>\",\"<double>\",\"<double>\",\"<double>\"],\"geometry\":{\"type\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"coordinates\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"properties\":{\"crs\":\"http://www.opengis.net/def/crs/OGC/1.3/CRS84\"}},\"data\":[\"<object>\"]},\"output\":{\"width\":256,\"height\":256,\"resx\":\"<double>\",\"resy\":\"<double>\",\"responses\":[{\"identifier\":\"<string>\",\"format\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},{\"identifier\":\"<string>\",\"format\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}]}}",
+                  "type": "text",
+                  "description": ""
+                },
+                {
+                  "key": "evalscript",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "Your evalscript. For details, click\n<a href=\"https://docs.planet.com/develop/evalscripts/\" target=\"_blank\">here</a>.\n"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "17828e1d-2489-4f85-b8a6-cfad33bc2825",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "process",
+                    "v1"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Sets response type and has priority over the type defined in the output object of the request.\nPossible values are `image/jpeg`, `image/png`, `image/tiff`, `application/json`, `application/tar`, `application/x-tar`, `multipart/mixed`, and `application/octet-stream`.\n",
+                    "key": "Accept",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "image/jpeg"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "request",
+                      "value": "{\"input\":{\"bounds\":{\"bbox\":[13.822174072265625,45.85080395917834,14.55963134765625,46.29191774991382],\"geometry\":{\"type\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"coordinates\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"properties\":{\"crs\":\"http://www.opengis.net/def/crs/OGC/1.3/CRS84\"}},\"data\":[{\"dataFilter\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"processing\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"type\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}]},\"output\":{\"width\":512,\"height\":512,\"resx\":8633.541261012451,\"resy\":443.99149147381524,\"responses\":[{\"identifier\":\"userdata\",\"format\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},{\"identifier\":\"userdata\",\"format\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}]}}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Your evalscript. For details, click\n<a href=\"https://docs.planet.com/develop/evalscripts/\" target=\"_blank\">here</a>.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "evalscript",
+                      "value": "<string>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"string\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e95b8b23-bbf4-4552-beb1-c2fbe05f7039",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "process",
+                    "v1"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Sets response type and has priority over the type defined in the output object of the request.\nPossible values are `image/jpeg`, `image/png`, `image/tiff`, `application/json`, `application/tar`, `application/x-tar`, `multipart/mixed`, and `application/octet-stream`.\n",
+                    "key": "Accept",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "request",
+                      "value": "{\"input\":{\"bounds\":{\"bbox\":[13.822174072265625,45.85080395917834,14.55963134765625,46.29191774991382],\"geometry\":{\"type\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"coordinates\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"properties\":{\"crs\":\"http://www.opengis.net/def/crs/OGC/1.3/CRS84\"}},\"data\":[{\"dataFilter\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"processing\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"type\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}]},\"output\":{\"width\":512,\"height\":512,\"resx\":8633.541261012451,\"resy\":443.99149147381524,\"responses\":[{\"identifier\":\"userdata\",\"format\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},{\"identifier\":\"userdata\",\"format\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}]}}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Your evalscript. For details, click\n<a href=\"https://docs.planet.com/develop/evalscripts/\" target=\"_blank\">here</a>.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "evalscript",
+                      "value": "<string>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 8205,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_EXCEPTION\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0af9eb2b-f169-4942-b8e2-1302b185a5ce",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "process",
+                    "v1"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Sets response type and has priority over the type defined in the output object of the request.\nPossible values are `image/jpeg`, `image/png`, `image/tiff`, `application/json`, `application/tar`, `application/x-tar`, `multipart/mixed`, and `application/octet-stream`.\n",
+                    "key": "Accept",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "request",
+                      "value": "{\"input\":{\"bounds\":{\"bbox\":[13.822174072265625,45.85080395917834,14.55963134765625,46.29191774991382],\"geometry\":{\"type\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"coordinates\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},\"properties\":{\"crs\":\"http://www.opengis.net/def/crs/OGC/1.3/CRS84\"}},\"data\":[{\"dataFilter\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"processing\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"},\"type\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}]},\"output\":{\"width\":512,\"height\":512,\"resx\":8633.541261012451,\"resy\":443.99149147381524,\"responses\":[{\"identifier\":\"userdata\",\"format\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}},{\"identifier\":\"userdata\",\"format\":{\"value\":\"<Error: Too many levels of nesting to fake this schema>\"}}]}}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Your evalscript. For details, click\n<a href=\"https://docs.planet.com/develop/evalscripts/\" target=\"_blank\">here</a>.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "evalscript",
+                      "value": "<string>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"status\": 8205,\n    \"reason\": \"string\",\n    \"message\": \"string\",\n    \"code\": \"COMMON_EXCEPTION\",\n    \"errors\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://services.sentinel-hub.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "f0a0ff51-3e84-4eb0-ac19-5095f7e5c95f",
+    "name": "API Reference async_process process API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "**NOTE:** _Asynchronous Processing API is currently in beta release._\n\n\nContact Support:\n Name: Sentinel Hub",
+      "type": "text/plain"
+    }
+  }
+}
