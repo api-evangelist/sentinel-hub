@@ -60,7 +60,8 @@ apis:
   description: '**NOTE:** _Asynchronous Processing API is currently in beta release._'
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - async_process
   properties:
   - type: OpenAPI
@@ -82,7 +83,8 @@ apis:
   description: The batch_statistical API from Sentinel Hub — 6 operation(s) for batch_statistical.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - batch_statistical
   properties:
   - type: OpenAPI
@@ -104,7 +106,8 @@ apis:
   description: The batch_v2_process API from Sentinel Hub — 5 operation(s) for batch_v2_process.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - batch_v2_process
   properties:
   - type: OpenAPI
@@ -127,7 +130,8 @@ apis:
     The batch_v2_tiling_grid API from Sentinel Hub — 2 operation(s) for batch_v2_tiling_grid.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - batch_v2_tiling_grid
   properties:
   - type: OpenAPI
@@ -149,7 +153,8 @@ apis:
   description: The byoc_collection API from Sentinel Hub — 3 operation(s) for byoc_collection.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - byoc_collection
   properties:
   - type: OpenAPI
@@ -171,7 +176,8 @@ apis:
   description: The byoc_tile API from Sentinel Hub — 5 operation(s) for byoc_tile.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - byoc_tile
   properties:
   - type: OpenAPI
@@ -195,7 +201,8 @@ apis:
     This is a subset of the STAC API - Features specification.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - catalog_collections
   properties:
   - type: OpenAPI
@@ -224,7 +231,8 @@ apis:
     end-point for each of the datasets</a>, e.g. for Landsat, Sentinel-3, etc.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - catalog_core
   properties:
   - type: OpenAPI
@@ -248,7 +256,8 @@ apis:
     extends OGC API - Features - Part 1: Core.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - catalog_features
   properties:
   - type: OpenAPI
@@ -271,7 +280,8 @@ apis:
     This is an OpenAPI definition of the SpatioTemporal Asset Catalog API - Item Search specification.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - catalog_item_search
   properties:
   - type: OpenAPI
@@ -295,7 +305,8 @@ apis:
     [Planet Orders API](https://docs.planet.com/develop/apis/orders/reference/) instead.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - dataimport_delivery
   properties:
   - type: OpenAPI
@@ -319,7 +330,8 @@ apis:
     [Planet Orders API](https://docs.planet.com/develop/apis/orders/reference/) instead.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - dataimport_order
   properties:
   - type: OpenAPI
@@ -343,7 +355,8 @@ apis:
     [Planet Data API](https://docs.planet.com/develop/apis/data/reference/) instead.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - dataimport_product
   properties:
   - type: OpenAPI
@@ -365,7 +378,8 @@ apis:
   description: The dataimport_quota API from Sentinel Hub — 2 operation(s) for dataimport_quota.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - dataimport_quota
   properties:
   - type: OpenAPI
@@ -389,7 +403,8 @@ apis:
     [Planet Item Search](https://docs.planet.com/develop/apis/data/reference/#tag/Item-Search) instead.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - dataimport_search
   properties:
   - type: OpenAPI
@@ -413,7 +428,8 @@ apis:
     [Planet Subscriptions API](https://docs.planet.com/develop/apis/subscriptions/reference/) instead.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - dataimport_subscription
   properties:
   - type: OpenAPI
@@ -437,7 +453,8 @@ apis:
     [Planet Subscriptions API](https://docs.planet.com/develop/apis/subscriptions/reference/) instead.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - dataimport_subscription_delivery
   properties:
   - type: OpenAPI
@@ -462,7 +479,8 @@ apis:
     with tiles.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - dataimport_subscription_tile_delivery
   properties:
   - type: OpenAPI
@@ -487,7 +505,8 @@ apis:
     with tiles.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - dataimport_tile_delivery
   properties:
   - type: OpenAPI
@@ -509,7 +528,8 @@ apis:
   description: The metadata_collection API from Sentinel Hub — 3 operation(s) for metadata_collection.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - metadata_collection
   properties:
   - type: OpenAPI
@@ -531,7 +551,8 @@ apis:
   description: The metadata_location API from Sentinel Hub — 2 operation(s) for metadata_location.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - metadata_location
   properties:
   - type: OpenAPI
@@ -556,6 +577,8 @@ apis:
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
   tags:
+  - Processes
+  tags_raw:
   - process
   properties:
   - type: OpenAPI
@@ -599,7 +622,8 @@ apis:
   description: The zarr_array API from Sentinel Hub — 2 operation(s) for zarr_array.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - zarr_array
   properties:
   - type: OpenAPI
@@ -621,7 +645,8 @@ apis:
   description: The zarr_collection API from Sentinel Hub — 3 operation(s) for zarr_collection.
   humanURL: https://docs.sentinel-hub.com/api/latest/api/process/
   baseURL: https://services.sentinel-hub.com
-  tags:
+  tags: []
+  tags_raw:
   - zarr_collection
   properties:
   - type: OpenAPI
