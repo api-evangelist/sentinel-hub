@@ -1,20 +1,16 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: API Reference async_process dataimport_tile_delivery API
+  title: Reference Dataimport Tile Delivery API
   version: 1.0.0
   contact:
     name: Sentinel Hub
-  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
-
-    '
+  description: TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026. Please use the BYOC API instead to work with tiles.
 servers:
 - url: https://services.sentinel-hub.com
 tags:
 - name: dataimport_tile_delivery
   x-displayName: Order delivery tile
-  description: 'TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use the [BYOC API](https://docs.planet.com/develop/apis/byoc/reference/#tag/byoc_tile) instead to work with tiles.
-
-    '
+  description: TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026. Please use the BYOC API instead to work with tiles.
 paths:
   /api/v1/dataimport/orders/{orderId}/deliveries/{deliveryId}/tiles:
     get:
@@ -55,7 +51,7 @@ paths:
       - OAuth2: []
   /api/v1/dataimport/orders/{orderId}/deliveries/{deliveryId}/tiles/{tileId}:
     get:
-      summary: Get an order delivery tile.
+      summary: Get an order delivery tile
       description: Only tiles from last 3 months can be retrieved.
       operationId: dataImport_getTileDelivery
       tags:
@@ -80,31 +76,6 @@ paths:
       security:
       - OAuth2: []
 components:
-  parameters:
-    TileId:
-      name: tileId
-      description: Tile ID
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
-    OrderId:
-      name: orderId
-      description: Order ID
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
-    DeliveryId:
-      name: deliveryId
-      description: Delivery ID
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
   schemas:
     TileStatus:
       description: The status of the tile.
@@ -116,24 +87,6 @@ components:
       - INGESTED
       - FAILED
       readOnly: true
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
-    DeliveryTile:
-      type: object
-      properties:
-        id:
-          description: Tile ID
-          type: string
-          format: uuid
-        deliveryId:
-          description: Tile ID
-          type: string
-          format: uuid
-        status:
-          $ref: '#/components/schemas/TileStatus'
     Boom:
       type: object
       properties:
@@ -180,6 +133,49 @@ components:
         errors:
           description: Additional information about the error (Optional)
           type: object
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    DeliveryTile:
+      type: object
+      properties:
+        id:
+          description: Tile ID
+          type: string
+          format: uuid
+        deliveryId:
+          description: Tile ID
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/TileStatus'
+  parameters:
+    DeliveryId:
+      name: deliveryId
+      description: Delivery ID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    TileId:
+      name: tileId
+      description: Tile ID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    OrderId:
+      name: orderId
+      description: Order ID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
   responses:
     '403':
       description: Insufficient permissions

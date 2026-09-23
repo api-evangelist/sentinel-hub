@@ -1,12 +1,9 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: API Reference async_process byoc_collection API
+  title: Reference Byoc Collection API
   version: 1.0.0
   contact:
     name: Sentinel Hub
-  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
-
-    '
 servers:
 - url: https://services.sentinel-hub.com
 tags:
@@ -144,9 +141,7 @@ paths:
       description: 'Copies ingested tiles from one collection to another, but only those whose path isn''t present in the target collection.
 
 
-        You need to have access to both source and target collections, and target collection needs to have either the same band names and types, or it should have no bands.
-
-        '
+        You need to have access to both source and target collections, and target collection needs to have either the same band names and types, or it should have no bands.'
       operationId: copyByocCollectionTiles
       tags:
       - byoc_collection
@@ -170,100 +165,7 @@ paths:
       security:
       - OAuth2: []
 components:
-  responses:
-    '404':
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
-    '403':
-      description: Insufficient permissions
-    '400':
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
-    '409':
-      description: Conflict in the request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
-    '401':
-      description: Unauthorized
   schemas:
-    BYOCCollectionsResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/BYOCCollection'
-        links:
-          $ref: '#/components/schemas/View'
-    BYOCCollectionUpdatePayload:
-      type: object
-      required:
-      - name
-      - s3Bucket
-      properties:
-        name:
-          type: string
-        s3Bucket:
-          description: Can only be changed if the collection is empty.
-          type: string
-        noData:
-          description: If the value is not provided, the old one gets deleted.
-          type: number
-        additionalData:
-          description: 'If provided, overwrites the current bands property of the collection:
-
-            - to rename band(s), provide the current value of the "bands" property with only the name(s) of one or more bands changed
-
-            - to set noData value(s), provide the current value of the "bands" property with only the noData value(s) of one or more bands changed
-
-            - to remove band(s), provide the current value of the "bands" property but leave out the band(s) you wish to remove
-
-            - to remove all bands, you must first empty the collection, then provide "additionalData" without the "bands" property or with an empty "bands" property.
-
-
-            Keep in mind that:
-
-            - bands cannot be added nor their other properties ("bitDepth", "bandIndex", etc) changed once you add a tile.
-
-            - once sample format is set you cannot change it, and tiles ingested from then on need be in the set sample format.
-
-
-            If "additionalData" is omitted, the bands will not be changed.
-
-            '
-          $ref: '#/components/schemas/BYOCCollectionAdditionalData'
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
-    View:
-      description: Links to paginate the resource
-      type: object
-      properties:
-        currentToken:
-          type: string
-        nextToken:
-          type: string
-        previousToken:
-          type: string
-        '@id':
-          type: string
-          format: uri
-        next:
-          type: string
-          format: uri
-        previous:
-          type: string
-          format: uri
     Polygon:
       type: object
       properties:
@@ -328,46 +230,43 @@ components:
         errors:
           description: Additional information about the error (Optional)
           type: object
-    BYOCFormat:
+    BYOCCollectionUpdatePayload:
       type: object
       required:
-      - bitDepth
-      - sampleFormat
+      - name
+      - s3Bucket
       properties:
-        source:
-          description: The string that must appear in `(BAND)` placeholder. If unset, defaults to the band name.
+        name:
           type: string
-        bandIndex:
-          description: The index of band in 1-based numbering.
-          type: integer
-          format: int32
-          default: 1
-        bitDepth:
-          type: integer
-          format: int32
-          enum:
-          - 8
-          - 16
-          - 32
-        sampleFormat:
+        s3Bucket:
+          description: Can only be changed if the collection is empty.
           type: string
-          enum:
-          - UINT
-          - INT
-          - FLOAT
         noData:
+          description: If the value is not provided, the old one gets deleted.
           type: number
-          description: You can define noData either per band or per collection, but not both.
-        aliases:
-          description: 'An optional list of alias names that can be used instead of the band name in the evalscript.
+        additionalData:
+          description: 'If provided, overwrites the current bands property of the collection:
 
-            Only used in certain specific collections and not settable by the user.
+            - to rename band(s), provide the current value of the "bands" property with only the name(s) of one or more bands changed
+
+            - to set noData value(s), provide the current value of the "bands" property with only the noData value(s) of one or more bands changed
+
+            - to remove band(s), provide the current value of the "bands" property but leave out the band(s) you wish to remove
+
+            - to remove all bands, you must first empty the collection, then provide "additionalData" without the "bands" property or with an empty "bands" property.
+
+
+            Keep in mind that:
+
+            - bands cannot be added nor their other properties ("bitDepth", "bandIndex", etc) changed once you add a tile.
+
+            - once sample format is set you cannot change it, and tiles ingested from then on need be in the set sample format.
+
+
+            If "additionalData" is omitted, the bands will not be changed.
 
             '
-          type: array
-          items:
-            type: string
-          readOnly: true
+          $ref: '#/components/schemas/BYOCCollectionAdditionalData'
     BYOCCollectionAdditionalData:
       type: object
       properties:
@@ -405,11 +304,20 @@ components:
           format: date-time
           description: The sensing time in ISO 8601 of the most recent tile.
           readOnly: true
-    BYOCCollectionResponse:
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    BYOCCollectionsResponse:
       type: object
       properties:
         data:
-          $ref: '#/components/schemas/BYOCCollection'
+          type: array
+          items:
+            $ref: '#/components/schemas/BYOCCollection'
+        links:
+          $ref: '#/components/schemas/View'
     BYOCCollection:
       required:
       - name
@@ -450,6 +358,93 @@ components:
           readOnly: true
         additionalData:
           $ref: '#/components/schemas/BYOCCollectionAdditionalData'
+    View:
+      description: Links to paginate the resource
+      type: object
+      properties:
+        currentToken:
+          type: string
+        nextToken:
+          type: string
+        previousToken:
+          type: string
+        '@id':
+          type: string
+          format: uri
+        next:
+          type: string
+          format: uri
+        previous:
+          type: string
+          format: uri
+    BYOCCollectionResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/BYOCCollection'
+    BYOCFormat:
+      type: object
+      required:
+      - bitDepth
+      - sampleFormat
+      properties:
+        source:
+          description: The string that must appear in `(BAND)` placeholder. If unset, defaults to the band name.
+          type: string
+        bandIndex:
+          description: The index of band in 1-based numbering.
+          type: integer
+          format: int32
+          default: 1
+        bitDepth:
+          type: integer
+          format: int32
+          enum:
+          - 8
+          - 16
+          - 32
+        sampleFormat:
+          type: string
+          enum:
+          - UINT
+          - INT
+          - FLOAT
+        noData:
+          type: number
+          description: You can define noData either per band or per collection, but not both.
+        aliases:
+          description: 'An optional list of alias names that can be used instead of the band name in the evalscript.
+
+            Only used in certain specific collections and not settable by the user.
+
+            '
+          type: array
+          items:
+            type: string
+          readOnly: true
+  responses:
+    '409':
+      description: Conflict in the request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '403':
+      description: Insufficient permissions
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '401':
+      description: Unauthorized
   parameters:
     SearchBeanSearch:
       name: search

@@ -1,12 +1,9 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: API Reference async_process metadata_collection API
+  title: Reference Metadata Collection API
   version: 1.0.0
   contact:
     name: Sentinel Hub
-  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
-
-    '
 servers:
 - url: https://services.sentinel-hub.com
 tags:
@@ -99,87 +96,6 @@ paths:
       - OAuth2: []
 components:
   schemas:
-    BandMetadata:
-      type: object
-      description: Band information
-      properties:
-        name:
-          type: string
-          description: Band identifier
-        sampleType:
-          type: string
-          enum:
-          - UINT8
-          - UINT16
-          - FLOAT32
-          - FLOAT64
-          description: Band sample type
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
-    Location:
-      type: object
-      properties:
-        '@id':
-          type: string
-          format: uri
-        id:
-          description: Sentinel Hub deployment location identifier
-          type: string
-        url:
-          description: Endpoint url
-          type: string
-        wmsUrl:
-          description: WMS Service url
-          type: string
-        processUrl:
-          description: Process API url
-          type: string
-        catalogUrl:
-          description: Catalog API url
-          type: string
-    BYOCCollectionMetadata:
-      type: object
-      properties:
-        '@id':
-          type: string
-          format: uri
-        id:
-          description: BYOC Collection identifier
-          type: string
-        location:
-          description: BYOC Collection location
-          $ref: '#/components/schemas/Location'
-        datasetType:
-          $ref: '#/components/schemas/CustomDatasetType'
-        bands:
-          type: array
-          items:
-            $ref: '#/components/schemas/BandMetadata'
-    CustomDatasetType:
-      type: string
-      enum:
-      - custom
-    ZarrCollectionMetadata:
-      type: object
-      properties:
-        '@id':
-          type: string
-          format: uri
-        id:
-          description: Zarr Collection identifier
-          type: string
-        location:
-          description: Zarr Collection location
-          $ref: '#/components/schemas/Location'
-        datasetType:
-          $ref: '#/components/schemas/CustomDatasetType'
-        bands:
-          type: array
-          items:
-            $ref: '#/components/schemas/BandMetadata'
     Boom:
       type: object
       properties:
@@ -226,6 +142,69 @@ components:
         errors:
           description: Additional information about the error (Optional)
           type: object
+    ZarrCollectionMetadata:
+      type: object
+      properties:
+        '@id':
+          type: string
+          format: uri
+        id:
+          description: Zarr Collection identifier
+          type: string
+        location:
+          description: Zarr Collection location
+          $ref: '#/components/schemas/Location'
+        datasetType:
+          $ref: '#/components/schemas/CustomDatasetType'
+        bands:
+          type: array
+          items:
+            $ref: '#/components/schemas/BandMetadata'
+    CustomDatasetType:
+      type: string
+      enum:
+      - custom
+    Location:
+      type: object
+      properties:
+        '@id':
+          type: string
+          format: uri
+        id:
+          description: Sentinel Hub deployment location identifier
+          type: string
+        url:
+          description: Endpoint url
+          type: string
+        wmsUrl:
+          description: WMS Service url
+          type: string
+        processUrl:
+          description: Process API url
+          type: string
+        catalogUrl:
+          description: Catalog API url
+          type: string
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    BandMetadata:
+      type: object
+      description: Band information
+      properties:
+        name:
+          type: string
+          description: Band identifier
+        sampleType:
+          type: string
+          enum:
+          - UINT8
+          - UINT16
+          - FLOAT32
+          - FLOAT64
+          description: Band sample type
     BatchCollectionMetadata:
       type: object
       properties:
@@ -237,6 +216,24 @@ components:
           type: string
         location:
           description: Batch Collection location
+          $ref: '#/components/schemas/Location'
+        datasetType:
+          $ref: '#/components/schemas/CustomDatasetType'
+        bands:
+          type: array
+          items:
+            $ref: '#/components/schemas/BandMetadata'
+    BYOCCollectionMetadata:
+      type: object
+      properties:
+        '@id':
+          type: string
+          format: uri
+        id:
+          description: BYOC Collection identifier
+          type: string
+        location:
+          description: BYOC Collection location
           $ref: '#/components/schemas/Location'
         datasetType:
           $ref: '#/components/schemas/CustomDatasetType'

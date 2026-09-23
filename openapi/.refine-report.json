@@ -1,31 +1,7 @@
 {
   "provider": "sentinel-hub",
   "sources": [
-    "sentinel-hub-async-process-api-openapi.yml",
-    "sentinel-hub-batch-statistical-api-openapi.yml",
-    "sentinel-hub-batch-v2-process-api-openapi.yml",
-    "sentinel-hub-batch-v2-tiling-grid-api-openapi.yml",
-    "sentinel-hub-byoc-collection-api-openapi.yml",
-    "sentinel-hub-byoc-tile-api-openapi.yml",
-    "sentinel-hub-catalog-collections-api-openapi.yml",
-    "sentinel-hub-catalog-core-api-openapi.yml",
-    "sentinel-hub-catalog-features-api-openapi.yml",
-    "sentinel-hub-catalog-item-search-api-openapi.yml",
-    "sentinel-hub-dataimport-delivery-api-openapi.yml",
-    "sentinel-hub-dataimport-order-api-openapi.yml",
-    "sentinel-hub-dataimport-product-api-openapi.yml",
-    "sentinel-hub-dataimport-quota-api-openapi.yml",
-    "sentinel-hub-dataimport-search-api-openapi.yml",
-    "sentinel-hub-dataimport-subscription-api-openapi.yml",
-    "sentinel-hub-dataimport-subscription-delivery-api-openapi.yml",
-    "sentinel-hub-dataimport-subscription-tile-delivery-api-openapi.yml",
-    "sentinel-hub-dataimport-tile-delivery-api-openapi.yml",
-    "sentinel-hub-metadata-collection-api-openapi.yml",
-    "sentinel-hub-metadata-location-api-openapi.yml",
-    "sentinel-hub-process-api-openapi.yml",
-    "sentinel-hub-statistical-api-openapi.yml",
-    "sentinel-hub-zarr-array-api-openapi.yml",
-    "sentinel-hub-zarr-collection-api-openapi.yml"
+    "_original/sentinel-hub-openapi.yaml"
   ],
   "outputs": [
     "sentinel-hub-async-process-api-openapi.yml",
@@ -57,6 +33,36 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "sentinel-hub-openapi.yaml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "sentinel-hub-async-process-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-batch-statistical-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-batch-v2-process-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-batch-v2-tiling-grid-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-byoc-collection-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-byoc-tile-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-catalog-collections-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-catalog-core-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-catalog-features-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-catalog-item-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-dataimport-delivery-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-dataimport-order-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-dataimport-product-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-dataimport-quota-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-dataimport-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-dataimport-subscription-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-dataimport-subscription-delivery-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-dataimport-subscription-tile-delivery-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-dataimport-tile-delivery-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-metadata-collection-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-metadata-location-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-process-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-statistical-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-zarr-array-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "sentinel-hub-zarr-collection-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

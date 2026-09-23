@@ -1,12 +1,9 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: API Reference async_process dataimport_quota API
+  title: Reference Dataimport Quota API
   version: 1.0.0
   contact:
     name: Sentinel Hub
-  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
-
-    '
 servers:
 - url: https://services.sentinel-hub.com
 tags:
@@ -66,24 +63,6 @@ components:
       readOnly: true
       enum:
       - MAXAR_WORLDVIEW
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
-    Quota:
-      type: object
-      properties:
-        collectionId:
-          $ref: '#/components/schemas/QuotaTpdiCollectionId'
-        quotaSqkm:
-          type: number
-          description: This is total purchased quota. Available quota is quotaSqkm - quotaUsed.
-          readOnly: true
-        quotaUsed:
-          type: number
-          description: Quota used in square kilometers.
-          readOnly: true
     Boom:
       type: object
       properties:
@@ -130,6 +109,33 @@ components:
         errors:
           description: Additional information about the error (Optional)
           type: object
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    Quota:
+      type: object
+      properties:
+        collectionId:
+          $ref: '#/components/schemas/QuotaTpdiCollectionId'
+        quotaSqkm:
+          type: number
+          description: This is total purchased quota. Available quota is quotaSqkm - quotaUsed.
+          readOnly: true
+        quotaUsed:
+          type: number
+          description: Quota used in square kilometers.
+          readOnly: true
+  responses:
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '401':
+      description: Unauthorized
   parameters:
     QuotaTpdiCollectionId:
       name: collectionId
@@ -140,15 +146,6 @@ components:
         type: string
         enum:
         - MAXAR_WORLDVIEW
-  responses:
-    '404':
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
-    '401':
-      description: Unauthorized
   securitySchemes:
     OAuth2:
       type: oauth2

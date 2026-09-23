@@ -1,12 +1,9 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: API Reference async_process zarr_collection API
+  title: Reference Zarr Collection API
   version: 1.0.0
   contact:
     name: Sentinel Hub
-  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
-
-    '
 servers:
 - url: https://services.sentinel-hub.com
 tags:
@@ -160,6 +157,15 @@ paths:
       - OAuth2: []
 components:
   schemas:
+    ZAttrs:
+      type:
+      - object
+      - 'null'
+      description: Custom attributes as read from the `.zattrs` file.
+      externalDocs:
+        description: Zarr storage specification version 2, Attributes
+        url: https://zarr-specs.readthedocs.io/en/latest/v2/v2.0.html#attributes
+      readOnly: true
     ZarrCollectionAdditionalData:
       type: object
       readOnly: true
@@ -182,25 +188,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ZarrCollection'
-    ZarrSingleResponse:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/ZarrCollection'
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
-    ZAttrs:
-      type:
-      - object
-      - 'null'
-      description: Custom attributes as read from the `.zattrs` file.
-      externalDocs:
-        description: Zarr storage specification version 2, Attributes
-        url: https://zarr-specs.readthedocs.io/en/latest/v2/v2.0.html#attributes
-      readOnly: true
     Polygon:
       type: object
       properties:
@@ -219,6 +206,52 @@ components:
               items:
                 type: number
                 format: double
+    Boom:
+      type: object
+      properties:
+        status:
+          description: HTTP status code
+          type: integer
+          format: int32
+        reason:
+          description: Reason for the error
+          type: string
+        message:
+          description: Friendly error message
+          type: string
+        code:
+          description: Code that uniquely identifies the error
+          type: string
+          enum:
+          - COMMON_BAD_PAYLOAD
+          - COMMON_NOT_FOUND
+          - COMMON_DATABASE_ERROR
+          - COMMON_UNIQUE_KEY_VIOLATION
+          - COMMON_INSUFFICIENT_PERMISSIONS
+          - COMMON_SENTINEL_ACCOUNT_EXPIRED
+          - COMMON_METHOD_NOT_ALLOWED
+          - COMMON_UNSUPPORTED_MEDIA_TYPE
+          - COMMON_ELASTICSEARCH_ERROR
+          - COMMON_UNAUTHORIZED
+          - COMMON_EXCEPTION
+          - RATE_LIMIT_STORAGE_TIMEOUT
+          - RATE_LIMIT_OVERLAPPING_POLICIES
+          - RATE_LIMIT_EXCEEDED
+          - RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY
+          - DASHBOARD_PAYPAL_SALE_ERROR
+          - DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR
+          - DASHBOARD_INVALID_PAYPAL_RESPONSE
+          - DASHBOARD_EXECUTE_SALE_ERROR
+          - DASHBOARD_EXECUTE_AGREEMENT_ERROR
+          - DASHBOARD_IPN_ERROR
+          - DASHBOARD_ADYEN_SALE_ERROR
+          - DASHBOARD_ADYEN_PAYMENT_CANCELLED
+          - RENDERER_EXCEPTION
+          - OAUTH_ERROR
+          - EMAIL_OCTOPUS_ERROR
+        errors:
+          description: Additional information about the error (Optional)
+          type: object
     ZarrCollection:
       type: object
       format: ZarrCollection
@@ -296,52 +329,16 @@ components:
           $ref: '#/components/schemas/ZAttrs'
         additionalData:
           $ref: '#/components/schemas/ZarrCollectionAdditionalData'
-    Boom:
+    RestErrorWrapper:
       type: object
       properties:
-        status:
-          description: HTTP status code
-          type: integer
-          format: int32
-        reason:
-          description: Reason for the error
-          type: string
-        message:
-          description: Friendly error message
-          type: string
-        code:
-          description: Code that uniquely identifies the error
-          type: string
-          enum:
-          - COMMON_BAD_PAYLOAD
-          - COMMON_NOT_FOUND
-          - COMMON_DATABASE_ERROR
-          - COMMON_UNIQUE_KEY_VIOLATION
-          - COMMON_INSUFFICIENT_PERMISSIONS
-          - COMMON_SENTINEL_ACCOUNT_EXPIRED
-          - COMMON_METHOD_NOT_ALLOWED
-          - COMMON_UNSUPPORTED_MEDIA_TYPE
-          - COMMON_ELASTICSEARCH_ERROR
-          - COMMON_UNAUTHORIZED
-          - COMMON_EXCEPTION
-          - RATE_LIMIT_STORAGE_TIMEOUT
-          - RATE_LIMIT_OVERLAPPING_POLICIES
-          - RATE_LIMIT_EXCEEDED
-          - RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY
-          - DASHBOARD_PAYPAL_SALE_ERROR
-          - DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR
-          - DASHBOARD_INVALID_PAYPAL_RESPONSE
-          - DASHBOARD_EXECUTE_SALE_ERROR
-          - DASHBOARD_EXECUTE_AGREEMENT_ERROR
-          - DASHBOARD_IPN_ERROR
-          - DASHBOARD_ADYEN_SALE_ERROR
-          - DASHBOARD_ADYEN_PAYMENT_CANCELLED
-          - RENDERER_EXCEPTION
-          - OAUTH_ERROR
-          - EMAIL_OCTOPUS_ERROR
-        errors:
-          description: Additional information about the error (Optional)
-          type: object
+        error:
+          $ref: '#/components/schemas/Boom'
+    ZarrSingleResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/ZarrCollection'
     ZarrCollectionUpdatePayload:
       type: object
       required:
@@ -390,13 +387,15 @@ components:
             type: string
           readOnly: true
   parameters:
-    ByocCollectionId:
-      name: collectionId
-      in: path
-      required: true
+    SearchBeanCount:
+      name: count
+      description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
+
+        For more records, use *viewtoken* to page through.'
+      in: query
       schema:
-        type: string
-        format: uuid
+        type: integer
+        format: int32
     SearchBeanViewtoken:
       name: viewtoken
       description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
@@ -412,15 +411,13 @@ components:
       in: query
       schema:
         type: string
-    SearchBeanCount:
-      name: count
-      description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
-
-        For more records, use *viewtoken* to page through.'
-      in: query
+    ByocCollectionId:
+      name: collectionId
+      in: path
+      required: true
       schema:
-        type: integer
-        format: int32
+        type: string
+        format: uuid
   responses:
     '403':
       description: Insufficient permissions

@@ -1,12 +1,9 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: API Reference async_process batch_v2_tiling_grid API
+  title: Reference Batch V2 Tiling Grid API
   version: 1.0.0
   contact:
     name: Sentinel Hub
-  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
-
-    '
 servers:
 - url: https://services.sentinel-hub.com
 tags:
@@ -63,66 +60,6 @@ paths:
       - OAuth2: []
 components:
   schemas:
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
-    BatchV2TilingGridDescriptorProperties:
-      type: object
-      properties:
-        tileWidth:
-          description: Width of each output tile, in units used by the grid
-          type: number
-          format: double
-        tileHeight:
-          description: Height of each output tile, in units used by the grid
-          type: number
-          format: double
-        resolutions:
-          description: List of supported resolutions, in units used by the grid
-          type: array
-          uniqueItems: true
-          items:
-            type: number
-            description: List of supported resolutions, in units used by the grid
-            format: double
-        unit:
-          description: Units used by the grid
-          type: string
-          enum:
-          - METRE
-          - DEGREE
-    View:
-      description: Links to paginate the resource
-      type: object
-      properties:
-        currentToken:
-          type: string
-        nextToken:
-          type: string
-        previousToken:
-          type: string
-        '@id':
-          type: string
-          format: uri
-        next:
-          type: string
-          format: uri
-        previous:
-          type: string
-          format: uri
-    BatchV2TilingGridDescriptor:
-      type: object
-      properties:
-        id:
-          description: Identifier
-          type: integer
-          format: int64
-        name:
-          type: string
-        properties:
-          $ref: '#/components/schemas/BatchV2TilingGridDescriptorProperties'
     Boom:
       type: object
       properties:
@@ -169,15 +106,76 @@ components:
         errors:
           description: Additional information about the error (Optional)
           type: object
+    BatchV2TilingGridDescriptorProperties:
+      type: object
+      properties:
+        tileWidth:
+          description: Width of each output tile, in units used by the grid
+          type: number
+          format: double
+        tileHeight:
+          description: Height of each output tile, in units used by the grid
+          type: number
+          format: double
+        resolutions:
+          description: List of supported resolutions, in units used by the grid
+          type: array
+          uniqueItems: true
+          items:
+            type: number
+            description: List of supported resolutions, in units used by the grid
+            format: double
+        unit:
+          description: Units used by the grid
+          type: string
+          enum:
+          - METRE
+          - DEGREE
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    View:
+      description: Links to paginate the resource
+      type: object
+      properties:
+        currentToken:
+          type: string
+        nextToken:
+          type: string
+        previousToken:
+          type: string
+        '@id':
+          type: string
+          format: uri
+        next:
+          type: string
+          format: uri
+        previous:
+          type: string
+          format: uri
+    BatchV2TilingGridDescriptor:
+      type: object
+      properties:
+        id:
+          description: Identifier
+          type: integer
+          format: int64
+        name:
+          type: string
+        properties:
+          $ref: '#/components/schemas/BatchV2TilingGridDescriptorProperties'
   parameters:
-    BatchV2TilinggridsId:
-      name: id
-      description: Tilinggrids ID
-      in: path
-      required: true
+    SearchBeanCount:
+      name: count
+      description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
+
+        For more records, use *viewtoken* to page through.'
+      in: query
       schema:
         type: integer
-        format: int64
+        format: int32
     SearchBeanViewtoken:
       name: viewtoken
       description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
@@ -193,15 +191,14 @@ components:
       in: query
       schema:
         type: string
-    SearchBeanCount:
-      name: count
-      description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
-
-        For more records, use *viewtoken* to page through.'
-      in: query
+    BatchV2TilinggridsId:
+      name: id
+      description: Tilinggrids ID
+      in: path
+      required: true
       schema:
         type: integer
-        format: int32
+        format: int64
   responses:
     '400':
       description: Bad request

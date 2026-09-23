@@ -1,12 +1,9 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: API Reference async_process batch_statistical API
+  title: Reference Batch Statistical API
   version: 1.0.0
   contact:
     name: Sentinel Hub
-  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
-
-    '
 servers:
 - url: https://services.sentinel-hub.com
 tags:
@@ -109,7 +106,7 @@ paths:
       - OAuth2: []
   /statistics/batch/v1/{requestId}/status:
     get:
-      summary: Retrieve the status of a batch statistical request.
+      summary: Retrieve the status of a batch statistical request
       operationId: batchStatisticalGetStatus
       tags:
       - batch_statistical
@@ -195,86 +192,88 @@ paths:
       - OAuth2: []
 components:
   schemas:
-    ObjectStorageInfoV2:
-      type: object
-      oneOf:
-      - title: S3BucketInfo
-        required:
-        - s3
-        properties:
-          s3:
-            $ref: '#/components/schemas/S3BucketInfo'
-      - title: GSBucketInfo
-        x-cdse-exclude: true
-        required:
-        - gs
-        properties:
-          gs:
-            $ref: '#/components/schemas/GSBucketInfo'
-    BatchStatisticalRequestAggregation:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/StatisticalRequestAggregationWithoutEvalscript'
-      - type: object
-        properties:
-          evalscript:
-            description: 'Your evalscript. For details, click
-
-              <a href="https://docs.planet.com/develop/evalscripts/" target="_blank">here</a>.
-
-              The evalscript will be executed once for each time interval defined by `timeRange` and `aggregationInterval`.
-
-
-              Either this or `evalscriptReference` parameter is required.
-
-              '
-            type: string
-          evalscriptReference:
-            description: 'Reference to your evalscript stored in an object storage. For details, click
-
-              <a href="https://docs.planet.com/develop/evalscripts/" target="_blank">here</a>.
-
-
-              Either this or `evalscript` parameter is required.
-
-              '
-            $ref: '#/components/schemas/ObjectStorageInfoV2'
-    HistogramDefinition:
-      description: "The name of the band (as key) for which a histogram is defined below. Each key must match with one of the band names\n`output.bands` specified in a `setup()` function in an evalscript (for this output) or be \"default\". If it is \"default\",\nthe histogram specified below will be returned for all bands of this output for which histogram is not explicitly defined.\n\nEach band's histogram may be defined by providing one of the following properties:\n  * `binWidth`\n  * `nBins`\n  * exact bins provided by `bins` array\n\n[This example](https://docs.planet.com/develop/apis/statistical/examples/#multiple-outputs-with-different-datamasks-multi-band-output-with-custom-bands-names-and-different-histogram-types)\nshows how to specify histograms using different parameters.\n\nHistograms can be calculated using float or integer math. Providing `lowEdge` and `highEdge` or `binWidth` or\nelements of the `bins` array as integer numbers will select integer math, otherwise float will be used.\nOutput type of the band's output (specified in `output.sampleType` in the `setup()` function in the evalscript)\nmust match the respective histogram math.\n\nIf `lowEdge` and `highEdge` are not explicitly provided, min and max values are used, respectively.\n"
+    BaseDatasetProcessing:
       type: object
       properties:
-        nBins:
-          description: 'Number of bins in the histogram.
+        upsampling:
+          description: 'The interpolation used when the requested
+
+            resolution is higher than the source resolution.
 
             '
-          type: number
-        binWidth:
-          description: 'Bin width.
+          type: string
+          enum:
+          - NEAREST
+          - BILINEAR
+          - BICUBIC
+          default: NEAREST
+        downsampling:
+          description: 'The interpolation used when the requested
+
+            resolution is lower than the source resolution.
 
             '
-          type: number
-        lowEdge:
-          description: 'Values lower to this will not be included in any of the histogram''s bins.
-
-            '
-          type: number
-        highEdge:
-          description: 'Values higher to this will not be included in any of the histogram''s bins.
-
-            '
-          type: number
-        bins:
-          description: 'Explicitly defined bins.
-
-            Array [v1,v2,v3,v4] will define the following bins:
-
-            [v1,v2), [v2,v3), [v3,v4]
-
-            '
-          type: array
-          items:
-            type: number
-            minItems: 2
+          type: string
+          enum:
+          - NEAREST
+          - BILINEAR
+          - BICUBIC
+          default: NEAREST
+    LTML2Dataset:
+      title: landsat-tm-l2
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-tm-l2
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
+    ProcessRequestOutputFormatTiff:
+      title: image/tiff
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ProcessRequestOutputFormat'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - image/tiff
+    S3BucketInfo:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+          description: A URL pointing to an S3 bucket or an object in an S3 bucket. It can contain prefixes, e.g. `s3://my-personal-bucket/some-folder` or `s3://my-personal-bucket/some-folder/some-file.gpkg`.
+        iamRoleARN:
+          type: string
+          description: IAM role ARN, which allows programmatic access to the S3 bucket specified in the `url` field using the recommended assume IAM role flow.
+        accessKey:
+          type: string
+          description: AWS access key, which allows programmatic access to the S3 bucket specified in the `url` field.
+        secretAccessKey:
+          type: string
+          description: AWS secret access key which must correspond to the AWS access key.
+        region:
+          type: string
+          description: The region where the S3 bucket is located. If omitted, the region of the deployment that the request is submitted to is assumed.
+    BaseDataset:
+      type: object
+      properties:
+        type:
+          description: Datasource abbreviation
+          type: string
+        id:
+          description: Identifier
+          type: string
     S1Filtering:
       type: object
       properties:
@@ -329,6 +328,182 @@ components:
           - Offline
           - Reprocessing
           - ArchNormal
+    DEMDataset:
+      title: dem
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/DEMFiltering'
+          processing:
+            $ref: '#/components/schemas/DEMProcessing'
+          type:
+            type: string
+            enum:
+            - dem
+    Polygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - Polygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              maxItems: 2
+              minItems: 2
+              type: array
+              items:
+                type: number
+                format: double
+    ModisFiltering:
+      type: object
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        mosaickingOrder:
+          description: The order in which tiles are overlapped from which the output result is mosaicked.
+          type: string
+          enum:
+          - mostRecent
+          - leastRecent
+          default: mostRecent
+    Ls8Dataset:
+      title: landsat-8-l1c
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-8-l1c
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithRt'
+    MultiPolygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - MultiPolygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              type: array
+              items:
+                maxItems: 2
+                minItems: 2
+                type: array
+                items:
+                  type: number
+                  format: double
+    BYOCFiltering:
+      type: object
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        mosaickingOrder:
+          description: The order in which tiles are overlapped from which the output result is mosaicked.
+          type: string
+          enum:
+          - mostRecent
+          - leastRecent
+          default: mostRecent
+    LandsatDataset:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/LandsatFiltering'
+          processing:
+            $ref: '#/components/schemas/BaseDatasetProcessing'
+    ModisDataset:
+      title: modis
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/ModisFiltering'
+          processing:
+            $ref: '#/components/schemas/BaseDatasetProcessing'
+          type:
+            type: string
+            enum:
+            - modis
+    HistogramDefinition:
+      description: "The name of the band (as key) for which a histogram is defined below. Each key must match with one of the band names\n`output.bands` specified in a `setup()` function in an evalscript (for this output) or be \"default\". If it is \"default\",\nthe histogram specified below will be returned for all bands of this output for which histogram is not explicitly defined.\n\nEach band's histogram may be defined by providing one of the following properties:\n  * `binWidth`\n  * `nBins`\n  * exact bins provided by `bins` array\n\n[This example](https://docs.planet.com/develop/apis/statistical/examples/#multiple-outputs-with-different-datamasks-multi-band-output-with-custom-bands-names-and-different-histogram-types)\nshows how to specify histograms using different parameters.\n\nHistograms can be calculated using float or integer math. Providing `lowEdge` and `highEdge` or `binWidth` or\nelements of the `bins` array as integer numbers will select integer math, otherwise float will be used.\nOutput type of the band's output (specified in `output.sampleType` in the `setup()` function in the evalscript)\nmust match the respective histogram math.\n\nIf `lowEdge` and `highEdge` are not explicitly provided, min and max values are used, respectively.\n"
+      type: object
+      properties:
+        nBins:
+          description: 'Number of bins in the histogram.
+
+            '
+          type: number
+        binWidth:
+          description: 'Bin width.
+
+            '
+          type: number
+        lowEdge:
+          description: 'Values lower to this will not be included in any of the histogram''s bins.
+
+            '
+          type: number
+        highEdge:
+          description: 'Values higher to this will not be included in any of the histogram''s bins.
+
+            '
+          type: number
+        bins:
+          description: 'Explicitly defined bins.
+
+            Array [v1,v2,v3,v4] will define the following bins:
+
+            [v1,v2), [v2,v3), [v3,v4]
+
+            '
+          type: array
+          items:
+            type: number
+            minItems: 2
+    S1ProcessingSpeckleFilterNONE:
+      type: object
+      description: Does NO speckle filtering. Equivalent to not having speckleFilter defined.
+      required:
+      - type
+      properties:
+        type:
+          type: string
+    LETML2Dataset:
+      title: landsat-etm-l2
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-etm-l2
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
     ArrayParameters:
       required:
       - dtype
@@ -409,71 +584,6 @@ components:
       additionalProperties:
         x-additionalPropertiesName: array name
         $ref: '#/components/schemas/ArrayOverride'
-    MultiPartBatchRequest:
-      type: object
-      properties:
-        request:
-          $ref: '#/components/schemas/BatchProcessRequest'
-        evalscript:
-          description: Block of JavaScript code.
-          type: string
-    StatisticsDefinition:
-      description: Single band statistics definition. The name of the band (as key) for which a calculation of statistic is defined below. Each key must match with one of the band names `output.bands` specified in a `setup()` function in an evalscript (for this output) or be "default". If it is "default", the statistics specified below will be calculated for all bands of this output for which calculation of statistics is not explicitly defined.
-      type: object
-      properties:
-        percentiles:
-          description: Calculate percentiles.
-          type: object
-          properties:
-            k:
-              description: 'Percentiles definition as array of values between [0,1], [see this example](https://docs.planet.com/develop/apis/statistical/examples/#statistics-histogram-and-percentiles-for-one-single-band-output).
-
-                '
-              type: array
-              items:
-                type: number
-                format: double
-                minimum: 0
-                maximum: 1
-    View:
-      description: Links to paginate the resource
-      type: object
-      properties:
-        currentToken:
-          type: string
-        nextToken:
-          type: string
-        previousToken:
-          type: string
-        '@id':
-          type: string
-          format: uri
-        next:
-          type: string
-          format: uri
-        previous:
-          type: string
-          format: uri
-    Aggregation:
-      required:
-      - of
-      description: 'Specifies how given time range is split into time intervals.
-
-        '
-      type: object
-      properties:
-        of:
-          description: 'Duration in ISO 8601 duration format, check [here](https://docs.planet.com/develop/apis/statistical/#split-the-requested-timerange-into-multiple-time-intervals) for more details.
-
-            '
-          type: string
-        lastIntervalBehavior:
-          description: "This parameter specifies the behavior of the last interval if the given time range isn't divisible by the provided aggregation interval.\n * SKIP - skip the last interval  (default behavior)\n * SHORTEN - shortens the last interval so that it ends at the end of provided time range.\n * EXTEND - extends the last interval over the end of the provided time range so that all intervals are of equal duration\n"
-          type: string
-          enum:
-          - SKIP
-          - SHORTEN
-          - EXTEND
     Group:
       required:
       - zarr_format
@@ -507,60 +617,26 @@ components:
 
             '
           type: object
-    BatchProcessOutput:
-      description: 'Specifies the tile output paths where the results shall be written. Required unless `bucketName` or `zarrOutput` is specified.
-
-        '
+    CalculationDefinition:
+      description: The name of the output (as key) for which a calculation of statistics and histogram are defined below. Each key must match with one of the `output.id` specified in a `setup()` function in an evalscript or be "default". If it is "default", the specified statistics and histogram will be calculated for all outputs for which calculation of statistics is not explicitly defined.
       type: object
       properties:
-        defaultTilePath:
-          description: "Path or path template specifying where batch processing results shall be stored. Supported formats: <ul>\n  <li>a valid Amazon S3 URL, e.g. `s3://some-bucket/some/folder`.<br/>\n    A subdirectory will be created for this batch request, named after the request ID, and will contain further subdirectories with the output tiles.\n    This is equivalent to the template `s3://some-bucket/some/folder/<requestId>/<tileName>/<outputId>.<format>`.\n  </li>\n  <li>a templated Amazon S3 URL, e.g. `s3://some-bucket/some/folder/<tileName>.tif`.\n    Templating allows custom organization of the output files.\n    Templates can contain the following placeholders, which are replaced by respective actual values when writing results:\n    <ul>\n      <li> `<requestId>` - the ID of your batch request,</li>\n      <li> `<tileName>` - the name (string ID) of the tile within the used tiling grid,</li>\n      <li> `<tileId>` - the numerical ID of the tile within the used tiling grid,</li>\n      <li> `<outputId>` - the output (raster) identifier (e.g. `default`),</li>\n      <li> `<format>` - the filename extension of the output's format (e.g. `tiff`).</li>\n    </ul>\n    The template must contain `<tileName>` or `<tileId>` in order to ensure unique output files.\n    In case of multiple outputs, the template must also contain `<outputId>`.\n  </li>\n</ul> The request will fail if files already exist.\n"
-          type: string
-        overwrite:
-          description: "If `true`, the request will **never** fail if files already exist. Instead, any existing files will be overwritten, except if `skipExisting` is `true` and **all** outputs for a tile exist.\n\n*Note:* checking for existing files can only be done if the task is estimated to output fewer than 5000 files, e.g. a task that produces 5 outputs per tile and is estimated to span over 1000 grid tiles is too big to check. Such big tasks must either: <ul>\n  <li> ensure that the output path is unique to the task by including `<taskId>` in `defaultTilePath` and all `tilePath`s,</li>\n  <li> ensure that the output path is unique by using a simple, non-templated `defaultTilePath`, or</li>\n  <li> suppress overwrite checks by setting `overwrite` to `true` and `skipExisting` to `false`.</li>\n<ul>\n"
-          default: false
-          type: boolean
-        skipExisting:
-          description: 'If `true`, any tiles for which **all** outputs already exist will be skipped. Tiles for which only **some** of the outputs exist will either be *fully overwritten* (if `overwrite` is `true`) or will cause the whole request to fail.
+        histograms:
+          description: 'Histogram definitions. They can be specified differently for each band in this output.
 
             '
-          default: false
-          type: boolean
-        cogOutput:
-          description: If `true`, the results will be written as COG (cloud optimized GeoTIFFs). All outputs must use the TIFF format and **cannot** use `sampleType` INT8. We also suggest setting the evalscript output object `nodataValue` (<a href="https://docs.planet.com/develop/evalscripts/functions/#output-object-properties" target="_blank">more details</a>) for correct overview generation.
-          default: false
-          type: boolean
-        cogParameters:
-          $ref: '#/components/schemas/BatchCogParameters'
-        createCollection:
-          description: 'If `true`, the results will be written as COG (cloud optimized GeoTIFFs) and a collection will be automatically created. All outputs must be single-band and use the TIFF format. Only one of *createCollection* and *collectinId* may be specified. Requires `"cogOutput"=true`.
+          type: object
+          additionalProperties:
+            x-additionalPropertiesName: band name
+            $ref: '#/components/schemas/HistogramDefinition'
+        statistics:
+          description: 'Statistics definitions. It can be specified differently for each band in this output.
 
             '
-          type: boolean
-          default: false
-        collectionId:
-          description: 'If provided, the results will be written as COG (cloud optimized GeoTIFFs) and added to the existing collection with the specified identifier. All outputs must be single-band and use the TIFF format. The collection must exist and be compatible -- that is, must contain bands equivalent to the batch request''s outputs with the same bit depths. Only one of *createCollection* and *collectinId* may be specified. Requires `"cogOutput"=true`.
-
-            '
-          type:
-          - string
-          - 'null'
-          default: null
-    Ls8Dataset:
-      title: landsat-8-l1c
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/LandsatDataset'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - landsat-8-l1c
-          dataFilter:
-            allOf:
-            - $ref: '#/components/schemas/LandsatFiltering'
-            - $ref: '#/components/schemas/LandsatTierFilteringWithRt'
+          type: object
+          additionalProperties:
+            x-additionalPropertiesName: band name
+            $ref: '#/components/schemas/StatisticsDefinition'
     StatisticalRequestAggregationWithoutEvalscript:
       required:
       - timeRange
@@ -622,55 +698,22 @@ components:
             '
           type: number
           format: double
-    ProcessRequestForBatch:
-      type: object
-      description: Batch processing equivalent of the <a href="#operation/process">Process request</a>.
-      required:
-      - evalscript
-      - input
-      properties:
-        input:
-          $ref: '#/components/schemas/ProcessRequestInput'
-        output:
-          $ref: '#/components/schemas/ProcessRequestOutputForBatch'
-        evalscript:
-          description: 'Your evalscript. For details, click
-
-            <a href="https://docs.planet.com/develop/evalscripts/" target="_blank">here</a>.
-
-            '
-          type: string
-    S3BucketInfo:
-      type: object
-      required:
-      - url
-      properties:
-        url:
-          type: string
-          description: A URL pointing to an S3 bucket or an object in an S3 bucket. It can contain prefixes, e.g. `s3://my-personal-bucket/some-folder` or `s3://my-personal-bucket/some-folder/some-file.gpkg`.
-        iamRoleARN:
-          type: string
-          description: IAM role ARN, which allows programmatic access to the S3 bucket specified in the `url` field using the recommended assume IAM role flow.
-        accessKey:
-          type: string
-          description: AWS access key, which allows programmatic access to the S3 bucket specified in the `url` field.
-        secretAccessKey:
-          type: string
-          description: AWS secret access key which must correspond to the AWS access key.
-        region:
-          type: string
-          description: The region where the S3 bucket is located. If omitted, the region of the deployment that the request is submitted to is assumed.
-    LandsatDataset:
+    S2L2ADataset:
+      title: sentinel-2-l2a
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseDataset'
       - type: object
         properties:
           dataFilter:
-            $ref: '#/components/schemas/LandsatFiltering'
+            $ref: '#/components/schemas/S2L2AFiltering'
           processing:
-            $ref: '#/components/schemas/BaseDatasetProcessing'
-    BYOCFiltering:
+            $ref: '#/components/schemas/S2Processing'
+          type:
+            type: string
+            enum:
+            - sentinel-2-l2a
+    HLSFiltering:
       type: object
       properties:
         timeRange:
@@ -681,154 +724,38 @@ components:
           enum:
           - mostRecent
           - leastRecent
+          - leastCC
           default: mostRecent
-    ObjectStorageOutputInfoV2:
-      type: object
-      oneOf:
-      - title: S3BucketInfoTemplated
-        required:
-        - s3
-        properties:
-          s3:
-            $ref: '#/components/schemas/S3BucketInfoTemplated'
-      - title: GSBucketInfoTemplated
-        x-cdse-exclude: true
-        required:
-        - gs
-        properties:
-          gs:
-            $ref: '#/components/schemas/GSBucketInfoTemplated'
-    ProcessRequestOutputForBatch:
-      type: object
-      properties:
-        responses:
-          type: array
-          description: Response object.
-          items:
-            $ref: '#/components/schemas/ProcessRequestOutputBatchResponse'
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
-    DEMProcessing:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseDatasetProcessing'
-      - type: object
-        properties:
-          clampNegative:
-            type: boolean
-            default: false
-            description: Mapzen DEM specific option. It replaces negative orthometric heights with 0. Useful for removing ocean bathymetry, for example.
-          egm:
-            type: boolean
-            default: false
-            description: It replaces orthometric heights with ellipsoidal heights relative to the WGS84 ellipsoid.
-    S1ProcessingSpeckleFilterNONE:
-      type: object
-      description: Does NO speckle filtering. Equivalent to not having speckleFilter defined.
-      required:
-      - type
-      properties:
-        type:
+        maxCloudCoverage:
+          allOf:
+          - $ref: '#/components/schemas/MaxCloudCoverage'
+          - default: 100
+        constellation:
           type: string
-    ProcessRequestInputBoundsProperties:
-      title: BoundsProperties
-      type: object
-      properties:
-        crs:
-          description: 'The coordinate reference system of the coordinates. Must be
+          description: 'The selected constellation. "SENTINEL" selects only Sentinel products, while "LANDSAT" selects only Landsat products.
 
-            one of the values listed at https://docs.planet.com/develop/apis/processing/#crs-support.
 
-            Default CRS is WGS84, http://www.opengis.net/def/crs/OGC/1.3/CRS84.
+            By default, products of both constellations are selected.
 
             '
-          type: string
-          default: http://www.opengis.net/def/crs/OGC/1.3/CRS84
-    S1Processing:
+          enum:
+          - SENTINEL
+          - LANDSAT
+    HLSDataset:
+      title: hls
       type: object
       allOf:
-      - $ref: '#/components/schemas/BaseDatasetProcessing'
+      - $ref: '#/components/schemas/BaseDataset'
       - type: object
         properties:
-          speckleFilter:
-            type: object
-            oneOf:
-            - $ref: '#/components/schemas/S1ProcessingSpeckleFilterLEE'
-            - $ref: '#/components/schemas/S1ProcessingSpeckleFilterNONE'
-            discriminator:
-              propertyName: type
-              mapping:
-                LEE: '#/components/schemas/S1ProcessingSpeckleFilterLEE'
-                NONE: '#/components/schemas/S1ProcessingSpeckleFilterNONE'
-          backCoeff:
+          type:
             type: string
             enum:
-            - BETA0
-            - SIGMA0_ELLIPSOID
-            - GAMMA0_ELLIPSOID
-            - GAMMA0_TERRAIN
-            default: GAMMA0_ELLIPSOID
-          orthorectify:
-            type: boolean
-            default: false
-          demInstance:
-            type: string
-            enum:
-            - MAPZEN
-            - COPERNICUS
-            - COPERNICUS_30
-            - COPERNICUS_90
-            default: MAPZEN
-          radiometricTerrainOversampling:
-            type: number
-            format: double
-            minimum: 1
-            maximum: 4
-            default: 2
-    ProcessRequestInput:
-      title: Input
-      type: object
-      required:
-      - bounds
-      - data
-      properties:
-        bounds:
-          $ref: '#/components/schemas/ProcessRequestInputBounds'
-        data:
-          $ref: '#/components/schemas/ProcessRequestInputData'
-    BatchStatisticsTaskDto:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BatchStatisticsTaskStatusDto'
-      - type: object
-        properties:
-          request:
-            $ref: '#/components/schemas/BatchStatisticalRequest'
-          userAction:
-            description: Last user action on the request.
-            type: string
-            enum:
-            - NONE
-            - ANALYSE
-            - START
-            - STOP
-          userActionUpdated:
-            type: string
-            description: Date of the last user action on the request
-            format: date-time
-          domainAccountId:
-            description: Deprecated. It is equal to projectId
-            type: string
-            format: uuid
-          projectId:
-            type: string
-            format: uuid
-          workspaceId:
-            type: string
-            format: uuid
+            - hls
+          dataFilter:
+            $ref: '#/components/schemas/HLSFiltering'
+          processing:
+            $ref: '#/components/schemas/BaseDatasetProcessing'
     BatchProcessRequest:
       required:
       - processRequest
@@ -928,18 +855,270 @@ components:
           description: Error description for requests that were submitted but failed during analysis or processing
           type: string
           readOnly: true
-    S2Processing:
+    S1Processing:
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseDatasetProcessing'
       - type: object
         properties:
-          harmonizeValues:
-            description: 'Harmonizes data values to be comparable with old processing baselines. See <a href="https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l1c/#harmonize-values" target="_blank">here</a> for details.
-
-              '
+          speckleFilter:
+            type: object
+            oneOf:
+            - $ref: '#/components/schemas/S1ProcessingSpeckleFilterLEE'
+            - $ref: '#/components/schemas/S1ProcessingSpeckleFilterNONE'
+            discriminator:
+              propertyName: type
+              mapping:
+                LEE: '#/components/schemas/S1ProcessingSpeckleFilterLEE'
+                NONE: '#/components/schemas/S1ProcessingSpeckleFilterNONE'
+          backCoeff:
+            type: string
+            enum:
+            - BETA0
+            - SIGMA0_ELLIPSOID
+            - GAMMA0_ELLIPSOID
+            - GAMMA0_TERRAIN
+            default: GAMMA0_ELLIPSOID
+          orthorectify:
             type: boolean
-            default: true
+            default: false
+          demInstance:
+            type: string
+            enum:
+            - MAPZEN
+            - COPERNICUS
+            - COPERNICUS_30
+            - COPERNICUS_90
+            default: MAPZEN
+          radiometricTerrainOversampling:
+            type: number
+            format: double
+            minimum: 1
+            maximum: 4
+            default: 2
+    StatisticsDefinition:
+      description: Single band statistics definition. The name of the band (as key) for which a calculation of statistic is defined below. Each key must match with one of the band names `output.bands` specified in a `setup()` function in an evalscript (for this output) or be "default". If it is "default", the statistics specified below will be calculated for all bands of this output for which calculation of statistics is not explicitly defined.
+      type: object
+      properties:
+        percentiles:
+          description: Calculate percentiles.
+          type: object
+          properties:
+            k:
+              description: 'Percentiles definition as array of values between [0,1], [see this example](https://docs.planet.com/develop/apis/statistical/examples/#statistics-histogram-and-percentiles-for-one-single-band-output).
+
+                '
+              type: array
+              items:
+                type: number
+                format: double
+                minimum: 0
+                maximum: 1
+    ObjectStorageOutputInfoV2:
+      type: object
+      oneOf:
+      - title: S3BucketInfoTemplated
+        required:
+        - s3
+        properties:
+          s3:
+            $ref: '#/components/schemas/S3BucketInfoTemplated'
+      - title: GSBucketInfoTemplated
+        x-cdse-exclude: true
+        required:
+        - gs
+        properties:
+          gs:
+            $ref: '#/components/schemas/GSBucketInfoTemplated'
+    DEMProcessing:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDatasetProcessing'
+      - type: object
+        properties:
+          clampNegative:
+            type: boolean
+            default: false
+            description: Mapzen DEM specific option. It replaces negative orthometric heights with 0. Useful for removing ocean bathymetry, for example.
+          egm:
+            type: boolean
+            default: false
+            description: It replaces orthometric heights with ellipsoidal heights relative to the WGS84 ellipsoid.
+    ProcessRequestInput:
+      title: Input
+      type: object
+      required:
+      - bounds
+      - data
+      properties:
+        bounds:
+          $ref: '#/components/schemas/ProcessRequestInputBounds'
+        data:
+          $ref: '#/components/schemas/ProcessRequestInputData'
+    BatchStatisticsTaskDto:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BatchStatisticsTaskStatusDto'
+      - type: object
+        properties:
+          request:
+            $ref: '#/components/schemas/BatchStatisticalRequest'
+          userAction:
+            description: Last user action on the request.
+            type: string
+            enum:
+            - NONE
+            - ANALYSE
+            - START
+            - STOP
+          userActionUpdated:
+            type: string
+            description: Date of the last user action on the request
+            format: date-time
+          domainAccountId:
+            description: Deprecated. It is equal to projectId
+            type: string
+            format: uuid
+          projectId:
+            type: string
+            format: uuid
+          workspaceId:
+            type: string
+            format: uuid
+    LandsatTierFilteringWithoutRt:
+      type: object
+      properties:
+        tiers:
+          type: string
+          default: ALL_TIERS
+          enum:
+          - TIER_1
+          - ALL_TIERS
+    Aggregation:
+      required:
+      - of
+      description: 'Specifies how given time range is split into time intervals.
+
+        '
+      type: object
+      properties:
+        of:
+          description: 'Duration in ISO 8601 duration format, check [here](https://docs.planet.com/develop/apis/statistical/#split-the-requested-timerange-into-multiple-time-intervals) for more details.
+
+            '
+          type: string
+        lastIntervalBehavior:
+          description: "This parameter specifies the behavior of the last interval if the given time range isn't divisible by the provided aggregation interval.\n * SKIP - skip the last interval  (default behavior)\n * SHORTEN - shortens the last interval so that it ends at the end of provided time range.\n * EXTEND - extends the last interval over the end of the provided time range so that all intervals are of equal duration\n"
+          type: string
+          enum:
+          - SKIP
+          - SHORTEN
+          - EXTEND
+    ProcessRequestForBatch:
+      type: object
+      description: Batch processing equivalent of the <a href="#operation/process">Process request</a>.
+      required:
+      - evalscript
+      - input
+      properties:
+        input:
+          $ref: '#/components/schemas/ProcessRequestInput'
+        output:
+          $ref: '#/components/schemas/ProcessRequestOutputForBatch'
+        evalscript:
+          description: 'Your evalscript. For details, click
+
+            <a href="https://docs.planet.com/develop/evalscripts/" target="_blank">here</a>.
+
+            '
+          type: string
+    BatchProcessOutput:
+      description: 'Specifies the tile output paths where the results shall be written. Required unless `bucketName` or `zarrOutput` is specified.
+
+        '
+      type: object
+      properties:
+        defaultTilePath:
+          description: "Path or path template specifying where batch processing results shall be stored. Supported formats: <ul>\n  <li>a valid Amazon S3 URL, e.g. `s3://some-bucket/some/folder`.<br/>\n    A subdirectory will be created for this batch request, named after the request ID, and will contain further subdirectories with the output tiles.\n    This is equivalent to the template `s3://some-bucket/some/folder/<requestId>/<tileName>/<outputId>.<format>`.\n  </li>\n  <li>a templated Amazon S3 URL, e.g. `s3://some-bucket/some/folder/<tileName>.tif`.\n    Templating allows custom organization of the output files.\n    Templates can contain the following placeholders, which are replaced by respective actual values when writing results:\n    <ul>\n      <li> `<requestId>` - the ID of your batch request,</li>\n      <li> `<tileName>` - the name (string ID) of the tile within the used tiling grid,</li>\n      <li> `<tileId>` - the numerical ID of the tile within the used tiling grid,</li>\n      <li> `<outputId>` - the output (raster) identifier (e.g. `default`),</li>\n      <li> `<format>` - the filename extension of the output's format (e.g. `tiff`).</li>\n    </ul>\n    The template must contain `<tileName>` or `<tileId>` in order to ensure unique output files.\n    In case of multiple outputs, the template must also contain `<outputId>`.\n  </li>\n</ul> The request will fail if files already exist.\n"
+          type: string
+        overwrite:
+          description: "If `true`, the request will **never** fail if files already exist. Instead, any existing files will be overwritten, except if `skipExisting` is `true` and **all** outputs for a tile exist.\n\n*Note:* checking for existing files can only be done if the task is estimated to output fewer than 5000 files, e.g. a task that produces 5 outputs per tile and is estimated to span over 1000 grid tiles is too big to check. Such big tasks must either: <ul>\n  <li> ensure that the output path is unique to the task by including `<taskId>` in `defaultTilePath` and all `tilePath`s,</li>\n  <li> ensure that the output path is unique by using a simple, non-templated `defaultTilePath`, or</li>\n  <li> suppress overwrite checks by setting `overwrite` to `true` and `skipExisting` to `false`.</li>\n<ul>\n"
+          default: false
+          type: boolean
+        skipExisting:
+          description: 'If `true`, any tiles for which **all** outputs already exist will be skipped. Tiles for which only **some** of the outputs exist will either be *fully overwritten* (if `overwrite` is `true`) or will cause the whole request to fail.
+
+            '
+          default: false
+          type: boolean
+        cogOutput:
+          description: If `true`, the results will be written as COG (cloud optimized GeoTIFFs). All outputs must use the TIFF format and **cannot** use `sampleType` INT8. We also suggest setting the evalscript output object `nodataValue` (<a href="https://docs.planet.com/develop/evalscripts/functions/#output-object-properties" target="_blank">more details</a>) for correct overview generation.
+          default: false
+          type: boolean
+        cogParameters:
+          $ref: '#/components/schemas/BatchCogParameters'
+        createCollection:
+          description: 'If `true`, the results will be written as COG (cloud optimized GeoTIFFs) and a collection will be automatically created. All outputs must be single-band and use the TIFF format. Only one of *createCollection* and *collectinId* may be specified. Requires `"cogOutput"=true`.
+
+            '
+          type: boolean
+          default: false
+        collectionId:
+          description: 'If provided, the results will be written as COG (cloud optimized GeoTIFFs) and added to the existing collection with the specified identifier. All outputs must be single-band and use the TIFF format. The collection must exist and be compatible -- that is, must contain bands equivalent to the batch request''s outputs with the same bit depths. Only one of *createCollection* and *collectinId* may be specified. Requires `"cogOutput"=true`.
+
+            '
+          type:
+          - string
+          - 'null'
+          default: null
+    View:
+      description: Links to paginate the resource
+      type: object
+      properties:
+        currentToken:
+          type: string
+        nextToken:
+          type: string
+        previousToken:
+          type: string
+        '@id':
+          type: string
+          format: uri
+        next:
+          type: string
+          format: uri
+        previous:
+          type: string
+          format: uri
+    S2L2AFiltering:
+      type: object
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        mosaickingOrder:
+          description: The order in which tiles are overlapped from which the output result is mosaicked.
+          type: string
+          enum:
+          - mostRecent
+          - leastRecent
+          - leastCC
+          default: mostRecent
+        maxCloudCoverage:
+          allOf:
+          - $ref: '#/components/schemas/MaxCloudCoverage'
+          - default: 100
+    StatisticalRequestCalculations:
+      description: 'Define which statistics and histogram to calculate.
+
+        It can be specified differently for each evalscript output.
+
+        If omitted only the basic statistic (min, max, mean, stDev) will be calculated.
+
+        '
+      type: object
+      additionalProperties:
+        x-additionalPropertiesName: output name
+        $ref: '#/components/schemas/CalculationDefinition'
     ArrayOverride:
       type: object
       description: 'Values for the particular output Zarr array. The array names are equal to the identifiers of the outputs/responses of the `processRequest`.
@@ -963,78 +1142,139 @@ components:
 
               '
             type: object
-    CalculationDefinition:
-      description: The name of the output (as key) for which a calculation of statistics and histogram are defined below. Each key must match with one of the `output.id` specified in a `setup()` function in an evalscript or be "default". If it is "default", the specified statistics and histogram will be calculated for all outputs for which calculation of statistics is not explicitly defined.
+    DEMFiltering:
       type: object
       properties:
-        histograms:
-          description: 'Histogram definitions. They can be specified differently for each band in this output.
-
-            '
-          type: object
-          additionalProperties:
-            x-additionalPropertiesName: band name
-            $ref: '#/components/schemas/HistogramDefinition'
-        statistics:
-          description: 'Statistics definitions. It can be specified differently for each band in this output.
-
-            '
-          type: object
-          additionalProperties:
-            x-additionalPropertiesName: band name
-            $ref: '#/components/schemas/StatisticsDefinition'
-    TilingGridSettings:
-      required:
-      - id
-      - resolution
-      description: 'Tiling grid settings.
-
-        '
+        demInstance:
+          description: Selects DEM instance.
+          type: string
+          enum:
+          - MAPZEN
+          - COPERNICUS_30
+          - COPERNICUS_90
+          default: MAPZEN
+    TimeRange:
+      type: object
+      description: A time interval to filter data by acquisition date. It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.
+      properties:
+        from:
+          description: The start of a search interval.
+          type: string
+          format: date-time
+        to:
+          description: The end of a search interval.
+          type: string
+          format: date-time
+      example:
+        from: '2018-10-01T00:00:00.000Z'
+        to: '2018-11-01T00:00:00.000Z'
+    MultiPartBatchRequest:
       type: object
       properties:
-        id:
-          description: Id of one of the supported tiling grids
-          type: integer
-          format: int64
-        resolution:
-          description: Output resolution in units of the tiling grid
-          type: number
-          format: double
-        bufferX:
-          description: 'Will expand each output tile horizontally (on the left and the right) by number of pixels specified by this value. <br><br> <b>Example:</b> <br> If bufferX is 5, the output tile will be wider by 10 pixels. Coordinates of the tile are also moved accordingly by the number of pixels multiplied by resolution in each direction. However, the `tileWidthX` property returned by the API will **not** include the buffer.
+        request:
+          $ref: '#/components/schemas/BatchProcessRequest'
+        evalscript:
+          description: Block of JavaScript code.
+          type: string
+    BatchStatisticalRequestAggregation:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/StatisticalRequestAggregationWithoutEvalscript'
+      - type: object
+        properties:
+          evalscript:
+            description: 'Your evalscript. For details, click
 
-            '
-          type: integer
-          format: int16
-        bufferY:
-          description: 'Will expand each output tile vertically (on the top and the bottom) by number of pixels specified by this value. See `bufferX` above for an example.
+              <a href="https://docs.planet.com/develop/evalscripts/" target="_blank">here</a>.
 
-            '
+              The evalscript will be executed once for each time interval defined by `timeRange` and `aggregationInterval`.
+
+
+              Either this or `evalscriptReference` parameter is required.
+
+              '
+            type: string
+          evalscriptReference:
+            description: 'Reference to your evalscript stored in an object storage. For details, click
+
+              <a href="https://docs.planet.com/develop/evalscripts/" target="_blank">here</a>.
+
+
+              Either this or `evalscript` parameter is required.
+
+              '
+            $ref: '#/components/schemas/ObjectStorageInfoV2'
+    Boom:
+      type: object
+      properties:
+        status:
+          description: HTTP status code
           type: integer
-          format: int16
-    MultiPolygon:
+          format: int32
+        reason:
+          description: Reason for the error
+          type: string
+        message:
+          description: Friendly error message
+          type: string
+        code:
+          description: Code that uniquely identifies the error
+          type: string
+          enum:
+          - COMMON_BAD_PAYLOAD
+          - COMMON_NOT_FOUND
+          - COMMON_DATABASE_ERROR
+          - COMMON_UNIQUE_KEY_VIOLATION
+          - COMMON_INSUFFICIENT_PERMISSIONS
+          - COMMON_SENTINEL_ACCOUNT_EXPIRED
+          - COMMON_METHOD_NOT_ALLOWED
+          - COMMON_UNSUPPORTED_MEDIA_TYPE
+          - COMMON_ELASTICSEARCH_ERROR
+          - COMMON_UNAUTHORIZED
+          - COMMON_EXCEPTION
+          - RATE_LIMIT_STORAGE_TIMEOUT
+          - RATE_LIMIT_OVERLAPPING_POLICIES
+          - RATE_LIMIT_EXCEEDED
+          - RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY
+          - DASHBOARD_PAYPAL_SALE_ERROR
+          - DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR
+          - DASHBOARD_INVALID_PAYPAL_RESPONSE
+          - DASHBOARD_EXECUTE_SALE_ERROR
+          - DASHBOARD_EXECUTE_AGREEMENT_ERROR
+          - DASHBOARD_IPN_ERROR
+          - DASHBOARD_ADYEN_SALE_ERROR
+          - DASHBOARD_ADYEN_PAYMENT_CANCELLED
+          - RENDERER_EXCEPTION
+          - OAUTH_ERROR
+          - EMAIL_OCTOPUS_ERROR
+        errors:
+          description: Additional information about the error (Optional)
+          type: object
+    S2L1CFiltering:
+      allOf:
+      - $ref: '#/components/schemas/S2L2AFiltering'
+    ProcessRequestOutputFormat:
       type: object
       properties:
         type:
           type: string
-          enum:
-          - MultiPolygon
-        coordinates:
-          type: array
-          items:
-            type: array
-            items:
-              type: array
-              items:
-                maxItems: 2
-                minItems: 2
-                type: array
-                items:
-                  type: number
-                  format: double
-    S2L1CFiltering:
-      allOf:
-      - $ref: '#/components/schemas/S2L2AFiltering'
+          description: Output format mime-type
+    BatchStatisticalRequest:
+      type: object
+      required:
+      - input
+      - aggregation
+      - output
+      properties:
+        input:
+          $ref: '#/components/schemas/BatchStatisticalInput'
+        aggregation:
+          $ref: '#/components/schemas/BatchStatisticalRequestAggregation'
+        calculations:
+          $ref: '#/components/schemas/StatisticalRequestCalculations'
+        output:
+          description: Storage location where the results shall be written.
+          $ref: '#/components/schemas/ObjectStorageOutputInfoV2'
     Geometry:
       description: The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the "bounds.properties.crs" parameter. A GeoJsonObject.
       type: object
@@ -1058,6 +1298,174 @@ components:
             - 46.29191774991382
           - - 14.000701904296873
             - 46.23685258143992
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    ProcessRequestOutputBatchResponse:
+      type: object
+      required:
+      - format
+      properties:
+        identifier:
+          type: string
+          description: 'Response''s identifier is used to connect the results of an evalscript with the output file.
+
+            Each response identifier value must either match one of the values in `setup()` -> `output.id` in the evalscript (see <a href="https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l1c/examples/#ndvi-image--and--value-multi-part-response-png-and-geotiff" target="_blank">example</a>)
+
+            or be `userdata` (see <a href="https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l1c/examples/#true-color-and-metadata-multi-part-response-geotiff-and-json" target="_blank">example</a>).
+
+            '
+          enum:
+          - <identifier>
+          - userdata
+        format:
+          description: 'Format object
+
+            '
+          type: object
+          oneOf:
+          - $ref: '#/components/schemas/ProcessRequestOutputFormatTiff'
+          - $ref: '#/components/schemas/ProcessRequestOutputFormatJson'
+          - $ref: '#/components/schemas/ProcessRequestOutputFormatZarr'
+    LTML1Dataset:
+      title: landsat-tm-l1
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-tm-l1
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
+    S2Processing:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDatasetProcessing'
+      - type: object
+        properties:
+          harmonizeValues:
+            description: 'Harmonizes data values to be comparable with old processing baselines. See <a href="https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l1c/#harmonize-values" target="_blank">here</a> for details.
+
+              '
+            type: boolean
+            default: true
+    L8L2Dataset:
+      title: landsat-ot-l2
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-ot-l2
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
+    ObjectStorageInfoV2:
+      type: object
+      oneOf:
+      - title: S3BucketInfo
+        required:
+        - s3
+        properties:
+          s3:
+            $ref: '#/components/schemas/S3BucketInfo'
+      - title: GSBucketInfo
+        x-cdse-exclude: true
+        required:
+        - gs
+        properties:
+          gs:
+            $ref: '#/components/schemas/GSBucketInfo'
+    S3BucketInfoTemplated:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+          description: "A URL or URL template specifying where the results shall be written. Supported formats: <ul>\n  <li>a valid Amazon S3 URL, e.g. `s3://my-personal-bucket/some-folder`.\n    A subdirectory will be created for this statistical batch request, named after the request ID, and output JSON files will be stored there.\n    This is equivalent to the template `s3://my-personal-bucket/some-folder/<REQUEST_ID>/<ID>.json`.\n  </li>\n  <li>a templated Amazon S3 URL, e.g. `s3://my-personal-bucket/some-folder/<ID>.json`.\n    Templating allows custom organization of the output files.\n    Templates can contain the following placeholders, which are replaced by respective actual values when writing results:\n    <ul>\n      <li> `<REQUEST_ID>` - the ID of your statistical batch request,</li>\n      <li> `<ID>` - the `id` property of the feature,</li>\n      <li> `<IDENTIFIER>` - the `identifier` property of the feature.</li>\n    </ul>\n    The template must contain `<ID>` or `<IDENTIFIER>` in order to ensure unique output files.\n  </li>\n</ul>\n"
+        iamRoleARN:
+          type: string
+          description: IAM role ARN, which allows programmatic access to the S3 bucket specified in the `url` field using the recommended assume IAM role flow.
+        accessKey:
+          type: string
+          description: AWS access key, which allows programmatic access to the S3 bucket specified in the `url` field.
+        secretAccessKey:
+          type: string
+          description: AWS secret access key which must correspond to the AWS access key.
+        region:
+          type: string
+          description: The region where the S3 bucket is located. If omitted, the region of the Sentinel Hub deployment that the request is submitted to is assumed.
+    BatchZarrParameters:
+      description: 'Specifies Zarr creation parameters.
+
+
+        If this parameter is specified, all outputs in processRequest **must** be of the type zarr/array
+
+        and neither `bucketName` nor `output` can be specified.
+
+        With Zarr output **only** WGS84 and LAEA grids **are supported**.
+
+        '
+      type: object
+      required:
+      - path
+      - group
+      properties:
+        path:
+          description: "Path or path template specifying where batch processing results shall be stored. Supported formats: <ul>\n  <li>a valid Amazon S3 URL, e.g. `s3://some-bucket/some/folder`.<br/>\n    The output Zarr will be stored to this folder (prefix).\n    The request will fail if any files already exist in the folder.\n  </li>\n  <li>a templated Amazon S3 URL, e.g. `s3://some-bucket/some/folder/<requestId>`.\n    The placeholder `<requestId>` will be replaced by the ID of your batch request\n    and the output Zarr will be stored there.\n  </li>\n</ul> The specified path <b>must</b> not contain any subfolders or Zarr files such as <code>.zattrs</code>, <code>.zgroup</code>, <code>.zmetadata</code>.\n"
+          type: string
+        group:
+          $ref: '#/components/schemas/Group'
+        arrayParameters:
+          description: 'Parameters that will be used for all output arrays, except where overridden with `arrayOverrides`. Required unless `arrayOverrides` includes all required fields for all output arrays. All fields are standard Zarr fields. Further information can be found on the link below.
+
+            '
+          externalDocs:
+            description: Zarr metadata specification version 2, Attributes
+            url: https://zarr-specs.readthedocs.io/en/latest/v2/v2.0.html#metadata
+          allOf:
+          - $ref: '#/components/schemas/ArrayParameters'
+        arrayOverrides:
+          $ref: '#/components/schemas/ArrayOverrides'
+    GSBucketInfoTemplated:
+      type: object
+      required:
+      - url
+      - credentials
+      properties:
+        url:
+          type: string
+          description: "A URL or URL template specifying where the results shall be written. Supported formats: <ul>\n  <li>a valid Google Cloud Storage URL, e.g. `gs://my-bucket/some-folder`.\n    A subdirectory will be created for this statistical batch request, named after the request ID, and output JSON files will be stored there.\n    This is equivalent to the template `gs://my-bucket/some-folder/<REQUEST_ID>/<ID>.json`.\n  </li>\n  <li>a templated Google Cloud Storage URL, e.g. `gs://my-bucket/some-folder/<ID>.json`.\n    Templating allows custom organization of the output files.\n    Templates can contain the following placeholders, which are replaced by respective actual values when writing results:\n    <ul>\n      <li> `<REQUEST_ID>` - the ID of your statistical batch request,</li>\n      <li> `<ID>` - the `id` property of the feature,</li>\n      <li> `<IDENTIFIER>` - the `identifier` property of the feature.</li>\n    </ul>\n    The template must contain `<ID>` or `<IDENTIFIER>` in order to ensure unique output files.\n  </li>\n</ul>\n"
+        credentials:
+          type: string
+          description: Base64-encoded service account credentials in JSON format.
+    S2L1CDataset:
+      title: sentinel-2-l1c
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/S2L1CFiltering'
+          processing:
+            $ref: '#/components/schemas/S2Processing'
+          type:
+            type: string
+            enum:
+            - sentinel-2-l1c
     ProcessRequestInputData:
       description: 'The collections you wish to request, along with certain processing and filtering parameters.
 
@@ -1083,42 +1491,14 @@ components:
         - $ref: '#/components/schemas/S1Dataset'
         - $ref: '#/components/schemas/HLSDataset'
         - $ref: '#/components/schemas/BYOCDataset'
-    ProcessRequestInputBounds:
-      title: Bounds
-      description: 'Defines the request bounds by specifying the bounding box and/or
-
-        geometry for the request. If both are specified it will generate an image
-
-        for the bounding box and render data contained within the geometry.
-
-        '
+    ProcessRequestOutputForBatch:
       type: object
       properties:
-        bbox:
-          description: 'The request bounding box. This and/or GEOMETRY must be specified.
-
-            Specify with a coordinate pair on two (opposite) vertices of the bounding
-
-            box rectangle. Coordinates need to be in easting,northing or longitude, latitude,
-
-            in that order in the CRS defined in the "bounds.properties.crs" parameter.
-
-            '
+        responses:
           type: array
-          minItems: 4
-          maxItems: 4
+          description: Response object.
           items:
-            type: number
-            format: double
-          example:
-          - 13.822174072265625
-          - 45.85080395917834
-          - 14.55963134765625
-          - 46.29191774991382
-        geometry:
-          $ref: '#/components/schemas/Geometry'
-        properties:
-          $ref: '#/components/schemas/ProcessRequestInputBoundsProperties'
+            $ref: '#/components/schemas/ProcessRequestOutputBatchResponse'
     BatchCogParameters:
       description: 'Allows to specify COG creation parameters.
 
@@ -1171,60 +1551,112 @@ components:
             '
           type: boolean
           default: true
-    LETML1Dataset:
-      title: landsat-etm-l1
+    TilingGridSettings:
+      required:
+      - id
+      - resolution
+      description: 'Tiling grid settings.
+
+        '
+      type: object
+      properties:
+        id:
+          description: Id of one of the supported tiling grids
+          type: integer
+          format: int64
+        resolution:
+          description: Output resolution in units of the tiling grid
+          type: number
+          format: double
+        bufferX:
+          description: 'Will expand each output tile horizontally (on the left and the right) by number of pixels specified by this value. <br><br> <b>Example:</b> <br> If bufferX is 5, the output tile will be wider by 10 pixels. Coordinates of the tile are also moved accordingly by the number of pixels multiplied by resolution in each direction. However, the `tileWidthX` property returned by the API will **not** include the buffer.
+
+            '
+          type: integer
+          format: int16
+        bufferY:
+          description: 'Will expand each output tile vertically (on the top and the bottom) by number of pixels specified by this value. See `bufferX` above for an example.
+
+            '
+          type: integer
+          format: int16
+    ProcessRequestInputBoundsProperties:
+      title: BoundsProperties
+      type: object
+      properties:
+        crs:
+          description: 'The coordinate reference system of the coordinates. Must be
+
+            one of the values listed at https://docs.planet.com/develop/apis/processing/#crs-support.
+
+            Default CRS is WGS84, http://www.opengis.net/def/crs/OGC/1.3/CRS84.
+
+            '
+          type: string
+          default: http://www.opengis.net/def/crs/OGC/1.3/CRS84
+    S1Dataset:
+      title: sentinel-1-grd
       type: object
       allOf:
-      - $ref: '#/components/schemas/LandsatDataset'
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/S1Filtering'
+          processing:
+            $ref: '#/components/schemas/S1Processing'
+          type:
+            type: string
+            enum:
+            - sentinel-1-grd
+    LandsatFiltering:
+      type: object
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        mosaickingOrder:
+          description: The order in which tiles are overlapped from which the output result is mosaicked.
+          type: string
+          enum:
+          - mostRecent
+          - leastRecent
+          - leastCC
+          default: mostRecent
+        maxCloudCoverage:
+          allOf:
+          - $ref: '#/components/schemas/MaxCloudCoverage'
+          - default: 100
+    ProcessRequestOutputFormatJson:
+      title: application/json
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ProcessRequestOutputFormat'
       - type: object
         properties:
           type:
             type: string
             enum:
-            - landsat-etm-l1
-          dataFilter:
-            allOf:
-            - $ref: '#/components/schemas/LandsatFiltering'
-            - $ref: '#/components/schemas/LandsatTierFilteringWithRt'
-    GSBucketInfo:
-      title: GSBucketInfo
+            - application/json
+    S1ProcessingSpeckleFilterLEE:
       type: object
+      description: The Lee speckle filter. Note that processing time rapidly increases as window size increases.
       required:
-      - url
-      - credentials
+      - type
+      - windowSizeX
+      - windowSizeY
       properties:
-        url:
+        type:
           type: string
-          description: A URL pointing to a Google Cloud Storage bucket or an object in a GCS bucket, e.g. `gs://my-bucket/some-folder` or `gs://my-bucket/some-folder/some-file.gpkg`.
-        credentials:
-          type: string
-          description: Base64-encoded service account credentials in JSON format.
-    ProcessRequestOutputBatchResponse:
-      type: object
-      required:
-      - format
-      properties:
-        identifier:
-          type: string
-          description: 'Response''s identifier is used to connect the results of an evalscript with the output file.
-
-            Each response identifier value must either match one of the values in `setup()` -> `output.id` in the evalscript (see <a href="https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l1c/examples/#ndvi-image--and--value-multi-part-response-png-and-geotiff" target="_blank">example</a>)
-
-            or be `userdata` (see <a href="https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l1c/examples/#true-color-and-metadata-multi-part-response-geotiff-and-json" target="_blank">example</a>).
-
-            '
-          enum:
-          - <identifier>
-          - userdata
-        format:
-          description: 'Format object
-
-            '
-          type: object
-          oneOf:
-          - $ref: '#/components/schemas/ProcessRequestOutputFormatTiff'
-          - $ref: '#/components/schemas/ProcessRequestOutputFormatJson'
-          - $ref: '#/components/schemas/ProcessRequestOutputFormatZarr'
+        windowSizeX:
+          type: integer
+          minimum: 1
+          maximum: 7
+          description: The window size in the X direction of the source data. Odd values recommended.
+        windowSizeY:
+          type: integer
+          minimum: 1
+          maximum: 7
+          description: The window size in the Y direction of the source data. Odd values recommended.
     BYOCDataset:
       title: BYOC / BATCH / ZARR
       type: object
@@ -1247,186 +1679,42 @@ components:
 
               '
       - $ref: '#/components/schemas/BaseDataset'
-    S3BucketInfoTemplated:
-      type: object
-      required:
-      - url
-      properties:
-        url:
-          type: string
-          description: "A URL or URL template specifying where the results shall be written. Supported formats: <ul>\n  <li>a valid Amazon S3 URL, e.g. `s3://my-personal-bucket/some-folder`.\n    A subdirectory will be created for this statistical batch request, named after the request ID, and output JSON files will be stored there.\n    This is equivalent to the template `s3://my-personal-bucket/some-folder/<REQUEST_ID>/<ID>.json`.\n  </li>\n  <li>a templated Amazon S3 URL, e.g. `s3://my-personal-bucket/some-folder/<ID>.json`.\n    Templating allows custom organization of the output files.\n    Templates can contain the following placeholders, which are replaced by respective actual values when writing results:\n    <ul>\n      <li> `<REQUEST_ID>` - the ID of your statistical batch request,</li>\n      <li> `<ID>` - the `id` property of the feature,</li>\n      <li> `<IDENTIFIER>` - the `identifier` property of the feature.</li>\n    </ul>\n    The template must contain `<ID>` or `<IDENTIFIER>` in order to ensure unique output files.\n  </li>\n</ul>\n"
-        iamRoleARN:
-          type: string
-          description: IAM role ARN, which allows programmatic access to the S3 bucket specified in the `url` field using the recommended assume IAM role flow.
-        accessKey:
-          type: string
-          description: AWS access key, which allows programmatic access to the S3 bucket specified in the `url` field.
-        secretAccessKey:
-          type: string
-          description: AWS secret access key which must correspond to the AWS access key.
-        region:
-          type: string
-          description: The region where the S3 bucket is located. If omitted, the region of the Sentinel Hub deployment that the request is submitted to is assumed.
-    S1ProcessingSpeckleFilterLEE:
-      type: object
-      description: The Lee speckle filter. Note that processing time rapidly increases as window size increases.
-      required:
-      - type
-      - windowSizeX
-      - windowSizeY
-      properties:
-        type:
-          type: string
-        windowSizeX:
-          type: integer
-          minimum: 1
-          maximum: 7
-          description: The window size in the X direction of the source data. Odd values recommended.
-        windowSizeY:
-          type: integer
-          minimum: 1
-          maximum: 7
-          description: The window size in the Y direction of the source data. Odd values recommended.
-    Polygon:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - Polygon
-        coordinates:
-          type: array
-          items:
-            type: array
-            items:
-              maxItems: 2
-              minItems: 2
-              type: array
-              items:
-                type: number
-                format: double
-    L8L1Dataset:
-      title: landsat-ot-l1
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/LandsatDataset'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - landsat-ot-l1
-          dataFilter:
-            allOf:
-            - $ref: '#/components/schemas/LandsatFiltering'
-            - $ref: '#/components/schemas/LandsatTierFilteringWithRt'
-    DEMDataset:
-      title: dem
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseDataset'
-      - type: object
-        properties:
-          dataFilter:
-            $ref: '#/components/schemas/DEMFiltering'
-          processing:
-            $ref: '#/components/schemas/DEMProcessing'
-          type:
-            type: string
-            enum:
-            - dem
-    StatisticalRequestCalculations:
-      description: 'Define which statistics and histogram to calculate.
+    ProcessRequestInputBounds:
+      title: Bounds
+      description: 'Defines the request bounds by specifying the bounding box and/or
 
-        It can be specified differently for each evalscript output.
+        geometry for the request. If both are specified it will generate an image
 
-        If omitted only the basic statistic (min, max, mean, stDev) will be calculated.
+        for the bounding box and render data contained within the geometry.
 
         '
       type: object
-      additionalProperties:
-        x-additionalPropertiesName: output name
-        $ref: '#/components/schemas/CalculationDefinition'
-    HLSFiltering:
-      type: object
       properties:
-        timeRange:
-          $ref: '#/components/schemas/TimeRange'
-        mosaickingOrder:
-          description: The order in which tiles are overlapped from which the output result is mosaicked.
-          type: string
-          enum:
-          - mostRecent
-          - leastRecent
-          - leastCC
-          default: mostRecent
-        maxCloudCoverage:
-          allOf:
-          - $ref: '#/components/schemas/MaxCloudCoverage'
-          - default: 100
-        constellation:
-          type: string
-          description: 'The selected constellation. "SENTINEL" selects only Sentinel products, while "LANDSAT" selects only Landsat products.
+        bbox:
+          description: 'The request bounding box. This and/or GEOMETRY must be specified.
 
+            Specify with a coordinate pair on two (opposite) vertices of the bounding
 
-            By default, products of both constellations are selected.
+            box rectangle. Coordinates need to be in easting,northing or longitude, latitude,
+
+            in that order in the CRS defined in the "bounds.properties.crs" parameter.
 
             '
-          enum:
-          - SENTINEL
-          - LANDSAT
-    LTML1Dataset:
-      title: landsat-tm-l1
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/LandsatDataset'
-      - type: object
+          type: array
+          minItems: 4
+          maxItems: 4
+          items:
+            type: number
+            format: double
+          example:
+          - 13.822174072265625
+          - 45.85080395917834
+          - 14.55963134765625
+          - 46.29191774991382
+        geometry:
+          $ref: '#/components/schemas/Geometry'
         properties:
-          type:
-            type: string
-            enum:
-            - landsat-tm-l1
-          dataFilter:
-            allOf:
-            - $ref: '#/components/schemas/LandsatFiltering'
-            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
-    MaxCloudCoverage:
-      description: The maximum allowable cloud coverage in percent.
-      type: number
-      format: double
-      minimum: 0
-      maximum: 100
-      default: 100
-    LMSSL1Dataset:
-      title: landsat-mss-l1
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/LandsatDataset'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - landsat-mss-l1
-          dataFilter:
-            allOf:
-            - $ref: '#/components/schemas/LandsatFiltering'
-            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
-    TimeRange:
-      type: object
-      description: A time interval to filter data by acquisition date. It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.
-      properties:
-        from:
-          description: The start of a search interval.
-          type: string
-          format: date-time
-        to:
-          description: The end of a search interval.
-          type: string
-          format: date-time
-      example:
-        from: '2018-10-01T00:00:00.000Z'
-        to: '2018-11-01T00:00:00.000Z'
+          $ref: '#/components/schemas/ProcessRequestInputBoundsProperties'
     LandsatTierFilteringWithRt:
       type: object
       properties:
@@ -1437,162 +1725,6 @@ components:
           - TIER_1
           - TIER_1_AND_RT
           - ALL_TIERS
-    ProcessRequestOutputFormatJson:
-      title: application/json
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/ProcessRequestOutputFormat'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - application/json
-    BatchStatisticalInput:
-      type: object
-      required:
-      - features
-      - data
-      properties:
-        features:
-          description: Storage location of the GeoPackage containing the features (polygons) to calculate the statistics for.
-          $ref: '#/components/schemas/ObjectStorageInfoV2'
-        data:
-          $ref: '#/components/schemas/ProcessRequestInputData'
-    S2L1CDataset:
-      title: sentinel-2-l1c
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseDataset'
-      - type: object
-        properties:
-          dataFilter:
-            $ref: '#/components/schemas/S2L1CFiltering'
-          processing:
-            $ref: '#/components/schemas/S2Processing'
-          type:
-            type: string
-            enum:
-            - sentinel-2-l1c
-    BaseDataset:
-      type: object
-      properties:
-        type:
-          description: Datasource abbreviation
-          type: string
-        id:
-          description: Identifier
-          type: string
-    ProcessRequestOutputFormatTiff:
-      title: image/tiff
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/ProcessRequestOutputFormat'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - image/tiff
-    LandsatFiltering:
-      type: object
-      properties:
-        timeRange:
-          $ref: '#/components/schemas/TimeRange'
-        mosaickingOrder:
-          description: The order in which tiles are overlapped from which the output result is mosaicked.
-          type: string
-          enum:
-          - mostRecent
-          - leastRecent
-          - leastCC
-          default: mostRecent
-        maxCloudCoverage:
-          allOf:
-          - $ref: '#/components/schemas/MaxCloudCoverage'
-          - default: 100
-    S1Dataset:
-      title: sentinel-1-grd
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseDataset'
-      - type: object
-        properties:
-          dataFilter:
-            $ref: '#/components/schemas/S1Filtering'
-          processing:
-            $ref: '#/components/schemas/S1Processing'
-          type:
-            type: string
-            enum:
-            - sentinel-1-grd
-    ModisFiltering:
-      type: object
-      properties:
-        timeRange:
-          $ref: '#/components/schemas/TimeRange'
-        mosaickingOrder:
-          description: The order in which tiles are overlapped from which the output result is mosaicked.
-          type: string
-          enum:
-          - mostRecent
-          - leastRecent
-          default: mostRecent
-    BatchStatisticalRequest:
-      type: object
-      required:
-      - input
-      - aggregation
-      - output
-      properties:
-        input:
-          $ref: '#/components/schemas/BatchStatisticalInput'
-        aggregation:
-          $ref: '#/components/schemas/BatchStatisticalRequestAggregation'
-        calculations:
-          $ref: '#/components/schemas/StatisticalRequestCalculations'
-        output:
-          description: Storage location where the results shall be written.
-          $ref: '#/components/schemas/ObjectStorageOutputInfoV2'
-    LandsatTierFilteringWithoutRt:
-      type: object
-      properties:
-        tiers:
-          type: string
-          default: ALL_TIERS
-          enum:
-          - TIER_1
-          - ALL_TIERS
-    S2L2ADataset:
-      title: sentinel-2-l2a
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseDataset'
-      - type: object
-        properties:
-          dataFilter:
-            $ref: '#/components/schemas/S2L2AFiltering'
-          processing:
-            $ref: '#/components/schemas/S2Processing'
-          type:
-            type: string
-            enum:
-            - sentinel-2-l2a
-    LETML2Dataset:
-      title: landsat-etm-l2
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/LandsatDataset'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - landsat-etm-l2
-          dataFilter:
-            allOf:
-            - $ref: '#/components/schemas/LandsatFiltering'
-            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
     BatchStatisticsTaskStatusDto:
       type: object
       properties:
@@ -1633,21 +1765,6 @@ components:
           enum:
           - OUT_OF_PU
           - USER_ACTION
-    LTML2Dataset:
-      title: landsat-tm-l2
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/LandsatDataset'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - landsat-tm-l2
-          dataFilter:
-            allOf:
-            - $ref: '#/components/schemas/LandsatFiltering'
-            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
     StatisticalDateTimeInterval:
       type: object
       required:
@@ -1662,25 +1779,8 @@ components:
           type: string
           description: ISO-8601 time representing end of search interval, e.g. 2019-02-05T15:00:00+01:00.
           format: date-time
-    S2L2AFiltering:
-      type: object
-      properties:
-        timeRange:
-          $ref: '#/components/schemas/TimeRange'
-        mosaickingOrder:
-          description: The order in which tiles are overlapped from which the output result is mosaicked.
-          type: string
-          enum:
-          - mostRecent
-          - leastRecent
-          - leastCC
-          default: mostRecent
-        maxCloudCoverage:
-          allOf:
-          - $ref: '#/components/schemas/MaxCloudCoverage'
-          - default: 100
-    L8L2Dataset:
-      title: landsat-ot-l2
+    L8L1Dataset:
+      title: landsat-ot-l1
       type: object
       allOf:
       - $ref: '#/components/schemas/LandsatDataset'
@@ -1689,17 +1789,11 @@ components:
           type:
             type: string
             enum:
-            - landsat-ot-l2
+            - landsat-ot-l1
           dataFilter:
             allOf:
             - $ref: '#/components/schemas/LandsatFiltering'
-            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
-    ProcessRequestOutputFormat:
-      type: object
-      properties:
-        type:
-          type: string
-          description: Output format mime-type
+            - $ref: '#/components/schemas/LandsatTierFilteringWithRt'
     ProcessRequestOutputFormatZarr:
       title: zarr/array
       type: object
@@ -1711,92 +1805,30 @@ components:
             type: string
             enum:
             - zarr/array
-    BatchZarrParameters:
-      description: 'Specifies Zarr creation parameters.
-
-
-        If this parameter is specified, all outputs in processRequest **must** be of the type zarr/array
-
-        and neither `bucketName` nor `output` can be specified.
-
-        With Zarr output **only** WGS84 and LAEA grids **are supported**.
-
-        '
-      type: object
-      required:
-      - path
-      - group
-      properties:
-        path:
-          description: "Path or path template specifying where batch processing results shall be stored. Supported formats: <ul>\n  <li>a valid Amazon S3 URL, e.g. `s3://some-bucket/some/folder`.<br/>\n    The output Zarr will be stored to this folder (prefix).\n    The request will fail if any files already exist in the folder.\n  </li>\n  <li>a templated Amazon S3 URL, e.g. `s3://some-bucket/some/folder/<requestId>`.\n    The placeholder `<requestId>` will be replaced by the ID of your batch request\n    and the output Zarr will be stored there.\n  </li>\n</ul> The specified path <b>must</b> not contain any subfolders or Zarr files such as <code>.zattrs</code>, <code>.zgroup</code>, <code>.zmetadata</code>.\n"
-          type: string
-        group:
-          $ref: '#/components/schemas/Group'
-        arrayParameters:
-          description: 'Parameters that will be used for all output arrays, except where overridden with `arrayOverrides`. Required unless `arrayOverrides` includes all required fields for all output arrays. All fields are standard Zarr fields. Further information can be found on the link below.
-
-            '
-          externalDocs:
-            description: Zarr metadata specification version 2, Attributes
-            url: https://zarr-specs.readthedocs.io/en/latest/v2/v2.0.html#metadata
-          allOf:
-          - $ref: '#/components/schemas/ArrayParameters'
-        arrayOverrides:
-          $ref: '#/components/schemas/ArrayOverrides'
-    HLSDataset:
-      title: hls
+    LMSSL1Dataset:
+      title: landsat-mss-l1
       type: object
       allOf:
-      - $ref: '#/components/schemas/BaseDataset'
+      - $ref: '#/components/schemas/LandsatDataset'
       - type: object
         properties:
           type:
             type: string
             enum:
-            - hls
+            - landsat-mss-l1
           dataFilter:
-            $ref: '#/components/schemas/HLSFiltering'
-          processing:
-            $ref: '#/components/schemas/BaseDatasetProcessing'
-    DEMFiltering:
-      type: object
-      properties:
-        demInstance:
-          description: Selects DEM instance.
-          type: string
-          enum:
-          - MAPZEN
-          - COPERNICUS_30
-          - COPERNICUS_90
-          default: MAPZEN
-    BaseDatasetProcessing:
-      type: object
-      properties:
-        upsampling:
-          description: 'The interpolation used when the requested
-
-            resolution is higher than the source resolution.
-
-            '
-          type: string
-          enum:
-          - NEAREST
-          - BILINEAR
-          - BICUBIC
-          default: NEAREST
-        downsampling:
-          description: 'The interpolation used when the requested
-
-            resolution is lower than the source resolution.
-
-            '
-          type: string
-          enum:
-          - NEAREST
-          - BILINEAR
-          - BICUBIC
-          default: NEAREST
-    GSBucketInfoTemplated:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
+    MaxCloudCoverage:
+      description: The maximum allowable cloud coverage in percent.
+      type: number
+      format: double
+      minimum: 0
+      maximum: 100
+      default: 100
+    GSBucketInfo:
+      title: GSBucketInfo
       type: object
       required:
       - url
@@ -1804,71 +1836,36 @@ components:
       properties:
         url:
           type: string
-          description: "A URL or URL template specifying where the results shall be written. Supported formats: <ul>\n  <li>a valid Google Cloud Storage URL, e.g. `gs://my-bucket/some-folder`.\n    A subdirectory will be created for this statistical batch request, named after the request ID, and output JSON files will be stored there.\n    This is equivalent to the template `gs://my-bucket/some-folder/<REQUEST_ID>/<ID>.json`.\n  </li>\n  <li>a templated Google Cloud Storage URL, e.g. `gs://my-bucket/some-folder/<ID>.json`.\n    Templating allows custom organization of the output files.\n    Templates can contain the following placeholders, which are replaced by respective actual values when writing results:\n    <ul>\n      <li> `<REQUEST_ID>` - the ID of your statistical batch request,</li>\n      <li> `<ID>` - the `id` property of the feature,</li>\n      <li> `<IDENTIFIER>` - the `identifier` property of the feature.</li>\n    </ul>\n    The template must contain `<ID>` or `<IDENTIFIER>` in order to ensure unique output files.\n  </li>\n</ul>\n"
+          description: A URL pointing to a Google Cloud Storage bucket or an object in a GCS bucket, e.g. `gs://my-bucket/some-folder` or `gs://my-bucket/some-folder/some-file.gpkg`.
         credentials:
           type: string
           description: Base64-encoded service account credentials in JSON format.
-    Boom:
+    BatchStatisticalInput:
       type: object
+      required:
+      - features
+      - data
       properties:
-        status:
-          description: HTTP status code
-          type: integer
-          format: int32
-        reason:
-          description: Reason for the error
-          type: string
-        message:
-          description: Friendly error message
-          type: string
-        code:
-          description: Code that uniquely identifies the error
-          type: string
-          enum:
-          - COMMON_BAD_PAYLOAD
-          - COMMON_NOT_FOUND
-          - COMMON_DATABASE_ERROR
-          - COMMON_UNIQUE_KEY_VIOLATION
-          - COMMON_INSUFFICIENT_PERMISSIONS
-          - COMMON_SENTINEL_ACCOUNT_EXPIRED
-          - COMMON_METHOD_NOT_ALLOWED
-          - COMMON_UNSUPPORTED_MEDIA_TYPE
-          - COMMON_ELASTICSEARCH_ERROR
-          - COMMON_UNAUTHORIZED
-          - COMMON_EXCEPTION
-          - RATE_LIMIT_STORAGE_TIMEOUT
-          - RATE_LIMIT_OVERLAPPING_POLICIES
-          - RATE_LIMIT_EXCEEDED
-          - RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY
-          - DASHBOARD_PAYPAL_SALE_ERROR
-          - DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR
-          - DASHBOARD_INVALID_PAYPAL_RESPONSE
-          - DASHBOARD_EXECUTE_SALE_ERROR
-          - DASHBOARD_EXECUTE_AGREEMENT_ERROR
-          - DASHBOARD_IPN_ERROR
-          - DASHBOARD_ADYEN_SALE_ERROR
-          - DASHBOARD_ADYEN_PAYMENT_CANCELLED
-          - RENDERER_EXCEPTION
-          - OAUTH_ERROR
-          - EMAIL_OCTOPUS_ERROR
-        errors:
-          description: Additional information about the error (Optional)
-          type: object
-    ModisDataset:
-      title: modis
+        features:
+          description: Storage location of the GeoPackage containing the features (polygons) to calculate the statistics for.
+          $ref: '#/components/schemas/ObjectStorageInfoV2'
+        data:
+          $ref: '#/components/schemas/ProcessRequestInputData'
+    LETML1Dataset:
+      title: landsat-etm-l1
       type: object
       allOf:
-      - $ref: '#/components/schemas/BaseDataset'
+      - $ref: '#/components/schemas/LandsatDataset'
       - type: object
         properties:
-          dataFilter:
-            $ref: '#/components/schemas/ModisFiltering'
-          processing:
-            $ref: '#/components/schemas/BaseDatasetProcessing'
           type:
             type: string
             enum:
-            - modis
+            - landsat-etm-l1
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithRt'
   responses:
     '400':
       description: Bad request
@@ -1876,17 +1873,32 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/RestErrorWrapper'
+    '401':
+      description: Unauthorized
+    '403':
+      description: Insufficient permissions
     '404':
       description: Not found
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/RestErrorWrapper'
-    '403':
-      description: Insufficient permissions
-    '401':
-      description: Unauthorized
   parameters:
+    SearchBeanViewtoken:
+      name: viewtoken
+      description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
+
+        This *viewtoken* can be used in the next request to retrieve the next page of items.
+
+
+        The next page can be retrieved by repeating the query. However, replace your URL with the
+
+        next URL in the returned links object.
+
+        '
+      in: query
+      schema:
+        type: string
     SearchBeanCount:
       name: count
       description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
@@ -1904,21 +1916,6 @@ components:
       schema:
         type: string
         format: uuid
-    SearchBeanViewtoken:
-      name: viewtoken
-      description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
-
-        This *viewtoken* can be used in the next request to retrieve the next page of items.
-
-
-        The next page can be retrieved by repeating the query. However, replace your URL with the
-
-        next URL in the returned links object.
-
-        '
-      in: query
-      schema:
-        type: string
   securitySchemes:
     OAuth2:
       type: oauth2

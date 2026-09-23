@@ -1,20 +1,16 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: API Reference async_process dataimport_search API
+  title: Reference Dataimport Search API
   version: 1.0.0
   contact:
     name: Sentinel Hub
-  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
-
-    '
+  description: TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026. Please use Planet Item Search instead.
 servers:
 - url: https://services.sentinel-hub.com
 tags:
 - name: dataimport_search
   x-displayName: Search
-  description: 'TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026.   Please use [Planet Item Search](https://docs.planet.com/develop/apis/data/reference/#tag/Item-Search) instead.
-
-    '
+  description: TPDI Service for Planet data is deprecated and will be sunset on November 11th, 2026. Please use Planet Item Search instead.
 paths:
   /api/v1/dataimport/search:
     post:
@@ -58,9 +54,7 @@ paths:
   /api/v1/dataimport/nativesearch:
     post:
       summary: Native search
-      description: 'Proxy search. All the fields not listed as <span style="color:red">required</span> are passed verbatim to the data provider''s search API, and the result from the latter is returned verbatim.
-
-        '
+      description: Proxy search. All the fields not listed as required are passed verbatim to the data provider's search API, and the result from the latter is returned verbatim.
       operationId: dataImport_nativeSearch
       tags:
       - dataimport_search
@@ -86,6 +80,63 @@ paths:
       - OAuth2: []
 components:
   schemas:
+    Geometry:
+      description: The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the "bounds.properties.crs" parameter. A GeoJsonObject.
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/Polygon'
+      - $ref: '#/components/schemas/MultiPolygon'
+      example:
+        type: Polygon
+        coordinates:
+        - - - 14.000701904296873
+            - 46.23685258143992
+          - - 13.822174072265625
+            - 46.09037664604301
+          - - 14.113311767578125
+            - 45.85080395917834
+          - - 14.55963134765625
+            - 46.038922598236
+          - - 14.441528320312498
+            - 46.28717293114449
+          - - 14.17236328125
+            - 46.29191774991382
+          - - 14.000701904296873
+            - 46.23685258143992
+    SearchQueryBase:
+      required:
+      - provider
+      - bounds
+      - data
+      properties:
+        provider:
+          type: string
+        bounds:
+          description: 'Defines the request bounds by specifying the bounding box and/or geometry for the request.
+
+            If both are given, a request is made for a geometry and bbox is ignored.
+
+            '
+          $ref: '#/components/schemas/ProcessRequestInputBounds'
+        data:
+          type: array
+          minItems: 1
+          maxItems: 1
+          items:
+            type: object
+            properties:
+              dataFilter:
+                type: object
+                properties:
+                  timeRange:
+                    $ref: '#/components/schemas/TimeRange'
+                  maxCloudCoverage:
+                    $ref: '#/components/schemas/MaxCloudCoverage'
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
     ProcessRequestInputBounds:
       title: Bounds
       description: 'Defines the request bounds by specifying the bounding box and/or
@@ -122,34 +173,86 @@ components:
           $ref: '#/components/schemas/Geometry'
         properties:
           $ref: '#/components/schemas/ProcessRequestInputBoundsProperties'
-    SearchResults:
-      oneOf:
-      - $ref: '#/components/schemas/PlanetSearchResults'
-      - $ref: '#/components/schemas/MaxarSearchResults'
-    PlanetSearchResults:
-      deprecated: true
-      allOf:
-      - $ref: '#/components/schemas/SearchResultBase'
-      - type: object
-        properties:
-          features:
-            type: array
-            externalDocs:
-              description: Search results as returned by Planet Quick search
-              url: https://developers.planet.com/docs/apis/data/reference/#tag/Item-Search/operation/QuickSearch
-          <other fields>:
-            description: Other fields returned by Planet Quick search may be included in the response.
-    MaxarMaxOffNadir:
-      type: number
-      format: int
-      minimum: 0
-      maximum: 45
-      default: 45
-    RestErrorWrapper:
+    MaxarRequestBase:
+      type: object
+      required:
+      - provider
+      properties:
+        provider:
+          description: Specify this value to use data provider Maxar.
+          type: string
+          enum:
+          - MAXAR
+    Polygon:
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/Boom'
+        type:
+          type: string
+          enum:
+          - Polygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              maxItems: 2
+              minItems: 2
+              type: array
+              items:
+                type: number
+                format: double
+    SearchResultBase:
+      properties:
+        links:
+          $ref: '#/components/schemas/View'
+    MultiPolygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - MultiPolygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              type: array
+              items:
+                maxItems: 2
+                minItems: 2
+                type: array
+                items:
+                  type: number
+                  format: double
+    View:
+      description: Links to paginate the resource
+      type: object
+      properties:
+        currentToken:
+          type: string
+        nextToken:
+          type: string
+        previousToken:
+          type: string
+        '@id':
+          type: string
+          format: uri
+        next:
+          type: string
+          format: uri
+        previous:
+          type: string
+          format: uri
+    MaxarSearchResults:
+      properties:
+        features:
+          type: array
+          description: 'Search results as returned by MAXAR search.
+
+            Note thate MAXAR search does not support paging. Thus, the `count` and `viewtoken` query parameters are ignored and a plain list of results is returned.
+
+            '
     PlanetSearchRequestBase:
       deprecated: true
       type: object
@@ -170,133 +273,10 @@ components:
 
             '
           type: string
-    View:
-      description: Links to paginate the resource
-      type: object
-      properties:
-        currentToken:
-          type: string
-        nextToken:
-          type: string
-        previousToken:
-          type: string
-        '@id':
-          type: string
-          format: uri
-        next:
-          type: string
-          format: uri
-        previous:
-          type: string
-          format: uri
-    Polygon:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - Polygon
-        coordinates:
-          type: array
-          items:
-            type: array
-            items:
-              maxItems: 2
-              minItems: 2
-              type: array
-              items:
-                type: number
-                format: double
-    ProcessRequestInputBoundsProperties:
-      title: BoundsProperties
-      type: object
-      properties:
-        crs:
-          description: 'The coordinate reference system of the coordinates. Must be
-
-            one of the values listed at https://docs.planet.com/develop/apis/processing/#crs-support.
-
-            Default CRS is WGS84, http://www.opengis.net/def/crs/OGC/1.3/CRS84.
-
-            '
-          type: string
-          default: http://www.opengis.net/def/crs/OGC/1.3/CRS84
-    SearchQuery:
+    SearchResults:
       oneOf:
-      - $ref: '#/components/schemas/PlanetSearchQuery'
-      - $ref: '#/components/schemas/MaxarSearchQuery'
-    MaxarMaxSunElevation:
-      description: The maximum allowable sun elevation in degrees
-      type: number
-      format: int
-      minimum: 0
-      maximum: 90
-      default: 90
-    MaxarSearchQuery:
-      allOf:
-      - $ref: '#/components/schemas/MaxarRequestBase'
-      - $ref: '#/components/schemas/SearchQueryBase'
-      - type: object
-        properties:
-          data:
-            type: array
-            minItems: 1
-            maxItems: 1
-            items:
-              type: object
-              required:
-              - productBands
-              properties:
-                productBands:
-                  type: string
-                  description: 'Band Bundle
-
-                    '
-                  enum:
-                  - 4BB
-                dataFilter:
-                  type: object
-                  properties:
-                    minOffNadir:
-                      $ref: '#/components/schemas/MaxarMinOffNadir'
-                    maxOffNadir:
-                      $ref: '#/components/schemas/MaxarMaxOffNadir'
-                    minSunElevation:
-                      $ref: '#/components/schemas/MaxarMinSunElevation'
-                    maxSunElevation:
-                      $ref: '#/components/schemas/MaxarMaxSunElevation'
-                    sensor:
-                      $ref: '#/components/schemas/MaxarSensor'
-    NativeSearchQuery:
-      oneOf:
-      - $ref: '#/components/schemas/PlanetNativeSearchQuery'
-      - $ref: '#/components/schemas/MaxarNativeSearchQuery'
-    MaxarSensor:
-      description: 'If specified, limits search results to a single sensor (satellite).
-
-        Results are also filtered to include only sensors that support the requested `productBands`. Thus, if a sensor that does not support all bands is specified, no results will be returned.
-
-        '
-      type: string
-      enum:
-      - WV01
-      - WV02
-      - WV03
-      - WV04
-      - GE01
-    MaxarMinOffNadir:
-      type: number
-      format: int
-      minimum: 0
-      maximum: 45
-      default: 0
-    MaxCloudCoverage:
-      description: The maximum allowable cloud coverage in percent.
-      type: number
-      format: double
-      minimum: 0
-      maximum: 100
-      default: 100
+      - $ref: '#/components/schemas/PlanetSearchResults'
+      - $ref: '#/components/schemas/MaxarSearchResults'
     PlanetSearchQuery:
       deprecated: true
       allOf:
@@ -382,54 +362,19 @@ components:
                         field_name: snow_ice_percent
                         config:
                           gte: 10
-    SearchResultBase:
-      properties:
-        links:
-          $ref: '#/components/schemas/View'
-    TimeRange:
-      type: object
-      description: A time interval to filter data by acquisition date. It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.
-      properties:
-        from:
-          description: The start of a search interval.
-          type: string
-          format: date-time
-        to:
-          description: The end of a search interval.
-          type: string
-          format: date-time
-      example:
-        from: '2018-10-01T00:00:00.000Z'
-        to: '2018-11-01T00:00:00.000Z'
-    SearchQueryBase:
-      required:
-      - provider
-      - bounds
-      - data
-      properties:
-        provider:
-          type: string
-        bounds:
-          description: 'Defines the request bounds by specifying the bounding box and/or geometry for the request.
-
-            If both are given, a request is made for a geometry and bbox is ignored.
-
-            '
-          $ref: '#/components/schemas/ProcessRequestInputBounds'
-        data:
-          type: array
-          minItems: 1
-          maxItems: 1
-          items:
-            type: object
-            properties:
-              dataFilter:
-                type: object
-                properties:
-                  timeRange:
-                    $ref: '#/components/schemas/TimeRange'
-                  maxCloudCoverage:
-                    $ref: '#/components/schemas/MaxCloudCoverage'
+    MaxarMaxOffNadir:
+      type: number
+      format: int
+      minimum: 0
+      maximum: 45
+      default: 45
+    MaxarMinSunElevation:
+      description: The minimum allowable sun elevation in degrees
+      type: number
+      format: int
+      minimum: 0
+      maximum: 90
+      default: 0
     PlanetNativeSearchQuery:
       deprecated: true
       allOf:
@@ -470,80 +415,76 @@ components:
           externalDocs:
             description: Fields from Request body of Planet Quick search.
             url: https://developers.planet.com/docs/apis/data/reference/#tag/Item-Search/operation/QuickSearch
-    MaxarMinSunElevation:
-      description: The minimum allowable sun elevation in degrees
+    MaxarSearchQuery:
+      allOf:
+      - $ref: '#/components/schemas/MaxarRequestBase'
+      - $ref: '#/components/schemas/SearchQueryBase'
+      - type: object
+        properties:
+          data:
+            type: array
+            minItems: 1
+            maxItems: 1
+            items:
+              type: object
+              required:
+              - productBands
+              properties:
+                productBands:
+                  type: string
+                  description: 'Band Bundle
+
+                    '
+                  enum:
+                  - 4BB
+                dataFilter:
+                  type: object
+                  properties:
+                    minOffNadir:
+                      $ref: '#/components/schemas/MaxarMinOffNadir'
+                    maxOffNadir:
+                      $ref: '#/components/schemas/MaxarMaxOffNadir'
+                    minSunElevation:
+                      $ref: '#/components/schemas/MaxarMinSunElevation'
+                    maxSunElevation:
+                      $ref: '#/components/schemas/MaxarMaxSunElevation'
+                    sensor:
+                      $ref: '#/components/schemas/MaxarSensor'
+    TimeRange:
+      type: object
+      description: A time interval to filter data by acquisition date. It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.
+      properties:
+        from:
+          description: The start of a search interval.
+          type: string
+          format: date-time
+        to:
+          description: The end of a search interval.
+          type: string
+          format: date-time
+      example:
+        from: '2018-10-01T00:00:00.000Z'
+        to: '2018-11-01T00:00:00.000Z'
+    MaxarMaxSunElevation:
+      description: The maximum allowable sun elevation in degrees
       type: number
       format: int
       minimum: 0
       maximum: 90
-      default: 0
-    MaxarNativeSearchQuery:
-      allOf:
-      - $ref: '#/components/schemas/MaxarRequestBase'
-      - type: object
-        example:
-          provider: MAXAR
-          startDate: '2020-11-06T00:00:00.0Z'
-          endDate: '2020-11-06T23:59:59.0Z'
-          sensor: WV03
-          aoiInGeoJson:
-            type: Polygon
-            coordinates:
-            - - - 15.81
-                - 46.7
-              - - 15.84
-                - 46.7
-              - - 15.84
-                - 46.72
-              - - 15.81
-                - 46.72
-              - - 15.81
-                - 46.7
-            crs:
-              type: name
-              properties:
-                name: EPSG:4326
-        additionalProperties:
-          description: Fields from request body of MAXAR search.
-    MaxarRequestBase:
-      type: object
-      required:
-      - provider
-      properties:
-        provider:
-          description: Specify this value to use data provider Maxar.
-          type: string
-          enum:
-          - MAXAR
-    MultiPolygon:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - MultiPolygon
-        coordinates:
-          type: array
-          items:
-            type: array
-            items:
-              type: array
-              items:
-                maxItems: 2
-                minItems: 2
-                type: array
-                items:
-                  type: number
-                  format: double
-    MaxarSearchResults:
-      properties:
-        features:
-          type: array
-          description: 'Search results as returned by MAXAR search.
+      default: 90
+    MaxarSensor:
+      description: 'If specified, limits search results to a single sensor (satellite).
 
-            Note thate MAXAR search does not support paging. Thus, the `count` and `viewtoken` query parameters are ignored and a plain list of results is returned.
+        Results are also filtered to include only sensors that support the requested `productBands`. Thus, if a sensor that does not support all bands is specified, no results will be returned.
 
-            '
+        '
+      type: string
+      enum:
+      - WV01
+      - WV02
+      - WV03
+      - WV04
+      - GE01
     Boom:
       type: object
       properties:
@@ -590,29 +531,82 @@ components:
         errors:
           description: Additional information about the error (Optional)
           type: object
-    Geometry:
-      description: The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the "bounds.properties.crs" parameter. A GeoJsonObject.
+    PlanetSearchResults:
+      deprecated: true
+      allOf:
+      - $ref: '#/components/schemas/SearchResultBase'
+      - type: object
+        properties:
+          features:
+            type: array
+            externalDocs:
+              description: Search results as returned by Planet Quick search
+              url: https://developers.planet.com/docs/apis/data/reference/#tag/Item-Search/operation/QuickSearch
+          <other fields>:
+            description: Other fields returned by Planet Quick search may be included in the response.
+    MaxarNativeSearchQuery:
+      allOf:
+      - $ref: '#/components/schemas/MaxarRequestBase'
+      - type: object
+        example:
+          provider: MAXAR
+          startDate: '2020-11-06T00:00:00.0Z'
+          endDate: '2020-11-06T23:59:59.0Z'
+          sensor: WV03
+          aoiInGeoJson:
+            type: Polygon
+            coordinates:
+            - - - 15.81
+                - 46.7
+              - - 15.84
+                - 46.7
+              - - 15.84
+                - 46.72
+              - - 15.81
+                - 46.72
+              - - 15.81
+                - 46.7
+            crs:
+              type: name
+              properties:
+                name: EPSG:4326
+        additionalProperties:
+          description: Fields from request body of MAXAR search.
+    ProcessRequestInputBoundsProperties:
+      title: BoundsProperties
       type: object
+      properties:
+        crs:
+          description: 'The coordinate reference system of the coordinates. Must be
+
+            one of the values listed at https://docs.planet.com/develop/apis/processing/#crs-support.
+
+            Default CRS is WGS84, http://www.opengis.net/def/crs/OGC/1.3/CRS84.
+
+            '
+          type: string
+          default: http://www.opengis.net/def/crs/OGC/1.3/CRS84
+    MaxCloudCoverage:
+      description: The maximum allowable cloud coverage in percent.
+      type: number
+      format: double
+      minimum: 0
+      maximum: 100
+      default: 100
+    NativeSearchQuery:
       oneOf:
-      - $ref: '#/components/schemas/Polygon'
-      - $ref: '#/components/schemas/MultiPolygon'
-      example:
-        type: Polygon
-        coordinates:
-        - - - 14.000701904296873
-            - 46.23685258143992
-          - - 13.822174072265625
-            - 46.09037664604301
-          - - 14.113311767578125
-            - 45.85080395917834
-          - - 14.55963134765625
-            - 46.038922598236
-          - - 14.441528320312498
-            - 46.28717293114449
-          - - 14.17236328125
-            - 46.29191774991382
-          - - 14.000701904296873
-            - 46.23685258143992
+      - $ref: '#/components/schemas/PlanetNativeSearchQuery'
+      - $ref: '#/components/schemas/MaxarNativeSearchQuery'
+    SearchQuery:
+      oneOf:
+      - $ref: '#/components/schemas/PlanetSearchQuery'
+      - $ref: '#/components/schemas/MaxarSearchQuery'
+    MaxarMinOffNadir:
+      type: number
+      format: int
+      minimum: 0
+      maximum: 45
+      default: 0
   parameters:
     SearchBeanViewtoken:
       name: viewtoken
@@ -636,10 +630,10 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/RestErrorWrapper'
-    '403':
-      description: Insufficient permissions
     '401':
       description: Unauthorized
+    '403':
+      description: Insufficient permissions
   securitySchemes:
     OAuth2:
       type: oauth2

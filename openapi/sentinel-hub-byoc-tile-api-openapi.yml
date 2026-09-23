@@ -1,12 +1,9 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: API Reference async_process byoc_tile API
+  title: Reference Byoc Tile API
   version: 1.0.0
   contact:
     name: Sentinel Hub
-  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
-
-    '
 servers:
 - url: https://services.sentinel-hub.com
 tags:
@@ -316,11 +313,34 @@ components:
           type:
           - string
           - 'null'
-    BYOCTileResponse:
+    Geometry:
+      description: The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the "bounds.properties.crs" parameter. A GeoJsonObject.
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/Polygon'
+      - $ref: '#/components/schemas/MultiPolygon'
+      example:
+        type: Polygon
+        coordinates:
+        - - - 14.000701904296873
+            - 46.23685258143992
+          - - 13.822174072265625
+            - 46.09037664604301
+          - - 14.113311767578125
+            - 45.85080395917834
+          - - 14.55963134765625
+            - 46.038922598236
+          - - 14.441528320312498
+            - 46.28717293114449
+          - - 14.17236328125
+            - 46.29191774991382
+          - - 14.000701904296873
+            - 46.23685258143992
+    RestErrorWrapper:
       type: object
       properties:
-        data:
-          $ref: '#/components/schemas/BYOCTile'
+        error:
+          $ref: '#/components/schemas/Boom'
     BYOCTile:
       type: object
       required:
@@ -381,49 +401,6 @@ components:
           format: date-time
           description: The time when the tile was created in ISO 8601.
           readOnly: true
-    BYOCTilesResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/BYOCTile'
-        links:
-          $ref: '#/components/schemas/View'
-    BYOCTileStatus:
-      description: The status of the tile.
-      type: string
-      enum:
-      - WAITING
-      - QUEUED
-      - INGESTING
-      - INGESTED
-      - FAILED
-      readOnly: true
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
-    View:
-      description: Links to paginate the resource
-      type: object
-      properties:
-        currentToken:
-          type: string
-        nextToken:
-          type: string
-        previousToken:
-          type: string
-        '@id':
-          type: string
-          format: uri
-        next:
-          type: string
-          format: uri
-        previous:
-          type: string
-          format: uri
     Polygon:
       type: object
       properties:
@@ -442,20 +419,11 @@ components:
               items:
                 type: number
                 format: double
-    BYOCTileUpdatePayload:
+    BYOCTileResponse:
       type: object
       properties:
-        coverGeometry:
-          description: 'The geometry as GeoJSON, which outlines the area that has data. If it isn''t specified, it is automatically set to the tile bounding box.
-
-            '
-          $ref: '#/components/schemas/Geometry'
-        sensingTime:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The sensing time of the tile in ISO 8601 but without sub-millisecond precision.
+        data:
+          $ref: '#/components/schemas/BYOCTile'
     MultiPolygon:
       type: object
       properties:
@@ -476,6 +444,58 @@ components:
                 items:
                   type: number
                   format: double
+    View:
+      description: Links to paginate the resource
+      type: object
+      properties:
+        currentToken:
+          type: string
+        nextToken:
+          type: string
+        previousToken:
+          type: string
+        '@id':
+          type: string
+          format: uri
+        next:
+          type: string
+          format: uri
+        previous:
+          type: string
+          format: uri
+    BYOCTilesResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BYOCTile'
+        links:
+          $ref: '#/components/schemas/View'
+    BYOCTileStatus:
+      description: The status of the tile.
+      type: string
+      enum:
+      - WAITING
+      - QUEUED
+      - INGESTING
+      - INGESTED
+      - FAILED
+      readOnly: true
+    BYOCTileUpdatePayload:
+      type: object
+      properties:
+        coverGeometry:
+          description: 'The geometry as GeoJSON, which outlines the area that has data. If it isn''t specified, it is automatically set to the tile bounding box.
+
+            '
+          $ref: '#/components/schemas/Geometry'
+        sensingTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The sensing time of the tile in ISO 8601 but without sub-millisecond precision.
     Boom:
       type: object
       properties:
@@ -522,30 +542,37 @@ components:
         errors:
           description: Additional information about the error (Optional)
           type: object
-    Geometry:
-      description: The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the "bounds.properties.crs" parameter. A GeoJsonObject.
-      type: object
-      oneOf:
-      - $ref: '#/components/schemas/Polygon'
-      - $ref: '#/components/schemas/MultiPolygon'
-      example:
-        type: Polygon
-        coordinates:
-        - - - 14.000701904296873
-            - 46.23685258143992
-          - - 13.822174072265625
-            - 46.09037664604301
-          - - 14.113311767578125
-            - 45.85080395917834
-          - - 14.55963134765625
-            - 46.038922598236
-          - - 14.441528320312498
-            - 46.28717293114449
-          - - 14.17236328125
-            - 46.29191774991382
-          - - 14.000701904296873
-            - 46.23685258143992
+  responses:
+    '409':
+      description: Conflict in the request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '401':
+      description: Unauthorized
+    '403':
+      description: Insufficient permissions
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
   parameters:
+    ByocTileId:
+      name: tileId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
     SearchBeanViewtoken:
       name: viewtoken
       description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
@@ -568,13 +595,6 @@ components:
       schema:
         type: string
         format: uuid
-    ByocTileId:
-      name: tileId
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
     ByocFilePath:
       name: path
       description: Filename with path as returned by the "List files of a tile" endpoint.
@@ -582,29 +602,6 @@ components:
       required: true
       schema:
         type: string
-  responses:
-    '400':
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
-    '409':
-      description: Conflict in the request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
-    '403':
-      description: Insufficient permissions
-    '404':
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
-    '401':
-      description: Unauthorized
   securitySchemes:
     OAuth2:
       type: oauth2

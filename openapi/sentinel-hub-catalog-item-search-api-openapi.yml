@@ -1,12 +1,10 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: API Reference async_process catalog_item_search API
+  title: Reference Catalog Item Search API
   version: 1.0.0
   contact:
     name: Sentinel Hub
-  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
-
-    '
+  description: This is an OpenAPI definition of the SpatioTemporal Asset Catalog API - Item Search specification.
 servers:
 - url: https://services.sentinel-hub.com
 tags:
@@ -16,7 +14,7 @@ tags:
 paths:
   /catalog/v1/search:
     get:
-      summary: Search STAC items with simple filtering.
+      summary: Search STAC items with simple filtering
       operationId: getCatalogItemSearch
       description: 'Retrieve Items matching filters. Intended as a shorthand API for simple
 
@@ -116,7 +114,7 @@ paths:
       security:
       - OAuth2: []
     post:
-      summary: Search STAC items with full-featured filtering.
+      summary: Search STAC items with full-featured filtering
       operationId: postCatalogItemSearch
       description: 'Retrieve items matching filters. Intended as the standard, full-featured
 
@@ -243,408 +241,49 @@ paths:
       security:
       - OAuth2: []
 components:
-  parameters:
-    CatalogItemSearchIds:
-      name: ids
-      in: query
-      description: Array of Item ids to return.
-      required: false
-      schema:
-        $ref: '#/components/schemas/CatalogItemSearchIds'
-      explode: false
-    CatalogItemSearchIntersects:
-      name: intersects
-      in: query
-      description: 'The optional intersects parameter filters the result Items in the same was as bbox, only with
-
-        a GeoJSON Geometry rather than a bbox.'
-      required: false
-      schema:
-        $ref: '#/components/schemas/CatalogGeometryGeoJSON'
-      style: form
-      explode: false
-    CatalogItemSearchFieldsFields:
-      name: fields
-      x-stac-api-fragment: fields
-      in: query
-      description: '**Extension:** Fields
-
-
-        Determines the shape of the features in the response'
-      required: false
-      schema:
-        type: string
-        example: id,type,-geometry,bbox,properties,-links,-assets
-      style: form
-      explode: false
-    CatalogItemSearchBbox:
-      name: bbox
-      in: query
-      description: 'Only features that have a geometry that intersects the bounding box are selected.
-
-        The bounding box is provided as four or six numbers, depending on
-
-        whether the coordinate reference system includes a vertical axis (height
-
-        or depth):
-
-
-        * Lower left corner, coordinate axis 1
-
-        * Lower left corner, coordinate axis 2
-
-        * Minimum value, coordinate axis 3 (optional)
-
-        * Upper right corner, coordinate axis 1
-
-        * Upper right corner, coordinate axis 2
-
-        * Maximum value, coordinate axis 3 (optional)
-
-
-        The coordinate reference system of the values is WGS 84
-
-        longitude/latitude (http://www.opengis.net/def/crs/OGC/1.3/CRS84).
-
-
-        For WGS 84 longitude/latitude the values are in most cases the sequence
-
-        of minimum longitude, minimum latitude, maximum longitude and maximum
-
-        latitude. However, in cases where the box spans the antimeridian the
-
-        first value (west-most box edge) is larger than the third value
-
-        (east-most box edge).
-
-
-        If the vertical axis is included, the third and the sixth number are
-
-        the bottom and the top of the 3-dimensional bounding box.
-
-
-        If a feature has multiple spatial geometry properties, it is the
-
-        decision of the server whether only a single spatial geometry property
-
-        is used to determine the extent or all relevant geometries.
-
-
-        Example: The bounding box of the New Zealand Exclusive Economic Zone in
-
-        WGS 84 (from 160.6°E to 170°W and from 55.95°S to 25.89°S) would be
-
-        represented in JSON as `[160.6, -55.95, -170, -25.89]` and in a query as
-
-        `bbox=160.6,-55.95,-170,-25.89`.'
-      required: false
-      schema:
-        type: array
-        oneOf:
-        - minItems: 4
-          maxItems: 4
-        - minItems: 6
-          maxItems: 6
-        items:
-          type: number
-      style: form
-      explode: false
-      example:
-      - 13
-      - 45
-      - 14
-      - 46
-    CatalogItemSearchDistinctDistinct:
-      name: distinct
-      x-stac-api-fragment: distinct
-      in: query
-      description: '**Extension:** Distinct
-
-
-        Return distinct values of specified property.'
-      required: false
-      schema:
-        type: string
-      style: form
-      explode: false
-    CatalogItemSearchLimit:
-      name: limit
-      in: query
-      description: 'The optional limit parameter recommends the number of items that should be present in the response document.
-
-
-        Only items are counted that are on the first level of the collection in the response document.
-
-        Nested objects contained within the explicitly requested items must not be counted.
-
-
-        Minimum = 1. Maximum = 100. Default = 10.'
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 10
-      style: form
-      explode: false
-      example: 1
-    CatalogItemSearchCollectionsArray:
-      name: collections
-      in: query
-      description: 'Array of Collection IDs to include in the search for items.
-
-        Only Item objects in one of the provided collections will be searched
-
-        '
-      required: true
-      schema:
-        $ref: '#/components/schemas/CatalogItemSearchCollectionsArray'
-      explode: false
-      example:
-      - sentinel-2-l2a
-    CatalogItemSearchDatetime:
-      name: datetime
-      in: query
-      description: 'Either a date-time or an interval, open or closed. Date and time expressions
-
-        adhere to RFC 3339. Open intervals are expressed using double-dots.
-
-
-        Examples:
-
-
-        * A date-time: "2018-02-12T23:20:50Z"
-
-        * A closed interval: "2018-02-12T00:00:00Z/2018-03-18T12:31:12Z"
-
-        * Open intervals: "2018-02-12T00:00:00Z/.." or "../2018-03-18T12:31:12Z"
-
-
-        Only features that have a temporal property that intersects the value of
-
-        `datetime` are selected.
-
-
-        If a feature has multiple temporal properties, it is the decision of the
-
-        server whether only a single temporal property is used to determine
-
-        the extent or all relevant temporal properties.'
-      required: true
-      schema:
-        type: string
-      style: form
-      explode: false
-      example: 2020-12-10T00:00:00Z/2020-12-30T00:00:00Z
-    CatalogItemSearchFilterFilter:
-      name: filter
-      x-stac-api-fragment: filter
-      in: query
-      description: '**Extension:** Filter
-
-
-        A CQL2 filter expression for filtering items.'
-      required: false
-      schema:
-        $ref: '#/components/schemas/CatalogItemSearchFilterFilterCql2Text'
-      example: eo:cloud_cover>90
   schemas:
-    CatalogMultipolygonGeoJSON:
-      title: multipolygonGeoJSON
+    CatalogException:
+      title: exception
       type: object
+      description: 'Information about the exception: an error code plus an optional description.'
       required:
-      - type
-      - coordinates
+      - code
       properties:
-        type:
+        code:
           type: string
-          enum:
-          - MultiPolygon
-        coordinates:
-          type: array
-          items:
-            type: array
-            items:
-              type: array
-              minItems: 4
-              items:
-                type: array
-                minItems: 2
-                items:
-                  type: number
-    CatalogPointGeoJSON:
-      title: pointGeoJSON
-      type: object
-      required:
-      - type
-      - coordinates
-      properties:
-        type:
+        description:
           type: string
-          enum:
-          - Point
-        coordinates:
-          type: array
-          minItems: 2
-          items:
-            type: number
-    Cql2NotExpression:
-      title: cql2NotExpression
-      type: object
-      required:
-      - op
-      - args
-      properties:
-        op:
-          type: string
-          enum:
-          - not
-        args:
-          type: array
-          minItems: 1
-          maxItems: 1
-          items:
-            $ref: '#/components/schemas/Cql2BooleanExpression'
-    CatalogProperties:
-      title: properties
-      type: object
-      required:
-      - datetime
-      description: provides the core metadata fields plus extensions
-      properties:
-        datetime:
-          $ref: '#/components/schemas/CatalogDatetime'
-      additionalProperties:
-        description: Any additional properties added in via Item specification or extensions.
-    Cql2BooleanExpression:
-      title: booleanExpression
-      oneOf:
-      - $ref: '#/components/schemas/Cql2AndExpression'
-      - $ref: '#/components/schemas/Cql2NotExpression'
-      - $ref: '#/components/schemas/Cql2ComparisonPredicate'
-    CatalogItemSearchFilterSearchBody:
-      title: searchBody
-      type: object
-      x-stac-api-fragment: filter
-      description: '**Extension:** Filter
-
-
-        A filter for properties in Items.'
-      properties:
-        filter:
-          $ref: '#/components/schemas/CatalogItemSearchFilterFilterCql2Json'
-        filter-lang:
-          $ref: '#/components/schemas/CatalogItemSearchFilterFilterLang'
-        filter-crs:
-          $ref: '#/components/schemas/CatalogItemSearchFilterFilterCrs'
-    CatalogDatetime:
-      title: datetime
-      description: 'The searchable date and time of the assets, in UTC.
-
-        It is formatted according to [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
-
-        `null` is allowed, but requires `start_datetime` and `end_datetime` from common metadata to be set.'
-      oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
-      example: '2018-02-12T00:00:00Z'
-    CatalogItemSearchFieldsFields:
-      title: fields
-      description: 'The include and exclude members specify an array of
-
-        property names that are either included or excluded
-
-        from the result, respectively. If both include and
-
-        exclude are specified, include takes precedence.
-
-        Values should include the full JSON path of the property.
-
-        '
-      type: object
-      properties:
-        include:
-          type: array
-          items:
-            type: string
-        exclude:
-          type: array
-          items:
-            type: string
-      example:
-        include:
-        - id
-        - properties.eo:cloud_cover
-        exclude:
-        - geometry
-        - properties.datetime
-    Cql2ScalarExpression:
-      title: scalarExpression
-      oneOf:
-      - $ref: '#/components/schemas/Cql2CharacterExpression'
-      - $ref: '#/components/schemas/Cql2NumericExpression'
-    CatalogLinks:
-      title: links
-      type: array
-      items:
-        $ref: '#/components/schemas/CatalogLink'
-    CatalogItemSearchDistinctDistinct:
-      title: distinct
-      description: 'Return distinct values of specified property.
+    CatalogItemSearchFilterFilterLang:
+      title: filter-lang
+      description: 'The CQL2 filter encoding that the ''filter'' value uses.
 
         '
       type: string
-    CatalogAssets:
-      title: assets
-      type: object
-      additionalProperties:
-        type: object
-        required:
-        - href
-        properties:
-          href:
-            type: string
-            format: url
-            description: Link to the asset object
-          title:
-            type: string
-            description: Displayed title
-            example: Thumbnail
-          description:
-            type: string
-            description: 'Multi-line description to explain the asset.
-
-
-              [CommonMark 0.29](http://commonmark.org/) syntax MAY be used for rich text representation.'
-            example: Small 256x256px PNG thumbnail for a preview.
-          type:
-            type: string
-            description: Media type of the asset
-            example: image/png
-          roles:
-            type: array
-            items:
-              type: string
-            description: Purposes of the asset
-            example:
-            - thumbnail
-    Cql2AndExpression:
-      title: andExpression
+      enum:
+      - cql2-text
+      - cql2-json
+    Cql2IsBetweenOperands:
+      title: isBetweenOperands
+      type: array
+      minItems: 3
+      maxItems: 3
+      items:
+        $ref: '#/components/schemas/Cql2NumericExpression'
+    CatalogGeometrycollectionGeoJSON:
+      title: geometrycollectionGeoJSON
       type: object
       required:
-      - op
-      - args
+      - type
+      - geometries
       properties:
-        op:
+        type:
           type: string
           enum:
-          - and
-        args:
+          - GeometryCollection
+        geometries:
           type: array
-          minItems: 2
           items:
-            $ref: '#/components/schemas/Cql2BooleanExpression'
+            $ref: '#/components/schemas/CatalogGeometryGeoJSON'
     CatalogItemSearchBboxFilter:
       title: bboxFilter
       type: object
@@ -652,30 +291,13 @@ components:
       properties:
         bbox:
           $ref: '#/components/schemas/CatalogBbox'
-    CatalogStacVersion:
-      title: STAC version
-      type: string
-      example: 1.0.0
-    CatalogItemSearchIdsFilter:
-      title: idsFilter
+    CatalogItemSearchIntersectsFilter:
+      title: intersectsFilter
       type: object
-      description: Only returns items that match the array of given ids
+      description: Only returns items that intersect with the provided polygon.
       properties:
-        ids:
-          $ref: '#/components/schemas/CatalogItemSearchIds'
-    CatalogItemType:
-      title: itemType
-      type: string
-      description: The GeoJSON type
-      enum:
-      - Feature
-    CatalogItemSearchCollectionsFilter:
-      title: collectionsFilter
-      type: object
-      description: Only returns the collections specified
-      properties:
-        collections:
-          $ref: '#/components/schemas/CatalogItemSearchCollectionsArray'
+        intersects:
+          $ref: '#/components/schemas/CatalogGeometryGeoJSON'
     CatalogBbox:
       title: bbox
       description: 'Only features that have a geometry that intersects the bounding box are
@@ -740,6 +362,89 @@ components:
       - 39.5
       - -105
       - 40.5
+    Cql2ComparisonPredicate:
+      title: comparisonPredicate
+      oneOf:
+      - $ref: '#/components/schemas/Cql2BinaryComparisonPredicate'
+      - $ref: '#/components/schemas/Cql2IsBetweenPredicate'
+    CatalogItemSearchFilterFilterCrs:
+      title: filter-crs
+      description: 'The coordinate reference system (CRS) used by spatial literals in the ''filter'' value.  The only value that STAC APIs must
+
+        accept is ''http://www.opengis.net/def/crs/OGC/1.3/CRS84''.
+
+        '
+      type: string
+      format: uri
+    Cql2PropertyRef:
+      title: propertyRef
+      type: object
+      required:
+      - property
+      properties:
+        property:
+          type: string
+    CatalogItemType:
+      title: itemType
+      type: string
+      description: The GeoJSON type
+      enum:
+      - Feature
+    CatalogItemSearchFilterSearchBody:
+      title: searchBody
+      type: object
+      x-stac-api-fragment: filter
+      description: '**Extension:** Filter
+
+
+        A filter for properties in Items.'
+      properties:
+        filter:
+          $ref: '#/components/schemas/CatalogItemSearchFilterFilterCql2Json'
+        filter-lang:
+          $ref: '#/components/schemas/CatalogItemSearchFilterFilterLang'
+        filter-crs:
+          $ref: '#/components/schemas/CatalogItemSearchFilterFilterCrs'
+    Cql2NotExpression:
+      title: cql2NotExpression
+      type: object
+      required:
+      - op
+      - args
+      properties:
+        op:
+          type: string
+          enum:
+          - not
+        args:
+          type: array
+          minItems: 1
+          maxItems: 1
+          items:
+            $ref: '#/components/schemas/Cql2BooleanExpression'
+    Cql2CharacterExpression:
+      title: characterExpression
+      oneOf:
+      - type: string
+      - $ref: '#/components/schemas/Cql2PropertyRef'
+    Cql2BinaryComparisonPredicate:
+      title: binaryComparisonPredicate
+      type: object
+      required:
+      - op
+      - args
+      properties:
+        op:
+          type: string
+          enum:
+          - '='
+          - <
+          - '>'
+          - <=
+          - '>='
+          - <>
+        args:
+          $ref: '#/components/schemas/Cql2ScalarOperands'
     CatalogGeometryGeoJSON:
       title: geometryGeoJSON
       oneOf:
@@ -750,6 +455,120 @@ components:
       - $ref: '#/components/schemas/CatalogPolygonGeoJSON'
       - $ref: '#/components/schemas/CatalogMultipolygonGeoJSON'
       - $ref: '#/components/schemas/CatalogGeometrycollectionGeoJSON'
+    CatalogItemSearchFieldsFields:
+      title: fields
+      description: 'The include and exclude members specify an array of
+
+        property names that are either included or excluded
+
+        from the result, respectively. If both include and
+
+        exclude are specified, include takes precedence.
+
+        Values should include the full JSON path of the property.
+
+        '
+      type: object
+      properties:
+        include:
+          type: array
+          items:
+            type: string
+        exclude:
+          type: array
+          items:
+            type: string
+      example:
+        include:
+        - id
+        - properties.eo:cloud_cover
+        exclude:
+        - geometry
+        - properties.datetime
+    CatalogItemSearchFilterFilterCql2Json:
+      title: filter-cql2-json
+      allOf:
+      - $ref: '#/components/schemas/Cql2BooleanExpression'
+    CatalogDatetime:
+      title: datetime
+      description: 'The searchable date and time of the assets, in UTC.
+
+        It is formatted according to [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
+
+        `null` is allowed, but requires `start_datetime` and `end_datetime` from common metadata to be set.'
+      oneOf:
+      - type: string
+        format: date-time
+      - type: 'null'
+      example: '2018-02-12T00:00:00Z'
+    CatalogStacVersion:
+      title: STAC version
+      type: string
+      example: 1.0.0
+    CatalogItemSearchFilterFilterCql2Text:
+      title: filter-cql2-text
+      description: 'A CQL2 filter expression in the ''cql2-text'' encoding.
+
+        '
+      type: string
+    CatalogItemSearchLimit:
+      title: limit
+      type: integer
+      minimum: 1
+      example: 10
+      default: 10
+      maximum: 100
+      description: 'The optional limit parameter limits the number of items that are presented in the response document.
+
+
+        If the limit parameter value is greater than advertised limit maximum, the server must return the
+
+        maximum possible number of items, rather than responding with an error.
+
+
+        Only items are counted that are on the first level of the collection in the response document.
+
+        Nested objects contained within the explicitly requested items must not be counted.
+
+
+        Minimum = 1. Maximum = 100. Default = 10.'
+    CatalogProperties:
+      title: properties
+      type: object
+      required:
+      - datetime
+      description: provides the core metadata fields plus extensions
+      properties:
+        datetime:
+          $ref: '#/components/schemas/CatalogDatetime'
+      additionalProperties:
+        description: Any additional properties added in via Item specification or extensions.
+    CatalogItemSearchSearchBody:
+      title: searchBody
+      description: The search criteria
+      type: object
+      required:
+      - datetime
+      - collections
+      allOf:
+      - $ref: '#/components/schemas/CatalogItemSearchBboxFilter'
+      - $ref: '#/components/schemas/CatalogItemSearchDatetimeFilter'
+      - $ref: '#/components/schemas/CatalogItemSearchIntersectsFilter'
+      - $ref: '#/components/schemas/CatalogItemSearchCollectionsFilter'
+      - $ref: '#/components/schemas/CatalogItemSearchIdsFilter'
+      - $ref: '#/components/schemas/CatalogItemSearchLimitFilter'
+    CatalogLinks:
+      title: links
+      type: array
+      items:
+        $ref: '#/components/schemas/CatalogLink'
+    CatalogItemSearchLimitFilter:
+      title: limitFilter
+      type: object
+      description: Only returns maximum number of results (page size)
+      properties:
+        limit:
+          $ref: '#/components/schemas/CatalogItemSearchLimit'
     CatalogPolygonGeoJSON:
       title: polygonGeoJSON
       type: object
@@ -771,42 +590,35 @@ components:
               minItems: 2
               items:
                 type: number
-    CatalogItemSearchSearchBody:
-      title: searchBody
-      description: The search criteria
-      type: object
-      required:
-      - datetime
-      - collections
-      allOf:
-      - $ref: '#/components/schemas/CatalogItemSearchBboxFilter'
-      - $ref: '#/components/schemas/CatalogItemSearchDatetimeFilter'
-      - $ref: '#/components/schemas/CatalogItemSearchIntersectsFilter'
-      - $ref: '#/components/schemas/CatalogItemSearchCollectionsFilter'
-      - $ref: '#/components/schemas/CatalogItemSearchIdsFilter'
-      - $ref: '#/components/schemas/CatalogItemSearchLimitFilter'
-    CatalogItemSearchFilterFilterLang:
-      title: filter-lang
-      description: 'The CQL2 filter encoding that the ''filter'' value uses.
-
-        '
+    CatalogItemSearchDatetimeInterval:
+      title: datetimeInterval
       type: string
-      enum:
-      - cql2-text
-      - cql2-json
-    CatalogItemId:
-      title: itemId
-      type: string
-      description: Provider identifier, a unique ID.
-    CatalogItemSearchFilterFilterCrs:
-      title: filter-crs
-      description: 'The coordinate reference system (CRS) used by spatial literals in the ''filter'' value.  The only value that STAC APIs must
+      description: 'Either a date-time or an interval, open or closed. Date and time expressions
 
-        accept is ''http://www.opengis.net/def/crs/OGC/1.3/CRS84''.
+        adhere to RFC 3339. Open intervals are expressed using double-dots.
 
-        '
-      type: string
-      format: uri
+
+        Examples:
+
+
+        * A date-time: "2018-02-12T23:20:50Z"
+
+        * A closed interval: "2018-02-12T00:00:00Z/2018-03-18T12:31:12Z"
+
+        * Open intervals: "2018-02-12T00:00:00Z/.." or "../2018-03-18T12:31:12Z"
+
+
+        Only features that have a temporal property that intersects the value of
+
+        `datetime` are selected.
+
+
+        If a feature has multiple temporal properties, it is the decision of the
+
+        server whether only a single temporal property is used to determine
+
+        the extent or all relevant temporal properties.'
+      example: 2018-02-12T00:00:00Z/2018-03-18T12:31:12Z
     CatalogItemSearchItemCollectionItemCollection:
       title: itemCollection
       description: A GeoJSON FeatureCollection augmented with foreign members that contain values relevant to a STAC entity
@@ -831,57 +643,6 @@ components:
           example:
           - rel: next
             href: https://services.sentinel-hub.com/catalog/v1/search?next=10
-    CatalogMultilinestringGeoJSON:
-      title: multilinestringGeoJSON
-      type: object
-      required:
-      - type
-      - coordinates
-      properties:
-        type:
-          type: string
-          enum:
-          - MultiLineString
-        coordinates:
-          type: array
-          items:
-            type: array
-            minItems: 2
-            items:
-              type: array
-              minItems: 2
-              items:
-                type: number
-    CatalogStacExtensions:
-      title: STAC extensions
-      type: array
-      uniqueItems: true
-      items:
-        anyOf:
-        - title: Reference to a JSON Schema
-          type: string
-          format: uri
-        - title: Reference to a core extension
-          type: string
-    Cql2ScalarOperands:
-      title: scalarOperands
-      type: array
-      minItems: 2
-      maxItems: 2
-      items:
-        $ref: '#/components/schemas/Cql2ScalarExpression'
-    Cql2NumericExpression:
-      title: numericExpression
-      oneOf:
-      - type: number
-      - $ref: '#/components/schemas/Cql2PropertyRef'
-    CatalogItemSearchLimitFilter:
-      title: limitFilter
-      type: object
-      description: Only returns maximum number of results (page size)
-      properties:
-        limit:
-          $ref: '#/components/schemas/CatalogItemSearchLimit'
     CatalogItemSearchFieldsSearchBody:
       title: searchBody
       type: object
@@ -986,39 +747,16 @@ components:
           thumbnail:
             href: http://cool-sat.com/static-catalog/CS3/20160503_132130_04/thumbnail.png
             title: Thumbnail
-    CatalogItemSearchDatetimeInterval:
-      title: datetimeInterval
-      type: string
-      description: 'Either a date-time or an interval, open or closed. Date and time expressions
+    CatalogItemSearchCollectionsArray:
+      title: collectionsArray
+      type: array
+      description: 'Array of Collection IDs to include in the search for items.
 
-        adhere to RFC 3339. Open intervals are expressed using double-dots.
-
-
-        Examples:
-
-
-        * A date-time: "2018-02-12T23:20:50Z"
-
-        * A closed interval: "2018-02-12T00:00:00Z/2018-03-18T12:31:12Z"
-
-        * Open intervals: "2018-02-12T00:00:00Z/.." or "../2018-03-18T12:31:12Z"
-
-
-        Only features that have a temporal property that intersects the value of
-
-        `datetime` are selected.
-
-
-        If a feature has multiple temporal properties, it is the decision of the
-
-        server whether only a single temporal property is used to determine
-
-        the extent or all relevant temporal properties.'
-      example: 2018-02-12T00:00:00Z/2018-03-18T12:31:12Z
-    CatalogItemSearchFilterFilterCql2Json:
-      title: filter-cql2-json
-      allOf:
-      - $ref: '#/components/schemas/Cql2BooleanExpression'
+        Only Item objects in one of the provided collections will be searched.'
+      items:
+        type: string
+      minItems: 1
+      maxItems: 1
     CatalogMultipointGeoJSON:
       title: multipointGeoJSON
       type: object
@@ -1037,27 +775,40 @@ components:
             minItems: 2
             items:
               type: number
-    CatalogGeometrycollectionGeoJSON:
-      title: geometrycollectionGeoJSON
+    CatalogItemSearchDistinctDistinct:
+      title: distinct
+      description: 'Return distinct values of specified property.
+
+        '
+      type: string
+    CatalogMultilinestringGeoJSON:
+      title: multilinestringGeoJSON
       type: object
       required:
       - type
-      - geometries
+      - coordinates
       properties:
         type:
           type: string
           enum:
-          - GeometryCollection
-        geometries:
+          - MultiLineString
+        coordinates:
           type: array
           items:
-            $ref: '#/components/schemas/CatalogGeometryGeoJSON'
-    CatalogItemSearchFilterFilterCql2Text:
-      title: filter-cql2-text
-      description: 'A CQL2 filter expression in the ''cql2-text'' encoding.
-
-        '
-      type: string
+            type: array
+            minItems: 2
+            items:
+              type: array
+              minItems: 2
+              items:
+                type: number
+    Cql2ScalarOperands:
+      title: scalarOperands
+      type: array
+      minItems: 2
+      maxItems: 2
+      items:
+        $ref: '#/components/schemas/Cql2ScalarExpression'
     CatalogItemSearchContextItemCollection:
       title: itemCollection
       type: object
@@ -1084,14 +835,144 @@ components:
               type: integer
               minimum: 0
               example: 1
+    CatalogItemSearchCollectionsFilter:
+      title: collectionsFilter
+      type: object
+      description: Only returns the collections specified
+      properties:
+        collections:
+          $ref: '#/components/schemas/CatalogItemSearchCollectionsArray'
+    CatalogStacExtensions:
+      title: STAC extensions
+      type: array
+      uniqueItems: true
+      items:
+        anyOf:
+        - title: Reference to a JSON Schema
+          type: string
+          format: uri
+        - title: Reference to a core extension
+          type: string
+    Cql2BooleanExpression:
+      title: booleanExpression
+      oneOf:
+      - $ref: '#/components/schemas/Cql2AndExpression'
+      - $ref: '#/components/schemas/Cql2NotExpression'
+      - $ref: '#/components/schemas/Cql2ComparisonPredicate'
+    CatalogItemSearchIdsFilter:
+      title: idsFilter
+      type: object
+      description: Only returns items that match the array of given ids
+      properties:
+        ids:
+          $ref: '#/components/schemas/CatalogItemSearchIds'
+    CatalogMultipolygonGeoJSON:
+      title: multipolygonGeoJSON
+      type: object
+      required:
+      - type
+      - coordinates
+      properties:
+        type:
+          type: string
+          enum:
+          - MultiPolygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              type: array
+              minItems: 4
+              items:
+                type: array
+                minItems: 2
+                items:
+                  type: number
+    CatalogLinestringGeoJSON:
+      title: linestringGeoJSON
+      type: object
+      required:
+      - type
+      - coordinates
+      properties:
+        type:
+          type: string
+          enum:
+          - LineString
+        coordinates:
+          type: array
+          minItems: 2
+          items:
+            type: array
+            minItems: 2
+            items:
+              type: number
     CatalogItemSearchIds:
       title: ids
       type: array
       description: Array of Item ids to return.
       items:
         type: string
-    Cql2BinaryComparisonPredicate:
-      title: binaryComparisonPredicate
+    CatalogItemSearchDatetimeFilter:
+      title: datetimeFilter
+      description: An object representing a date+time based filter.
+      type: object
+      properties:
+        datetime:
+          $ref: '#/components/schemas/CatalogItemSearchDatetimeInterval'
+    CatalogPointGeoJSON:
+      title: pointGeoJSON
+      type: object
+      required:
+      - type
+      - coordinates
+      properties:
+        type:
+          type: string
+          enum:
+          - Point
+        coordinates:
+          type: array
+          minItems: 2
+          items:
+            type: number
+    CatalogAssets:
+      title: assets
+      type: object
+      additionalProperties:
+        type: object
+        required:
+        - href
+        properties:
+          href:
+            type: string
+            format: url
+            description: Link to the asset object
+          title:
+            type: string
+            description: Displayed title
+            example: Thumbnail
+          description:
+            type: string
+            description: 'Multi-line description to explain the asset.
+
+
+              [CommonMark 0.29](http://commonmark.org/) syntax MAY be used for rich text representation.'
+            example: Small 256x256px PNG thumbnail for a preview.
+          type:
+            type: string
+            description: Media type of the asset
+            example: image/png
+          roles:
+            type: array
+            items:
+              type: string
+            description: Purposes of the asset
+            example:
+            - thumbnail
+    Cql2IsBetweenPredicate:
+      title: isBetweenPredicate
       type: object
       required:
       - op
@@ -1100,21 +981,29 @@ components:
         op:
           type: string
           enum:
-          - '='
-          - <
-          - '>'
-          - <=
-          - '>='
-          - <>
+          - between
         args:
-          $ref: '#/components/schemas/Cql2ScalarOperands'
-    Cql2IsBetweenOperands:
-      title: isBetweenOperands
-      type: array
-      minItems: 3
-      maxItems: 3
-      items:
-        $ref: '#/components/schemas/Cql2NumericExpression'
+          $ref: '#/components/schemas/Cql2IsBetweenOperands'
+    CatalogItemId:
+      title: itemId
+      type: string
+      description: Provider identifier, a unique ID.
+    Cql2NumericExpression:
+      title: numericExpression
+      oneOf:
+      - type: number
+      - $ref: '#/components/schemas/Cql2PropertyRef'
+    CatalogItemSearchDistinctSearchBody:
+      title: searchBody
+      type: object
+      x-stac-api-fragment: distinct
+      description: '**Extension:** Distinct
+
+
+        Return distinct values of specified property.'
+      properties:
+        distinct:
+          $ref: '#/components/schemas/CatalogItemSearchDistinctDistinct'
     CatalogLink:
       title: Link
       type: object
@@ -1172,49 +1061,8 @@ components:
             to merge in the key value pairs specified as JSON
 
             `{"next": "token"}` will become `&next=token`.'
-    CatalogItemSearchDatetimeFilter:
-      title: datetimeFilter
-      description: An object representing a date+time based filter.
-      type: object
-      properties:
-        datetime:
-          $ref: '#/components/schemas/CatalogItemSearchDatetimeInterval'
-    CatalogException:
-      title: exception
-      type: object
-      description: 'Information about the exception: an error code plus an optional description.'
-      required:
-      - code
-      properties:
-        code:
-          type: string
-        description:
-          type: string
-    CatalogItemSearchDistinctSearchBody:
-      title: searchBody
-      type: object
-      x-stac-api-fragment: distinct
-      description: '**Extension:** Distinct
-
-
-        Return distinct values of specified property.'
-      properties:
-        distinct:
-          $ref: '#/components/schemas/CatalogItemSearchDistinctDistinct'
-    Cql2ComparisonPredicate:
-      title: comparisonPredicate
-      oneOf:
-      - $ref: '#/components/schemas/Cql2BinaryComparisonPredicate'
-      - $ref: '#/components/schemas/Cql2IsBetweenPredicate'
-    CatalogItemSearchIntersectsFilter:
-      title: intersectsFilter
-      type: object
-      description: Only returns items that intersect with the provided polygon.
-      properties:
-        intersects:
-          $ref: '#/components/schemas/CatalogGeometryGeoJSON'
-    Cql2IsBetweenPredicate:
-      title: isBetweenPredicate
+    Cql2AndExpression:
+      title: andExpression
       type: object
       required:
       - op
@@ -1223,64 +1071,30 @@ components:
         op:
           type: string
           enum:
-          - between
+          - and
         args:
-          $ref: '#/components/schemas/Cql2IsBetweenOperands'
-    Cql2PropertyRef:
-      title: propertyRef
-      type: object
-      required:
-      - property
-      properties:
-        property:
-          type: string
-    CatalogLinestringGeoJSON:
-      title: linestringGeoJSON
-      type: object
-      required:
-      - type
-      - coordinates
-      properties:
-        type:
-          type: string
-          enum:
-          - LineString
-        coordinates:
           type: array
           minItems: 2
           items:
-            type: array
-            minItems: 2
-            items:
-              type: number
-    CatalogItemSearchCollectionsArray:
-      title: collectionsArray
-      type: array
-      description: 'Array of Collection IDs to include in the search for items.
-
-        Only Item objects in one of the provided collections will be searched.'
-      items:
-        type: string
-      minItems: 1
-      maxItems: 1
-    Cql2CharacterExpression:
-      title: characterExpression
+            $ref: '#/components/schemas/Cql2BooleanExpression'
+    Cql2ScalarExpression:
+      title: scalarExpression
       oneOf:
-      - type: string
-      - $ref: '#/components/schemas/Cql2PropertyRef'
+      - $ref: '#/components/schemas/Cql2CharacterExpression'
+      - $ref: '#/components/schemas/Cql2NumericExpression'
+  parameters:
+    CatalogItemSearchIds:
+      name: ids
+      in: query
+      description: Array of Item ids to return.
+      required: false
+      schema:
+        $ref: '#/components/schemas/CatalogItemSearchIds'
+      explode: false
     CatalogItemSearchLimit:
-      title: limit
-      type: integer
-      minimum: 1
-      example: 10
-      default: 10
-      maximum: 100
-      description: 'The optional limit parameter limits the number of items that are presented in the response document.
-
-
-        If the limit parameter value is greater than advertised limit maximum, the server must return the
-
-        maximum possible number of items, rather than responding with an error.
+      name: limit
+      in: query
+      description: 'The optional limit parameter recommends the number of items that should be present in the response document.
 
 
         Only items are counted that are on the first level of the collection in the response document.
@@ -1289,13 +1103,191 @@ components:
 
 
         Minimum = 1. Maximum = 100. Default = 10.'
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+      style: form
+      explode: false
+      example: 1
+    CatalogItemSearchDistinctDistinct:
+      name: distinct
+      x-stac-api-fragment: distinct
+      in: query
+      description: '**Extension:** Distinct
+
+
+        Return distinct values of specified property.'
+      required: false
+      schema:
+        type: string
+      style: form
+      explode: false
+    CatalogItemSearchCollectionsArray:
+      name: collections
+      in: query
+      description: 'Array of Collection IDs to include in the search for items.
+
+        Only Item objects in one of the provided collections will be searched
+
+        '
+      required: true
+      schema:
+        $ref: '#/components/schemas/CatalogItemSearchCollectionsArray'
+      explode: false
+      example:
+      - sentinel-2-l2a
+    CatalogItemSearchFieldsFields:
+      name: fields
+      x-stac-api-fragment: fields
+      in: query
+      description: '**Extension:** Fields
+
+
+        Determines the shape of the features in the response'
+      required: false
+      schema:
+        type: string
+        example: id,type,-geometry,bbox,properties,-links,-assets
+      style: form
+      explode: false
+    CatalogItemSearchFilterFilter:
+      name: filter
+      x-stac-api-fragment: filter
+      in: query
+      description: '**Extension:** Filter
+
+
+        A CQL2 filter expression for filtering items.'
+      required: false
+      schema:
+        $ref: '#/components/schemas/CatalogItemSearchFilterFilterCql2Text'
+      example: eo:cloud_cover>90
+    CatalogItemSearchIntersects:
+      name: intersects
+      in: query
+      description: 'The optional intersects parameter filters the result Items in the same was as bbox, only with
+
+        a GeoJSON Geometry rather than a bbox.'
+      required: false
+      schema:
+        $ref: '#/components/schemas/CatalogGeometryGeoJSON'
+      style: form
+      explode: false
+    CatalogItemSearchBbox:
+      name: bbox
+      in: query
+      description: 'Only features that have a geometry that intersects the bounding box are selected.
+
+        The bounding box is provided as four or six numbers, depending on
+
+        whether the coordinate reference system includes a vertical axis (height
+
+        or depth):
+
+
+        * Lower left corner, coordinate axis 1
+
+        * Lower left corner, coordinate axis 2
+
+        * Minimum value, coordinate axis 3 (optional)
+
+        * Upper right corner, coordinate axis 1
+
+        * Upper right corner, coordinate axis 2
+
+        * Maximum value, coordinate axis 3 (optional)
+
+
+        The coordinate reference system of the values is WGS 84
+
+        longitude/latitude (http://www.opengis.net/def/crs/OGC/1.3/CRS84).
+
+
+        For WGS 84 longitude/latitude the values are in most cases the sequence
+
+        of minimum longitude, minimum latitude, maximum longitude and maximum
+
+        latitude. However, in cases where the box spans the antimeridian the
+
+        first value (west-most box edge) is larger than the third value
+
+        (east-most box edge).
+
+
+        If the vertical axis is included, the third and the sixth number are
+
+        the bottom and the top of the 3-dimensional bounding box.
+
+
+        If a feature has multiple spatial geometry properties, it is the
+
+        decision of the server whether only a single spatial geometry property
+
+        is used to determine the extent or all relevant geometries.
+
+
+        Example: The bounding box of the New Zealand Exclusive Economic Zone in
+
+        WGS 84 (from 160.6°E to 170°W and from 55.95°S to 25.89°S) would be
+
+        represented in JSON as `[160.6, -55.95, -170, -25.89]` and in a query as
+
+        `bbox=160.6,-55.95,-170,-25.89`.'
+      required: false
+      schema:
+        type: array
+        oneOf:
+        - minItems: 4
+          maxItems: 4
+        - minItems: 6
+          maxItems: 6
+        items:
+          type: number
+      style: form
+      explode: false
+      example:
+      - 13
+      - 45
+      - 14
+      - 46
+    CatalogItemSearchDatetime:
+      name: datetime
+      in: query
+      description: 'Either a date-time or an interval, open or closed. Date and time expressions
+
+        adhere to RFC 3339. Open intervals are expressed using double-dots.
+
+
+        Examples:
+
+
+        * A date-time: "2018-02-12T23:20:50Z"
+
+        * A closed interval: "2018-02-12T00:00:00Z/2018-03-18T12:31:12Z"
+
+        * Open intervals: "2018-02-12T00:00:00Z/.." or "../2018-03-18T12:31:12Z"
+
+
+        Only features that have a temporal property that intersects the value of
+
+        `datetime` are selected.
+
+
+        If a feature has multiple temporal properties, it is the decision of the
+
+        server whether only a single temporal property is used to determine
+
+        the extent or all relevant temporal properties.'
+      required: true
+      schema:
+        type: string
+      style: form
+      explode: false
+      example: 2020-12-10T00:00:00Z/2020-12-30T00:00:00Z
   responses:
-    CatalogAccessControlInsufficientPermissions:
-      description: Insufficient permissions.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CatalogException'
     CatalogAccessControlIllegalCollection:
       description: Illegal collection.
       content:
@@ -1304,6 +1296,12 @@ components:
             $ref: '#/components/schemas/CatalogException'
     CatalogError:
       description: An error occurred.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogException'
+    CatalogAccessControlInsufficientPermissions:
+      description: Insufficient permissions.
       content:
         application/json:
           schema:

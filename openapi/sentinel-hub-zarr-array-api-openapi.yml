@@ -1,12 +1,9 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: API Reference async_process zarr_array API
+  title: Reference Zarr Array API
   version: 1.0.0
   contact:
     name: Sentinel Hub
-  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
-
-    '
 servers:
 - url: https://services.sentinel-hub.com
 tags:
@@ -92,30 +89,11 @@ components:
         description: Zarr storage specification version 2, Attributes
         url: https://zarr-specs.readthedocs.io/en/latest/v2/v2.0.html#attributes
       readOnly: true
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
     ZarrGetSingleArrayResponse:
       type: object
       properties:
         data:
           $ref: '#/components/schemas/ZarrArray'
-    ZarrArray:
-      type: object
-      format: ZarrArray
-      properties:
-        name:
-          type: string
-        s3Bucket:
-          type: string
-        path:
-          type: string
-        zarray:
-          $ref: '#/components/schemas/ZArray'
-        zattrs:
-          $ref: '#/components/schemas/ZAttrs'
     Boom:
       type: object
       properties:
@@ -162,6 +140,20 @@ components:
         errors:
           description: Additional information about the error (Optional)
           type: object
+    ZarrArray:
+      type: object
+      format: ZarrArray
+      properties:
+        name:
+          type: string
+        s3Bucket:
+          type: string
+        path:
+          type: string
+        zarray:
+          $ref: '#/components/schemas/ZArray'
+        zattrs:
+          $ref: '#/components/schemas/ZAttrs'
     ZarrQueryArraysResponse:
       type: object
       properties:
@@ -169,14 +161,21 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ZarrArray'
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
   parameters:
-    ByocCollectionId:
-      name: collectionId
-      in: path
-      required: true
+    SearchBeanCount:
+      name: count
+      description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
+
+        For more records, use *viewtoken* to page through.'
+      in: query
       schema:
-        type: string
-        format: uuid
+        type: integer
+        format: int32
     SearchBeanViewtoken:
       name: viewtoken
       description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
@@ -192,15 +191,13 @@ components:
       in: query
       schema:
         type: string
-    SearchBeanCount:
-      name: count
-      description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
-
-        For more records, use *viewtoken* to page through.'
-      in: query
+    ByocCollectionId:
+      name: collectionId
+      in: path
+      required: true
       schema:
-        type: integer
-        format: int32
+        type: string
+        format: uuid
   responses:
     '403':
       description: Insufficient permissions

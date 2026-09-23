@@ -1,12 +1,10 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: API Reference async_process catalog_features API
+  title: Reference Catalog Features API
   version: 1.0.0
   contact:
     name: Sentinel Hub
-  description: '**NOTE:** _Asynchronous Processing API is currently in beta release._
-
-    '
+  description: 'This is an OpenAPI definition of the SpatioTemporal Asset Catalog API - Features specification. This extends OGC API - Features - Part 1: Core.'
 servers:
 - url: https://services.sentinel-hub.com
 tags:
@@ -73,156 +71,32 @@ paths:
       - OAuth2: []
 components:
   schemas:
-    CatalogFeatureCollectionGeoJSON:
-      title: featureCollectionGeoJSON
+    CatalogException:
+      title: exception
+      type: object
+      description: 'Information about the exception: an error code plus an optional description.'
+      required:
+      - code
+      properties:
+        code:
+          type: string
+        description:
+          type: string
+    CatalogGeometrycollectionGeoJSON:
+      title: geometrycollectionGeoJSON
       type: object
       required:
       - type
-      - features
+      - geometries
       properties:
         type:
           type: string
           enum:
-          - FeatureCollection
-        features:
+          - GeometryCollection
+        geometries:
           type: array
           items:
-            $ref: '#/components/schemas/CatalogFeatureGeoJSON'
-    CatalogMultipolygonGeoJSON:
-      title: multipolygonGeoJSON
-      type: object
-      required:
-      - type
-      - coordinates
-      properties:
-        type:
-          type: string
-          enum:
-          - MultiPolygon
-        coordinates:
-          type: array
-          items:
-            type: array
-            items:
-              type: array
-              minItems: 4
-              items:
-                type: array
-                minItems: 2
-                items:
-                  type: number
-    CatalogPointGeoJSON:
-      title: pointGeoJSON
-      type: object
-      required:
-      - type
-      - coordinates
-      properties:
-        type:
-          type: string
-          enum:
-          - Point
-        coordinates:
-          type: array
-          minItems: 2
-          items:
-            type: number
-    CatalogProperties:
-      title: properties
-      type: object
-      required:
-      - datetime
-      description: provides the core metadata fields plus extensions
-      properties:
-        datetime:
-          $ref: '#/components/schemas/CatalogDatetime'
-      additionalProperties:
-        description: Any additional properties added in via Item specification or extensions.
-    CatalogDatetime:
-      title: datetime
-      description: 'The searchable date and time of the assets, in UTC.
-
-        It is formatted according to [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
-
-        `null` is allowed, but requires `start_datetime` and `end_datetime` from common metadata to be set.'
-      oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
-      example: '2018-02-12T00:00:00Z'
-    CatalogLinks:
-      title: links
-      type: array
-      items:
-        $ref: '#/components/schemas/CatalogLink'
-    CatalogAssets:
-      title: assets
-      type: object
-      additionalProperties:
-        type: object
-        required:
-        - href
-        properties:
-          href:
-            type: string
-            format: url
-            description: Link to the asset object
-          title:
-            type: string
-            description: Displayed title
-            example: Thumbnail
-          description:
-            type: string
-            description: 'Multi-line description to explain the asset.
-
-
-              [CommonMark 0.29](http://commonmark.org/) syntax MAY be used for rich text representation.'
-            example: Small 256x256px PNG thumbnail for a preview.
-          type:
-            type: string
-            description: Media type of the asset
-            example: image/png
-          roles:
-            type: array
-            items:
-              type: string
-            description: Purposes of the asset
-            example:
-            - thumbnail
-    CatalogFeaturesTimeStamp:
-      title: timeStamp
-      description: This property indicates the time and date when the response was generated.
-      type: string
-      format: date-time
-      example: '2017-08-17T08:05:32Z'
-    CatalogStacVersion:
-      title: STAC version
-      type: string
-      example: 1.0.0
-    CatalogFeatureGeoJSON:
-      title: featureGeoJSON
-      type: object
-      required:
-      - type
-      - geometry
-      - properties
-      properties:
-        type:
-          type: string
-          enum:
-          - Feature
-        geometry:
-          $ref: '#/components/schemas/CatalogGeometryGeoJSON'
-        properties:
-          type:
-          - object
-          - 'null'
-    CatalogItemType:
-      title: itemType
-      type: string
-      description: The GeoJSON type
-      enum:
-      - Feature
+            $ref: '#/components/schemas/CatalogGeometryGeoJSON'
     CatalogBbox:
       title: bbox
       description: 'Only features that have a geometry that intersects the bounding box are
@@ -287,6 +161,12 @@ components:
       - 39.5
       - -105
       - 40.5
+    CatalogItemType:
+      title: itemType
+      type: string
+      description: The GeoJSON type
+      enum:
+      - Feature
     CatalogGeometryGeoJSON:
       title: geometryGeoJSON
       oneOf:
@@ -297,6 +177,38 @@ components:
       - $ref: '#/components/schemas/CatalogPolygonGeoJSON'
       - $ref: '#/components/schemas/CatalogMultipolygonGeoJSON'
       - $ref: '#/components/schemas/CatalogGeometrycollectionGeoJSON'
+    CatalogStacVersion:
+      title: STAC version
+      type: string
+      example: 1.0.0
+    CatalogDatetime:
+      title: datetime
+      description: 'The searchable date and time of the assets, in UTC.
+
+        It is formatted according to [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
+
+        `null` is allowed, but requires `start_datetime` and `end_datetime` from common metadata to be set.'
+      oneOf:
+      - type: string
+        format: date-time
+      - type: 'null'
+      example: '2018-02-12T00:00:00Z'
+    CatalogProperties:
+      title: properties
+      type: object
+      required:
+      - datetime
+      description: provides the core metadata fields plus extensions
+      properties:
+        datetime:
+          $ref: '#/components/schemas/CatalogDatetime'
+      additionalProperties:
+        description: Any additional properties added in via Item specification or extensions.
+    CatalogLinks:
+      title: links
+      type: array
+      items:
+        $ref: '#/components/schemas/CatalogLink'
     CatalogPolygonGeoJSON:
       title: polygonGeoJSON
       type: object
@@ -318,60 +230,6 @@ components:
               minItems: 2
               items:
                 type: number
-    CatalogItemId:
-      title: itemId
-      type: string
-      description: Provider identifier, a unique ID.
-    CatalogMultilinestringGeoJSON:
-      title: multilinestringGeoJSON
-      type: object
-      required:
-      - type
-      - coordinates
-      properties:
-        type:
-          type: string
-          enum:
-          - MultiLineString
-        coordinates:
-          type: array
-          items:
-            type: array
-            minItems: 2
-            items:
-              type: array
-              minItems: 2
-              items:
-                type: number
-    CatalogStacExtensions:
-      title: STAC extensions
-      type: array
-      uniqueItems: true
-      items:
-        anyOf:
-        - title: Reference to a JSON Schema
-          type: string
-          format: uri
-        - title: Reference to a core extension
-          type: string
-    CatalogFeaturesFeatureCollectionGeoJSON:
-      title: featureCollectionGeoJSON
-      allOf:
-      - $ref: '#/components/schemas/CatalogFeatureCollectionGeoJSON'
-      - type: object
-        required:
-        - features
-        properties:
-          features:
-            type: array
-            items:
-              $ref: '#/components/schemas/CatalogItem'
-          links:
-            $ref: '#/components/schemas/CatalogLinks'
-          timeStamp:
-            $ref: '#/components/schemas/CatalogFeaturesTimeStamp'
-          numberReturned:
-            $ref: '#/components/schemas/CatalogFeaturesNumberReturned'
     CatalogItem:
       title: item
       description: A GeoJSON Feature augmented with foreign members that contain values relevant to a STAC entity
@@ -465,21 +323,6 @@ components:
           thumbnail:
             href: http://cool-sat.com/static-catalog/CS3/20160503_132130_04/thumbnail.png
             title: Thumbnail
-    CatalogGeometrycollectionGeoJSON:
-      title: geometrycollectionGeoJSON
-      type: object
-      required:
-      - type
-      - geometries
-      properties:
-        type:
-          type: string
-          enum:
-          - GeometryCollection
-        geometries:
-          type: array
-          items:
-            $ref: '#/components/schemas/CatalogGeometryGeoJSON'
     CatalogMultipointGeoJSON:
       title: multipointGeoJSON
       type: object
@@ -498,6 +341,207 @@ components:
             minItems: 2
             items:
               type: number
+    CatalogMultilinestringGeoJSON:
+      title: multilinestringGeoJSON
+      type: object
+      required:
+      - type
+      - coordinates
+      properties:
+        type:
+          type: string
+          enum:
+          - MultiLineString
+        coordinates:
+          type: array
+          items:
+            type: array
+            minItems: 2
+            items:
+              type: array
+              minItems: 2
+              items:
+                type: number
+    CatalogFeatureGeoJSON:
+      title: featureGeoJSON
+      type: object
+      required:
+      - type
+      - geometry
+      - properties
+      properties:
+        type:
+          type: string
+          enum:
+          - Feature
+        geometry:
+          $ref: '#/components/schemas/CatalogGeometryGeoJSON'
+        properties:
+          type:
+          - object
+          - 'null'
+    CatalogFeaturesNumberReturned:
+      title: numberReturned
+      description: 'The number of features in the feature collection.
+
+
+        A server may omit this information in a response, if the information
+
+        about the number of features is not known or difficult to compute.
+
+
+        If the value is provided, the value must be identical to the number
+
+        of items in the "features" array.'
+      type: integer
+      minimum: 0
+      example: 10
+    CatalogFeaturesTimeStamp:
+      title: timeStamp
+      description: This property indicates the time and date when the response was generated.
+      type: string
+      format: date-time
+      example: '2017-08-17T08:05:32Z'
+    CatalogFeatureCollectionGeoJSON:
+      title: featureCollectionGeoJSON
+      type: object
+      required:
+      - type
+      - features
+      properties:
+        type:
+          type: string
+          enum:
+          - FeatureCollection
+        features:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogFeatureGeoJSON'
+    CatalogFeaturesFeatureCollectionGeoJSON:
+      title: featureCollectionGeoJSON
+      allOf:
+      - $ref: '#/components/schemas/CatalogFeatureCollectionGeoJSON'
+      - type: object
+        required:
+        - features
+        properties:
+          features:
+            type: array
+            items:
+              $ref: '#/components/schemas/CatalogItem'
+          links:
+            $ref: '#/components/schemas/CatalogLinks'
+          timeStamp:
+            $ref: '#/components/schemas/CatalogFeaturesTimeStamp'
+          numberReturned:
+            $ref: '#/components/schemas/CatalogFeaturesNumberReturned'
+    CatalogStacExtensions:
+      title: STAC extensions
+      type: array
+      uniqueItems: true
+      items:
+        anyOf:
+        - title: Reference to a JSON Schema
+          type: string
+          format: uri
+        - title: Reference to a core extension
+          type: string
+    CatalogMultipolygonGeoJSON:
+      title: multipolygonGeoJSON
+      type: object
+      required:
+      - type
+      - coordinates
+      properties:
+        type:
+          type: string
+          enum:
+          - MultiPolygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              type: array
+              minItems: 4
+              items:
+                type: array
+                minItems: 2
+                items:
+                  type: number
+    CatalogLinestringGeoJSON:
+      title: linestringGeoJSON
+      type: object
+      required:
+      - type
+      - coordinates
+      properties:
+        type:
+          type: string
+          enum:
+          - LineString
+        coordinates:
+          type: array
+          minItems: 2
+          items:
+            type: array
+            minItems: 2
+            items:
+              type: number
+    CatalogPointGeoJSON:
+      title: pointGeoJSON
+      type: object
+      required:
+      - type
+      - coordinates
+      properties:
+        type:
+          type: string
+          enum:
+          - Point
+        coordinates:
+          type: array
+          minItems: 2
+          items:
+            type: number
+    CatalogAssets:
+      title: assets
+      type: object
+      additionalProperties:
+        type: object
+        required:
+        - href
+        properties:
+          href:
+            type: string
+            format: url
+            description: Link to the asset object
+          title:
+            type: string
+            description: Displayed title
+            example: Thumbnail
+          description:
+            type: string
+            description: 'Multi-line description to explain the asset.
+
+
+              [CommonMark 0.29](http://commonmark.org/) syntax MAY be used for rich text representation.'
+            example: Small 256x256px PNG thumbnail for a preview.
+          type:
+            type: string
+            description: Media type of the asset
+            example: image/png
+          roles:
+            type: array
+            items:
+              type: string
+            description: Purposes of the asset
+            example:
+            - thumbnail
+    CatalogItemId:
+      title: itemId
+      type: string
+      description: Provider identifier, a unique ID.
     CatalogLink:
       title: Link
       type: object
@@ -555,197 +599,7 @@ components:
             to merge in the key value pairs specified as JSON
 
             `{"next": "token"}` will become `&next=token`.'
-    CatalogException:
-      title: exception
-      type: object
-      description: 'Information about the exception: an error code plus an optional description.'
-      required:
-      - code
-      properties:
-        code:
-          type: string
-        description:
-          type: string
-    CatalogFeaturesNumberReturned:
-      title: numberReturned
-      description: 'The number of features in the feature collection.
-
-
-        A server may omit this information in a response, if the information
-
-        about the number of features is not known or difficult to compute.
-
-
-        If the value is provided, the value must be identical to the number
-
-        of items in the "features" array.'
-      type: integer
-      minimum: 0
-      example: 10
-    CatalogLinestringGeoJSON:
-      title: linestringGeoJSON
-      type: object
-      required:
-      - type
-      - coordinates
-      properties:
-        type:
-          type: string
-          enum:
-          - LineString
-        coordinates:
-          type: array
-          minItems: 2
-          items:
-            type: array
-            minItems: 2
-            items:
-              type: number
-  parameters:
-    CatalogFeaturesCollectionId:
-      name: collectionId
-      in: path
-      description: local identifier of a collection
-      required: true
-      schema:
-        type: string
-    CatalogFeaturesLimit:
-      name: limit
-      in: query
-      description: 'The optional limit parameter recommends the number of items that should be present in the response document.
-
-
-        If the limit parameter value is greater than advertised limit maximum, the server must return the
-
-        maximum possible number of items, rather than responding with an error.
-
-
-        Only items are counted that are on the first level of the collection in the response document.
-
-        Nested objects contained within the explicitly requested items must not be counted.
-
-
-        Minimum = 1. Maximum = 100. Default = 10.'
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 10
-      style: form
-      explode: false
-    CatalogFeaturesDatetime:
-      name: datetime
-      in: query
-      description: 'Either a date-time or an interval, open or closed. Date and time expressions
-
-        adhere to RFC 3339. Open intervals are expressed using double-dots.
-
-
-        Examples:
-
-
-        * A date-time: "2018-02-12T23:20:50Z"
-
-        * A closed interval: "2018-02-12T00:00:00Z/2018-03-18T12:31:12Z"
-
-        * Open intervals: "2018-02-12T00:00:00Z/.." or "../2018-03-18T12:31:12Z"
-
-
-        Only features that have a temporal property that intersects the value of
-
-        `datetime` are selected.
-
-
-        If a feature has multiple temporal properties, it is the decision of the
-
-        server whether only a single temporal property is used to determine
-
-        the extent or all relevant temporal properties.'
-      required: false
-      schema:
-        type: string
-      style: form
-      explode: false
-    CatalogFeaturesBbox:
-      name: bbox
-      in: query
-      description: 'Only features that have a geometry that intersects the bounding box are selected.
-
-        The bounding box is provided as four or six numbers, depending on whether the
-
-        coordinate reference system includes a vertical axis (height or depth):
-
-
-        * Lower left corner, coordinate axis 1
-
-        * Lower left corner, coordinate axis 2
-
-        * Minimum value, coordinate axis 3 (optional)
-
-        * Upper right corner, coordinate axis 1
-
-        * Upper right corner, coordinate axis 2
-
-        * Maximum value, coordinate axis 3 (optional)
-
-
-        The coordinate reference system of the values is WGS 84 longitude/latitude
-
-        (http://www.opengis.net/def/crs/OGC/1.3/CRS84).
-
-
-        For WGS 84 longitude/latitude the values are in most cases the sequence of
-
-        minimum longitude, minimum latitude, maximum longitude and maximum latitude.
-
-        However, in cases where the box spans the antimeridian the first value
-
-        (west-most box edge) is larger than the third value (east-most box edge).
-
-
-        If the vertical axis is included, the third and the sixth number are
-
-        the bottom and the top of the 3-dimensional bounding box.
-
-
-        If a feature has multiple spatial geometry properties, it is the decision of the
-
-        server whether only a single spatial geometry property is used to determine
-
-        the extent or all relevant geometries.'
-      required: false
-      schema:
-        type: array
-        oneOf:
-        - minItems: 4
-          maxItems: 4
-        - minItems: 6
-          maxItems: 6
-        items:
-          type: number
-      style: form
-      explode: false
-    CatalogFeaturesFeatureId:
-      name: featureId
-      in: path
-      description: local identifier of a feature
-      required: true
-      schema:
-        type: string
   responses:
-    CatalogAccessControlIllegalCollection:
-      description: Illegal collection.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CatalogException'
-    CatalogFeaturesServerError:
-      description: A server error occurred.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CatalogException'
     CatalogFeaturesFeature:
       description: 'fetch the feature with id `featureId` in the feature collection
 
@@ -836,6 +690,26 @@ components:
             - href: https://scihub.copernicus.eu/dhus/odata/v1/Products('1da14794-939f-4ede-b490-cd3a2348b495')/$value
               rel: derived_from
               title: scihub download
+    CatalogAccessControlIllegalCollection:
+      description: Illegal collection.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogException'
+    CatalogFeaturesServerError:
+      description: A server error occurred.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogException'
+    CatalogFeaturesNotFound:
+      description: The requested URI was not found.
+    CatalogAccessControlInsufficientPermissions:
+      description: Insufficient permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogException'
     CatalogFeaturesFeatures:
       description: 'The response is a document consisting of features in the collection.
 
@@ -976,14 +850,138 @@ components:
               title: Next set of results
             timeStamp: '2023-05-19T12:54:40.429059Z'
             numberReturned: 1
-    CatalogFeaturesNotFound:
-      description: The requested URI was not found.
-    CatalogAccessControlInsufficientPermissions:
-      description: Insufficient permissions.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CatalogException'
+  parameters:
+    CatalogFeaturesCollectionId:
+      name: collectionId
+      in: path
+      description: local identifier of a collection
+      required: true
+      schema:
+        type: string
+    CatalogFeaturesLimit:
+      name: limit
+      in: query
+      description: 'The optional limit parameter recommends the number of items that should be present in the response document.
+
+
+        If the limit parameter value is greater than advertised limit maximum, the server must return the
+
+        maximum possible number of items, rather than responding with an error.
+
+
+        Only items are counted that are on the first level of the collection in the response document.
+
+        Nested objects contained within the explicitly requested items must not be counted.
+
+
+        Minimum = 1. Maximum = 100. Default = 10.'
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+      style: form
+      explode: false
+    CatalogFeaturesBbox:
+      name: bbox
+      in: query
+      description: 'Only features that have a geometry that intersects the bounding box are selected.
+
+        The bounding box is provided as four or six numbers, depending on whether the
+
+        coordinate reference system includes a vertical axis (height or depth):
+
+
+        * Lower left corner, coordinate axis 1
+
+        * Lower left corner, coordinate axis 2
+
+        * Minimum value, coordinate axis 3 (optional)
+
+        * Upper right corner, coordinate axis 1
+
+        * Upper right corner, coordinate axis 2
+
+        * Maximum value, coordinate axis 3 (optional)
+
+
+        The coordinate reference system of the values is WGS 84 longitude/latitude
+
+        (http://www.opengis.net/def/crs/OGC/1.3/CRS84).
+
+
+        For WGS 84 longitude/latitude the values are in most cases the sequence of
+
+        minimum longitude, minimum latitude, maximum longitude and maximum latitude.
+
+        However, in cases where the box spans the antimeridian the first value
+
+        (west-most box edge) is larger than the third value (east-most box edge).
+
+
+        If the vertical axis is included, the third and the sixth number are
+
+        the bottom and the top of the 3-dimensional bounding box.
+
+
+        If a feature has multiple spatial geometry properties, it is the decision of the
+
+        server whether only a single spatial geometry property is used to determine
+
+        the extent or all relevant geometries.'
+      required: false
+      schema:
+        type: array
+        oneOf:
+        - minItems: 4
+          maxItems: 4
+        - minItems: 6
+          maxItems: 6
+        items:
+          type: number
+      style: form
+      explode: false
+    CatalogFeaturesFeatureId:
+      name: featureId
+      in: path
+      description: local identifier of a feature
+      required: true
+      schema:
+        type: string
+    CatalogFeaturesDatetime:
+      name: datetime
+      in: query
+      description: 'Either a date-time or an interval, open or closed. Date and time expressions
+
+        adhere to RFC 3339. Open intervals are expressed using double-dots.
+
+
+        Examples:
+
+
+        * A date-time: "2018-02-12T23:20:50Z"
+
+        * A closed interval: "2018-02-12T00:00:00Z/2018-03-18T12:31:12Z"
+
+        * Open intervals: "2018-02-12T00:00:00Z/.." or "../2018-03-18T12:31:12Z"
+
+
+        Only features that have a temporal property that intersects the value of
+
+        `datetime` are selected.
+
+
+        If a feature has multiple temporal properties, it is the decision of the
+
+        server whether only a single temporal property is used to determine
+
+        the extent or all relevant temporal properties.'
+      required: false
+      schema:
+        type: string
+      style: form
+      explode: false
   securitySchemes:
     OAuth2:
       type: oauth2
