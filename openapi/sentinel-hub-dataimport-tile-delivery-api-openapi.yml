@@ -77,16 +77,24 @@ paths:
       - OAuth2: []
 components:
   schemas:
-    TileStatus:
-      description: The status of the tile.
-      type: string
-      enum:
-      - WAITING
-      - QUEUED
-      - INGESTING
-      - INGESTED
-      - FAILED
-      readOnly: true
+    DeliveryTile:
+      type: object
+      properties:
+        id:
+          description: Tile ID
+          type: string
+          format: uuid
+        deliveryId:
+          description: Tile ID
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/TileStatus'
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
     Boom:
       type: object
       properties:
@@ -133,28 +141,31 @@ components:
         errors:
           description: Additional information about the error (Optional)
           type: object
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
-    DeliveryTile:
-      type: object
-      properties:
-        id:
-          description: Tile ID
-          type: string
-          format: uuid
-        deliveryId:
-          description: Tile ID
-          type: string
-          format: uuid
-        status:
-          $ref: '#/components/schemas/TileStatus'
+    TileStatus:
+      description: The status of the tile.
+      type: string
+      enum:
+      - WAITING
+      - QUEUED
+      - INGESTING
+      - INGESTED
+      - FAILED
+      readOnly: true
+  responses:
+    '403':
+      description: Insufficient permissions
+    '401':
+      description: Unauthorized
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
   parameters:
-    DeliveryId:
-      name: deliveryId
-      description: Delivery ID
+    OrderId:
+      name: orderId
+      description: Order ID
       in: path
       required: true
       schema:
@@ -168,25 +179,14 @@ components:
       schema:
         type: string
         format: uuid
-    OrderId:
-      name: orderId
-      description: Order ID
+    DeliveryId:
+      name: deliveryId
+      description: Delivery ID
       in: path
       required: true
       schema:
         type: string
         format: uuid
-  responses:
-    '403':
-      description: Insufficient permissions
-    '404':
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
-    '401':
-      description: Unauthorized
   securitySchemes:
     OAuth2:
       type: oauth2

@@ -299,48 +299,30 @@ paths:
       security:
       - OAuth2: []
 components:
+  responses:
+    '409':
+      description: Conflict in the request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '401':
+      description: Unauthorized
+    '403':
+      description: Insufficient permissions
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
   schemas:
-    BYOCTileAdditionalData:
-      type: object
-      properties:
-        failedIngestionCause:
-          description: Contains additional information about why ingestion failed (if applicable).
-          type:
-          - string
-          - 'null'
-        warnings:
-          description: Contains additional information about potential tile problems.
-          type:
-          - string
-          - 'null'
-    Geometry:
-      description: The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the "bounds.properties.crs" parameter. A GeoJsonObject.
-      type: object
-      oneOf:
-      - $ref: '#/components/schemas/Polygon'
-      - $ref: '#/components/schemas/MultiPolygon'
-      example:
-        type: Polygon
-        coordinates:
-        - - - 14.000701904296873
-            - 46.23685258143992
-          - - 13.822174072265625
-            - 46.09037664604301
-          - - 14.113311767578125
-            - 45.85080395917834
-          - - 14.55963134765625
-            - 46.038922598236
-          - - 14.441528320312498
-            - 46.28717293114449
-          - - 14.17236328125
-            - 46.29191774991382
-          - - 14.000701904296873
-            - 46.23685258143992
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
     BYOCTile:
       type: object
       required:
@@ -401,101 +383,6 @@ components:
           format: date-time
           description: The time when the tile was created in ISO 8601.
           readOnly: true
-    Polygon:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - Polygon
-        coordinates:
-          type: array
-          items:
-            type: array
-            items:
-              maxItems: 2
-              minItems: 2
-              type: array
-              items:
-                type: number
-                format: double
-    BYOCTileResponse:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/BYOCTile'
-    MultiPolygon:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - MultiPolygon
-        coordinates:
-          type: array
-          items:
-            type: array
-            items:
-              type: array
-              items:
-                maxItems: 2
-                minItems: 2
-                type: array
-                items:
-                  type: number
-                  format: double
-    View:
-      description: Links to paginate the resource
-      type: object
-      properties:
-        currentToken:
-          type: string
-        nextToken:
-          type: string
-        previousToken:
-          type: string
-        '@id':
-          type: string
-          format: uri
-        next:
-          type: string
-          format: uri
-        previous:
-          type: string
-          format: uri
-    BYOCTilesResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/BYOCTile'
-        links:
-          $ref: '#/components/schemas/View'
-    BYOCTileStatus:
-      description: The status of the tile.
-      type: string
-      enum:
-      - WAITING
-      - QUEUED
-      - INGESTING
-      - INGESTED
-      - FAILED
-      readOnly: true
-    BYOCTileUpdatePayload:
-      type: object
-      properties:
-        coverGeometry:
-          description: 'The geometry as GeoJSON, which outlines the area that has data. If it isn''t specified, it is automatically set to the tile bounding box.
-
-            '
-          $ref: '#/components/schemas/Geometry'
-        sensingTime:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The sensing time of the tile in ISO 8601 but without sub-millisecond precision.
     Boom:
       type: object
       properties:
@@ -542,30 +429,150 @@ components:
         errors:
           description: Additional information about the error (Optional)
           type: object
-  responses:
-    '409':
-      description: Conflict in the request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
-    '400':
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
-    '401':
-      description: Unauthorized
-    '403':
-      description: Insufficient permissions
-    '404':
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
+    BYOCTileAdditionalData:
+      type: object
+      properties:
+        failedIngestionCause:
+          description: Contains additional information about why ingestion failed (if applicable).
+          type:
+          - string
+          - 'null'
+        warnings:
+          description: Contains additional information about potential tile problems.
+          type:
+          - string
+          - 'null'
+    BYOCTileStatus:
+      description: The status of the tile.
+      type: string
+      enum:
+      - WAITING
+      - QUEUED
+      - INGESTING
+      - INGESTED
+      - FAILED
+      readOnly: true
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    View:
+      description: Links to paginate the resource
+      type: object
+      properties:
+        currentToken:
+          type: string
+        nextToken:
+          type: string
+        previousToken:
+          type: string
+        '@id':
+          type: string
+          format: uri
+        next:
+          type: string
+          format: uri
+        previous:
+          type: string
+          format: uri
+    Polygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - Polygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              maxItems: 2
+              minItems: 2
+              type: array
+              items:
+                type: number
+                format: double
+    BYOCTileResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/BYOCTile'
+    BYOCTilesResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BYOCTile'
+        links:
+          $ref: '#/components/schemas/View'
+    Geometry:
+      description: The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the "bounds.properties.crs" parameter. A GeoJsonObject.
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/Polygon'
+      - $ref: '#/components/schemas/MultiPolygon'
+      example:
+        type: Polygon
+        coordinates:
+        - - - 14.000701904296873
+            - 46.23685258143992
+          - - 13.822174072265625
+            - 46.09037664604301
+          - - 14.113311767578125
+            - 45.85080395917834
+          - - 14.55963134765625
+            - 46.038922598236
+          - - 14.441528320312498
+            - 46.28717293114449
+          - - 14.17236328125
+            - 46.29191774991382
+          - - 14.000701904296873
+            - 46.23685258143992
+    MultiPolygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - MultiPolygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              type: array
+              items:
+                maxItems: 2
+                minItems: 2
+                type: array
+                items:
+                  type: number
+                  format: double
+    BYOCTileUpdatePayload:
+      type: object
+      properties:
+        coverGeometry:
+          description: 'The geometry as GeoJSON, which outlines the area that has data. If it isn''t specified, it is automatically set to the tile bounding box.
+
+            '
+          $ref: '#/components/schemas/Geometry'
+        sensingTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The sensing time of the tile in ISO 8601 but without sub-millisecond precision.
   parameters:
+    ByocFilePath:
+      name: path
+      description: Filename with path as returned by the "List files of a tile" endpoint.
+      in: path
+      required: true
+      schema:
+        type: string
     ByocTileId:
       name: tileId
       in: path
@@ -595,13 +602,6 @@ components:
       schema:
         type: string
         format: uuid
-    ByocFilePath:
-      name: path
-      description: Filename with path as returned by the "List files of a tile" endpoint.
-      in: path
-      required: true
-      schema:
-        type: string
   securitySchemes:
     OAuth2:
       type: oauth2

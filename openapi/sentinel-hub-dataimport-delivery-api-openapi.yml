@@ -320,21 +320,18 @@ paths:
       - OAuth2: []
 components:
   parameters:
+    DeliveryStatus:
+      name: status
+      description: Filter deliveries by status. Omit to get all deliveries.
+      in: query
+      schema:
+        $ref: '#/components/schemas/DeliveryStatus'
     DeliveryArchiveFormat:
       name: format
       description: One of supported archive formats. Currently only `zip` is supported.
       in: query
       schema:
         $ref: '#/components/schemas/DeliveryArchiveFormat'
-    SearchBeanCount:
-      name: count
-      description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
-
-        For more records, use *viewtoken* to page through.'
-      in: query
-      schema:
-        type: integer
-        format: int32
     OrderId:
       name: orderId
       description: Order ID
@@ -343,6 +340,13 @@ components:
       schema:
         type: string
         format: uuid
+    DeliveryFile:
+      name: file
+      description: File with full path as returned by the "List delivery files" endpoint.
+      in: path
+      required: true
+      schema:
+        type: string
     SearchBeanViewtoken:
       name: viewtoken
       description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
@@ -358,13 +362,15 @@ components:
       in: query
       schema:
         type: string
-    DeliveryFile:
-      name: file
-      description: File with full path as returned by the "List delivery files" endpoint.
-      in: path
-      required: true
+    SearchBeanCount:
+      name: count
+      description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
+
+        For more records, use *viewtoken* to page through.'
+      in: query
       schema:
-        type: string
+        type: integer
+        format: int32
     DeliveryId:
       name: deliveryId
       description: Delivery ID
@@ -373,22 +379,7 @@ components:
       schema:
         type: string
         format: uuid
-    DeliveryStatus:
-      name: status
-      description: Filter deliveries by status. Omit to get all deliveries.
-      in: query
-      schema:
-        $ref: '#/components/schemas/DeliveryStatus'
   schemas:
-    OrderDelivery:
-      oneOf:
-      - $ref: '#/components/schemas/OrderPlanetDelivery'
-      - $ref: '#/components/schemas/OrderMaxarDelivery'
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
     DeliveryStatus:
       description: Delivery status
       type: string
@@ -402,68 +393,6 @@ components:
       - DONE
       - IMPORT_FAILED
       - NON_INGESTIBLE
-    OrderDeliveryBase:
-      type: object
-      properties:
-        id:
-          description: Delivery ID
-          type: string
-          format: uuid
-        sqkm:
-          description: Size of the delivery in km<sup>2</sup>.
-          type: number
-        status:
-          $ref: '#/components/schemas/DeliveryStatus'
-        errorMessage:
-          description: Error message if status = "DELIVERY_FAILED", "NON_INGESTIBLE" or "IMPORT_FAILED".
-          type: string
-    DeliveryArchiveStatus:
-      description: Status of archive creation. Only archives with status `DONE` can be downloaded.
-      type: string
-      enum:
-      - WAITING
-      - PREPARING
-      - DONE
-      - FAILED
-    View:
-      description: Links to paginate the resource
-      type: object
-      properties:
-        currentToken:
-          type: string
-        nextToken:
-          type: string
-        previousToken:
-          type: string
-        '@id':
-          type: string
-          format: uri
-        next:
-          type: string
-          format: uri
-        previous:
-          type: string
-          format: uri
-    OrderMaxarDelivery:
-      allOf:
-      - $ref: '#/components/schemas/MaxarDeliveryProvider'
-      - $ref: '#/components/schemas/OrderDeliveryBase'
-      - type: object
-        properties:
-          selectedImages:
-            description: MAXAR product IDs.
-            type: array
-            minItems: 1
-            items:
-              type: string
-    MaxarDeliveryProvider:
-      type: object
-      properties:
-        provider:
-          description: Provider of the delivery
-          type: string
-          enum:
-          - MAXAR
     OrderPlanetDelivery:
       allOf:
       - $ref: '#/components/schemas/PlanetDeliveryProvider'
@@ -473,21 +402,6 @@ components:
           itemId:
             description: Planet's Item ID for PlanetScope and SkySat deliveries.
             type: string
-    DeliveryArchiveFormat:
-      description: One of supported archive formats. Currently only `zip` is supported.
-      type: string
-      default: zip
-      enum:
-      - zip
-    PlanetDeliveryProvider:
-      deprecated: true
-      type: object
-      properties:
-        provider:
-          description: Provider of the delivery
-          type: string
-          enum:
-          - PLANET
     Boom:
       type: object
       properties:
@@ -534,6 +448,67 @@ components:
         errors:
           description: Additional information about the error (Optional)
           type: object
+    DeliveryArchiveFormat:
+      description: One of supported archive formats. Currently only `zip` is supported.
+      type: string
+      default: zip
+      enum:
+      - zip
+    OrderDeliveryBase:
+      type: object
+      properties:
+        id:
+          description: Delivery ID
+          type: string
+          format: uuid
+        sqkm:
+          description: Size of the delivery in km<sup>2</sup>.
+          type: number
+        status:
+          $ref: '#/components/schemas/DeliveryStatus'
+        errorMessage:
+          description: Error message if status = "DELIVERY_FAILED", "NON_INGESTIBLE" or "IMPORT_FAILED".
+          type: string
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    View:
+      description: Links to paginate the resource
+      type: object
+      properties:
+        currentToken:
+          type: string
+        nextToken:
+          type: string
+        previousToken:
+          type: string
+        '@id':
+          type: string
+          format: uri
+        next:
+          type: string
+          format: uri
+        previous:
+          type: string
+          format: uri
+    DeliveryArchiveStatus:
+      description: Status of archive creation. Only archives with status `DONE` can be downloaded.
+      type: string
+      enum:
+      - WAITING
+      - PREPARING
+      - DONE
+      - FAILED
+    MaxarDeliveryProvider:
+      type: object
+      properties:
+        provider:
+          description: Provider of the delivery
+          type: string
+          enum:
+          - MAXAR
     DeliveryArchive:
       type: object
       properties:
@@ -551,6 +526,31 @@ components:
         size:
           type: integer
           description: Size of archive in bytes. Only provided for archives with status `DONE`.
+    OrderDelivery:
+      oneOf:
+      - $ref: '#/components/schemas/OrderPlanetDelivery'
+      - $ref: '#/components/schemas/OrderMaxarDelivery'
+    PlanetDeliveryProvider:
+      deprecated: true
+      type: object
+      properties:
+        provider:
+          description: Provider of the delivery
+          type: string
+          enum:
+          - PLANET
+    OrderMaxarDelivery:
+      allOf:
+      - $ref: '#/components/schemas/MaxarDeliveryProvider'
+      - $ref: '#/components/schemas/OrderDeliveryBase'
+      - type: object
+        properties:
+          selectedImages:
+            description: MAXAR product IDs.
+            type: array
+            minItems: 1
+            items:
+              type: string
   responses:
     '401':
       description: Unauthorized

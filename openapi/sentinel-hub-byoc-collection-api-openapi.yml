@@ -165,25 +165,153 @@ paths:
       security:
       - OAuth2: []
 components:
+  responses:
+    '409':
+      description: Conflict in the request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '403':
+      description: Insufficient permissions
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '401':
+      description: Unauthorized
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+  parameters:
+    SearchBeanViewtoken:
+      name: viewtoken
+      description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
+
+        This *viewtoken* can be used in the next request to retrieve the next page of items.
+
+
+        The next page can be retrieved by repeating the query. However, replace your URL with the
+
+        next URL in the returned links object.
+
+        '
+      in: query
+      schema:
+        type: string
+    ByocCollectionId:
+      name: collectionId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    SearchBeanSearch:
+      name: search
+      description: Optional search query. Either a single word to search for or multiple words separated by the `|` (or) and `&` (and) operators. If omitted, all items are returned.
+      in: query
+      schema:
+        type: string
   schemas:
-    Polygon:
+    RestErrorWrapper:
       type: object
       properties:
-        type:
-          type: string
-          enum:
-          - Polygon
-        coordinates:
+        error:
+          $ref: '#/components/schemas/Boom'
+    BYOCCollectionsResponse:
+      type: object
+      properties:
+        data:
           type: array
           items:
-            type: array
-            items:
-              maxItems: 2
-              minItems: 2
-              type: array
-              items:
-                type: number
-                format: double
+            $ref: '#/components/schemas/BYOCCollection'
+        links:
+          $ref: '#/components/schemas/View'
+    BYOCCollection:
+      required:
+      - name
+      - s3Bucket
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        accountId:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+        s3Bucket:
+          type: string
+        isConfigured:
+          description: It's set to true, if the collection has bands.
+          type: boolean
+        created:
+          description: The date when the collection was created. Older collections don't have it.
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        noData:
+          type: number
+        requiresMetadataUpdate:
+          description: 'Flag if the metadata, found under additionalData, needs to be updated after a tile is added or removed.
+
+            Metadata is updated in a few minutes.
+
+            '
+          type: boolean
+          readOnly: true
+        additionalData:
+          $ref: '#/components/schemas/BYOCCollectionAdditionalData'
+    BYOCFormat:
+      type: object
+      required:
+      - bitDepth
+      - sampleFormat
+      properties:
+        source:
+          description: The string that must appear in `(BAND)` placeholder. If unset, defaults to the band name.
+          type: string
+        bandIndex:
+          description: The index of band in 1-based numbering.
+          type: integer
+          format: int32
+          default: 1
+        bitDepth:
+          type: integer
+          format: int32
+          enum:
+          - 8
+          - 16
+          - 32
+        sampleFormat:
+          type: string
+          enum:
+          - UINT
+          - INT
+          - FLOAT
+        noData:
+          type: number
+          description: You can define noData either per band or per collection, but not both.
+        aliases:
+          description: 'An optional list of alias names that can be used instead of the band name in the evalscript.
+
+            Only used in certain specific collections and not settable by the user.
+
+            '
+          type: array
+          items:
+            type: string
+          readOnly: true
     Boom:
       type: object
       properties:
@@ -267,6 +395,30 @@ components:
 
             '
           $ref: '#/components/schemas/BYOCCollectionAdditionalData'
+    View:
+      description: Links to paginate the resource
+      type: object
+      properties:
+        currentToken:
+          type: string
+        nextToken:
+          type: string
+        previousToken:
+          type: string
+        '@id':
+          type: string
+          format: uri
+        next:
+          type: string
+          format: uri
+        previous:
+          type: string
+          format: uri
+    BYOCCollectionResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/BYOCCollection'
     BYOCCollectionAdditionalData:
       type: object
       properties:
@@ -304,176 +456,24 @@ components:
           format: date-time
           description: The sensing time in ISO 8601 of the most recent tile.
           readOnly: true
-    RestErrorWrapper:
+    Polygon:
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/Boom'
-    BYOCCollectionsResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/BYOCCollection'
-        links:
-          $ref: '#/components/schemas/View'
-    BYOCCollection:
-      required:
-      - name
-      - s3Bucket
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        accountId:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-        s3Bucket:
-          type: string
-        isConfigured:
-          description: It's set to true, if the collection has bands.
-          type: boolean
-        created:
-          description: The date when the collection was created. Older collections don't have it.
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-        noData:
-          type: number
-        requiresMetadataUpdate:
-          description: 'Flag if the metadata, found under additionalData, needs to be updated after a tile is added or removed.
-
-            Metadata is updated in a few minutes.
-
-            '
-          type: boolean
-          readOnly: true
-        additionalData:
-          $ref: '#/components/schemas/BYOCCollectionAdditionalData'
-    View:
-      description: Links to paginate the resource
-      type: object
-      properties:
-        currentToken:
-          type: string
-        nextToken:
-          type: string
-        previousToken:
-          type: string
-        '@id':
-          type: string
-          format: uri
-        next:
-          type: string
-          format: uri
-        previous:
-          type: string
-          format: uri
-    BYOCCollectionResponse:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/BYOCCollection'
-    BYOCFormat:
-      type: object
-      required:
-      - bitDepth
-      - sampleFormat
-      properties:
-        source:
-          description: The string that must appear in `(BAND)` placeholder. If unset, defaults to the band name.
-          type: string
-        bandIndex:
-          description: The index of band in 1-based numbering.
-          type: integer
-          format: int32
-          default: 1
-        bitDepth:
-          type: integer
-          format: int32
-          enum:
-          - 8
-          - 16
-          - 32
-        sampleFormat:
+        type:
           type: string
           enum:
-          - UINT
-          - INT
-          - FLOAT
-        noData:
-          type: number
-          description: You can define noData either per band or per collection, but not both.
-        aliases:
-          description: 'An optional list of alias names that can be used instead of the band name in the evalscript.
-
-            Only used in certain specific collections and not settable by the user.
-
-            '
+          - Polygon
+        coordinates:
           type: array
           items:
-            type: string
-          readOnly: true
-  responses:
-    '409':
-      description: Conflict in the request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
-    '403':
-      description: Insufficient permissions
-    '404':
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
-    '400':
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
-    '401':
-      description: Unauthorized
-  parameters:
-    SearchBeanSearch:
-      name: search
-      description: Optional search query. Either a single word to search for or multiple words separated by the `|` (or) and `&` (and) operators. If omitted, all items are returned.
-      in: query
-      schema:
-        type: string
-    SearchBeanViewtoken:
-      name: viewtoken
-      description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
-
-        This *viewtoken* can be used in the next request to retrieve the next page of items.
-
-
-        The next page can be retrieved by repeating the query. However, replace your URL with the
-
-        next URL in the returned links object.
-
-        '
-      in: query
-      schema:
-        type: string
-    ByocCollectionId:
-      name: collectionId
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
+            type: array
+            items:
+              maxItems: 2
+              minItems: 2
+              type: array
+              items:
+                type: number
+                format: double
   securitySchemes:
     OAuth2:
       type: oauth2

@@ -156,31 +156,68 @@ paths:
       security:
       - OAuth2: []
 components:
-  schemas:
-    ZAttrs:
-      type:
-      - object
-      - 'null'
-      description: Custom attributes as read from the `.zattrs` file.
-      externalDocs:
-        description: Zarr storage specification version 2, Attributes
-        url: https://zarr-specs.readthedocs.io/en/latest/v2/v2.0.html#attributes
-      readOnly: true
-    ZarrCollectionAdditionalData:
-      type: object
-      readOnly: true
-      properties:
-        bands:
-          type: object
-          additionalProperties:
-            x-additionalPropertiesName: band
-            $ref: '#/components/schemas/BYOCFormat'
-        maxMetersPerPixel:
-          type: number
-          readOnly: true
-          description: 'How many meters per pixel can you request with Process/OGC/Batch requests for this collection.
+  parameters:
+    SearchBeanCount:
+      name: count
+      description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
 
-            '
+        For more records, use *viewtoken* to page through.'
+      in: query
+      schema:
+        type: integer
+        format: int32
+    SearchBeanViewtoken:
+      name: viewtoken
+      description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
+
+        This *viewtoken* can be used in the next request to retrieve the next page of items.
+
+
+        The next page can be retrieved by repeating the query. However, replace your URL with the
+
+        next URL in the returned links object.
+
+        '
+      in: query
+      schema:
+        type: string
+    ByocCollectionId:
+      name: collectionId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '403':
+      description: Insufficient permissions
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '401':
+      description: Unauthorized
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+  schemas:
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    ZarrCollectionUpdatePayload:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
     ZarrQueryCollectionsResponse:
       type: object
       properties:
@@ -188,24 +225,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ZarrCollection'
-    Polygon:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - Polygon
-        coordinates:
-          type: array
-          items:
-            type: array
-            items:
-              maxItems: 2
-              minItems: 2
-              type: array
-              items:
-                type: number
-                format: double
     Boom:
       type: object
       properties:
@@ -252,6 +271,66 @@ components:
         errors:
           description: Additional information about the error (Optional)
           type: object
+    BYOCFormat:
+      type: object
+      required:
+      - bitDepth
+      - sampleFormat
+      properties:
+        source:
+          description: The string that must appear in `(BAND)` placeholder. If unset, defaults to the band name.
+          type: string
+        bandIndex:
+          description: The index of band in 1-based numbering.
+          type: integer
+          format: int32
+          default: 1
+        bitDepth:
+          type: integer
+          format: int32
+          enum:
+          - 8
+          - 16
+          - 32
+        sampleFormat:
+          type: string
+          enum:
+          - UINT
+          - INT
+          - FLOAT
+        noData:
+          type: number
+          description: You can define noData either per band or per collection, but not both.
+        aliases:
+          description: 'An optional list of alias names that can be used instead of the band name in the evalscript.
+
+            Only used in certain specific collections and not settable by the user.
+
+            '
+          type: array
+          items:
+            type: string
+          readOnly: true
+    ZarrCollectionAdditionalData:
+      type: object
+      readOnly: true
+      properties:
+        bands:
+          type: object
+          additionalProperties:
+            x-additionalPropertiesName: band
+            $ref: '#/components/schemas/BYOCFormat'
+        maxMetersPerPixel:
+          type: number
+          readOnly: true
+          description: 'How many meters per pixel can you request with Process/OGC/Batch requests for this collection.
+
+            '
+    ZarrSingleResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/ZarrCollection'
     ZarrCollection:
       type: object
       format: ZarrCollection
@@ -329,112 +408,33 @@ components:
           $ref: '#/components/schemas/ZAttrs'
         additionalData:
           $ref: '#/components/schemas/ZarrCollectionAdditionalData'
-    RestErrorWrapper:
+    ZAttrs:
+      type:
+      - object
+      - 'null'
+      description: Custom attributes as read from the `.zattrs` file.
+      externalDocs:
+        description: Zarr storage specification version 2, Attributes
+        url: https://zarr-specs.readthedocs.io/en/latest/v2/v2.0.html#attributes
+      readOnly: true
+    Polygon:
       type: object
       properties:
-        error:
-          $ref: '#/components/schemas/Boom'
-    ZarrSingleResponse:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/ZarrCollection'
-    ZarrCollectionUpdatePayload:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-    BYOCFormat:
-      type: object
-      required:
-      - bitDepth
-      - sampleFormat
-      properties:
-        source:
-          description: The string that must appear in `(BAND)` placeholder. If unset, defaults to the band name.
-          type: string
-        bandIndex:
-          description: The index of band in 1-based numbering.
-          type: integer
-          format: int32
-          default: 1
-        bitDepth:
-          type: integer
-          format: int32
-          enum:
-          - 8
-          - 16
-          - 32
-        sampleFormat:
+        type:
           type: string
           enum:
-          - UINT
-          - INT
-          - FLOAT
-        noData:
-          type: number
-          description: You can define noData either per band or per collection, but not both.
-        aliases:
-          description: 'An optional list of alias names that can be used instead of the band name in the evalscript.
-
-            Only used in certain specific collections and not settable by the user.
-
-            '
+          - Polygon
+        coordinates:
           type: array
           items:
-            type: string
-          readOnly: true
-  parameters:
-    SearchBeanCount:
-      name: count
-      description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
-
-        For more records, use *viewtoken* to page through.'
-      in: query
-      schema:
-        type: integer
-        format: int32
-    SearchBeanViewtoken:
-      name: viewtoken
-      description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
-
-        This *viewtoken* can be used in the next request to retrieve the next page of items.
-
-
-        The next page can be retrieved by repeating the query. However, replace your URL with the
-
-        next URL in the returned links object.
-
-        '
-      in: query
-      schema:
-        type: string
-    ByocCollectionId:
-      name: collectionId
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
-  responses:
-    '403':
-      description: Insufficient permissions
-    '404':
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
-    '400':
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
-    '401':
-      description: Unauthorized
+            type: array
+            items:
+              maxItems: 2
+              minItems: 2
+              type: array
+              items:
+                type: number
+                format: double
   securitySchemes:
     OAuth2:
       type: oauth2

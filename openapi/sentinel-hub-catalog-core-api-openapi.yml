@@ -66,76 +66,6 @@ paths:
       security: []
 components:
   schemas:
-    CatalogException:
-      title: exception
-      type: object
-      description: 'Information about the exception: an error code plus an optional description.'
-      required:
-      - code
-      properties:
-        code:
-          type: string
-        description:
-          type: string
-    CatalogConformanceClasses:
-      title: conformanceClasses
-      type: object
-      required:
-      - conformsTo
-      properties:
-        conformsTo:
-          description: A list of all conformance classes implemented by the server. In addition to the STAC-specific conformance classes, all OGC-related conformance classes listed at `GET /conformances` must be listed here. This entry should mirror what `GET /conformances` returns, if implemented.
-          type: array
-          items:
-            type: string
-    CatalogStacVersion:
-      title: STAC version
-      type: string
-      example: 1.0.0
-    CatalogCoreLandingPage:
-      allOf:
-      - $ref: '#/components/schemas/CatalogCatalog'
-      - $ref: '#/components/schemas/CatalogConformanceClasses'
-    CatalogLinks:
-      title: links
-      type: array
-      items:
-        $ref: '#/components/schemas/CatalogLink'
-    CatalogStacExtensions:
-      title: STAC extensions
-      type: array
-      uniqueItems: true
-      items:
-        anyOf:
-        - title: Reference to a JSON Schema
-          type: string
-          format: uri
-        - title: Reference to a core extension
-          type: string
-    CatalogCatalog:
-      title: catalog
-      type: object
-      required:
-      - stac_version
-      - type
-      - id
-      - description
-      - links
-      properties:
-        stac_version:
-          $ref: '#/components/schemas/CatalogStacVersion'
-        stac_extensions:
-          $ref: '#/components/schemas/CatalogStacExtensions'
-        type:
-          type: string
-        id:
-          type: string
-        title:
-          type: string
-        description:
-          type: string
-        links:
-          $ref: '#/components/schemas/CatalogLinks'
     CatalogLink:
       title: Link
       type: object
@@ -193,6 +123,76 @@ components:
             to merge in the key value pairs specified as JSON
 
             `{"next": "token"}` will become `&next=token`.'
+    CatalogStacVersion:
+      title: STAC version
+      type: string
+      example: 1.0.0
+    CatalogException:
+      title: exception
+      type: object
+      description: 'Information about the exception: an error code plus an optional description.'
+      required:
+      - code
+      properties:
+        code:
+          type: string
+        description:
+          type: string
+    CatalogCoreLandingPage:
+      allOf:
+      - $ref: '#/components/schemas/CatalogCatalog'
+      - $ref: '#/components/schemas/CatalogConformanceClasses'
+    CatalogLinks:
+      title: links
+      type: array
+      items:
+        $ref: '#/components/schemas/CatalogLink'
+    CatalogConformanceClasses:
+      title: conformanceClasses
+      type: object
+      required:
+      - conformsTo
+      properties:
+        conformsTo:
+          description: A list of all conformance classes implemented by the server. In addition to the STAC-specific conformance classes, all OGC-related conformance classes listed at `GET /conformances` must be listed here. This entry should mirror what `GET /conformances` returns, if implemented.
+          type: array
+          items:
+            type: string
+    CatalogCatalog:
+      title: catalog
+      type: object
+      required:
+      - stac_version
+      - type
+      - id
+      - description
+      - links
+      properties:
+        stac_version:
+          $ref: '#/components/schemas/CatalogStacVersion'
+        stac_extensions:
+          $ref: '#/components/schemas/CatalogStacExtensions'
+        type:
+          type: string
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        links:
+          $ref: '#/components/schemas/CatalogLinks'
+    CatalogStacExtensions:
+      title: STAC extensions
+      type: array
+      uniqueItems: true
+      items:
+        anyOf:
+        - title: Reference to a JSON Schema
+          type: string
+          format: uri
+        - title: Reference to a core extension
+          type: string
   responses:
     CatalogConformanceDeclaration:
       description: 'The URIs of all conformance classes supported by the server.
@@ -229,6 +229,12 @@ components:
             - http://www.opengis.net/spec/cql2/1.0/conf/cql2-text
             - http://www.opengis.net/spec/cql2/1.0/conf/cql2-json
             - http://www.opengis.net/spec/cql2/1.0/conf/basic-cql2
+    CatalogError:
+      description: An error occurred.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogException'
     CatalogCoreLandingPage:
       description: 'The landing page provides links to the API definition
 
@@ -317,12 +323,6 @@ components:
               rel: service-doc
               type: text/html
               title: OpenAPI service documentation
-    CatalogError:
-      description: An error occurred.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CatalogException'
   securitySchemes:
     OAuth2:
       type: oauth2

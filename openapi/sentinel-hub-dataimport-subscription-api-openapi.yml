@@ -191,275 +191,6 @@ paths:
       - OAuth2: []
 components:
   schemas:
-    Geometry:
-      description: The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the "bounds.properties.crs" parameter. A GeoJsonObject.
-      type: object
-      oneOf:
-      - $ref: '#/components/schemas/Polygon'
-      - $ref: '#/components/schemas/MultiPolygon'
-      example:
-        type: Polygon
-        coordinates:
-        - - - 14.000701904296873
-            - 46.23685258143992
-          - - 13.822174072265625
-            - 46.09037664604301
-          - - 14.113311767578125
-            - 45.85080395917834
-          - - 14.55963134765625
-            - 46.038922598236
-          - - 14.441528320312498
-            - 46.28717293114449
-          - - 14.17236328125
-            - 46.29191774991382
-          - - 14.000701904296873
-            - 46.23685258143992
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
-    SubscriptionStatus:
-      description: Subscription status
-      type: string
-      readOnly: true
-      enum:
-      - CREATED
-      - RUNNING
-      - CANCELLED
-      - COMPLETED
-      - FAILED
-    PlanetSubscriptionDataFilterBase:
-      deprecated: true
-      type: object
-      required:
-      - timeRange
-      description: 'Selection criteria for the data the subscription should cover. At the minimum, `timeRange.from` must be included because subscriptions must have a start time.
-
-        '
-      properties:
-        timeRange:
-          allOf:
-          - $ref: '#/components/schemas/TimeRange'
-          - required:
-            - from
-          - description: 'A time interval to filter data by the **publish** date (in contrast to orders, where the data is filtered by the acquisition date). It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.
-
-              '
-    ProcessRequestInputBounds:
-      title: Bounds
-      description: 'Defines the request bounds by specifying the bounding box and/or
-
-        geometry for the request. If both are specified it will generate an image
-
-        for the bounding box and render data contained within the geometry.
-
-        '
-      type: object
-      properties:
-        bbox:
-          description: 'The request bounding box. This and/or GEOMETRY must be specified.
-
-            Specify with a coordinate pair on two (opposite) vertices of the bounding
-
-            box rectangle. Coordinates need to be in easting,northing or longitude, latitude,
-
-            in that order in the CRS defined in the "bounds.properties.crs" parameter.
-
-            '
-          type: array
-          minItems: 4
-          maxItems: 4
-          items:
-            type: number
-            format: double
-          example:
-          - 13.822174072265625
-          - 45.85080395917834
-          - 14.55963134765625
-          - 46.29191774991382
-        geometry:
-          $ref: '#/components/schemas/Geometry'
-        properties:
-          $ref: '#/components/schemas/ProcessRequestInputBoundsProperties'
-    PlanetSubscriptionRequest:
-      deprecated: true
-      allOf:
-      - $ref: '#/components/schemas/Subscription'
-      - type: object
-        required:
-        - input
-        properties:
-          input:
-            type: object
-            required:
-            - provider
-            - bounds
-            - data
-            - planetApiKey
-            properties:
-              provider:
-                description: Specify this value to use data provider Planet.
-                type: string
-                enum:
-                - PLANET
-              planetApiKey:
-                description: Your Planet API key. Get one from Planet https://www.planet.com.
-                type: string
-              bounds:
-                description: 'Defines the bounds of the subscribed area by specifying a bounding box and/or a geometry.
-
-                  If both are given, the subscription will use  the geometry and the bbox is ignored.
-
-                  '
-                $ref: '#/components/schemas/ProcessRequestInputBounds'
-              data:
-                type: array
-                minItems: 1
-                maxItems: 1
-                description: 'Specification of the data to subscribe to.
-
-                  '
-                items:
-                  $ref: '#/components/schemas/PlanetSubscriptionDataSpec'
-    AnalysisReadyPlanetScopeDataSpec:
-      deprecated: true
-      type: object
-      required:
-      - dataFilter
-      - type
-      - id
-      properties:
-        dataFilter:
-          allOf:
-          - $ref: '#/components/schemas/PlanetSubscriptionDataFilterBase'
-        type:
-          type: string
-          enum:
-          - analysis_ready_ps
-          description: The Analysis Ready Type to subscribe to.
-        id:
-          type: string
-          enum:
-          - PS_ARD_SR_DAILY
-          description: 'The ID of the Analysis Ready type to subscribe to.
-
-            '
-          externalDocs:
-            description: Analysis Ready IDs
-            url: https://developers.planet.com/docs/data/analysis-ready-ps/#available-ids
-    Polygon:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - Polygon
-        coordinates:
-          type: array
-          items:
-            type: array
-            items:
-              maxItems: 2
-              minItems: 2
-              type: array
-              items:
-                type: number
-                format: double
-    MultiPolygon:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - MultiPolygon
-        coordinates:
-          type: array
-          items:
-            type: array
-            items:
-              type: array
-              items:
-                maxItems: 2
-                minItems: 2
-                type: array
-                items:
-                  type: number
-                  format: double
-    View:
-      description: Links to paginate the resource
-      type: object
-      properties:
-        currentToken:
-          type: string
-        nextToken:
-          type: string
-        previousToken:
-          type: string
-        '@id':
-          type: string
-          format: uri
-        next:
-          type: string
-          format: uri
-        previous:
-          type: string
-          format: uri
-    Subscription:
-      type: object
-      properties:
-        id:
-          description: Subscription ID
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          description: Subscription name. It's also used as a name for a new BYOC collection, if no collection is given in collectionId field.
-          type: string
-        accountId:
-          description: Account ID
-          type: string
-          format: uuid
-          readOnly: true
-        collectionId:
-          description: 'BYOC collection ID. If given at subscription creation, the data is imported into referenced collection, which must be compatible with the data being subscribed - that is, must either be empty or contain the same bands as the data being subscribed.
-
-
-            If not given at subscription creation, a new BYOC collection is created when the subscription is confirmed and its ID is returned in the response from the `confirm` endpoint.
-
-            '
-          type: string
-          format: uuid
-        status:
-          $ref: '#/components/schemas/SubscriptionStatus'
-        sqkm:
-          description: Area of the subscriptions's `input.bounds` in km<sup>2</sup>
-          type: number
-          readOnly: true
-        input:
-          type: object
-          description: Specification of the subscribed data
-    PlanetSubscriptionDataSpec:
-      deprecated: true
-      oneOf:
-      - $ref: '#/components/schemas/PSSceneDataSpec'
-      - $ref: '#/components/schemas/PlanetaryVariableDataSpec'
-      - $ref: '#/components/schemas/AnalysisReadyPlanetScopeDataSpec'
-    TimeRange:
-      type: object
-      description: A time interval to filter data by acquisition date. It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.
-      properties:
-        from:
-          description: The start of a search interval.
-          type: string
-          format: date-time
-        to:
-          description: The end of a search interval.
-          type: string
-          format: date-time
-      example:
-        from: '2018-10-01T00:00:00.000Z'
-        to: '2018-11-01T00:00:00.000Z'
     PSSceneDataSpec:
       deprecated: true
       type: object
@@ -591,23 +322,43 @@ components:
         errors:
           description: Additional information about the error (Optional)
           type: object
-    SubscriptionRequest:
+    PlanetSubscriptionDataSpec:
+      deprecated: true
       oneOf:
-      - $ref: '#/components/schemas/PlanetSubscriptionRequest'
-    ProcessRequestInputBoundsProperties:
-      title: BoundsProperties
+      - $ref: '#/components/schemas/PSSceneDataSpec'
+      - $ref: '#/components/schemas/PlanetaryVariableDataSpec'
+      - $ref: '#/components/schemas/AnalysisReadyPlanetScopeDataSpec'
+    AnalysisReadyPlanetScopeDataSpec:
+      deprecated: true
       type: object
+      required:
+      - dataFilter
+      - type
+      - id
       properties:
-        crs:
-          description: 'The coordinate reference system of the coordinates. Must be
-
-            one of the values listed at https://docs.planet.com/develop/apis/processing/#crs-support.
-
-            Default CRS is WGS84, http://www.opengis.net/def/crs/OGC/1.3/CRS84.
+        dataFilter:
+          allOf:
+          - $ref: '#/components/schemas/PlanetSubscriptionDataFilterBase'
+        type:
+          type: string
+          enum:
+          - analysis_ready_ps
+          description: The Analysis Ready Type to subscribe to.
+        id:
+          type: string
+          enum:
+          - PS_ARD_SR_DAILY
+          description: 'The ID of the Analysis Ready type to subscribe to.
 
             '
-          type: string
-          default: http://www.opengis.net/def/crs/OGC/1.3/CRS84
+          externalDocs:
+            description: Analysis Ready IDs
+            url: https://developers.planet.com/docs/data/analysis-ready-ps/#available-ids
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
     MaxCloudCoverage:
       description: The maximum allowable cloud coverage in percent.
       type: number
@@ -615,6 +366,75 @@ components:
       minimum: 0
       maximum: 100
       default: 100
+    SubscriptionStatus:
+      description: Subscription status
+      type: string
+      readOnly: true
+      enum:
+      - CREATED
+      - RUNNING
+      - CANCELLED
+      - COMPLETED
+      - FAILED
+    View:
+      description: Links to paginate the resource
+      type: object
+      properties:
+        currentToken:
+          type: string
+        nextToken:
+          type: string
+        previousToken:
+          type: string
+        '@id':
+          type: string
+          format: uri
+        next:
+          type: string
+          format: uri
+        previous:
+          type: string
+          format: uri
+    PlanetSubscriptionRequest:
+      deprecated: true
+      allOf:
+      - $ref: '#/components/schemas/Subscription'
+      - type: object
+        required:
+        - input
+        properties:
+          input:
+            type: object
+            required:
+            - provider
+            - bounds
+            - data
+            - planetApiKey
+            properties:
+              provider:
+                description: Specify this value to use data provider Planet.
+                type: string
+                enum:
+                - PLANET
+              planetApiKey:
+                description: Your Planet API key. Get one from Planet https://www.planet.com.
+                type: string
+              bounds:
+                description: 'Defines the bounds of the subscribed area by specifying a bounding box and/or a geometry.
+
+                  If both are given, the subscription will use  the geometry and the bbox is ignored.
+
+                  '
+                $ref: '#/components/schemas/ProcessRequestInputBounds'
+              data:
+                type: array
+                minItems: 1
+                maxItems: 1
+                description: 'Specification of the data to subscribe to.
+
+                  '
+                items:
+                  $ref: '#/components/schemas/PlanetSubscriptionDataSpec'
     PlanetaryVariableDataSpec:
       deprecated: true
       type: object
@@ -679,51 +499,186 @@ components:
           externalDocs:
             description: Allowed type/id combinations
             url: https://developers.planet.com/docs/subscriptions/pvs-subs/#planetary-variables-types-and-ids
-  parameters:
-    SearchBeanCount:
-      name: count
-      description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
+    Polygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - Polygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              maxItems: 2
+              minItems: 2
+              type: array
+              items:
+                type: number
+                format: double
+    ProcessRequestInputBounds:
+      title: Bounds
+      description: 'Defines the request bounds by specifying the bounding box and/or
 
-        For more records, use *viewtoken* to page through.'
-      in: query
-      schema:
-        type: integer
-        format: int32
-    SearchBeanViewtoken:
-      name: viewtoken
-      description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
+        geometry for the request. If both are specified it will generate an image
 
-        This *viewtoken* can be used in the next request to retrieve the next page of items.
-
-
-        The next page can be retrieved by repeating the query. However, replace your URL with the
-
-        next URL in the returned links object.
+        for the bounding box and render data contained within the geometry.
 
         '
-      in: query
-      schema:
-        type: string
-    SubscriptionId:
-      name: subscriptionId
-      description: Subscription ID
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
-    SearchBeanSearch:
-      name: search
-      description: Optional search query. Either a single word to search for or multiple words separated by the `|` (or) and `&` (and) operators. If omitted, all items are returned.
-      in: query
-      schema:
-        type: string
-    SubscriptionStatus:
-      name: status
-      description: Filter subscriptions by status. Omit to get all subscriptions.
-      in: query
-      schema:
-        $ref: '#/components/schemas/SubscriptionStatus'
+      type: object
+      properties:
+        bbox:
+          description: 'The request bounding box. This and/or GEOMETRY must be specified.
+
+            Specify with a coordinate pair on two (opposite) vertices of the bounding
+
+            box rectangle. Coordinates need to be in easting,northing or longitude, latitude,
+
+            in that order in the CRS defined in the "bounds.properties.crs" parameter.
+
+            '
+          type: array
+          minItems: 4
+          maxItems: 4
+          items:
+            type: number
+            format: double
+          example:
+          - 13.822174072265625
+          - 45.85080395917834
+          - 14.55963134765625
+          - 46.29191774991382
+        geometry:
+          $ref: '#/components/schemas/Geometry'
+        properties:
+          $ref: '#/components/schemas/ProcessRequestInputBoundsProperties'
+    TimeRange:
+      type: object
+      description: A time interval to filter data by acquisition date. It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.
+      properties:
+        from:
+          description: The start of a search interval.
+          type: string
+          format: date-time
+        to:
+          description: The end of a search interval.
+          type: string
+          format: date-time
+      example:
+        from: '2018-10-01T00:00:00.000Z'
+        to: '2018-11-01T00:00:00.000Z'
+    SubscriptionRequest:
+      oneOf:
+      - $ref: '#/components/schemas/PlanetSubscriptionRequest'
+    ProcessRequestInputBoundsProperties:
+      title: BoundsProperties
+      type: object
+      properties:
+        crs:
+          description: 'The coordinate reference system of the coordinates. Must be
+
+            one of the values listed at https://docs.planet.com/develop/apis/processing/#crs-support.
+
+            Default CRS is WGS84, http://www.opengis.net/def/crs/OGC/1.3/CRS84.
+
+            '
+          type: string
+          default: http://www.opengis.net/def/crs/OGC/1.3/CRS84
+    Geometry:
+      description: The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the "bounds.properties.crs" parameter. A GeoJsonObject.
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/Polygon'
+      - $ref: '#/components/schemas/MultiPolygon'
+      example:
+        type: Polygon
+        coordinates:
+        - - - 14.000701904296873
+            - 46.23685258143992
+          - - 13.822174072265625
+            - 46.09037664604301
+          - - 14.113311767578125
+            - 45.85080395917834
+          - - 14.55963134765625
+            - 46.038922598236
+          - - 14.441528320312498
+            - 46.28717293114449
+          - - 14.17236328125
+            - 46.29191774991382
+          - - 14.000701904296873
+            - 46.23685258143992
+    Subscription:
+      type: object
+      properties:
+        id:
+          description: Subscription ID
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          description: Subscription name. It's also used as a name for a new BYOC collection, if no collection is given in collectionId field.
+          type: string
+        accountId:
+          description: Account ID
+          type: string
+          format: uuid
+          readOnly: true
+        collectionId:
+          description: 'BYOC collection ID. If given at subscription creation, the data is imported into referenced collection, which must be compatible with the data being subscribed - that is, must either be empty or contain the same bands as the data being subscribed.
+
+
+            If not given at subscription creation, a new BYOC collection is created when the subscription is confirmed and its ID is returned in the response from the `confirm` endpoint.
+
+            '
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/SubscriptionStatus'
+        sqkm:
+          description: Area of the subscriptions's `input.bounds` in km<sup>2</sup>
+          type: number
+          readOnly: true
+        input:
+          type: object
+          description: Specification of the subscribed data
+    MultiPolygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - MultiPolygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              type: array
+              items:
+                maxItems: 2
+                minItems: 2
+                type: array
+                items:
+                  type: number
+                  format: double
+    PlanetSubscriptionDataFilterBase:
+      deprecated: true
+      type: object
+      required:
+      - timeRange
+      description: 'Selection criteria for the data the subscription should cover. At the minimum, `timeRange.from` must be included because subscriptions must have a start time.
+
+        '
+      properties:
+        timeRange:
+          allOf:
+          - $ref: '#/components/schemas/TimeRange'
+          - required:
+            - from
+          - description: 'A time interval to filter data by the **publish** date (in contrast to orders, where the data is filtered by the acquisition date). It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.
+
+              '
   responses:
     '400':
       description: Bad request
@@ -741,6 +696,51 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/RestErrorWrapper'
+  parameters:
+    SearchBeanViewtoken:
+      name: viewtoken
+      description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
+
+        This *viewtoken* can be used in the next request to retrieve the next page of items.
+
+
+        The next page can be retrieved by repeating the query. However, replace your URL with the
+
+        next URL in the returned links object.
+
+        '
+      in: query
+      schema:
+        type: string
+    SearchBeanCount:
+      name: count
+      description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
+
+        For more records, use *viewtoken* to page through.'
+      in: query
+      schema:
+        type: integer
+        format: int32
+    SearchBeanSearch:
+      name: search
+      description: Optional search query. Either a single word to search for or multiple words separated by the `|` (or) and `&` (and) operators. If omitted, all items are returned.
+      in: query
+      schema:
+        type: string
+    SubscriptionId:
+      name: subscriptionId
+      description: Subscription ID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    SubscriptionStatus:
+      name: status
+      description: Filter subscriptions by status. Omit to get all subscriptions.
+      in: query
+      schema:
+        $ref: '#/components/schemas/SubscriptionStatus'
   securitySchemes:
     OAuth2:
       type: oauth2
