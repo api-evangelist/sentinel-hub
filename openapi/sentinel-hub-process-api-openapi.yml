@@ -87,338 +87,21 @@ paths:
         source: "curl -X POST \\\n  https://services.sentinel-hub.com/process/v1 \\\n  -H 'Content-Type: multipart/form-data' \\\n  -H 'Authorization: Bearer <your_access_token>' \\\n  -F 'request={\n  \"input\": {\n    \"bounds\": {\n      \"bbox\": [\n        13.822174072265625,\n        45.85080395917834,\n        14.55963134765625,\n        46.29191774991382\n      ]\n    },\n    \"data\": [\n      {\n        \"type\": \"sentinel-2-l2a\"\n      }\n    ]\n  }\n}' \\\n  -F 'evalscript=//VERSION=3\n\nfunction setup() {\n  return {\n    input: [\"B02\", \"B03\", \"B04\"],\n    output: {\n      bands: 3\n    }\n  }\n}\n\nfunction evaluatePixel(\n  sample,\n  scenes,\n  inputMetadata,\n  customData,\n  outputMetadata\n) {\n  return [2.5 * sample.B04, 2.5 * sample.B03, 2.5 * sample.B02]\n}\n' -o image.png\n"
 components:
   schemas:
-    S2L2AFiltering:
+    TimeRange:
       type: object
+      description: A time interval to filter data by acquisition date. It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.
       properties:
-        timeRange:
-          $ref: '#/components/schemas/TimeRange'
-        mosaickingOrder:
-          description: The order in which tiles are overlapped from which the output result is mosaicked.
+        from:
+          description: The start of a search interval.
           type: string
-          enum:
-          - mostRecent
-          - leastRecent
-          - leastCC
-          default: mostRecent
-        maxCloudCoverage:
-          allOf:
-          - $ref: '#/components/schemas/MaxCloudCoverage'
-          - default: 100
-    ProcessRequest:
-      type: object
-      required:
-      - evalscript
-      - input
-      properties:
-        input:
-          $ref: '#/components/schemas/ProcessRequestInput'
-        output:
-          $ref: '#/components/schemas/ProcessRequestOutput'
-        evalscript:
-          description: 'Your evalscript. For details, click
-
-            <a href="https://docs.planet.com/develop/evalscripts/" target="_blank">here</a>.
-
-            '
+          format: date-time
+        to:
+          description: The end of a search interval.
           type: string
-    BYOCFiltering:
-      type: object
-      properties:
-        timeRange:
-          $ref: '#/components/schemas/TimeRange'
-        mosaickingOrder:
-          description: The order in which tiles are overlapped from which the output result is mosaicked.
-          type: string
-          enum:
-          - mostRecent
-          - leastRecent
-          default: mostRecent
-    LandsatTierFilteringWithoutRt:
-      type: object
-      properties:
-        tiers:
-          type: string
-          default: ALL_TIERS
-          enum:
-          - TIER_1
-          - ALL_TIERS
-    LandsatTierFilteringWithRt:
-      type: object
-      properties:
-        tiers:
-          type: string
-          default: ALL_TIERS
-          enum:
-          - TIER_1
-          - TIER_1_AND_RT
-          - ALL_TIERS
-    Boom:
-      type: object
-      properties:
-        status:
-          description: HTTP status code
-          type: integer
-          format: int32
-        reason:
-          description: Reason for the error
-          type: string
-        message:
-          description: Friendly error message
-          type: string
-        code:
-          description: Code that uniquely identifies the error
-          type: string
-          enum:
-          - COMMON_BAD_PAYLOAD
-          - COMMON_NOT_FOUND
-          - COMMON_DATABASE_ERROR
-          - COMMON_UNIQUE_KEY_VIOLATION
-          - COMMON_INSUFFICIENT_PERMISSIONS
-          - COMMON_SENTINEL_ACCOUNT_EXPIRED
-          - COMMON_METHOD_NOT_ALLOWED
-          - COMMON_UNSUPPORTED_MEDIA_TYPE
-          - COMMON_ELASTICSEARCH_ERROR
-          - COMMON_UNAUTHORIZED
-          - COMMON_EXCEPTION
-          - RATE_LIMIT_STORAGE_TIMEOUT
-          - RATE_LIMIT_OVERLAPPING_POLICIES
-          - RATE_LIMIT_EXCEEDED
-          - RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY
-          - DASHBOARD_PAYPAL_SALE_ERROR
-          - DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR
-          - DASHBOARD_INVALID_PAYPAL_RESPONSE
-          - DASHBOARD_EXECUTE_SALE_ERROR
-          - DASHBOARD_EXECUTE_AGREEMENT_ERROR
-          - DASHBOARD_IPN_ERROR
-          - DASHBOARD_ADYEN_SALE_ERROR
-          - DASHBOARD_ADYEN_PAYMENT_CANCELLED
-          - RENDERER_EXCEPTION
-          - OAUTH_ERROR
-          - EMAIL_OCTOPUS_ERROR
-        errors:
-          description: Additional information about the error (Optional)
-          type: object
-    HLSDataset:
-      title: hls
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseDataset'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - hls
-          dataFilter:
-            $ref: '#/components/schemas/HLSFiltering'
-          processing:
-            $ref: '#/components/schemas/BaseDatasetProcessing'
-    Ls8Dataset:
-      title: landsat-8-l1c
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/LandsatDataset'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - landsat-8-l1c
-          dataFilter:
-            allOf:
-            - $ref: '#/components/schemas/LandsatFiltering'
-            - $ref: '#/components/schemas/LandsatTierFilteringWithRt'
-    ProcessRequestInputData:
-      description: 'The collections you wish to request, along with certain processing and filtering parameters.
-
-        To learn how to request and work with multiple collection, check the "Data Fusion" page in our documentation https://docs.sentinel-hub.com/api/latest/data/data-fusion/.
-
-        '
-      type: array
-      minItems: 1
-      items:
-        oneOf:
-        - $ref: '#/components/schemas/S2L1CDataset'
-        - $ref: '#/components/schemas/S2L2ADataset'
-        - $ref: '#/components/schemas/Ls8Dataset'
-        - $ref: '#/components/schemas/L8L1Dataset'
-        - $ref: '#/components/schemas/L8L2Dataset'
-        - $ref: '#/components/schemas/LETML1Dataset'
-        - $ref: '#/components/schemas/LETML2Dataset'
-        - $ref: '#/components/schemas/LTML1Dataset'
-        - $ref: '#/components/schemas/LTML2Dataset'
-        - $ref: '#/components/schemas/LMSSL1Dataset'
-        - $ref: '#/components/schemas/ModisDataset'
-        - $ref: '#/components/schemas/DEMDataset'
-        - $ref: '#/components/schemas/S1Dataset'
-        - $ref: '#/components/schemas/HLSDataset'
-        - $ref: '#/components/schemas/BYOCDataset'
-    LTML1Dataset:
-      title: landsat-tm-l1
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/LandsatDataset'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - landsat-tm-l1
-          dataFilter:
-            allOf:
-            - $ref: '#/components/schemas/LandsatFiltering'
-            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
-    MaxCloudCoverage:
-      description: The maximum allowable cloud coverage in percent.
-      type: number
-      format: double
-      minimum: 0
-      maximum: 100
-      default: 100
-    S1Dataset:
-      title: sentinel-1-grd
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseDataset'
-      - type: object
-        properties:
-          dataFilter:
-            $ref: '#/components/schemas/S1Filtering'
-          processing:
-            $ref: '#/components/schemas/S1Processing'
-          type:
-            type: string
-            enum:
-            - sentinel-1-grd
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
-    S2L1CFiltering:
-      allOf:
-      - $ref: '#/components/schemas/S2L2AFiltering'
-    L8L2Dataset:
-      title: landsat-ot-l2
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/LandsatDataset'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - landsat-ot-l2
-          dataFilter:
-            allOf:
-            - $ref: '#/components/schemas/LandsatFiltering'
-            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
-    ProcessRequestOutputFormatPng:
-      title: image/png
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/ProcessRequestOutputFormat'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - image/png
-    S1Processing:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseDatasetProcessing'
-      - type: object
-        properties:
-          speckleFilter:
-            type: object
-            oneOf:
-            - $ref: '#/components/schemas/S1ProcessingSpeckleFilterLEE'
-            - $ref: '#/components/schemas/S1ProcessingSpeckleFilterNONE'
-            discriminator:
-              propertyName: type
-              mapping:
-                LEE: '#/components/schemas/S1ProcessingSpeckleFilterLEE'
-                NONE: '#/components/schemas/S1ProcessingSpeckleFilterNONE'
-          backCoeff:
-            type: string
-            enum:
-            - BETA0
-            - SIGMA0_ELLIPSOID
-            - GAMMA0_ELLIPSOID
-            - GAMMA0_TERRAIN
-            default: GAMMA0_ELLIPSOID
-          orthorectify:
-            type: boolean
-            default: false
-          demInstance:
-            type: string
-            enum:
-            - MAPZEN
-            - COPERNICUS
-            - COPERNICUS_30
-            - COPERNICUS_90
-            default: MAPZEN
-          radiometricTerrainOversampling:
-            type: number
-            format: double
-            minimum: 1
-            maximum: 4
-            default: 2
-    L8L1Dataset:
-      title: landsat-ot-l1
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/LandsatDataset'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - landsat-ot-l1
-          dataFilter:
-            allOf:
-            - $ref: '#/components/schemas/LandsatFiltering'
-            - $ref: '#/components/schemas/LandsatTierFilteringWithRt'
-    BaseDataset:
-      type: object
-      properties:
-        type:
-          description: Datasource abbreviation
-          type: string
-        id:
-          description: Identifier
-          type: string
-    LETML2Dataset:
-      title: landsat-etm-l2
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/LandsatDataset'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - landsat-etm-l2
-          dataFilter:
-            allOf:
-            - $ref: '#/components/schemas/LandsatFiltering'
-            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
-    ModisDataset:
-      title: modis
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseDataset'
-      - type: object
-        properties:
-          dataFilter:
-            $ref: '#/components/schemas/ModisFiltering'
-          processing:
-            $ref: '#/components/schemas/BaseDatasetProcessing'
-          type:
-            type: string
-            enum:
-            - modis
+          format: date-time
+      example:
+        from: '2018-10-01T00:00:00.000Z'
+        to: '2018-11-01T00:00:00.000Z'
     S1Filtering:
       type: object
       properties:
@@ -473,8 +156,8 @@ components:
           - Offline
           - Reprocessing
           - ArchNormal
-    ProcessRequestOutputFormatTiff:
-      title: image/tiff
+    ProcessRequestOutputFormatJson:
+      title: application/json
       type: object
       allOf:
       - $ref: '#/components/schemas/ProcessRequestOutputFormat'
@@ -483,47 +166,68 @@ components:
           type:
             type: string
             enum:
-            - image/tiff
-    Polygon:
+            - application/json
+    ProcessRequestOutputResponse:
       type: object
       properties:
-        type:
+        identifier:
+          type: string
+          description: 'Response''s identifier is used to connect the results of an evalscript with the output file.
+
+            Each response identifier value must either match one of the values in `setup()` -> `output.id` in the evalscript (see <a href="https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l1c/examples/#ndvi-image--and--value-multi-part-response-png-and-geotiff" target="_blank">example</a>)
+
+            or be `userdata` (see <a href="https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l1c/examples/#true-color-and-metadata-multi-part-response-geotiff-and-json" target="_blank">example</a>).
+
+            '
+          enum:
+          - <identifier>
+          - userdata
+        format:
+          description: Format object (default is `image/png`).
+          type: object
+          oneOf:
+          - $ref: '#/components/schemas/ProcessRequestOutputFormatPng'
+          - $ref: '#/components/schemas/ProcessRequestOutputFormatJpeg'
+          - $ref: '#/components/schemas/ProcessRequestOutputFormatTiff'
+          - $ref: '#/components/schemas/ProcessRequestOutputFormatJson'
+    BYOCFiltering:
+      type: object
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        mosaickingOrder:
+          description: The order in which tiles are overlapped from which the output result is mosaicked.
           type: string
           enum:
-          - Polygon
-        coordinates:
-          type: array
-          items:
-            type: array
-            items:
-              maxItems: 2
-              minItems: 2
-              type: array
-              items:
-                type: number
-                format: double
-    BYOCDataset:
-      title: BYOC / BATCH / ZARR
+          - mostRecent
+          - leastRecent
+          default: mostRecent
+    DEMDataset:
+      title: dem
       type: object
       allOf:
+      - $ref: '#/components/schemas/BaseDataset'
       - type: object
         properties:
           dataFilter:
-            $ref: '#/components/schemas/BYOCFiltering'
+            $ref: '#/components/schemas/DEMFiltering'
           processing:
-            $ref: '#/components/schemas/BaseDatasetProcessing'
+            $ref: '#/components/schemas/DEMProcessing'
           type:
             type: string
-            description: 'For a BYOC collection, set to "byoc-\<collectionId\>", for example "byoc-017aa0ae-33a6-45d3-8548-0f7d1041b40c".
-
-
-              For a BATCH collection, set to "batch-\<collectionId\>", for example "batch-9688cd56-6c70-4221-add8-a5821d0256a9".
-
-
-              For a ZARR collection, set to "zarr-\<collectionId\>", for example "zarr-e2c7baec-3dfa-4523-b125-e242bdb5dd7c".
-
-              '
-      - $ref: '#/components/schemas/BaseDataset'
+            enum:
+            - dem
+    ProcessRequestOutputFormatPng:
+      title: image/png
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/ProcessRequestOutputFormat'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - image/png
     ProcessRequestInputBounds:
       title: Bounds
       description: 'Defines the request bounds by specifying the bounding box and/or
@@ -560,29 +264,83 @@ components:
           $ref: '#/components/schemas/Geometry'
         properties:
           $ref: '#/components/schemas/ProcessRequestInputBoundsProperties'
-    ProcessRequestOutputFormat:
+    S2L1CDataset:
+      title: sentinel-2-l1c
       type: object
-      properties:
-        type:
-          type: string
-          description: Output format mime-type
-    TimeRange:
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/S2L1CFiltering'
+          processing:
+            $ref: '#/components/schemas/S2Processing'
+          type:
+            type: string
+            enum:
+            - sentinel-2-l1c
+    ModisDataset:
+      title: modis
       type: object
-      description: A time interval to filter data by acquisition date. It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.
-      properties:
-        from:
-          description: The start of a search interval.
-          type: string
-          format: date-time
-        to:
-          description: The end of a search interval.
-          type: string
-          format: date-time
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/ModisFiltering'
+          processing:
+            $ref: '#/components/schemas/BaseDatasetProcessing'
+          type:
+            type: string
+            enum:
+            - modis
+    Geometry:
+      description: The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the "bounds.properties.crs" parameter. A GeoJsonObject.
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/Polygon'
+      - $ref: '#/components/schemas/MultiPolygon'
       example:
-        from: '2018-10-01T00:00:00.000Z'
-        to: '2018-11-01T00:00:00.000Z'
-    LETML1Dataset:
-      title: landsat-etm-l1
+        type: Polygon
+        coordinates:
+        - - - 14.000701904296873
+            - 46.23685258143992
+          - - 13.822174072265625
+            - 46.09037664604301
+          - - 14.113311767578125
+            - 45.85080395917834
+          - - 14.55963134765625
+            - 46.038922598236
+          - - 14.441528320312498
+            - 46.28717293114449
+          - - 14.17236328125
+            - 46.29191774991382
+          - - 14.000701904296873
+            - 46.23685258143992
+    BYOCDataset:
+      title: BYOC / BATCH / ZARR
+      type: object
+      allOf:
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/BYOCFiltering'
+          processing:
+            $ref: '#/components/schemas/BaseDatasetProcessing'
+          type:
+            type: string
+            description: 'For a BYOC collection, set to "byoc-\<collectionId\>", for example "byoc-017aa0ae-33a6-45d3-8548-0f7d1041b40c".
+
+
+              For a BATCH collection, set to "batch-\<collectionId\>", for example "batch-9688cd56-6c70-4221-add8-a5821d0256a9".
+
+
+              For a ZARR collection, set to "zarr-\<collectionId\>", for example "zarr-e2c7baec-3dfa-4523-b125-e242bdb5dd7c".
+
+              '
+      - $ref: '#/components/schemas/BaseDataset'
+    Ls8Dataset:
+      title: landsat-8-l1c
       type: object
       allOf:
       - $ref: '#/components/schemas/LandsatDataset'
@@ -591,20 +349,12 @@ components:
           type:
             type: string
             enum:
-            - landsat-etm-l1
+            - landsat-8-l1c
           dataFilter:
             allOf:
             - $ref: '#/components/schemas/LandsatFiltering'
             - $ref: '#/components/schemas/LandsatTierFilteringWithRt'
-    S1ProcessingSpeckleFilterNONE:
-      type: object
-      description: Does NO speckle filtering. Equivalent to not having speckleFilter defined.
-      required:
-      - type
-      properties:
-        type:
-          type: string
-    ModisFiltering:
+    LandsatFiltering:
       type: object
       properties:
         timeRange:
@@ -615,111 +365,14 @@ components:
           enum:
           - mostRecent
           - leastRecent
+          - leastCC
           default: mostRecent
-    MultiPartProcessRequest:
-      type: object
-      properties:
-        request:
-          required:
-          - input
-          type: object
-          properties:
-            input:
-              $ref: '#/components/schemas/ProcessRequestInput'
-            output:
-              $ref: '#/components/schemas/ProcessRequestOutput'
-        evalscript:
-          description: 'Your evalscript. For details, click
-
-            <a href="https://docs.planet.com/develop/evalscripts/" target="_blank">here</a>.
-
-            '
-          type: string
-    ProcessRequestInputBoundsProperties:
-      title: BoundsProperties
-      type: object
-      properties:
-        crs:
-          description: 'The coordinate reference system of the coordinates. Must be
-
-            one of the values listed at https://docs.planet.com/develop/apis/processing/#crs-support.
-
-            Default CRS is WGS84, http://www.opengis.net/def/crs/OGC/1.3/CRS84.
-
-            '
-          type: string
-          default: http://www.opengis.net/def/crs/OGC/1.3/CRS84
-    DEMFiltering:
-      type: object
-      properties:
-        demInstance:
-          description: Selects DEM instance.
-          type: string
-          enum:
-          - MAPZEN
-          - COPERNICUS_30
-          - COPERNICUS_90
-          default: MAPZEN
-    S1ProcessingSpeckleFilterLEE:
-      type: object
-      description: The Lee speckle filter. Note that processing time rapidly increases as window size increases.
-      required:
-      - type
-      - windowSizeX
-      - windowSizeY
-      properties:
-        type:
-          type: string
-        windowSizeX:
-          type: integer
-          minimum: 1
-          maximum: 7
-          description: The window size in the X direction of the source data. Odd values recommended.
-        windowSizeY:
-          type: integer
-          minimum: 1
-          maximum: 7
-          description: The window size in the Y direction of the source data. Odd values recommended.
-    ProcessRequestOutputResponse:
-      type: object
-      properties:
-        identifier:
-          type: string
-          description: 'Response''s identifier is used to connect the results of an evalscript with the output file.
-
-            Each response identifier value must either match one of the values in `setup()` -> `output.id` in the evalscript (see <a href="https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l1c/examples/#ndvi-image--and--value-multi-part-response-png-and-geotiff" target="_blank">example</a>)
-
-            or be `userdata` (see <a href="https://docs.sentinel-hub.com/api/latest/data/sentinel-2-l1c/examples/#true-color-and-metadata-multi-part-response-geotiff-and-json" target="_blank">example</a>).
-
-            '
-          enum:
-          - <identifier>
-          - userdata
-        format:
-          description: Format object (default is `image/png`).
-          type: object
-          oneOf:
-          - $ref: '#/components/schemas/ProcessRequestOutputFormatPng'
-          - $ref: '#/components/schemas/ProcessRequestOutputFormatJpeg'
-          - $ref: '#/components/schemas/ProcessRequestOutputFormatTiff'
-          - $ref: '#/components/schemas/ProcessRequestOutputFormatJson'
-    LMSSL1Dataset:
-      title: landsat-mss-l1
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/LandsatDataset'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - landsat-mss-l1
-          dataFilter:
-            allOf:
-            - $ref: '#/components/schemas/LandsatFiltering'
-            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
-    ProcessRequestOutputFormatJson:
-      title: application/json
+        maxCloudCoverage:
+          allOf:
+          - $ref: '#/components/schemas/MaxCloudCoverage'
+          - default: 100
+    ProcessRequestOutputFormatTiff:
+      title: image/tiff
       type: object
       allOf:
       - $ref: '#/components/schemas/ProcessRequestOutputFormat'
@@ -728,7 +381,34 @@ components:
           type:
             type: string
             enum:
-            - application/json
+            - image/tiff
+    BaseDatasetProcessing:
+      type: object
+      properties:
+        upsampling:
+          description: 'The interpolation used when the requested
+
+            resolution is higher than the source resolution.
+
+            '
+          type: string
+          enum:
+          - NEAREST
+          - BILINEAR
+          - BICUBIC
+          default: NEAREST
+        downsampling:
+          description: 'The interpolation used when the requested
+
+            resolution is lower than the source resolution.
+
+            '
+          type: string
+          enum:
+          - NEAREST
+          - BILINEAR
+          - BICUBIC
+          default: NEAREST
     HLSFiltering:
       type: object
       properties:
@@ -757,82 +437,21 @@ components:
           enum:
           - SENTINEL
           - LANDSAT
-    S2L1CDataset:
-      title: sentinel-2-l1c
+    LMSSL1Dataset:
+      title: landsat-mss-l1
       type: object
       allOf:
-      - $ref: '#/components/schemas/BaseDataset'
+      - $ref: '#/components/schemas/LandsatDataset'
       - type: object
         properties:
-          dataFilter:
-            $ref: '#/components/schemas/S2L1CFiltering'
-          processing:
-            $ref: '#/components/schemas/S2Processing'
           type:
             type: string
             enum:
-            - sentinel-2-l1c
-    Geometry:
-      description: The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the "bounds.properties.crs" parameter. A GeoJsonObject.
-      type: object
-      oneOf:
-      - $ref: '#/components/schemas/Polygon'
-      - $ref: '#/components/schemas/MultiPolygon'
-      example:
-        type: Polygon
-        coordinates:
-        - - - 14.000701904296873
-            - 46.23685258143992
-          - - 13.822174072265625
-            - 46.09037664604301
-          - - 14.113311767578125
-            - 45.85080395917834
-          - - 14.55963134765625
-            - 46.038922598236
-          - - 14.441528320312498
-            - 46.28717293114449
-          - - 14.17236328125
-            - 46.29191774991382
-          - - 14.000701904296873
-            - 46.23685258143992
-    BaseDatasetProcessing:
-      type: object
-      properties:
-        upsampling:
-          description: 'The interpolation used when the requested
-
-            resolution is higher than the source resolution.
-
-            '
-          type: string
-          enum:
-          - NEAREST
-          - BILINEAR
-          - BICUBIC
-          default: NEAREST
-        downsampling:
-          description: 'The interpolation used when the requested
-
-            resolution is lower than the source resolution.
-
-            '
-          type: string
-          enum:
-          - NEAREST
-          - BILINEAR
-          - BICUBIC
-          default: NEAREST
-    ProcessRequestInput:
-      title: Input
-      type: object
-      required:
-      - bounds
-      - data
-      properties:
-        bounds:
-          $ref: '#/components/schemas/ProcessRequestInputBounds'
-        data:
-          $ref: '#/components/schemas/ProcessRequestInputData'
+            - landsat-mss-l1
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
     MultiPolygon:
       type: object
       properties:
@@ -853,6 +472,205 @@ components:
                 items:
                   type: number
                   format: double
+    S1ProcessingSpeckleFilterNONE:
+      type: object
+      description: Does NO speckle filtering. Equivalent to not having speckleFilter defined.
+      required:
+      - type
+      properties:
+        type:
+          type: string
+    L8L2Dataset:
+      title: landsat-ot-l2
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-ot-l2
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
+    S1ProcessingSpeckleFilterLEE:
+      type: object
+      description: The Lee speckle filter. Note that processing time rapidly increases as window size increases.
+      required:
+      - type
+      - windowSizeX
+      - windowSizeY
+      properties:
+        type:
+          type: string
+        windowSizeX:
+          type: integer
+          minimum: 1
+          maximum: 7
+          description: The window size in the X direction of the source data. Odd values recommended.
+        windowSizeY:
+          type: integer
+          minimum: 1
+          maximum: 7
+          description: The window size in the Y direction of the source data. Odd values recommended.
+    ModisFiltering:
+      type: object
+      properties:
+        timeRange:
+          $ref: '#/components/schemas/TimeRange'
+        mosaickingOrder:
+          description: The order in which tiles are overlapped from which the output result is mosaicked.
+          type: string
+          enum:
+          - mostRecent
+          - leastRecent
+          default: mostRecent
+    DEMFiltering:
+      type: object
+      properties:
+        demInstance:
+          description: Selects DEM instance.
+          type: string
+          enum:
+          - MAPZEN
+          - COPERNICUS_30
+          - COPERNICUS_90
+          default: MAPZEN
+    MaxCloudCoverage:
+      description: The maximum allowable cloud coverage in percent.
+      type: number
+      format: double
+      minimum: 0
+      maximum: 100
+      default: 100
+    S1Processing:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDatasetProcessing'
+      - type: object
+        properties:
+          speckleFilter:
+            type: object
+            oneOf:
+            - $ref: '#/components/schemas/S1ProcessingSpeckleFilterLEE'
+            - $ref: '#/components/schemas/S1ProcessingSpeckleFilterNONE'
+            discriminator:
+              propertyName: type
+              mapping:
+                LEE: '#/components/schemas/S1ProcessingSpeckleFilterLEE'
+                NONE: '#/components/schemas/S1ProcessingSpeckleFilterNONE'
+          backCoeff:
+            type: string
+            enum:
+            - BETA0
+            - SIGMA0_ELLIPSOID
+            - GAMMA0_ELLIPSOID
+            - GAMMA0_TERRAIN
+            default: GAMMA0_ELLIPSOID
+          orthorectify:
+            type: boolean
+            default: false
+          demInstance:
+            type: string
+            enum:
+            - MAPZEN
+            - COPERNICUS
+            - COPERNICUS_30
+            - COPERNICUS_90
+            default: MAPZEN
+          radiometricTerrainOversampling:
+            type: number
+            format: double
+            minimum: 1
+            maximum: 4
+            default: 2
+    LETML2Dataset:
+      title: landsat-etm-l2
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-etm-l2
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
+    LTML2Dataset:
+      title: landsat-tm-l2
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-tm-l2
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
+    ProcessRequestInputBoundsProperties:
+      title: BoundsProperties
+      type: object
+      properties:
+        crs:
+          description: 'The coordinate reference system of the coordinates. Must be
+
+            one of the values listed at https://docs.planet.com/develop/apis/processing/#crs-support.
+
+            Default CRS is WGS84, http://www.opengis.net/def/crs/OGC/1.3/CRS84.
+
+            '
+          type: string
+          default: http://www.opengis.net/def/crs/OGC/1.3/CRS84
+    BaseDataset:
+      type: object
+      properties:
+        type:
+          description: Datasource abbreviation
+          type: string
+        id:
+          description: Identifier
+          type: string
+    Polygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - Polygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              maxItems: 2
+              minItems: 2
+              type: array
+              items:
+                type: number
+                format: double
+    DEMProcessing:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDatasetProcessing'
+      - type: object
+        properties:
+          clampNegative:
+            type: boolean
+            default: false
+            description: Mapzen DEM specific option. It replaces negative orthometric heights with 0. Useful for removing ocean bathymetry, for example.
+          egm:
+            type: boolean
+            default: false
+            description: It replaces orthometric heights with ellipsoidal heights relative to the WGS84 ellipsoid.
     LandsatDataset:
       type: object
       allOf:
@@ -863,21 +681,6 @@ components:
             $ref: '#/components/schemas/LandsatFiltering'
           processing:
             $ref: '#/components/schemas/BaseDatasetProcessing'
-    S2L2ADataset:
-      title: sentinel-2-l2a
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseDataset'
-      - type: object
-        properties:
-          dataFilter:
-            $ref: '#/components/schemas/S2L2AFiltering'
-          processing:
-            $ref: '#/components/schemas/S2Processing'
-          type:
-            type: string
-            enum:
-            - sentinel-2-l2a
     S2Processing:
       type: object
       allOf:
@@ -890,6 +693,53 @@ components:
               '
             type: boolean
             default: true
+    MultiPartProcessRequest:
+      type: object
+      properties:
+        request:
+          required:
+          - input
+          type: object
+          properties:
+            input:
+              $ref: '#/components/schemas/ProcessRequestInput'
+            output:
+              $ref: '#/components/schemas/ProcessRequestOutput'
+        evalscript:
+          description: 'Your evalscript. For details, click
+
+            <a href="https://docs.planet.com/develop/evalscripts/" target="_blank">here</a>.
+
+            '
+          type: string
+    HLSDataset:
+      title: hls
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - hls
+          dataFilter:
+            $ref: '#/components/schemas/HLSFiltering'
+          processing:
+            $ref: '#/components/schemas/BaseDatasetProcessing'
+    S2L1CFiltering:
+      allOf:
+      - $ref: '#/components/schemas/S2L2AFiltering'
+    LandsatTierFilteringWithRt:
+      type: object
+      properties:
+        tiers:
+          type: string
+          default: ALL_TIERS
+          enum:
+          - TIER_1
+          - TIER_1_AND_RT
+          - ALL_TIERS
     ProcessRequestOutput:
       type: object
       properties:
@@ -956,6 +806,123 @@ components:
             '
           items:
             $ref: '#/components/schemas/ProcessRequestOutputResponse'
+    LETML1Dataset:
+      title: landsat-etm-l1
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-etm-l1
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithRt'
+    ProcessRequest:
+      type: object
+      required:
+      - evalscript
+      - input
+      properties:
+        input:
+          $ref: '#/components/schemas/ProcessRequestInput'
+        output:
+          $ref: '#/components/schemas/ProcessRequestOutput'
+        evalscript:
+          description: 'Your evalscript. For details, click
+
+            <a href="https://docs.planet.com/develop/evalscripts/" target="_blank">here</a>.
+
+            '
+          type: string
+    LTML1Dataset:
+      title: landsat-tm-l1
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-tm-l1
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
+    LandsatTierFilteringWithoutRt:
+      type: object
+      properties:
+        tiers:
+          type: string
+          default: ALL_TIERS
+          enum:
+          - TIER_1
+          - ALL_TIERS
+    S2L2ADataset:
+      title: sentinel-2-l2a
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/BaseDataset'
+      - type: object
+        properties:
+          dataFilter:
+            $ref: '#/components/schemas/S2L2AFiltering'
+          processing:
+            $ref: '#/components/schemas/S2Processing'
+          type:
+            type: string
+            enum:
+            - sentinel-2-l2a
+    Boom:
+      type: object
+      properties:
+        status:
+          description: HTTP status code
+          type: integer
+          format: int32
+        reason:
+          description: Reason for the error
+          type: string
+        message:
+          description: Friendly error message
+          type: string
+        code:
+          description: Code that uniquely identifies the error
+          type: string
+          enum:
+          - COMMON_BAD_PAYLOAD
+          - COMMON_NOT_FOUND
+          - COMMON_DATABASE_ERROR
+          - COMMON_UNIQUE_KEY_VIOLATION
+          - COMMON_INSUFFICIENT_PERMISSIONS
+          - COMMON_SENTINEL_ACCOUNT_EXPIRED
+          - COMMON_METHOD_NOT_ALLOWED
+          - COMMON_UNSUPPORTED_MEDIA_TYPE
+          - COMMON_ELASTICSEARCH_ERROR
+          - COMMON_UNAUTHORIZED
+          - COMMON_EXCEPTION
+          - RATE_LIMIT_STORAGE_TIMEOUT
+          - RATE_LIMIT_OVERLAPPING_POLICIES
+          - RATE_LIMIT_EXCEEDED
+          - RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY
+          - DASHBOARD_PAYPAL_SALE_ERROR
+          - DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR
+          - DASHBOARD_INVALID_PAYPAL_RESPONSE
+          - DASHBOARD_EXECUTE_SALE_ERROR
+          - DASHBOARD_EXECUTE_AGREEMENT_ERROR
+          - DASHBOARD_IPN_ERROR
+          - DASHBOARD_ADYEN_SALE_ERROR
+          - DASHBOARD_ADYEN_PAYMENT_CANCELLED
+          - RENDERER_EXCEPTION
+          - OAUTH_ERROR
+          - EMAIL_OCTOPUS_ERROR
+        errors:
+          description: Additional information about the error (Optional)
+          type: object
     ProcessRequestOutputFormatJpeg:
       title: image/jpeg
       type: object
@@ -974,7 +941,38 @@ components:
             type: string
             enum:
             - image/jpeg
-    LandsatFiltering:
+    L8L1Dataset:
+      title: landsat-ot-l1
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/LandsatDataset'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - landsat-ot-l1
+          dataFilter:
+            allOf:
+            - $ref: '#/components/schemas/LandsatFiltering'
+            - $ref: '#/components/schemas/LandsatTierFilteringWithRt'
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    ProcessRequestInput:
+      title: Input
+      type: object
+      required:
+      - bounds
+      - data
+      properties:
+        bounds:
+          $ref: '#/components/schemas/ProcessRequestInputBounds'
+        data:
+          $ref: '#/components/schemas/ProcessRequestInputData'
+    S2L2AFiltering:
       type: object
       properties:
         timeRange:
@@ -991,59 +989,61 @@ components:
           allOf:
           - $ref: '#/components/schemas/MaxCloudCoverage'
           - default: 100
-    DEMProcessing:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/BaseDatasetProcessing'
-      - type: object
-        properties:
-          clampNegative:
-            type: boolean
-            default: false
-            description: Mapzen DEM specific option. It replaces negative orthometric heights with 0. Useful for removing ocean bathymetry, for example.
-          egm:
-            type: boolean
-            default: false
-            description: It replaces orthometric heights with ellipsoidal heights relative to the WGS84 ellipsoid.
-    DEMDataset:
-      title: dem
+    S1Dataset:
+      title: sentinel-1-grd
       type: object
       allOf:
       - $ref: '#/components/schemas/BaseDataset'
       - type: object
         properties:
           dataFilter:
-            $ref: '#/components/schemas/DEMFiltering'
+            $ref: '#/components/schemas/S1Filtering'
           processing:
-            $ref: '#/components/schemas/DEMProcessing'
+            $ref: '#/components/schemas/S1Processing'
           type:
             type: string
             enum:
-            - dem
-    LTML2Dataset:
-      title: landsat-tm-l2
+            - sentinel-1-grd
+    ProcessRequestInputData:
+      description: 'The collections you wish to request, along with certain processing and filtering parameters.
+
+        To learn how to request and work with multiple collection, check the "Data Fusion" page in our documentation https://docs.sentinel-hub.com/api/latest/data/data-fusion/.
+
+        '
+      type: array
+      minItems: 1
+      items:
+        oneOf:
+        - $ref: '#/components/schemas/S2L1CDataset'
+        - $ref: '#/components/schemas/S2L2ADataset'
+        - $ref: '#/components/schemas/Ls8Dataset'
+        - $ref: '#/components/schemas/L8L1Dataset'
+        - $ref: '#/components/schemas/L8L2Dataset'
+        - $ref: '#/components/schemas/LETML1Dataset'
+        - $ref: '#/components/schemas/LETML2Dataset'
+        - $ref: '#/components/schemas/LTML1Dataset'
+        - $ref: '#/components/schemas/LTML2Dataset'
+        - $ref: '#/components/schemas/LMSSL1Dataset'
+        - $ref: '#/components/schemas/ModisDataset'
+        - $ref: '#/components/schemas/DEMDataset'
+        - $ref: '#/components/schemas/S1Dataset'
+        - $ref: '#/components/schemas/HLSDataset'
+        - $ref: '#/components/schemas/BYOCDataset'
+    ProcessRequestOutputFormat:
       type: object
-      allOf:
-      - $ref: '#/components/schemas/LandsatDataset'
-      - type: object
-        properties:
-          type:
-            type: string
-            enum:
-            - landsat-tm-l2
-          dataFilter:
-            allOf:
-            - $ref: '#/components/schemas/LandsatFiltering'
-            - $ref: '#/components/schemas/LandsatTierFilteringWithoutRt'
+      properties:
+        type:
+          type: string
+          description: Output format mime-type
   responses:
-    '400':
-      description: Bad request
+    '500':
+      description: Server error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/RestErrorWrapper'
-    '500':
-      description: Server error
+    '400':
+      description: Bad request
       content:
         application/json:
           schema:

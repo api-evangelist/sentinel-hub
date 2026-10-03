@@ -165,73 +165,7 @@ paths:
       security:
       - OAuth2: []
 components:
-  responses:
-    '409':
-      description: Conflict in the request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
-    '403':
-      description: Insufficient permissions
-    '400':
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
-    '401':
-      description: Unauthorized
-    '404':
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
-  parameters:
-    SearchBeanViewtoken:
-      name: viewtoken
-      description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
-
-        This *viewtoken* can be used in the next request to retrieve the next page of items.
-
-
-        The next page can be retrieved by repeating the query. However, replace your URL with the
-
-        next URL in the returned links object.
-
-        '
-      in: query
-      schema:
-        type: string
-    ByocCollectionId:
-      name: collectionId
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
-    SearchBeanSearch:
-      name: search
-      description: Optional search query. Either a single word to search for or multiple words separated by the `|` (or) and `&` (and) operators. If omitted, all items are returned.
-      in: query
-      schema:
-        type: string
   schemas:
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
-    BYOCCollectionsResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/BYOCCollection'
-        links:
-          $ref: '#/components/schemas/View'
     BYOCCollection:
       required:
       - name
@@ -272,46 +206,6 @@ components:
           readOnly: true
         additionalData:
           $ref: '#/components/schemas/BYOCCollectionAdditionalData'
-    BYOCFormat:
-      type: object
-      required:
-      - bitDepth
-      - sampleFormat
-      properties:
-        source:
-          description: The string that must appear in `(BAND)` placeholder. If unset, defaults to the band name.
-          type: string
-        bandIndex:
-          description: The index of band in 1-based numbering.
-          type: integer
-          format: int32
-          default: 1
-        bitDepth:
-          type: integer
-          format: int32
-          enum:
-          - 8
-          - 16
-          - 32
-        sampleFormat:
-          type: string
-          enum:
-          - UINT
-          - INT
-          - FLOAT
-        noData:
-          type: number
-          description: You can define noData either per band or per collection, but not both.
-        aliases:
-          description: 'An optional list of alias names that can be used instead of the band name in the evalscript.
-
-            Only used in certain specific collections and not settable by the user.
-
-            '
-          type: array
-          items:
-            type: string
-          readOnly: true
     Boom:
       type: object
       properties:
@@ -358,43 +252,6 @@ components:
         errors:
           description: Additional information about the error (Optional)
           type: object
-    BYOCCollectionUpdatePayload:
-      type: object
-      required:
-      - name
-      - s3Bucket
-      properties:
-        name:
-          type: string
-        s3Bucket:
-          description: Can only be changed if the collection is empty.
-          type: string
-        noData:
-          description: If the value is not provided, the old one gets deleted.
-          type: number
-        additionalData:
-          description: 'If provided, overwrites the current bands property of the collection:
-
-            - to rename band(s), provide the current value of the "bands" property with only the name(s) of one or more bands changed
-
-            - to set noData value(s), provide the current value of the "bands" property with only the noData value(s) of one or more bands changed
-
-            - to remove band(s), provide the current value of the "bands" property but leave out the band(s) you wish to remove
-
-            - to remove all bands, you must first empty the collection, then provide "additionalData" without the "bands" property or with an empty "bands" property.
-
-
-            Keep in mind that:
-
-            - bands cannot be added nor their other properties ("bitDepth", "bandIndex", etc) changed once you add a tile.
-
-            - once sample format is set you cannot change it, and tiles ingested from then on need be in the set sample format.
-
-
-            If "additionalData" is omitted, the bands will not be changed.
-
-            '
-          $ref: '#/components/schemas/BYOCCollectionAdditionalData'
     View:
       description: Links to paginate the resource
       type: object
@@ -414,11 +271,15 @@ components:
         previous:
           type: string
           format: uri
-    BYOCCollectionResponse:
+    BYOCCollectionsResponse:
       type: object
       properties:
         data:
-          $ref: '#/components/schemas/BYOCCollection'
+          type: array
+          items:
+            $ref: '#/components/schemas/BYOCCollection'
+        links:
+          $ref: '#/components/schemas/View'
     BYOCCollectionAdditionalData:
       type: object
       properties:
@@ -456,6 +317,93 @@ components:
           format: date-time
           description: The sensing time in ISO 8601 of the most recent tile.
           readOnly: true
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    BYOCFormat:
+      type: object
+      required:
+      - bitDepth
+      - sampleFormat
+      properties:
+        source:
+          description: The string that must appear in `(BAND)` placeholder. If unset, defaults to the band name.
+          type: string
+        bandIndex:
+          description: The index of band in 1-based numbering.
+          type: integer
+          format: int32
+          default: 1
+        bitDepth:
+          type: integer
+          format: int32
+          enum:
+          - 8
+          - 16
+          - 32
+        sampleFormat:
+          type: string
+          enum:
+          - UINT
+          - INT
+          - FLOAT
+        noData:
+          type: number
+          description: You can define noData either per band or per collection, but not both.
+        aliases:
+          description: 'An optional list of alias names that can be used instead of the band name in the evalscript.
+
+            Only used in certain specific collections and not settable by the user.
+
+            '
+          type: array
+          items:
+            type: string
+          readOnly: true
+    BYOCCollectionUpdatePayload:
+      type: object
+      required:
+      - name
+      - s3Bucket
+      properties:
+        name:
+          type: string
+        s3Bucket:
+          description: Can only be changed if the collection is empty.
+          type: string
+        noData:
+          description: If the value is not provided, the old one gets deleted.
+          type: number
+        additionalData:
+          description: 'If provided, overwrites the current bands property of the collection:
+
+            - to rename band(s), provide the current value of the "bands" property with only the name(s) of one or more bands changed
+
+            - to set noData value(s), provide the current value of the "bands" property with only the noData value(s) of one or more bands changed
+
+            - to remove band(s), provide the current value of the "bands" property but leave out the band(s) you wish to remove
+
+            - to remove all bands, you must first empty the collection, then provide "additionalData" without the "bands" property or with an empty "bands" property.
+
+
+            Keep in mind that:
+
+            - bands cannot be added nor their other properties ("bitDepth", "bandIndex", etc) changed once you add a tile.
+
+            - once sample format is set you cannot change it, and tiles ingested from then on need be in the set sample format.
+
+
+            If "additionalData" is omitted, the bands will not be changed.
+
+            '
+          $ref: '#/components/schemas/BYOCCollectionAdditionalData'
+    BYOCCollectionResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/BYOCCollection'
     Polygon:
       type: object
       properties:
@@ -474,6 +422,58 @@ components:
               items:
                 type: number
                 format: double
+  responses:
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '401':
+      description: Unauthorized
+    '409':
+      description: Conflict in the request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '403':
+      description: Insufficient permissions
+  parameters:
+    SearchBeanSearch:
+      name: search
+      description: Optional search query. Either a single word to search for or multiple words separated by the `|` (or) and `&` (and) operators. If omitted, all items are returned.
+      in: query
+      schema:
+        type: string
+    SearchBeanViewtoken:
+      name: viewtoken
+      description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
+
+        This *viewtoken* can be used in the next request to retrieve the next page of items.
+
+
+        The next page can be retrieved by repeating the query. However, replace your URL with the
+
+        next URL in the returned links object.
+
+        '
+      in: query
+      schema:
+        type: string
+    ByocCollectionId:
+      name: collectionId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
   securitySchemes:
     OAuth2:
       type: oauth2

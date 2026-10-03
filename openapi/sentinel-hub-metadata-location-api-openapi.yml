@@ -59,11 +59,6 @@ paths:
       - OAuth2: []
 components:
   schemas:
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
     Boom:
       type: object
       properties:
@@ -131,6 +126,11 @@ components:
         catalogUrl:
           description: Catalog API url
           type: string
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
   responses:
     '401':
       description: Unauthorized

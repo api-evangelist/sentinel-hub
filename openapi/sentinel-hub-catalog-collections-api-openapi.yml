@@ -87,150 +87,6 @@ paths:
       - OAuth2: []
 components:
   responses:
-    CatalogCollectionsCollection:
-      description: 'Information about the feature collection with id `collectionId`.
-
-
-        The response contains a link to the items in the collection
-
-        (path `/collections/{collectionId}/items`, link relation `items`)
-
-        as well as key information about the collection. This information
-
-        includes:
-
-
-        * A local identifier for the collection that is unique for the dataset;
-
-        * A list of coordinate reference systems (CRS) in which geometries may be returned by the server. The first CRS is the default coordinate reference system (the default is always WGS 84 with axis order longitude/latitude);
-
-        * An optional title and description for the collection;
-
-        * An optional extent that can be used to provide an indication of the spatial and temporal extent of the collection - typically derived from the data;
-
-        * An optional indicator about the type of the items in the collection (the default value, if the indicator is not provided, is ''feature'').'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CatalogCollection'
-          example:
-            stac_version: 1.0.0
-            stac_extensions:
-            - https://stac-extensions.github.io/scientific/v1.0.0/schema.json
-            - https://stac-extensions.github.io/eo/v1.0.0/schema.json
-            type: Collection
-            id: sentinel-2-l2a
-            title: Sentinel 2 L2A
-            description: Sentinel 2 imagery processed to level 2A
-            sci:citation: Modified Copernicus Sentinel data [Year]/Sentinel Hub
-            license: proprietary
-            providers:
-            - name: ESA
-              roles:
-              - producer
-              url: https://esa.int/
-            - name: AWS
-              roles:
-              - host
-              url: https://aws.amazon.com/
-            - name: Sinergise
-              roles:
-              - processor
-              url: https://www.sinergise.com/
-            extent:
-              spatial:
-                bbox:
-                - - -180
-                  - -56
-                  - 180
-                  - 83
-              temporal:
-                interval:
-                - - '2016-11-01T00:00:00Z'
-                  - null
-            summaries:
-              platform:
-              - sentinel-2a
-              - sentinel-2b
-              instrument:
-              - msi
-              constellation:
-              - sentinel-2
-              gsd:
-              - 10
-              eo:cloud_cover:
-                minimum: 0
-                maximum: 100
-              eo:bands:
-              - name: B01
-                common_name: coastal
-                center_wavelength: 0.4427
-                full_width_half_max: 0.021
-              - name: B02
-                common_name: blue
-                center_wavelength: 0.4924
-                full_width_half_max: 0.066
-              - name: B03
-                common_name: green
-                center_wavelength: 0.5598
-                full_width_half_max: 0.036
-              - name: B04
-                common_name: red
-                center_wavelength: 0.6646
-                full_width_half_max: 0.031
-              - name: B05
-                center_wavelength: 0.7041
-                full_width_half_max: 0.015
-              - name: B06
-                center_wavelength: 0.7405
-                full_width_half_max: 0.015
-              - name: B07
-                center_wavelength: 0.7828
-                full_width_half_max: 0.02
-              - name: B08
-                common_name: nir
-                center_wavelength: 0.8328
-                full_width_half_max: 0.106
-              - name: B8A
-                common_name: nir08
-                center_wavelength: 0.8647
-                full_width_half_max: 0.021
-              - name: B09
-                common_name: nir09
-                center_wavelength: 0.9451
-                full_width_half_max: 0.02
-              - name: B11
-                common_name: swir16
-                center_wavelength: 1.6137
-                full_width_half_max: 0.091
-              - name: B12
-                common_name: swir22
-                center_wavelength: 2.2024
-                full_width_half_max: 0.175
-            links:
-            - href: https://services.sentinel-hub.com/catalog/v1/
-              rel: root
-              type: application/json
-            - href: https://services.sentinel-hub.com/catalog/v1/collections/sentinel-2-l2a
-              rel: self
-              type: application/json
-            - href: https://services.sentinel-hub.com/catalog/v1/collections
-              rel: parent
-              type: application/json
-            - href: https://services.sentinel-hub.com/catalog/v1/collections/sentinel-2-l2a/queryables
-              rel: http://www.opengis.net/def/rel/ogc/1.0/queryables
-              type: application/schema+json
-            - href: https://services.sentinel-hub.com/catalog/v1/collections/sentinel-2-l2a/items
-              rel: items
-              type: application/geo+json
-    CatalogCollectionsNotFound:
-      description: The requested URI was not found.
-    CatalogAccessControlIllegalCollection:
-      description: Illegal collection.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CatalogException'
     CatalogCollectionsCollections:
       description: 'The feature collections shared by this API.
 
@@ -626,18 +482,6 @@ components:
               - href: https://services.sentinel-hub.com/catalog/v1/collections/sentinel-2-l2a/items
                 rel: items
                 type: application/geo+json
-    CatalogCollectionsServerError:
-      description: A server error occurred.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CatalogException'
-    CatalogAccessControlInsufficientPermissions:
-      description: Insufficient permissions.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CatalogException'
     CatalogCollectionQueryables:
       description: A JSON Schema defining the Queryables allowed in CQL2 expressions
       content:
@@ -657,130 +501,261 @@ components:
                 minimum: 0
                 maximum: 100
             additionalProperties: false
+    CatalogCollectionsServerError:
+      description: A server error occurred.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogException'
+    CatalogCollectionsNotFound:
+      description: The requested URI was not found.
+    CatalogAccessControlInsufficientPermissions:
+      description: Insufficient permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogException'
+    CatalogAccessControlIllegalCollection:
+      description: Illegal collection.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogException'
+    CatalogCollectionsCollection:
+      description: 'Information about the feature collection with id `collectionId`.
+
+
+        The response contains a link to the items in the collection
+
+        (path `/collections/{collectionId}/items`, link relation `items`)
+
+        as well as key information about the collection. This information
+
+        includes:
+
+
+        * A local identifier for the collection that is unique for the dataset;
+
+        * A list of coordinate reference systems (CRS) in which geometries may be returned by the server. The first CRS is the default coordinate reference system (the default is always WGS 84 with axis order longitude/latitude);
+
+        * An optional title and description for the collection;
+
+        * An optional extent that can be used to provide an indication of the spatial and temporal extent of the collection - typically derived from the data;
+
+        * An optional indicator about the type of the items in the collection (the default value, if the indicator is not provided, is ''feature'').'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CatalogCollection'
+          example:
+            stac_version: 1.0.0
+            stac_extensions:
+            - https://stac-extensions.github.io/scientific/v1.0.0/schema.json
+            - https://stac-extensions.github.io/eo/v1.0.0/schema.json
+            type: Collection
+            id: sentinel-2-l2a
+            title: Sentinel 2 L2A
+            description: Sentinel 2 imagery processed to level 2A
+            sci:citation: Modified Copernicus Sentinel data [Year]/Sentinel Hub
+            license: proprietary
+            providers:
+            - name: ESA
+              roles:
+              - producer
+              url: https://esa.int/
+            - name: AWS
+              roles:
+              - host
+              url: https://aws.amazon.com/
+            - name: Sinergise
+              roles:
+              - processor
+              url: https://www.sinergise.com/
+            extent:
+              spatial:
+                bbox:
+                - - -180
+                  - -56
+                  - 180
+                  - 83
+              temporal:
+                interval:
+                - - '2016-11-01T00:00:00Z'
+                  - null
+            summaries:
+              platform:
+              - sentinel-2a
+              - sentinel-2b
+              instrument:
+              - msi
+              constellation:
+              - sentinel-2
+              gsd:
+              - 10
+              eo:cloud_cover:
+                minimum: 0
+                maximum: 100
+              eo:bands:
+              - name: B01
+                common_name: coastal
+                center_wavelength: 0.4427
+                full_width_half_max: 0.021
+              - name: B02
+                common_name: blue
+                center_wavelength: 0.4924
+                full_width_half_max: 0.066
+              - name: B03
+                common_name: green
+                center_wavelength: 0.5598
+                full_width_half_max: 0.036
+              - name: B04
+                common_name: red
+                center_wavelength: 0.6646
+                full_width_half_max: 0.031
+              - name: B05
+                center_wavelength: 0.7041
+                full_width_half_max: 0.015
+              - name: B06
+                center_wavelength: 0.7405
+                full_width_half_max: 0.015
+              - name: B07
+                center_wavelength: 0.7828
+                full_width_half_max: 0.02
+              - name: B08
+                common_name: nir
+                center_wavelength: 0.8328
+                full_width_half_max: 0.106
+              - name: B8A
+                common_name: nir08
+                center_wavelength: 0.8647
+                full_width_half_max: 0.021
+              - name: B09
+                common_name: nir09
+                center_wavelength: 0.9451
+                full_width_half_max: 0.02
+              - name: B11
+                common_name: swir16
+                center_wavelength: 1.6137
+                full_width_half_max: 0.091
+              - name: B12
+                common_name: swir22
+                center_wavelength: 2.2024
+                full_width_half_max: 0.175
+            links:
+            - href: https://services.sentinel-hub.com/catalog/v1/
+              rel: root
+              type: application/json
+            - href: https://services.sentinel-hub.com/catalog/v1/collections/sentinel-2-l2a
+              rel: self
+              type: application/json
+            - href: https://services.sentinel-hub.com/catalog/v1/collections
+              rel: parent
+              type: application/json
+            - href: https://services.sentinel-hub.com/catalog/v1/collections/sentinel-2-l2a/queryables
+              rel: http://www.opengis.net/def/rel/ogc/1.0/queryables
+              type: application/schema+json
+            - href: https://services.sentinel-hub.com/catalog/v1/collections/sentinel-2-l2a/items
+              rel: items
+              type: application/geo+json
   schemas:
-    CatalogException:
-      title: exception
+    CatalogCollection:
+      title: collection
       type: object
-      description: 'Information about the exception: an error code plus an optional description.'
       required:
-      - code
+      - stac_version
+      - type
+      - id
+      - description
+      - license
+      - extent
+      - links
       properties:
-        code:
+        stac_version:
+          $ref: '#/components/schemas/CatalogStacVersion'
+        stac_extensions:
+          $ref: '#/components/schemas/CatalogStacExtensions'
+        type:
+          type: string
+        id:
+          description: identifier of the collection used, for example, in URIs
+          type: string
+        title:
+          description: human readable title of the collection
           type: string
         description:
           type: string
-    CatalogLink:
-      title: Link
-      type: object
-      required:
-      - href
-      - rel
-      properties:
-        href:
-          type: string
-          format: uri
-          description: The location of the resource
-        rel:
-          type: string
-          description: Relation type of the link
-        type:
-          type: string
-          description: The media type of the resource
-        title:
-          type: string
-          description: Title of the resource
-        method:
-          type: string
-          enum:
-          - GET
-          - POST
-          default: GET
-          description: Specifies the HTTP method that the resource expects
-        headers:
-          type: object
-          description: Object key values pairs they map to headers
-          example:
-            Accept: application/json
-        body:
-          type: object
-          description: For POST requests, the resource can specify the HTTP body as a JSON object.
-        merge:
-          type: boolean
-          default: false
-          description: 'This is only valid when the server is responding to POST request.
+          description: 'Detailed multi-line description to fully explain the catalog or collection.
 
-
-            If merge is true, the client is expected to merge the body value
-
-            into the current request body before following the link.
-
-            This avoids passing large post bodies back and forth when following
-
-            links, particularly for navigating pages through the `POST /search`
-
-            endpoint.
-
-
-            NOTE: To support form encoding it is expected that a client be able
-
-            to merge in the key value pairs specified as JSON
-
-            `{"next": "token"}` will become `&next=token`.'
-    CatalogStacVersion:
-      title: STAC version
-      type: string
-      example: 1.0.0
-    CatalogCollectionsCollections:
-      title: collections
-      type: object
-      required:
-      - links
-      - collections
-      properties:
+            [CommonMark 0.29](http://commonmark.org/) syntax MAY be used for rich text representation.'
+        keywords:
+          type: array
+          description: List of keywords describing the collection.
+          items:
+            type: string
+        license:
+          $ref: '#/components/schemas/CatalogLicense'
+        extent:
+          $ref: '#/components/schemas/CatalogExtent'
+        providers:
+          $ref: '#/components/schemas/CatalogProviders'
         links:
           $ref: '#/components/schemas/CatalogLinks'
-        collections:
-          type: array
-          items:
-            $ref: '#/components/schemas/CatalogCollection'
-    CatalogProviders:
-      title: providers
-      type: array
-      description: A list of providers, which may include all organizations capturing or processing the data or the hosting provider. Providers should be listed in chronological order with the most recent provider being the last element of the list.
-      items:
-        type: object
-        title: Provider
-        required:
-        - name
-        properties:
-          name:
-            description: The name of the organization or the individual.
-            type: string
-          description:
-            description: 'Multi-line description to add further provider information such as processing details for processors and producers, hosting details for hosts or basic contact information.
+        summaries:
+          description: 'Summaries are either a unique set of all available values *or*
 
+            statistics. Statistics by default only specify the range (minimum
 
-              [CommonMark 0.29](http://commonmark.org/) syntax MAY be used for rich text representation.'
-            type: string
-          roles:
-            description: "Roles of the provider.\n\nThe provider's role(s) can be one or more of the following\nelements:\n\n* licensor: The organization that is licensing the dataset under\n  the license specified in the collection's license field.\n* producer: The producer of the data is the provider that\n  initially captured and processed the source data, e.g. ESA for\n  Sentinel-2 data.\n* processor: A processor is any provider who processed data to a\n  derived product.\n* host: The host is the actual provider offering the data on their\n  storage. There should be no more than one host, specified as last\n  element of the list."
-            type: array
-            items:
-              type: string
-              enum:
-              - producer
-              - licensor
-              - processor
-              - host
-          url:
-            description: Homepage on which the provider describes the dataset and publishes contact information.
-            type: string
-            format: url
-    CatalogLinks:
-      title: links
-      type: array
-      items:
-        $ref: '#/components/schemas/CatalogLink'
+            and maximum values), but can optionally be accompanied by additional
+
+            statistical values. The range can specify the potential range of
+
+            values, but it is recommended to be as precise as possible. The set
+
+            of values must contain at least one element and it is strongly
+
+            recommended to list all values. It is recommended to list as many
+
+            properties as reasonable so that consumers get a full overview of
+
+            the Collection. Properties that are covered by the Collection
+
+            specification (e.g. `providers` and `license`) may not be repeated
+
+            in the summaries.'
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: array
+              title: Set of values
+              items:
+                description: A value of any type.
+            - type: object
+              title: Statistics
+              description: 'By default, only ranges with a minimum and a maximum value can
+
+                be specified. Ranges can be specified for ordinal values only,
+
+                which means they need to have a rank order. Therefore, ranges
+
+                can only be specified for numbers and some special types of
+
+                strings. Examples: grades (A to F), dates or times.
+
+                Implementors are free to add other derived statistical values
+
+                to the object, for example `mean` or `stddev`.'
+              required:
+              - min
+              - max
+              properties:
+                min:
+                  anyOf:
+                  - type: string
+                  - type: number
+                max:
+                  anyOf:
+                  - type: string
+                  - type: number
     CatalogExtent:
       title: extent
       type: object
@@ -949,6 +924,68 @@ components:
               enum:
               - http://www.opengis.net/def/uom/ISO-8601/0/Gregorian
               default: http://www.opengis.net/def/uom/ISO-8601/0/Gregorian
+    CatalogProviders:
+      title: providers
+      type: array
+      description: A list of providers, which may include all organizations capturing or processing the data or the hosting provider. Providers should be listed in chronological order with the most recent provider being the last element of the list.
+      items:
+        type: object
+        title: Provider
+        required:
+        - name
+        properties:
+          name:
+            description: The name of the organization or the individual.
+            type: string
+          description:
+            description: 'Multi-line description to add further provider information such as processing details for processors and producers, hosting details for hosts or basic contact information.
+
+
+              [CommonMark 0.29](http://commonmark.org/) syntax MAY be used for rich text representation.'
+            type: string
+          roles:
+            description: "Roles of the provider.\n\nThe provider's role(s) can be one or more of the following\nelements:\n\n* licensor: The organization that is licensing the dataset under\n  the license specified in the collection's license field.\n* producer: The producer of the data is the provider that\n  initially captured and processed the source data, e.g. ESA for\n  Sentinel-2 data.\n* processor: A processor is any provider who processed data to a\n  derived product.\n* host: The host is the actual provider offering the data on their\n  storage. There should be no more than one host, specified as last\n  element of the list."
+            type: array
+            items:
+              type: string
+              enum:
+              - producer
+              - licensor
+              - processor
+              - host
+          url:
+            description: Homepage on which the provider describes the dataset and publishes contact information.
+            type: string
+            format: url
+    CatalogCollectionsCollections:
+      title: collections
+      type: object
+      required:
+      - links
+      - collections
+      properties:
+        links:
+          $ref: '#/components/schemas/CatalogLinks'
+        collections:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogCollection'
+    CatalogException:
+      title: exception
+      type: object
+      description: 'Information about the exception: an error code plus an optional description.'
+      required:
+      - code
+      properties:
+        code:
+          type: string
+        description:
+          type: string
+    CatalogLinks:
+      title: links
+      type: array
+      items:
+        $ref: '#/components/schemas/CatalogLink'
     CatalogLicense:
       title: license
       type: string
@@ -973,104 +1010,6 @@ components:
 
         link to it.'
       example: Apache-2.0
-    CatalogCollection:
-      title: collection
-      type: object
-      required:
-      - stac_version
-      - type
-      - id
-      - description
-      - license
-      - extent
-      - links
-      properties:
-        stac_version:
-          $ref: '#/components/schemas/CatalogStacVersion'
-        stac_extensions:
-          $ref: '#/components/schemas/CatalogStacExtensions'
-        type:
-          type: string
-        id:
-          description: identifier of the collection used, for example, in URIs
-          type: string
-        title:
-          description: human readable title of the collection
-          type: string
-        description:
-          type: string
-          description: 'Detailed multi-line description to fully explain the catalog or collection.
-
-            [CommonMark 0.29](http://commonmark.org/) syntax MAY be used for rich text representation.'
-        keywords:
-          type: array
-          description: List of keywords describing the collection.
-          items:
-            type: string
-        license:
-          $ref: '#/components/schemas/CatalogLicense'
-        extent:
-          $ref: '#/components/schemas/CatalogExtent'
-        providers:
-          $ref: '#/components/schemas/CatalogProviders'
-        links:
-          $ref: '#/components/schemas/CatalogLinks'
-        summaries:
-          description: 'Summaries are either a unique set of all available values *or*
-
-            statistics. Statistics by default only specify the range (minimum
-
-            and maximum values), but can optionally be accompanied by additional
-
-            statistical values. The range can specify the potential range of
-
-            values, but it is recommended to be as precise as possible. The set
-
-            of values must contain at least one element and it is strongly
-
-            recommended to list all values. It is recommended to list as many
-
-            properties as reasonable so that consumers get a full overview of
-
-            the Collection. Properties that are covered by the Collection
-
-            specification (e.g. `providers` and `license`) may not be repeated
-
-            in the summaries.'
-          type: object
-          additionalProperties:
-            oneOf:
-            - type: array
-              title: Set of values
-              items:
-                description: A value of any type.
-            - type: object
-              title: Statistics
-              description: 'By default, only ranges with a minimum and a maximum value can
-
-                be specified. Ranges can be specified for ordinal values only,
-
-                which means they need to have a rank order. Therefore, ranges
-
-                can only be specified for numbers and some special types of
-
-                strings. Examples: grades (A to F), dates or times.
-
-                Implementors are free to add other derived statistical values
-
-                to the object, for example `mean` or `stddev`.'
-              required:
-              - min
-              - max
-              properties:
-                min:
-                  anyOf:
-                  - type: string
-                  - type: number
-                max:
-                  anyOf:
-                  - type: string
-                  - type: number
     CatalogStacExtensions:
       title: STAC extensions
       type: array
@@ -1082,6 +1021,67 @@ components:
           format: uri
         - title: Reference to a core extension
           type: string
+    CatalogLink:
+      title: Link
+      type: object
+      required:
+      - href
+      - rel
+      properties:
+        href:
+          type: string
+          format: uri
+          description: The location of the resource
+        rel:
+          type: string
+          description: Relation type of the link
+        type:
+          type: string
+          description: The media type of the resource
+        title:
+          type: string
+          description: Title of the resource
+        method:
+          type: string
+          enum:
+          - GET
+          - POST
+          default: GET
+          description: Specifies the HTTP method that the resource expects
+        headers:
+          type: object
+          description: Object key values pairs they map to headers
+          example:
+            Accept: application/json
+        body:
+          type: object
+          description: For POST requests, the resource can specify the HTTP body as a JSON object.
+        merge:
+          type: boolean
+          default: false
+          description: 'This is only valid when the server is responding to POST request.
+
+
+            If merge is true, the client is expected to merge the body value
+
+            into the current request body before following the link.
+
+            This avoids passing large post bodies back and forth when following
+
+            links, particularly for navigating pages through the `POST /search`
+
+            endpoint.
+
+
+            NOTE: To support form encoding it is expected that a client be able
+
+            to merge in the key value pairs specified as JSON
+
+            `{"next": "token"}` will become `&next=token`.'
+    CatalogStacVersion:
+      title: STAC version
+      type: string
+      example: 1.0.0
   parameters:
     CatalogCollectionsCollectionId:
       name: collectionId

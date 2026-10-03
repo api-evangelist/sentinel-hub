@@ -57,11 +57,12 @@ paths:
       - OAuth2: []
 components:
   schemas:
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
+    QuotaTpdiCollectionId:
+      description: Collection ID
+      type: string
+      readOnly: true
+      enum:
+      - MAXAR_WORLDVIEW
     Boom:
       type: object
       properties:
@@ -108,12 +109,11 @@ components:
         errors:
           description: Additional information about the error (Optional)
           type: object
-    QuotaTpdiCollectionId:
-      description: Collection ID
-      type: string
-      readOnly: true
-      enum:
-      - MAXAR_WORLDVIEW
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
     Quota:
       type: object
       properties:

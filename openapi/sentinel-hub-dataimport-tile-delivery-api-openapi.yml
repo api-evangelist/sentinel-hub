@@ -77,24 +77,6 @@ paths:
       - OAuth2: []
 components:
   schemas:
-    DeliveryTile:
-      type: object
-      properties:
-        id:
-          description: Tile ID
-          type: string
-          format: uuid
-        deliveryId:
-          description: Tile ID
-          type: string
-          format: uuid
-        status:
-          $ref: '#/components/schemas/TileStatus'
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
     Boom:
       type: object
       properties:
@@ -141,6 +123,24 @@ components:
         errors:
           description: Additional information about the error (Optional)
           type: object
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    DeliveryTile:
+      type: object
+      properties:
+        id:
+          description: Tile ID
+          type: string
+          format: uuid
+        deliveryId:
+          description: Tile ID
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/TileStatus'
     TileStatus:
       description: The status of the tile.
       type: string
@@ -152,8 +152,6 @@ components:
       - FAILED
       readOnly: true
   responses:
-    '403':
-      description: Insufficient permissions
     '401':
       description: Unauthorized
     '404':
@@ -162,18 +160,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/RestErrorWrapper'
+    '403':
+      description: Insufficient permissions
   parameters:
-    OrderId:
-      name: orderId
-      description: Order ID
+    TileId:
+      name: tileId
+      description: Tile ID
       in: path
       required: true
       schema:
         type: string
         format: uuid
-    TileId:
-      name: tileId
-      description: Tile ID
+    OrderId:
+      name: orderId
+      description: Order ID
       in: path
       required: true
       schema:

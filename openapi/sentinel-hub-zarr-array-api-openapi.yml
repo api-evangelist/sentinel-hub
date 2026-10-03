@@ -71,58 +71,7 @@ paths:
       security:
       - OAuth2: []
 components:
-  parameters:
-    SearchBeanCount:
-      name: count
-      description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
-
-        For more records, use *viewtoken* to page through.'
-      in: query
-      schema:
-        type: integer
-        format: int32
-    SearchBeanViewtoken:
-      name: viewtoken
-      description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
-
-        This *viewtoken* can be used in the next request to retrieve the next page of items.
-
-
-        The next page can be retrieved by repeating the query. However, replace your URL with the
-
-        next URL in the returned links object.
-
-        '
-      in: query
-      schema:
-        type: string
-    ByocCollectionId:
-      name: collectionId
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
-  responses:
-    '403':
-      description: Insufficient permissions
-    '401':
-      description: Unauthorized
-    '404':
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
   schemas:
-    ZArray:
-      type: object
-      description: 'A subset of the metadata as read from the array''s `.zarray` file.
-
-        '
-      externalDocs:
-        description: Zarr storage specification version 2, Array metadata
-        url: https://zarr-specs.readthedocs.io/en/latest/v2/v2.0.html#metadata
     ZarrArray:
       type: object
       format: ZarrArray
@@ -137,11 +86,6 @@ components:
           $ref: '#/components/schemas/ZArray'
         zattrs:
           $ref: '#/components/schemas/ZAttrs'
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
     ZarrGetSingleArrayResponse:
       type: object
       properties:
@@ -193,6 +137,19 @@ components:
         errors:
           description: Additional information about the error (Optional)
           type: object
+    ZArray:
+      type: object
+      description: 'A subset of the metadata as read from the array''s `.zarray` file.
+
+        '
+      externalDocs:
+        description: Zarr storage specification version 2, Array metadata
+        url: https://zarr-specs.readthedocs.io/en/latest/v2/v2.0.html#metadata
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
     ZarrQueryArraysResponse:
       type: object
       properties:
@@ -209,6 +166,49 @@ components:
         description: Zarr storage specification version 2, Attributes
         url: https://zarr-specs.readthedocs.io/en/latest/v2/v2.0.html#attributes
       readOnly: true
+  responses:
+    '401':
+      description: Unauthorized
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '403':
+      description: Insufficient permissions
+  parameters:
+    SearchBeanCount:
+      name: count
+      description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
+
+        For more records, use *viewtoken* to page through.'
+      in: query
+      schema:
+        type: integer
+        format: int32
+    SearchBeanViewtoken:
+      name: viewtoken
+      description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
+
+        This *viewtoken* can be used in the next request to retrieve the next page of items.
+
+
+        The next page can be retrieved by repeating the query. However, replace your URL with the
+
+        next URL in the returned links object.
+
+        '
+      in: query
+      schema:
+        type: string
+    ByocCollectionId:
+      name: collectionId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
   securitySchemes:
     OAuth2:
       type: oauth2

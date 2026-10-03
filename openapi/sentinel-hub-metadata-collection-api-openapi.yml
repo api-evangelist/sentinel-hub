@@ -96,40 +96,17 @@ paths:
       - OAuth2: []
 components:
   schemas:
-    ZarrCollectionMetadata:
+    BYOCCollectionMetadata:
       type: object
       properties:
         '@id':
           type: string
           format: uri
         id:
-          description: Zarr Collection identifier
+          description: BYOC Collection identifier
           type: string
         location:
-          description: Zarr Collection location
-          $ref: '#/components/schemas/Location'
-        datasetType:
-          $ref: '#/components/schemas/CustomDatasetType'
-        bands:
-          type: array
-          items:
-            $ref: '#/components/schemas/BandMetadata'
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
-    BatchCollectionMetadata:
-      type: object
-      properties:
-        '@id':
-          type: string
-          format: uri
-        id:
-          description: Batch Collection identifier
-          type: string
-        location:
-          description: Batch Collection location
+          description: BYOC Collection location
           $ref: '#/components/schemas/Location'
         datasetType:
           $ref: '#/components/schemas/CustomDatasetType'
@@ -183,43 +160,6 @@ components:
         errors:
           description: Additional information about the error (Optional)
           type: object
-    BandMetadata:
-      type: object
-      description: Band information
-      properties:
-        name:
-          type: string
-          description: Band identifier
-        sampleType:
-          type: string
-          enum:
-          - UINT8
-          - UINT16
-          - FLOAT32
-          - FLOAT64
-          description: Band sample type
-    CustomDatasetType:
-      type: string
-      enum:
-      - custom
-    BYOCCollectionMetadata:
-      type: object
-      properties:
-        '@id':
-          type: string
-          format: uri
-        id:
-          description: BYOC Collection identifier
-          type: string
-        location:
-          description: BYOC Collection location
-          $ref: '#/components/schemas/Location'
-        datasetType:
-          $ref: '#/components/schemas/CustomDatasetType'
-        bands:
-          type: array
-          items:
-            $ref: '#/components/schemas/BandMetadata'
     Location:
       type: object
       properties:
@@ -241,6 +181,66 @@ components:
         catalogUrl:
           description: Catalog API url
           type: string
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    BatchCollectionMetadata:
+      type: object
+      properties:
+        '@id':
+          type: string
+          format: uri
+        id:
+          description: Batch Collection identifier
+          type: string
+        location:
+          description: Batch Collection location
+          $ref: '#/components/schemas/Location'
+        datasetType:
+          $ref: '#/components/schemas/CustomDatasetType'
+        bands:
+          type: array
+          items:
+            $ref: '#/components/schemas/BandMetadata'
+    ZarrCollectionMetadata:
+      type: object
+      properties:
+        '@id':
+          type: string
+          format: uri
+        id:
+          description: Zarr Collection identifier
+          type: string
+        location:
+          description: Zarr Collection location
+          $ref: '#/components/schemas/Location'
+        datasetType:
+          $ref: '#/components/schemas/CustomDatasetType'
+        bands:
+          type: array
+          items:
+            $ref: '#/components/schemas/BandMetadata'
+    CustomDatasetType:
+      type: string
+      enum:
+      - custom
+    BandMetadata:
+      type: object
+      description: Band information
+      properties:
+        name:
+          type: string
+          description: Band identifier
+        sampleType:
+          type: string
+          enum:
+          - UINT8
+          - UINT16
+          - FLOAT32
+          - FLOAT64
+          description: Band sample type
   responses:
     '401':
       description: Unauthorized

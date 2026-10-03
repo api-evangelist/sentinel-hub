@@ -329,25 +329,20 @@ paths:
       - OAuth2: []
 components:
   parameters:
-    DeliveryStatus:
-      name: status
-      description: Filter deliveries by status. Omit to get all deliveries.
-      in: query
+    SubscriptionId:
+      name: subscriptionId
+      description: Subscription ID
+      in: path
+      required: true
       schema:
-        $ref: '#/components/schemas/DeliveryStatus'
+        type: string
+        format: uuid
     DeliveryArchiveFormat:
       name: format
       description: One of supported archive formats. Currently only `zip` is supported.
       in: query
       schema:
         $ref: '#/components/schemas/DeliveryArchiveFormat'
-    DeliveryFile:
-      name: file
-      description: File with full path as returned by the "List delivery files" endpoint.
-      in: path
-      required: true
-      schema:
-        type: string
     SearchBeanViewtoken:
       name: viewtoken
       description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
@@ -363,6 +358,21 @@ components:
       in: query
       schema:
         type: string
+    DeliveryId:
+      name: deliveryId
+      description: Delivery ID
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    DeliveryFile:
+      name: file
+      description: File with full path as returned by the "List delivery files" endpoint.
+      in: path
+      required: true
+      schema:
+        type: string
     SearchBeanCount:
       name: count
       description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
@@ -372,35 +382,13 @@ components:
       schema:
         type: integer
         format: int32
-    DeliveryId:
-      name: deliveryId
-      description: Delivery ID
-      in: path
-      required: true
+    DeliveryStatus:
+      name: status
+      description: Filter deliveries by status. Omit to get all deliveries.
+      in: query
       schema:
-        type: string
-        format: uuid
-    SubscriptionId:
-      name: subscriptionId
-      description: Subscription ID
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
+        $ref: '#/components/schemas/DeliveryStatus'
   schemas:
-    SubscriptionDeliveryBase:
-      type: object
-      properties:
-        id:
-          description: Delivery ID
-          type: string
-          format: uuid
-        status:
-          $ref: '#/components/schemas/DeliveryStatus'
-        errorMessage:
-          description: Error message if status = "DELIVERY_FAILED", "NON_INGESTIBLE" or "IMPORT_FAILED".
-          type: string
     DeliveryStatus:
       description: Delivery status
       type: string
@@ -414,6 +402,89 @@ components:
       - DONE
       - IMPORT_FAILED
       - NON_INGESTIBLE
+    SubscriptionDelivery:
+      oneOf:
+      - $ref: '#/components/schemas/SubscriptionPlanetDelivery'
+    SubscriptionDeliveryBase:
+      type: object
+      properties:
+        id:
+          description: Delivery ID
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/DeliveryStatus'
+        errorMessage:
+          description: Error message if status = "DELIVERY_FAILED", "NON_INGESTIBLE" or "IMPORT_FAILED".
+          type: string
+    DeliveryArchiveFormat:
+      description: One of supported archive formats. Currently only `zip` is supported.
+      type: string
+      default: zip
+      enum:
+      - zip
+    SubscriptionPlanetDelivery:
+      allOf:
+      - $ref: '#/components/schemas/PlanetDeliveryProvider'
+      - $ref: '#/components/schemas/SubscriptionDeliveryBase'
+      - type: object
+        properties:
+          itemId:
+            description: Planet's item ID for PlanetScope and SkySat deliveries.
+            type: string
+    PlanetDeliveryProvider:
+      deprecated: true
+      type: object
+      properties:
+        provider:
+          description: Provider of the delivery
+          type: string
+          enum:
+          - PLANET
+    DeliveryArchive:
+      type: object
+      properties:
+        deliveryId:
+          type: string
+          format: uuid
+        format:
+          $ref: '#/components/schemas/DeliveryArchiveFormat'
+        requested:
+          type: string
+          format: date-time
+          description: Time of archiving request in ISO 8601
+        status:
+          $ref: '#/components/schemas/DeliveryArchiveStatus'
+        size:
+          type: integer
+          description: Size of archive in bytes. Only provided for archives with status `DONE`.
+    View:
+      description: Links to paginate the resource
+      type: object
+      properties:
+        currentToken:
+          type: string
+        nextToken:
+          type: string
+        previousToken:
+          type: string
+        '@id':
+          type: string
+          format: uri
+        next:
+          type: string
+          format: uri
+        previous:
+          type: string
+          format: uri
+    DeliveryArchiveStatus:
+      description: Status of archive creation. Only archives with status `DONE` can be downloaded.
+      type: string
+      enum:
+      - WAITING
+      - PREPARING
+      - DONE
+      - FAILED
     Boom:
       type: object
       properties:
@@ -460,82 +531,11 @@ components:
         errors:
           description: Additional information about the error (Optional)
           type: object
-    DeliveryArchiveFormat:
-      description: One of supported archive formats. Currently only `zip` is supported.
-      type: string
-      default: zip
-      enum:
-      - zip
     RestErrorWrapper:
       type: object
       properties:
         error:
           $ref: '#/components/schemas/Boom'
-    View:
-      description: Links to paginate the resource
-      type: object
-      properties:
-        currentToken:
-          type: string
-        nextToken:
-          type: string
-        previousToken:
-          type: string
-        '@id':
-          type: string
-          format: uri
-        next:
-          type: string
-          format: uri
-        previous:
-          type: string
-          format: uri
-    DeliveryArchiveStatus:
-      description: Status of archive creation. Only archives with status `DONE` can be downloaded.
-      type: string
-      enum:
-      - WAITING
-      - PREPARING
-      - DONE
-      - FAILED
-    SubscriptionDelivery:
-      oneOf:
-      - $ref: '#/components/schemas/SubscriptionPlanetDelivery'
-    DeliveryArchive:
-      type: object
-      properties:
-        deliveryId:
-          type: string
-          format: uuid
-        format:
-          $ref: '#/components/schemas/DeliveryArchiveFormat'
-        requested:
-          type: string
-          format: date-time
-          description: Time of archiving request in ISO 8601
-        status:
-          $ref: '#/components/schemas/DeliveryArchiveStatus'
-        size:
-          type: integer
-          description: Size of archive in bytes. Only provided for archives with status `DONE`.
-    PlanetDeliveryProvider:
-      deprecated: true
-      type: object
-      properties:
-        provider:
-          description: Provider of the delivery
-          type: string
-          enum:
-          - PLANET
-    SubscriptionPlanetDelivery:
-      allOf:
-      - $ref: '#/components/schemas/PlanetDeliveryProvider'
-      - $ref: '#/components/schemas/SubscriptionDeliveryBase'
-      - type: object
-        properties:
-          itemId:
-            description: Planet's item ID for PlanetScope and SkySat deliveries.
-            type: string
   responses:
     '401':
       description: Unauthorized
