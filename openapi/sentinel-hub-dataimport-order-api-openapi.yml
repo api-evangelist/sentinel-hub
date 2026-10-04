@@ -163,32 +163,93 @@ paths:
       security:
       - OAuth2: []
 components:
+  responses:
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '403':
+      description: Insufficient permissions
+    '401':
+      description: Unauthorized
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
   schemas:
-    TimeRange:
+    MaxarMinSunElevation:
+      description: The minimum allowable sun elevation in degrees
+      type: number
+      format: int
+      minimum: 0
+      maximum: 90
+      default: 0
+    View:
+      description: Links to paginate the resource
       type: object
-      description: A time interval to filter data by acquisition date. It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.
       properties:
-        from:
-          description: The start of a search interval.
+        currentToken:
           type: string
-          format: date-time
-        to:
-          description: The end of a search interval.
+        nextToken:
           type: string
-          format: date-time
+        previousToken:
+          type: string
+        '@id':
+          type: string
+          format: uri
+        next:
+          type: string
+          format: uri
+        previous:
+          type: string
+          format: uri
+    QuotaExceededError:
+      allOf:
+      - $ref: '#/components/schemas/Boom'
+      - type: object
+        properties:
+          errors:
+            type: object
+            properties:
+              availableQuota:
+                type: number
+                description: Currently available quota for the provider of the order
+              requiredQuota:
+                type: number
+                description: Quota that would be required for successful confirmation of the order
+    Geometry:
+      description: The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the "bounds.properties.crs" parameter. A GeoJsonObject.
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/Polygon'
+      - $ref: '#/components/schemas/MultiPolygon'
       example:
-        from: '2018-10-01T00:00:00.000Z'
-        to: '2018-11-01T00:00:00.000Z'
-    MaxarRequestBase:
-      type: object
-      required:
-      - provider
-      properties:
-        provider:
-          description: Specify this value to use data provider Maxar.
-          type: string
-          enum:
-          - MAXAR
+        type: Polygon
+        coordinates:
+        - - - 14.000701904296873
+            - 46.23685258143992
+          - - 13.822174072265625
+            - 46.09037664604301
+          - - 14.113311767578125
+            - 45.85080395917834
+          - - 14.55963134765625
+            - 46.038922598236
+          - - 14.441528320312498
+            - 46.28717293114449
+          - - 14.17236328125
+            - 46.29191774991382
+          - - 14.000701904296873
+            - 46.23685258143992
+    MaxarMaxOffNadir:
+      type: number
+      format: int
+      minimum: 0
+      maximum: 45
+      default: 45
     SearchQueryBase:
       required:
       - provider
@@ -218,115 +279,70 @@ components:
                     $ref: '#/components/schemas/TimeRange'
                   maxCloudCoverage:
                     $ref: '#/components/schemas/MaxCloudCoverage'
-    ProcessRequestInputBounds:
-      title: Bounds
-      description: 'Defines the request bounds by specifying the bounding box and/or
-
-        geometry for the request. If both are specified it will generate an image
-
-        for the bounding box and render data contained within the geometry.
-
-        '
-      type: object
-      properties:
-        bbox:
-          description: 'The request bounding box. This and/or GEOMETRY must be specified.
-
-            Specify with a coordinate pair on two (opposite) vertices of the bounding
-
-            box rectangle. Coordinates need to be in easting,northing or longitude, latitude,
-
-            in that order in the CRS defined in the "bounds.properties.crs" parameter.
-
-            '
-          type: array
-          minItems: 4
-          maxItems: 4
-          items:
-            type: number
-            format: double
-          example:
-          - 13.822174072265625
-          - 45.85080395917834
-          - 14.55963134765625
-          - 46.29191774991382
-        geometry:
-          $ref: '#/components/schemas/Geometry'
-        properties:
-          $ref: '#/components/schemas/ProcessRequestInputBoundsProperties'
-    PlanetSearchRequestBase:
-      deprecated: true
-      type: object
-      required:
-      - provider
-      properties:
-        provider:
-          description: Specify this value to use data provider Planet.
-          type: string
-          enum:
-          - PLANET
-        planetApiKey:
-          description: 'Your Planet API key. Get one from Planet https://www.planet.com.
-
-            It is required unless you purchased your Planet data plan through Sentinel Hub,
-
-            in which case it is optional and will filter search results based on the permissions of the key.
-
-            '
-          type: string
-    Geometry:
-      description: The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the "bounds.properties.crs" parameter. A GeoJsonObject.
-      type: object
-      oneOf:
-      - $ref: '#/components/schemas/Polygon'
-      - $ref: '#/components/schemas/MultiPolygon'
-      example:
-        type: Polygon
-        coordinates:
-        - - - 14.000701904296873
-            - 46.23685258143992
-          - - 13.822174072265625
-            - 46.09037664604301
-          - - 14.113311767578125
-            - 45.85080395917834
-          - - 14.55963134765625
-            - 46.038922598236
-          - - 14.441528320312498
-            - 46.28717293114449
-          - - 14.17236328125
-            - 46.29191774991382
-          - - 14.000701904296873
-            - 46.23685258143992
-    OrderRequest:
-      oneOf:
-      - $ref: '#/components/schemas/PlanetOrderRequest'
-      - $ref: '#/components/schemas/MaxarOrderRequest'
-    MultiPolygon:
+    Polygon:
       type: object
       properties:
         type:
           type: string
           enum:
-          - MultiPolygon
+          - Polygon
         coordinates:
           type: array
           items:
             type: array
             items:
+              maxItems: 2
+              minItems: 2
               type: array
               items:
-                maxItems: 2
-                minItems: 2
-                type: array
-                items:
-                  type: number
-                  format: double
-    MaxarMinOffNadir:
-      type: number
-      format: int
-      minimum: 0
-      maximum: 45
-      default: 0
+                type: number
+                format: double
+    Boom:
+      type: object
+      properties:
+        status:
+          description: HTTP status code
+          type: integer
+          format: int32
+        reason:
+          description: Reason for the error
+          type: string
+        message:
+          description: Friendly error message
+          type: string
+        code:
+          description: Code that uniquely identifies the error
+          type: string
+          enum:
+          - COMMON_BAD_PAYLOAD
+          - COMMON_NOT_FOUND
+          - COMMON_DATABASE_ERROR
+          - COMMON_UNIQUE_KEY_VIOLATION
+          - COMMON_INSUFFICIENT_PERMISSIONS
+          - COMMON_SENTINEL_ACCOUNT_EXPIRED
+          - COMMON_METHOD_NOT_ALLOWED
+          - COMMON_UNSUPPORTED_MEDIA_TYPE
+          - COMMON_ELASTICSEARCH_ERROR
+          - COMMON_UNAUTHORIZED
+          - COMMON_EXCEPTION
+          - RATE_LIMIT_STORAGE_TIMEOUT
+          - RATE_LIMIT_OVERLAPPING_POLICIES
+          - RATE_LIMIT_EXCEEDED
+          - RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY
+          - DASHBOARD_PAYPAL_SALE_ERROR
+          - DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR
+          - DASHBOARD_INVALID_PAYPAL_RESPONSE
+          - DASHBOARD_EXECUTE_SALE_ERROR
+          - DASHBOARD_EXECUTE_AGREEMENT_ERROR
+          - DASHBOARD_IPN_ERROR
+          - DASHBOARD_ADYEN_SALE_ERROR
+          - DASHBOARD_ADYEN_PAYMENT_CANCELLED
+          - RENDERER_EXCEPTION
+          - OAUTH_ERROR
+          - EMAIL_OCTOPUS_ERROR
+        errors:
+          description: Additional information about the error (Optional)
+          type: object
     MaxarSearchQuery:
       allOf:
       - $ref: '#/components/schemas/MaxarRequestBase'
@@ -377,46 +393,50 @@ components:
         planetApiKey:
           description: Your Planet API key. Get one from Planet https://www.planet.com.
           type: string
-    MaxCloudCoverage:
-      description: The maximum allowable cloud coverage in percent.
-      type: number
-      format: double
-      minimum: 0
-      maximum: 100
-      default: 100
-    View:
-      description: Links to paginate the resource
+    TimeRange:
       type: object
+      description: A time interval to filter data by acquisition date. It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.
       properties:
-        currentToken:
+        from:
+          description: The start of a search interval.
           type: string
-        nextToken:
+          format: date-time
+        to:
+          description: The end of a search interval.
           type: string
-        previousToken:
-          type: string
-        '@id':
-          type: string
-          format: uri
-        next:
-          type: string
-          format: uri
-        previous:
-          type: string
-          format: uri
-    MaxarMinSunElevation:
-      description: The minimum allowable sun elevation in degrees
+          format: date-time
+      example:
+        from: '2018-10-01T00:00:00.000Z'
+        to: '2018-11-01T00:00:00.000Z'
+    MaxarSensor:
+      description: 'If specified, limits search results to a single sensor (satellite).
+
+        Results are also filtered to include only sensors that support the requested `productBands`. Thus, if a sensor that does not support all bands is specified, no results will be returned.
+
+        '
+      type: string
+      enum:
+      - WV01
+      - WV02
+      - WV03
+      - WV04
+      - GE01
+    MaxarMinOffNadir:
       type: number
       format: int
       minimum: 0
-      maximum: 90
+      maximum: 45
       default: 0
-    MaxarMaxSunElevation:
-      description: The maximum allowable sun elevation in degrees
-      type: number
-      format: int
-      minimum: 0
-      maximum: 90
-      default: 90
+    MaxarRequestBase:
+      type: object
+      required:
+      - provider
+      properties:
+        provider:
+          description: Specify this value to use data provider Maxar.
+          type: string
+          enum:
+          - MAXAR
     ProcessRequestInputBoundsProperties:
       title: BoundsProperties
       type: object
@@ -431,49 +451,26 @@ components:
             '
           type: string
           default: http://www.opengis.net/def/crs/OGC/1.3/CRS84
-    Polygon:
+    MultiPolygon:
       type: object
       properties:
         type:
           type: string
           enum:
-          - Polygon
+          - MultiPolygon
         coordinates:
           type: array
           items:
             type: array
             items:
-              maxItems: 2
-              minItems: 2
               type: array
               items:
-                type: number
-                format: double
-    OrderStatus:
-      description: Order status
-      type: string
-      readOnly: true
-      enum:
-      - CREATED
-      - CANCELLED
-      - RUNNING
-      - DONE
-      - PARTIAL
-      - FAILED
-    QuotaExceededError:
-      allOf:
-      - $ref: '#/components/schemas/Boom'
-      - type: object
-        properties:
-          errors:
-            type: object
-            properties:
-              availableQuota:
-                type: number
-                description: Currently available quota for the provider of the order
-              requiredQuota:
-                type: number
-                description: Quota that would be required for successful confirmation of the order
+                maxItems: 2
+                minItems: 2
+                type: array
+                items:
+                  type: number
+                  format: double
     MaxarOrderRequest:
       allOf:
       - $ref: '#/components/schemas/Order'
@@ -518,57 +515,131 @@ components:
                         items:
                           type: string
                           description: The ID of product (strip) to order
-    Boom:
-      type: object
-      properties:
-        status:
-          description: HTTP status code
-          type: integer
-          format: int32
-        reason:
-          description: Reason for the error
-          type: string
-        message:
-          description: Friendly error message
-          type: string
-        code:
-          description: Code that uniquely identifies the error
-          type: string
-          enum:
-          - COMMON_BAD_PAYLOAD
-          - COMMON_NOT_FOUND
-          - COMMON_DATABASE_ERROR
-          - COMMON_UNIQUE_KEY_VIOLATION
-          - COMMON_INSUFFICIENT_PERMISSIONS
-          - COMMON_SENTINEL_ACCOUNT_EXPIRED
-          - COMMON_METHOD_NOT_ALLOWED
-          - COMMON_UNSUPPORTED_MEDIA_TYPE
-          - COMMON_ELASTICSEARCH_ERROR
-          - COMMON_UNAUTHORIZED
-          - COMMON_EXCEPTION
-          - RATE_LIMIT_STORAGE_TIMEOUT
-          - RATE_LIMIT_OVERLAPPING_POLICIES
-          - RATE_LIMIT_EXCEEDED
-          - RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY
-          - DASHBOARD_PAYPAL_SALE_ERROR
-          - DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR
-          - DASHBOARD_INVALID_PAYPAL_RESPONSE
-          - DASHBOARD_EXECUTE_SALE_ERROR
-          - DASHBOARD_EXECUTE_AGREEMENT_ERROR
-          - DASHBOARD_IPN_ERROR
-          - DASHBOARD_ADYEN_SALE_ERROR
-          - DASHBOARD_ADYEN_PAYMENT_CANCELLED
-          - RENDERER_EXCEPTION
-          - OAUTH_ERROR
-          - EMAIL_OCTOPUS_ERROR
-        errors:
-          description: Additional information about the error (Optional)
-          type: object
     RestErrorWrapper:
       type: object
       properties:
         error:
           $ref: '#/components/schemas/Boom'
+    OrderRequest:
+      oneOf:
+      - $ref: '#/components/schemas/PlanetOrderRequest'
+      - $ref: '#/components/schemas/MaxarOrderRequest'
+    PlanetOrderRequest:
+      deprecated: true
+      allOf:
+      - $ref: '#/components/schemas/Order'
+      - type: object
+        required:
+        - input
+        properties:
+          input:
+            allOf:
+            - $ref: '#/components/schemas/PlanetOrderRequestBase'
+            - $ref: '#/components/schemas/PlanetSearchQuery'
+            - type: object
+              properties:
+                data:
+                  type: array
+                  description: 'To order specific Planet items, list their IDs in itemIds field. Otherwise, provide search criteria in the dataFilter field to order all items matching the criteria. Omitting both will order all items within the specified bounds.
+
+
+                    In both cases, at most 500 items can be ordered at once, i.e. orders listing too many item IDs will fail, as will search-based orders that match too many items. Instead of larger search-based orders we recommend to use <a href="#tag/dataimport_subscription">subscriptions</a>.
+
+                    '
+                  items:
+                    type: object
+                    required:
+                    - harmonizeTo
+                    properties:
+                      harmonizeTo:
+                        type: string
+                        enum:
+                        - NONE
+                        - Sentinel-2
+                        description: 'Sensing instrument whose values the data should be harmonized to. Supported values:
+
+                          * `NONE` to disable harmonization,
+
+                          * `Sentinel-2` only for *PSScene* item type and surface reflectance product bundles,
+
+                          '
+                        externalDocs:
+                          description: Details on PlanetScope instruments
+                          url: https://developers.planet.com/docs/data/sensors/
+                      itemIds:
+                        type: array
+                        minItems: 1
+                        maxItems: 250
+                        description: 'List of itemIds to order, if dataFilter is not provided. The itemId list is typically obtained from a previous search request.
+
+                          '
+                        items:
+                          type: string
+    OrderStatus:
+      description: Order status
+      type: string
+      readOnly: true
+      enum:
+      - CREATED
+      - CANCELLED
+      - RUNNING
+      - DONE
+      - PARTIAL
+      - FAILED
+    Order:
+      type: object
+      properties:
+        id:
+          description: Order ID
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          description: Order name. It's also used as a name for a new BYOC collection, if no collection is given in collectionId field.
+          type: string
+        accountId:
+          description: Account ID
+          type: string
+          format: uuid
+          readOnly: true
+        collectionId:
+          description: 'BYOC collection ID. If given at order creation, requested data is imported into referenced collection, which must be compatible with the data being ordered - that is, must either be empty or contain the same bands as the data being ordered.
+
+
+            If not given at order creation, a new BYOC collection is created when the order is confirmed and its ID is returned in the response from the `confirm` endpoint.
+
+            '
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        sqkm:
+          description: Total size of the order in km<sup>2</sup> or minimum order area, whichever is greater
+          type: number
+          readOnly: true
+        input:
+          type: object
+          description: Specification of the ordered data
+    PlanetSearchRequestBase:
+      deprecated: true
+      type: object
+      required:
+      - provider
+      properties:
+        provider:
+          description: Specify this value to use data provider Planet.
+          type: string
+          enum:
+          - PLANET
+        planetApiKey:
+          description: 'Your Planet API key. Get one from Planet https://www.planet.com.
+
+            It is required unless you purchased your Planet data plan through Sentinel Hub,
+
+            in which case it is optional and will filter search results based on the permissions of the key.
+
+            '
+          type: string
     PlanetSearchQuery:
       deprecated: true
       allOf:
@@ -654,111 +725,69 @@ components:
                         field_name: snow_ice_percent
                         config:
                           gte: 10
-    Order:
-      type: object
-      properties:
-        id:
-          description: Order ID
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          description: Order name. It's also used as a name for a new BYOC collection, if no collection is given in collectionId field.
-          type: string
-        accountId:
-          description: Account ID
-          type: string
-          format: uuid
-          readOnly: true
-        collectionId:
-          description: 'BYOC collection ID. If given at order creation, requested data is imported into referenced collection, which must be compatible with the data being ordered - that is, must either be empty or contain the same bands as the data being ordered.
-
-
-            If not given at order creation, a new BYOC collection is created when the order is confirmed and its ID is returned in the response from the `confirm` endpoint.
-
-            '
-          type: string
-          format: uuid
-        status:
-          $ref: '#/components/schemas/OrderStatus'
-        sqkm:
-          description: Total size of the order in km<sup>2</sup> or minimum order area, whichever is greater
-          type: number
-          readOnly: true
-        input:
-          type: object
-          description: Specification of the ordered data
-    MaxarSensor:
-      description: 'If specified, limits search results to a single sensor (satellite).
-
-        Results are also filtered to include only sensors that support the requested `productBands`. Thus, if a sensor that does not support all bands is specified, no results will be returned.
-
-        '
-      type: string
-      enum:
-      - WV01
-      - WV02
-      - WV03
-      - WV04
-      - GE01
-    MaxarMaxOffNadir:
+    MaxarMaxSunElevation:
+      description: The maximum allowable sun elevation in degrees
       type: number
       format: int
       minimum: 0
-      maximum: 45
-      default: 45
-    PlanetOrderRequest:
-      deprecated: true
-      allOf:
-      - $ref: '#/components/schemas/Order'
-      - type: object
-        required:
-        - input
+      maximum: 90
+      default: 90
+    MaxCloudCoverage:
+      description: The maximum allowable cloud coverage in percent.
+      type: number
+      format: double
+      minimum: 0
+      maximum: 100
+      default: 100
+    ProcessRequestInputBounds:
+      title: Bounds
+      description: 'Defines the request bounds by specifying the bounding box and/or
+
+        geometry for the request. If both are specified it will generate an image
+
+        for the bounding box and render data contained within the geometry.
+
+        '
+      type: object
+      properties:
+        bbox:
+          description: 'The request bounding box. This and/or GEOMETRY must be specified.
+
+            Specify with a coordinate pair on two (opposite) vertices of the bounding
+
+            box rectangle. Coordinates need to be in easting,northing or longitude, latitude,
+
+            in that order in the CRS defined in the "bounds.properties.crs" parameter.
+
+            '
+          type: array
+          minItems: 4
+          maxItems: 4
+          items:
+            type: number
+            format: double
+          example:
+          - 13.822174072265625
+          - 45.85080395917834
+          - 14.55963134765625
+          - 46.29191774991382
+        geometry:
+          $ref: '#/components/schemas/Geometry'
         properties:
-          input:
-            allOf:
-            - $ref: '#/components/schemas/PlanetOrderRequestBase'
-            - $ref: '#/components/schemas/PlanetSearchQuery'
-            - type: object
-              properties:
-                data:
-                  type: array
-                  description: 'To order specific Planet items, list their IDs in itemIds field. Otherwise, provide search criteria in the dataFilter field to order all items matching the criteria. Omitting both will order all items within the specified bounds.
-
-
-                    In both cases, at most 500 items can be ordered at once, i.e. orders listing too many item IDs will fail, as will search-based orders that match too many items. Instead of larger search-based orders we recommend to use <a href="#tag/dataimport_subscription">subscriptions</a>.
-
-                    '
-                  items:
-                    type: object
-                    required:
-                    - harmonizeTo
-                    properties:
-                      harmonizeTo:
-                        type: string
-                        enum:
-                        - NONE
-                        - Sentinel-2
-                        description: 'Sensing instrument whose values the data should be harmonized to. Supported values:
-
-                          * `NONE` to disable harmonization,
-
-                          * `Sentinel-2` only for *PSScene* item type and surface reflectance product bundles,
-
-                          '
-                        externalDocs:
-                          description: Details on PlanetScope instruments
-                          url: https://developers.planet.com/docs/data/sensors/
-                      itemIds:
-                        type: array
-                        minItems: 1
-                        maxItems: 250
-                        description: 'List of itemIds to order, if dataFilter is not provided. The itemId list is typically obtained from a previous search request.
-
-                          '
-                        items:
-                          type: string
+          $ref: '#/components/schemas/ProcessRequestInputBoundsProperties'
   parameters:
+    OrderStatus:
+      name: status
+      description: Filter orders by status. Omit to get all orders.
+      in: query
+      schema:
+        $ref: '#/components/schemas/OrderStatus'
+    SearchBeanSearch:
+      name: search
+      description: Optional search query. Either a single word to search for or multiple words separated by the `|` (or) and `&` (and) operators. If omitted, all items are returned.
+      in: query
+      schema:
+        type: string
     OrderId:
       name: orderId
       description: Order ID
@@ -767,12 +796,6 @@ components:
       schema:
         type: string
         format: uuid
-    SearchBeanSearch:
-      name: search
-      description: Optional search query. Either a single word to search for or multiple words separated by the `|` (or) and `&` (and) operators. If omitted, all items are returned.
-      in: query
-      schema:
-        type: string
     SearchBeanViewtoken:
       name: viewtoken
       description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
@@ -788,12 +811,6 @@ components:
       in: query
       schema:
         type: string
-    OrderStatus:
-      name: status
-      description: Filter orders by status. Omit to get all orders.
-      in: query
-      schema:
-        $ref: '#/components/schemas/OrderStatus'
     SearchBeanCount:
       name: count
       description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
@@ -803,23 +820,6 @@ components:
       schema:
         type: integer
         format: int32
-  responses:
-    '400':
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
-    '401':
-      description: Unauthorized
-    '403':
-      description: Insufficient permissions
-    '404':
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
   securitySchemes:
     OAuth2:
       type: oauth2

@@ -68,7 +68,65 @@ components:
             $ref: '#/components/schemas/RestErrorWrapper'
     '401':
       description: Unauthorized
+  parameters:
+    SearchBeanCount:
+      name: count
+      description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
+
+        For more records, use *viewtoken* to page through.'
+      in: query
+      schema:
+        type: integer
+        format: int32
+    BatchV2TilinggridsId:
+      name: id
+      description: Tilinggrids ID
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+    SearchBeanViewtoken:
+      name: viewtoken
+      description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
+
+        This *viewtoken* can be used in the next request to retrieve the next page of items.
+
+
+        The next page can be retrieved by repeating the query. However, replace your URL with the
+
+        next URL in the returned links object.
+
+        '
+      in: query
+      schema:
+        type: string
   schemas:
+    BatchV2TilingGridDescriptorProperties:
+      type: object
+      properties:
+        tileWidth:
+          description: Width of each output tile, in units used by the grid
+          type: number
+          format: double
+        tileHeight:
+          description: Height of each output tile, in units used by the grid
+          type: number
+          format: double
+        resolutions:
+          description: List of supported resolutions, in units used by the grid
+          type: array
+          uniqueItems: true
+          items:
+            type: number
+            description: List of supported resolutions, in units used by the grid
+            format: double
+        unit:
+          description: Units used by the grid
+          type: string
+          enum:
+          - METRE
+          - DEGREE
     Boom:
       type: object
       properties:
@@ -115,6 +173,22 @@ components:
         errors:
           description: Additional information about the error (Optional)
           type: object
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    BatchV2TilingGridDescriptor:
+      type: object
+      properties:
+        id:
+          description: Identifier
+          type: integer
+          format: int64
+        name:
+          type: string
+        properties:
+          $ref: '#/components/schemas/BatchV2TilingGridDescriptorProperties'
     View:
       description: Links to paginate the resource
       type: object
@@ -134,80 +208,6 @@ components:
         previous:
           type: string
           format: uri
-    BatchV2TilingGridDescriptorProperties:
-      type: object
-      properties:
-        tileWidth:
-          description: Width of each output tile, in units used by the grid
-          type: number
-          format: double
-        tileHeight:
-          description: Height of each output tile, in units used by the grid
-          type: number
-          format: double
-        resolutions:
-          description: List of supported resolutions, in units used by the grid
-          type: array
-          uniqueItems: true
-          items:
-            type: number
-            description: List of supported resolutions, in units used by the grid
-            format: double
-        unit:
-          description: Units used by the grid
-          type: string
-          enum:
-          - METRE
-          - DEGREE
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
-    BatchV2TilingGridDescriptor:
-      type: object
-      properties:
-        id:
-          description: Identifier
-          type: integer
-          format: int64
-        name:
-          type: string
-        properties:
-          $ref: '#/components/schemas/BatchV2TilingGridDescriptorProperties'
-  parameters:
-    SearchBeanCount:
-      name: count
-      description: 'Upper limit to the number of items to retrieve. It cannot be larger than the endpoint-specific limit. If omitted, the endpoint-specific limit is used.
-
-        For more records, use *viewtoken* to page through.'
-      in: query
-      schema:
-        type: integer
-        format: int32
-    SearchBeanViewtoken:
-      name: viewtoken
-      description: 'When the total number of items is larger than *count*, the response contains *viewtoken*.
-
-        This *viewtoken* can be used in the next request to retrieve the next page of items.
-
-
-        The next page can be retrieved by repeating the query. However, replace your URL with the
-
-        next URL in the returned links object.
-
-        '
-      in: query
-      schema:
-        type: string
-    BatchV2TilinggridsId:
-      name: id
-      description: Tilinggrids ID
-      in: path
-      required: true
-      schema:
-        type: integer
-        format: int64
   securitySchemes:
     OAuth2:
       type: oauth2

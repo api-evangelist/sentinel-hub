@@ -190,22 +190,234 @@ paths:
       security:
       - OAuth2: []
 components:
+  responses:
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
+    '403':
+      description: Insufficient permissions
+    '401':
+      description: Unauthorized
+    '404':
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RestErrorWrapper'
   schemas:
-    TimeRange:
+    AnalysisReadyPlanetScopeDataSpec:
+      deprecated: true
       type: object
-      description: A time interval to filter data by acquisition date. It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.
+      required:
+      - dataFilter
+      - type
+      - id
       properties:
-        from:
-          description: The start of a search interval.
+        dataFilter:
+          allOf:
+          - $ref: '#/components/schemas/PlanetSubscriptionDataFilterBase'
+        type:
           type: string
-          format: date-time
-        to:
-          description: The end of a search interval.
+          enum:
+          - analysis_ready_ps
+          description: The Analysis Ready Type to subscribe to.
+        id:
           type: string
-          format: date-time
+          enum:
+          - PS_ARD_SR_DAILY
+          description: 'The ID of the Analysis Ready type to subscribe to.
+
+            '
+          externalDocs:
+            description: Analysis Ready IDs
+            url: https://developers.planet.com/docs/data/analysis-ready-ps/#available-ids
+    View:
+      description: Links to paginate the resource
+      type: object
+      properties:
+        currentToken:
+          type: string
+        nextToken:
+          type: string
+        previousToken:
+          type: string
+        '@id':
+          type: string
+          format: uri
+        next:
+          type: string
+          format: uri
+        previous:
+          type: string
+          format: uri
+    QuotaExceededError:
+      allOf:
+      - $ref: '#/components/schemas/Boom'
+      - type: object
+        properties:
+          errors:
+            type: object
+            properties:
+              availableQuota:
+                type: number
+                description: Currently available quota for the provider of the order
+              requiredQuota:
+                type: number
+                description: Quota that would be required for successful confirmation of the order
+    Geometry:
+      description: The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the "bounds.properties.crs" parameter. A GeoJsonObject.
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/Polygon'
+      - $ref: '#/components/schemas/MultiPolygon'
       example:
-        from: '2018-10-01T00:00:00.000Z'
-        to: '2018-11-01T00:00:00.000Z'
+        type: Polygon
+        coordinates:
+        - - - 14.000701904296873
+            - 46.23685258143992
+          - - 13.822174072265625
+            - 46.09037664604301
+          - - 14.113311767578125
+            - 45.85080395917834
+          - - 14.55963134765625
+            - 46.038922598236
+          - - 14.441528320312498
+            - 46.28717293114449
+          - - 14.17236328125
+            - 46.29191774991382
+          - - 14.000701904296873
+            - 46.23685258143992
+    PlanetaryVariableDataSpec:
+      deprecated: true
+      type: object
+      required:
+      - dataFilter
+      - type
+      - id
+      properties:
+        dataFilter:
+          allOf:
+          - $ref: '#/components/schemas/PlanetSubscriptionDataFilterBase'
+        type:
+          type: string
+          enum:
+          - soil_water_content
+          - biomass_proxy
+          - land_surface_temperature
+          - forest_carbon_diligence_30m
+          - forest_carbon_monitoring_3m
+          description: The Planetary Variable Type to subscribe to.
+          externalDocs:
+            description: Plantery Variables types and IDs
+            url: https://developers.planet.com/docs/subscriptions/pvs-subs/#planetary-variables-types-and-ids
+        id:
+          type: string
+          enum:
+          - SWC-AMSR2-C_V1.0_100
+          - SWC-AMSR2-X_V1.0_100
+          - SWC-SMAP-L_V1.0_100
+          - SWC-AMSR2-C_V2.0_100
+          - SWC-AMSR2-X_V2.0_100
+          - SWC-SMAP-L_V2.0_100
+          - SWC-AMSRE-C_V4.0_1000
+          - SWC-AMSRE-X_V4.0_1000
+          - SWC-AMSR2-C_V4.0_1000
+          - SWC-AMSR2-X_V4.0_1000
+          - SWC-SMAP-L_V4.0_1000
+          - SWC-AMSRE-C_V5.0_1000
+          - SWC-AMSRE-X_V5.0_1000
+          - SWC-AMSR2-C_V5.0_1000
+          - SWC-AMSR2-X_V5.0_1000
+          - SWC-SMAP-L_V5.0_1000
+          - BIOMASS-PROXY_V3.0_10
+          - BIOMASS-PROXY_V4.0_10
+          - LST-AMSR2_V1.0_100
+          - LST-AMSRE_V1.0_1000
+          - LST-AMSR2_V1.0_1000
+          - CANOPY_HEIGHT_v1.1.0_30
+          - CANOPY_COVER_v1.1.0_30
+          - ABOVEGROUND_CARBON_DENSITY_v1.1.0_30
+          - CANOPY_HEIGHT_v1.2.0_30
+          - CANOPY_COVER_v1.2.0_30
+          - ABOVEGROUND_CARBON_DENSITY_v1.2.0_30
+          - CANOPY_HEIGHT_v1.0.0_3
+          - CANOPY_COVER_v1.0.0_3
+          - ABOVEGROUND_CARBON_DENSITY_v1.0.0_3
+          description: 'The ID of the Planetary Variable to subscribe to.
+
+            Note that each `id` value is only allowed with one corresponding `type` value.
+
+            '
+          externalDocs:
+            description: Allowed type/id combinations
+            url: https://developers.planet.com/docs/subscriptions/pvs-subs/#planetary-variables-types-and-ids
+    Polygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - Polygon
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              maxItems: 2
+              minItems: 2
+              type: array
+              items:
+                type: number
+                format: double
+    Boom:
+      type: object
+      properties:
+        status:
+          description: HTTP status code
+          type: integer
+          format: int32
+        reason:
+          description: Reason for the error
+          type: string
+        message:
+          description: Friendly error message
+          type: string
+        code:
+          description: Code that uniquely identifies the error
+          type: string
+          enum:
+          - COMMON_BAD_PAYLOAD
+          - COMMON_NOT_FOUND
+          - COMMON_DATABASE_ERROR
+          - COMMON_UNIQUE_KEY_VIOLATION
+          - COMMON_INSUFFICIENT_PERMISSIONS
+          - COMMON_SENTINEL_ACCOUNT_EXPIRED
+          - COMMON_METHOD_NOT_ALLOWED
+          - COMMON_UNSUPPORTED_MEDIA_TYPE
+          - COMMON_ELASTICSEARCH_ERROR
+          - COMMON_UNAUTHORIZED
+          - COMMON_EXCEPTION
+          - RATE_LIMIT_STORAGE_TIMEOUT
+          - RATE_LIMIT_OVERLAPPING_POLICIES
+          - RATE_LIMIT_EXCEEDED
+          - RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY
+          - DASHBOARD_PAYPAL_SALE_ERROR
+          - DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR
+          - DASHBOARD_INVALID_PAYPAL_RESPONSE
+          - DASHBOARD_EXECUTE_SALE_ERROR
+          - DASHBOARD_EXECUTE_AGREEMENT_ERROR
+          - DASHBOARD_IPN_ERROR
+          - DASHBOARD_ADYEN_SALE_ERROR
+          - DASHBOARD_ADYEN_PAYMENT_CANCELLED
+          - RENDERER_EXCEPTION
+          - OAUTH_ERROR
+          - EMAIL_OCTOPUS_ERROR
+        errors:
+          description: Additional information about the error (Optional)
+          type: object
     Subscription:
       type: object
       properties:
@@ -240,48 +452,126 @@ components:
         input:
           type: object
           description: Specification of the subscribed data
-    ProcessRequestInputBounds:
-      title: Bounds
-      description: 'Defines the request bounds by specifying the bounding box and/or
-
-        geometry for the request. If both are specified it will generate an image
-
-        for the bounding box and render data contained within the geometry.
+    TimeRange:
+      type: object
+      description: A time interval to filter data by acquisition date. It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.
+      properties:
+        from:
+          description: The start of a search interval.
+          type: string
+          format: date-time
+        to:
+          description: The end of a search interval.
+          type: string
+          format: date-time
+      example:
+        from: '2018-10-01T00:00:00.000Z'
+        to: '2018-11-01T00:00:00.000Z'
+    PlanetSubscriptionDataFilterBase:
+      deprecated: true
+      type: object
+      required:
+      - timeRange
+      description: 'Selection criteria for the data the subscription should cover. At the minimum, `timeRange.from` must be included because subscriptions must have a start time.
 
         '
+      properties:
+        timeRange:
+          allOf:
+          - $ref: '#/components/schemas/TimeRange'
+          - required:
+            - from
+          - description: 'A time interval to filter data by the **publish** date (in contrast to orders, where the data is filtered by the acquisition date). It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.
+
+              '
+    PlanetSubscriptionRequest:
+      deprecated: true
+      allOf:
+      - $ref: '#/components/schemas/Subscription'
+      - type: object
+        required:
+        - input
+        properties:
+          input:
+            type: object
+            required:
+            - provider
+            - bounds
+            - data
+            - planetApiKey
+            properties:
+              provider:
+                description: Specify this value to use data provider Planet.
+                type: string
+                enum:
+                - PLANET
+              planetApiKey:
+                description: Your Planet API key. Get one from Planet https://www.planet.com.
+                type: string
+              bounds:
+                description: 'Defines the bounds of the subscribed area by specifying a bounding box and/or a geometry.
+
+                  If both are given, the subscription will use  the geometry and the bbox is ignored.
+
+                  '
+                $ref: '#/components/schemas/ProcessRequestInputBounds'
+              data:
+                type: array
+                minItems: 1
+                maxItems: 1
+                description: 'Specification of the data to subscribe to.
+
+                  '
+                items:
+                  $ref: '#/components/schemas/PlanetSubscriptionDataSpec'
+    ProcessRequestInputBoundsProperties:
+      title: BoundsProperties
       type: object
       properties:
-        bbox:
-          description: 'The request bounding box. This and/or GEOMETRY must be specified.
+        crs:
+          description: 'The coordinate reference system of the coordinates. Must be
 
-            Specify with a coordinate pair on two (opposite) vertices of the bounding
+            one of the values listed at https://docs.planet.com/develop/apis/processing/#crs-support.
 
-            box rectangle. Coordinates need to be in easting,northing or longitude, latitude,
-
-            in that order in the CRS defined in the "bounds.properties.crs" parameter.
+            Default CRS is WGS84, http://www.opengis.net/def/crs/OGC/1.3/CRS84.
 
             '
+          type: string
+          default: http://www.opengis.net/def/crs/OGC/1.3/CRS84
+    MultiPolygon:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - MultiPolygon
+        coordinates:
           type: array
-          minItems: 4
-          maxItems: 4
           items:
-            type: number
-            format: double
-          example:
-          - 13.822174072265625
-          - 45.85080395917834
-          - 14.55963134765625
-          - 46.29191774991382
-        geometry:
-          $ref: '#/components/schemas/Geometry'
-        properties:
-          $ref: '#/components/schemas/ProcessRequestInputBoundsProperties'
+            type: array
+            items:
+              type: array
+              items:
+                maxItems: 2
+                minItems: 2
+                type: array
+                items:
+                  type: number
+                  format: double
     PlanetSubscriptionDataSpec:
       deprecated: true
       oneOf:
       - $ref: '#/components/schemas/PSSceneDataSpec'
       - $ref: '#/components/schemas/PlanetaryVariableDataSpec'
       - $ref: '#/components/schemas/AnalysisReadyPlanetScopeDataSpec'
+    RestErrorWrapper:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Boom'
+    SubscriptionRequest:
+      oneOf:
+      - $ref: '#/components/schemas/PlanetSubscriptionRequest'
     PSSceneDataSpec:
       deprecated: true
       type: object
@@ -353,29 +643,6 @@ components:
           externalDocs:
             description: Details on PlanetScope instruments
             url: https://developers.planet.com/docs/data/sensors/
-    Geometry:
-      description: The request area of interest geometry. This and/or BBOX must be specified. Coordinates need to be in easting,northing or longitude,latitude, in that order in the CRS defined in the "bounds.properties.crs" parameter. A GeoJsonObject.
-      type: object
-      oneOf:
-      - $ref: '#/components/schemas/Polygon'
-      - $ref: '#/components/schemas/MultiPolygon'
-      example:
-        type: Polygon
-        coordinates:
-        - - - 14.000701904296873
-            - 46.23685258143992
-          - - 13.822174072265625
-            - 46.09037664604301
-          - - 14.113311767578125
-            - 45.85080395917834
-          - - 14.55963134765625
-            - 46.038922598236
-          - - 14.441528320312498
-            - 46.28717293114449
-          - - 14.17236328125
-            - 46.29191774991382
-          - - 14.000701904296873
-            - 46.23685258143992
     SubscriptionStatus:
       description: Subscription status
       type: string
@@ -386,29 +653,6 @@ components:
       - CANCELLED
       - COMPLETED
       - FAILED
-    SubscriptionRequest:
-      oneOf:
-      - $ref: '#/components/schemas/PlanetSubscriptionRequest'
-    MultiPolygon:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - MultiPolygon
-        coordinates:
-          type: array
-          items:
-            type: array
-            items:
-              type: array
-              items:
-                maxItems: 2
-                minItems: 2
-                type: array
-                items:
-                  type: number
-                  format: double
     MaxCloudCoverage:
       description: The maximum allowable cloud coverage in percent.
       type: number
@@ -416,269 +660,42 @@ components:
       minimum: 0
       maximum: 100
       default: 100
-    View:
-      description: Links to paginate the resource
-      type: object
-      properties:
-        currentToken:
-          type: string
-        nextToken:
-          type: string
-        previousToken:
-          type: string
-        '@id':
-          type: string
-          format: uri
-        next:
-          type: string
-          format: uri
-        previous:
-          type: string
-          format: uri
-    ProcessRequestInputBoundsProperties:
-      title: BoundsProperties
-      type: object
-      properties:
-        crs:
-          description: 'The coordinate reference system of the coordinates. Must be
+    ProcessRequestInputBounds:
+      title: Bounds
+      description: 'Defines the request bounds by specifying the bounding box and/or
 
-            one of the values listed at https://docs.planet.com/develop/apis/processing/#crs-support.
+        geometry for the request. If both are specified it will generate an image
 
-            Default CRS is WGS84, http://www.opengis.net/def/crs/OGC/1.3/CRS84.
-
-            '
-          type: string
-          default: http://www.opengis.net/def/crs/OGC/1.3/CRS84
-    PlanetSubscriptionDataFilterBase:
-      deprecated: true
-      type: object
-      required:
-      - timeRange
-      description: 'Selection criteria for the data the subscription should cover. At the minimum, `timeRange.from` must be included because subscriptions must have a start time.
+        for the bounding box and render data contained within the geometry.
 
         '
-      properties:
-        timeRange:
-          allOf:
-          - $ref: '#/components/schemas/TimeRange'
-          - required:
-            - from
-          - description: 'A time interval to filter data by the **publish** date (in contrast to orders, where the data is filtered by the acquisition date). It is defined by a start and end date and time, e.g. 2019-01-31T14:00:00+01:00. A date representation without time (e.g. 2019-01-31) will not work. Both the start and end of a time interval are inclusive and can be equal.
-
-              '
-    Polygon:
       type: object
       properties:
-        type:
-          type: string
-          enum:
-          - Polygon
-        coordinates:
+        bbox:
+          description: 'The request bounding box. This and/or GEOMETRY must be specified.
+
+            Specify with a coordinate pair on two (opposite) vertices of the bounding
+
+            box rectangle. Coordinates need to be in easting,northing or longitude, latitude,
+
+            in that order in the CRS defined in the "bounds.properties.crs" parameter.
+
+            '
           type: array
+          minItems: 4
+          maxItems: 4
           items:
-            type: array
-            items:
-              maxItems: 2
-              minItems: 2
-              type: array
-              items:
-                type: number
-                format: double
-    QuotaExceededError:
-      allOf:
-      - $ref: '#/components/schemas/Boom'
-      - type: object
+            type: number
+            format: double
+          example:
+          - 13.822174072265625
+          - 45.85080395917834
+          - 14.55963134765625
+          - 46.29191774991382
+        geometry:
+          $ref: '#/components/schemas/Geometry'
         properties:
-          errors:
-            type: object
-            properties:
-              availableQuota:
-                type: number
-                description: Currently available quota for the provider of the order
-              requiredQuota:
-                type: number
-                description: Quota that would be required for successful confirmation of the order
-    AnalysisReadyPlanetScopeDataSpec:
-      deprecated: true
-      type: object
-      required:
-      - dataFilter
-      - type
-      - id
-      properties:
-        dataFilter:
-          allOf:
-          - $ref: '#/components/schemas/PlanetSubscriptionDataFilterBase'
-        type:
-          type: string
-          enum:
-          - analysis_ready_ps
-          description: The Analysis Ready Type to subscribe to.
-        id:
-          type: string
-          enum:
-          - PS_ARD_SR_DAILY
-          description: 'The ID of the Analysis Ready type to subscribe to.
-
-            '
-          externalDocs:
-            description: Analysis Ready IDs
-            url: https://developers.planet.com/docs/data/analysis-ready-ps/#available-ids
-    PlanetaryVariableDataSpec:
-      deprecated: true
-      type: object
-      required:
-      - dataFilter
-      - type
-      - id
-      properties:
-        dataFilter:
-          allOf:
-          - $ref: '#/components/schemas/PlanetSubscriptionDataFilterBase'
-        type:
-          type: string
-          enum:
-          - soil_water_content
-          - biomass_proxy
-          - land_surface_temperature
-          - forest_carbon_diligence_30m
-          - forest_carbon_monitoring_3m
-          description: The Planetary Variable Type to subscribe to.
-          externalDocs:
-            description: Plantery Variables types and IDs
-            url: https://developers.planet.com/docs/subscriptions/pvs-subs/#planetary-variables-types-and-ids
-        id:
-          type: string
-          enum:
-          - SWC-AMSR2-C_V1.0_100
-          - SWC-AMSR2-X_V1.0_100
-          - SWC-SMAP-L_V1.0_100
-          - SWC-AMSR2-C_V2.0_100
-          - SWC-AMSR2-X_V2.0_100
-          - SWC-SMAP-L_V2.0_100
-          - SWC-AMSRE-C_V4.0_1000
-          - SWC-AMSRE-X_V4.0_1000
-          - SWC-AMSR2-C_V4.0_1000
-          - SWC-AMSR2-X_V4.0_1000
-          - SWC-SMAP-L_V4.0_1000
-          - SWC-AMSRE-C_V5.0_1000
-          - SWC-AMSRE-X_V5.0_1000
-          - SWC-AMSR2-C_V5.0_1000
-          - SWC-AMSR2-X_V5.0_1000
-          - SWC-SMAP-L_V5.0_1000
-          - BIOMASS-PROXY_V3.0_10
-          - BIOMASS-PROXY_V4.0_10
-          - LST-AMSR2_V1.0_100
-          - LST-AMSRE_V1.0_1000
-          - LST-AMSR2_V1.0_1000
-          - CANOPY_HEIGHT_v1.1.0_30
-          - CANOPY_COVER_v1.1.0_30
-          - ABOVEGROUND_CARBON_DENSITY_v1.1.0_30
-          - CANOPY_HEIGHT_v1.2.0_30
-          - CANOPY_COVER_v1.2.0_30
-          - ABOVEGROUND_CARBON_DENSITY_v1.2.0_30
-          - CANOPY_HEIGHT_v1.0.0_3
-          - CANOPY_COVER_v1.0.0_3
-          - ABOVEGROUND_CARBON_DENSITY_v1.0.0_3
-          description: 'The ID of the Planetary Variable to subscribe to.
-
-            Note that each `id` value is only allowed with one corresponding `type` value.
-
-            '
-          externalDocs:
-            description: Allowed type/id combinations
-            url: https://developers.planet.com/docs/subscriptions/pvs-subs/#planetary-variables-types-and-ids
-    Boom:
-      type: object
-      properties:
-        status:
-          description: HTTP status code
-          type: integer
-          format: int32
-        reason:
-          description: Reason for the error
-          type: string
-        message:
-          description: Friendly error message
-          type: string
-        code:
-          description: Code that uniquely identifies the error
-          type: string
-          enum:
-          - COMMON_BAD_PAYLOAD
-          - COMMON_NOT_FOUND
-          - COMMON_DATABASE_ERROR
-          - COMMON_UNIQUE_KEY_VIOLATION
-          - COMMON_INSUFFICIENT_PERMISSIONS
-          - COMMON_SENTINEL_ACCOUNT_EXPIRED
-          - COMMON_METHOD_NOT_ALLOWED
-          - COMMON_UNSUPPORTED_MEDIA_TYPE
-          - COMMON_ELASTICSEARCH_ERROR
-          - COMMON_UNAUTHORIZED
-          - COMMON_EXCEPTION
-          - RATE_LIMIT_STORAGE_TIMEOUT
-          - RATE_LIMIT_OVERLAPPING_POLICIES
-          - RATE_LIMIT_EXCEEDED
-          - RATE_LIMIT_TOKEN_COUNT_EXCEEDS_CAPACITY
-          - DASHBOARD_PAYPAL_SALE_ERROR
-          - DASHBOARD_PAYPAL_SUBSCRIPTION_ERROR
-          - DASHBOARD_INVALID_PAYPAL_RESPONSE
-          - DASHBOARD_EXECUTE_SALE_ERROR
-          - DASHBOARD_EXECUTE_AGREEMENT_ERROR
-          - DASHBOARD_IPN_ERROR
-          - DASHBOARD_ADYEN_SALE_ERROR
-          - DASHBOARD_ADYEN_PAYMENT_CANCELLED
-          - RENDERER_EXCEPTION
-          - OAUTH_ERROR
-          - EMAIL_OCTOPUS_ERROR
-        errors:
-          description: Additional information about the error (Optional)
-          type: object
-    PlanetSubscriptionRequest:
-      deprecated: true
-      allOf:
-      - $ref: '#/components/schemas/Subscription'
-      - type: object
-        required:
-        - input
-        properties:
-          input:
-            type: object
-            required:
-            - provider
-            - bounds
-            - data
-            - planetApiKey
-            properties:
-              provider:
-                description: Specify this value to use data provider Planet.
-                type: string
-                enum:
-                - PLANET
-              planetApiKey:
-                description: Your Planet API key. Get one from Planet https://www.planet.com.
-                type: string
-              bounds:
-                description: 'Defines the bounds of the subscribed area by specifying a bounding box and/or a geometry.
-
-                  If both are given, the subscription will use  the geometry and the bbox is ignored.
-
-                  '
-                $ref: '#/components/schemas/ProcessRequestInputBounds'
-              data:
-                type: array
-                minItems: 1
-                maxItems: 1
-                description: 'Specification of the data to subscribe to.
-
-                  '
-                items:
-                  $ref: '#/components/schemas/PlanetSubscriptionDataSpec'
-    RestErrorWrapper:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Boom'
+          $ref: '#/components/schemas/ProcessRequestInputBoundsProperties'
   parameters:
     SubscriptionId:
       name: subscriptionId
@@ -688,6 +705,12 @@ components:
       schema:
         type: string
         format: uuid
+    SubscriptionStatus:
+      name: status
+      description: Filter subscriptions by status. Omit to get all subscriptions.
+      in: query
+      schema:
+        $ref: '#/components/schemas/SubscriptionStatus'
     SearchBeanSearch:
       name: search
       description: Optional search query. Either a single word to search for or multiple words separated by the `|` (or) and `&` (and) operators. If omitted, all items are returned.
@@ -718,29 +741,6 @@ components:
       schema:
         type: integer
         format: int32
-    SubscriptionStatus:
-      name: status
-      description: Filter subscriptions by status. Omit to get all subscriptions.
-      in: query
-      schema:
-        $ref: '#/components/schemas/SubscriptionStatus'
-  responses:
-    '400':
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
-    '401':
-      description: Unauthorized
-    '403':
-      description: Insufficient permissions
-    '404':
-      description: Not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RestErrorWrapper'
   securitySchemes:
     OAuth2:
       type: oauth2
