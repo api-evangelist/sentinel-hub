@@ -1,133 +1,33 @@
-generated: '2026-07-15'
+generated: '2026-09-23'
 method: generated
-source: openapi/sentinel-hub-openapi.yaml
+source: openapi/sentinel-hub-async-process-api-openapi.yml, openapi/sentinel-hub-batch-statistical-api-openapi.yml,
+  openapi/sentinel-hub-batch-v2-process-api-openapi.yml, openapi/sentinel-hub-batch-v2-tiling-grid-api-openapi.yml,
+  openapi/sentinel-hub-byoc-collection-api-openapi.yml, openapi/sentinel-hub-byoc-tile-api-openapi.yml,
+  openapi/sentinel-hub-catalog-collections-api-openapi.yml, openapi/sentinel-hub-catalog-core-api-openapi.yml,
+  openapi/sentinel-hub-catalog-features-api-openapi.yml, openapi/sentinel-hub-catalog-item-search-api-openapi.yml,
+  openapi/sentinel-hub-dataimport-delivery-api-openapi.yml, openapi/sentinel-hub-dataimport-order-api-openapi.yml,
+  openapi/sentinel-hub-dataimport-product-api-openapi.yml, openapi/sentinel-hub-dataimport-quota-api-openapi.yml,
+  openapi/sentinel-hub-dataimport-search-api-openapi.yml, openapi/sentinel-hub-dataimport-subscription-api-openapi.yml,
+  openapi/sentinel-hub-dataimport-subscription-delivery-api-openapi.yml, openapi/sentinel-hub-dataimport-subscription-tile-delivery-api-openapi.yml,
+  openapi/sentinel-hub-dataimport-tile-delivery-api-openapi.yml, openapi/sentinel-hub-metadata-collection-api-openapi.yml,
+  openapi/sentinel-hub-metadata-location-api-openapi.yml, openapi/sentinel-hub-process-api-openapi.yml,
+  openapi/sentinel-hub-statistical-api-openapi.yml, openapi/sentinel-hub-zarr-array-api-openapi.yml,
+  openapi/sentinel-hub-zarr-collection-api-openapi.yml
 description: Recommended x-agentic-access execution contracts, classified heuristically from
   the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
   audience per deployment. See research/curity/agentic-governance/.
 summary:
   operations: 95
   by_action_class:
-    acting: 36
-    connected: 59
+    acting: 34
+    connected: 61
   by_consequence:
-    write: 30
-    read: 59
+    write: 28
+    read: 61
     safety-critical: 2
     physical: 4
   human_in_the_loop_required: 2
 operations:
-- path: /process/v1
-  method: post
-  operationId: process
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /catalog/v1
-  method: get
-  operationId: getCatalogLandingPage
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /catalog/v1/conformance
-  method: get
-  operationId: getCatalogConformanceDeclaration
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /catalog/v1/collections
-  method: get
-  operationId: getCatalogCollections
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /catalog/v1/collections/{collectionId}
-  method: get
-  operationId: getCatalogCollection
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /catalog/v1/collections/{collectionId}/queryables
-  method: get
-  operationId: getCatalogCollectionQueryables
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /catalog/v1/collections/{collectionId}/items
-  method: get
-  operationId: getCatalogFeatures
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /catalog/v1/collections/{collectionId}/items/{featureId}
-  method: get
-  operationId: getCatalogFeature
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /catalog/v1/search
-  method: get
-  operationId: getCatalogItemSearch
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /catalog/v1/search
-  method: post
-  operationId: postCatalogItemSearch
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
 - path: /async/v1/process
   method: post
   operationId: createNewAsyncProcessRequest
@@ -154,6 +54,100 @@ operations:
     token:
       max-ttl: 3600
     audit: none
+- path: /statistics/batch/v1
+  method: post
+  operationId: createNewBatchStatisticsRequest
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /statistics/batch/v1
+  method: get
+  operationId: searchBatchStatisticsRequests
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /statistics/batch/v1/{requestId}
+  method: get
+  operationId: getSingleBatchStatisticalRequestById
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /statistics/batch/v1/{requestId}/status
+  method: get
+  operationId: batchStatisticalGetStatus
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /statistics/batch/v1/{requestId}/analyse
+  method: post
+  operationId: batchStatisticalAnalyse
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /statistics/batch/v1/{requestId}/start
+  method: post
+  operationId: batchStartStatisticalRequest
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /statistics/batch/v1/{requestId}/stop
+  method: post
+  operationId: batchStopStatisticalRequest
+  x-agentic-access:
+    action-class: acting
+    consequence: safety-critical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 120
+      exchange: true
+      purpose-required: true
+      proof-of-possession: true
+    escalation:
+      human-in-the-loop: required
+    audit: required
 - path: /batch/v2/process
   method: post
   operationId: createNewBatchV2ProcessingRequest
@@ -274,9 +268,9 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /statistics/v1
+- path: /byoc/v1/collections
   method: post
-  operationId: submitStatisticalRequest
+  operationId: createByocCollection
   x-agentic-access:
     action-class: acting
     consequence: write
@@ -290,25 +284,9 @@ operations:
       - abnormal
       - high-value
     audit: required
-- path: /statistics/batch/v1
-  method: post
-  operationId: createNewBatchStatisticsRequest
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /statistics/batch/v1
+- path: /byoc/v1/collections
   method: get
-  operationId: searchBatchStatisticsRequests
+  operationId: getByocCollections
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -316,9 +294,9 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /statistics/batch/v1/{requestId}
+- path: /byoc/v1/collections/{collectionId}
   method: get
-  operationId: getSingleBatchStatisticalRequestById
+  operationId: getByocCollectionById
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -326,19 +304,9 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /statistics/batch/v1/{requestId}/status
-  method: get
-  operationId: batchStatisticalGetStatus
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /statistics/batch/v1/{requestId}/analyse
-  method: post
-  operationId: batchStatisticalAnalyse
+- path: /byoc/v1/collections/{collectionId}
+  method: put
+  operationId: updateByocCollectionById
   x-agentic-access:
     action-class: acting
     consequence: write
@@ -352,9 +320,9 @@ operations:
       - abnormal
       - high-value
     audit: required
-- path: /statistics/batch/v1/{requestId}/start
-  method: post
-  operationId: batchStartStatisticalRequest
+- path: /byoc/v1/collections/{collectionId}
+  method: delete
+  operationId: deleteByocCollectionById
   x-agentic-access:
     action-class: acting
     consequence: write
@@ -368,21 +336,21 @@ operations:
       - abnormal
       - high-value
     audit: required
-- path: /statistics/batch/v1/{requestId}/stop
+- path: /byoc/v1/collections/{collectionId}/copyTiles
   method: post
-  operationId: batchStopStatisticalRequest
+  operationId: copyByocCollectionTiles
   x-agentic-access:
     action-class: acting
-    consequence: safety-critical
+    consequence: write
     subject: required
     audience: null
     token:
-      max-ttl: 120
-      exchange: true
-      purpose-required: true
-      proof-of-possession: true
+      max-ttl: 900
     escalation:
-      human-in-the-loop: required
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
     audit: required
 - path: /byoc/v1/collections/{collectionId}/tiles
   method: post
@@ -498,25 +466,89 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /byoc/v1/collections
+- path: /catalog/v1/collections
+  method: get
+  operationId: getCatalogCollections
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /catalog/v1/collections/{collectionId}
+  method: get
+  operationId: getCatalogCollection
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /catalog/v1/collections/{collectionId}/queryables
+  method: get
+  operationId: getCatalogCollectionQueryables
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /catalog/v1
+  method: get
+  operationId: getCatalogLandingPage
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /catalog/v1/conformance
+  method: get
+  operationId: getCatalogConformanceDeclaration
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /catalog/v1/collections/{collectionId}/items
+  method: get
+  operationId: getCatalogFeatures
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /catalog/v1/collections/{collectionId}/items/{featureId}
+  method: get
+  operationId: getCatalogFeature
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /catalog/v1/search
+  method: get
+  operationId: getCatalogItemSearch
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /catalog/v1/search
   method: post
-  operationId: createByocCollection
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /byoc/v1/collections
-  method: get
-  operationId: getByocCollections
+  operationId: postCatalogItemSearch
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -524,284 +556,6 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /byoc/v1/collections/{collectionId}
-  method: get
-  operationId: getByocCollectionById
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /byoc/v1/collections/{collectionId}
-  method: put
-  operationId: updateByocCollectionById
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /byoc/v1/collections/{collectionId}
-  method: delete
-  operationId: deleteByocCollectionById
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /byoc/v1/collections/{collectionId}/copyTiles
-  method: post
-  operationId: copyByocCollectionTiles
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /zarr/v1/collections
-  method: post
-  operationId: createZarrCollection
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /zarr/v1/collections
-  method: get
-  operationId: getZarrCollections
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /zarr/v1/collections/{collectionId}
-  method: get
-  operationId: getZarrCollection
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /zarr/v1/collections/{collectionId}
-  method: put
-  operationId: updateZarrCollectionById
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /zarr/v1/collections/{collectionId}
-  method: delete
-  operationId: deleteZarrCollectionById
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /zarr/v1/collections/{collectionId}/reingest
-  method: put
-  operationId: reingestZarrCollectionById
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /zarr/v1/collections/{collectionId}/arrays
-  method: get
-  operationId: getZarrArrays
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /zarr/v1/collections/{collectionId}/arrays/{arrayName}
-  method: get
-  operationId: getSingleZarrArray
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /api/v1/dataimport/search
-  method: post
-  operationId: dataImport_searchData
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /api/v1/dataimport/nativesearch
-  method: post
-  operationId: dataImport_nativeSearch
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /api/v1/dataimport/collections/{collectionId}/products/{productId}/thumbnail
-  method: get
-  operationId: dataImport_getProductThumbnail
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /api/v1/dataimport/orders
-  method: post
-  operationId: dataImport_createOrder
-  x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
-    token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /api/v1/dataimport/orders
-  method: get
-  operationId: dataImport_getOrders
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /api/v1/dataimport/orders/{orderId}
-  method: get
-  operationId: dataImport_getOrder
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /api/v1/dataimport/orders/{orderId}
-  method: delete
-  operationId: dataImport_deleteOrder
-  x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
-    token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-- path: /api/v1/dataimport/orders/{orderId}/confirm
-  method: post
-  operationId: dataImport_confirmOrder
-  x-agentic-access:
-    action-class: acting
-    consequence: physical
-    subject: required
-    audience: null
-    token:
-      max-ttl: 300
-      exchange: true
-      purpose-required: true
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
 - path: /api/v1/dataimport/orders/{orderId}/deliveries
   method: get
   operationId: dataImport_getOrderDeliveries
@@ -900,9 +654,27 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /api/v1/dataimport/orders/{orderId}/deliveries/{deliveryId}/tiles
+- path: /api/v1/dataimport/orders
+  method: post
+  operationId: dataImport_createOrder
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v1/dataimport/orders
   method: get
-  operationId: dataImport_getTileDeliveries
+  operationId: dataImport_getOrders
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -910,9 +682,9 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /api/v1/dataimport/orders/{orderId}/deliveries/{deliveryId}/tiles/{tileId}
+- path: /api/v1/dataimport/orders/{orderId}
   method: get
-  operationId: dataImport_getTileDelivery
+  operationId: dataImport_getOrder
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -920,6 +692,98 @@ operations:
     token:
       max-ttl: 3600
     audit: none
+- path: /api/v1/dataimport/orders/{orderId}
+  method: delete
+  operationId: dataImport_deleteOrder
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v1/dataimport/orders/{orderId}/confirm
+  method: post
+  operationId: dataImport_confirmOrder
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v1/dataimport/collections/{collectionId}/products/{productId}/thumbnail
+  method: get
+  operationId: dataImport_getProductThumbnail
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v1/dataimport/accountquotas
+  method: get
+  operationId: dataImport_getQuotas
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v1/dataimport/accountquotas/{collectionId}
+  method: get
+  operationId: dataImport_getQuota
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v1/dataimport/search
+  method: post
+  operationId: dataImport_searchData
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v1/dataimport/nativesearch
+  method: post
+  operationId: dataImport_nativeSearch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
 - path: /api/v1/dataimport/subscriptions
   method: post
   operationId: dataImport_createSubscription
@@ -1120,9 +984,9 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /api/v1/dataimport/accountquotas
+- path: /api/v1/dataimport/orders/{orderId}/deliveries/{deliveryId}/tiles
   method: get
-  operationId: dataImport_getQuotas
+  operationId: dataImport_getTileDeliveries
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -1130,29 +994,9 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /api/v1/dataimport/accountquotas/{collectionId}
+- path: /api/v1/dataimport/orders/{orderId}/deliveries/{deliveryId}/tiles/{tileId}
   method: get
-  operationId: dataImport_getQuota
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /api/v1/metadata/location
-  method: get
-  operationId: metadata_locations
-  x-agentic-access:
-    action-class: connected
-    consequence: read
-    subject: optional
-    token:
-      max-ttl: 3600
-    audit: none
-- path: /api/v1/metadata/location/{locationId}
-  method: get
-  operationId: metadata_location
+  operationId: dataImport_getTileDelivery
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -1190,3 +1034,159 @@ operations:
     token:
       max-ttl: 3600
     audit: none
+- path: /api/v1/metadata/location
+  method: get
+  operationId: metadata_locations
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v1/metadata/location/{locationId}
+  method: get
+  operationId: metadata_location
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /process/v1
+  method: post
+  operationId: process
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /statistics/v1
+  method: post
+  operationId: submitStatisticalRequest
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /zarr/v1/collections/{collectionId}/arrays
+  method: get
+  operationId: getZarrArrays
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /zarr/v1/collections/{collectionId}/arrays/{arrayName}
+  method: get
+  operationId: getSingleZarrArray
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /zarr/v1/collections
+  method: post
+  operationId: createZarrCollection
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /zarr/v1/collections
+  method: get
+  operationId: getZarrCollections
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /zarr/v1/collections/{collectionId}
+  method: get
+  operationId: getZarrCollection
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /zarr/v1/collections/{collectionId}
+  method: put
+  operationId: updateZarrCollectionById
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /zarr/v1/collections/{collectionId}
+  method: delete
+  operationId: deleteZarrCollectionById
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /zarr/v1/collections/{collectionId}/reingest
+  method: put
+  operationId: reingestZarrCollectionById
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
